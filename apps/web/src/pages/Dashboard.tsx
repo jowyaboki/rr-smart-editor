@@ -16,12 +16,15 @@ import {
   List,
   ListItem,
   ListItemText,
-  ListItemSecondaryAction
+  ListItemSecondaryAction,
+  Link
 } from '@mui/material';
-import { Add as AddIcon, Delete as DeleteIcon, Edit as EditIcon } from '@mui/icons-material';
+import { Add as AddIcon, Delete as DeleteIcon, Edit as EditIcon, OpenInNew as OpenIcon } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 import { useProjects, useCreateProject, useUpdateProject, useDeleteProject } from '../hooks/useProjects';
 
 const Dashboard: React.FC = () => {
+  const navigate = useNavigate();
   const { data: projects, isLoading, error } = useProjects();
   const createProject = useCreateProject();
   const updateProject = useUpdateProject();
@@ -77,10 +80,22 @@ const Dashboard: React.FC = () => {
                 {projects?.map((project) => (
                   <ListItem key={project.id} divider>
                     <ListItemText
-                      primary={project.name}
+                      primary={
+                        <Link
+                          component="button"
+                          variant="body1"
+                          onClick={() => navigate(`/editor/${project.id}`)}
+                          sx={{ textAlign: 'left', fontWeight: 'bold' }}
+                        >
+                          {project.name}
+                        </Link>
+                      }
                       secondary={`Last updated: ${new Date(project.updatedAt).toLocaleString()}`}
                     />
                     <ListItemSecondaryAction>
+                      <IconButton edge="end" onClick={() => navigate(`/editor/${project.id}`)}>
+                        <OpenIcon />
+                      </IconButton>
                       <IconButton edge="end" onClick={() => handleEdit(project)}>
                         <EditIcon />
                       </IconButton>
