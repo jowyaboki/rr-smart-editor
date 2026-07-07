@@ -1,31 +1,144 @@
-import React from 'react';
-import { Typography, Grid, Paper, Box } from '@mui/material';
+import React, { useState } from 'react';
+import {
+  Typography,
+  Grid,
+  Paper,
+  Box,
+  Button,
+  CircularProgress,
+  Alert,
+  IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction,
+  Link
+} from '@mui/material';
+import { Add as AddIcon, Delete as DeleteIcon, Edit as EditIcon, OpenInNew as OpenIcon } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
+import { useProjects, useCreateProject, useUpdateProject, useDeleteProject } from '../hooks/useProjects';
 
 const Dashboard: React.FC = () => {
+  const navigate = useNavigate();
+  const { data: projects, isLoading, error } = useProjects();
+  const createProject = useCreateProject();
+  const updateProject = useUpdateProject();
+  const deleteProject = useDeleteProject();
+
+  const [open, setOpen] = useState(false);
+  const [editingProject, setEditingProject] = useState<{ id: string, name: string } | null>(null);
+  const [projectName, setProjectName] = useState('');
+
+  const handleOpen = () => {
+    setProjectName('');
+    setEditingProject(null);
+    setOpen(true);
+  };
+
+  const handleEdit = (project: { id: string, name: string }) => {
+    setProjectName(project.name);
+    setEditingProject(project);
+    setOpen(true);
+  };
+
+  const handleClose = () => setOpen(false);
+
+  const handleSubmit = () => {
+    if (editingProject) {
+      updateProject.mutate({ id: editingProject.id, name: projectName });
+    } else {
+      createProject.mutate(projectName);
+    }
+    handleClose();
+  };
+
+  if (isLoading) return <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}><CircularProgress /></Box>;
+  if (error) return <Alert severity="error">Error loading projects</Alert>;
+
   return (
     <Box>
-      <Typography variant="h4" gutterBottom>
-        Dashboard
-      </Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+        <Typography variant="h4">Dashboard</Typography>
+        <Button variant="contained" startIcon={<AddIcon />} onClick={handleOpen}>
+          Create Project
+        </Button>
+      </Box>
+
       <Grid container spacing={3}>
         <Grid item xs={12} md={8}>
-          <Paper sx={{ p: 2, height: 240, display: 'flex', flexDirection: 'column' }}>
-            <Typography variant="h6">Recent Projects</Typography>
-            <Typography color="text.secondary" sx={{ flex: 1, mt: 2 }}>
-              Your recent video projects will appear here.
-            </Typography>
+          <Paper sx={{ p: 2 }}>
+            <Typography variant="h6" gutterBottom>Projects</Typography>
+            {projects?.length === 0 ? (
+              <Typography color="text.secondary">No projects yet. Create one!</Typography>
+            ) : (
+              <List>
+                {projects?.map((project) => (
+                  <ListItem key={project.id} divider>
+                    <ListItemText
+                      primary={
+                        <Link
+                          component="button"
+                          variant="body1"
+                          onClick={() => navigate(`/editor/${project.id}`)}
+                          sx={{ textAlign: 'left', fontWeight: 'bold' }}
+                        >
+                          {project.name}
+                        </Link>
+                      }
+                      secondary={`Last updated: ${new Date(project.updatedAt).toLocaleString()}`}
+                    />
+                    <ListItemSecondaryAction>
+                      <IconButton edge="end" onClick={() => navigate(`/editor/${project.id}`)}>
+                        <OpenIcon />
+                      </IconButton>
+                      <IconButton edge="end" onClick={() => handleEdit(project)}>
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton edge="end" onClick={() => deleteProject.mutate(project.id)}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                ))}
+              </List>
+            )}
           </Paper>
         </Grid>
         <Grid item xs={12} md={4}>
-          <Paper sx={{ p: 2, height: 240, display: 'flex', flexDirection: 'column' }}>
-            <Typography variant="h6">Quick Stats</Typography>
-            <Box sx={{ mt: 2 }}>
-              <Typography variant="body2">Total Videos: 0</Typography>
-              <Typography variant="body2">Storage Used: 0%</Typography>
-            </Box>
+          <Paper sx={{ p: 2 }}>
+            <Typography variant="h6" gutterBottom>Quick Stats</Typography>
+            <Typography variant="body2">Total Videos: {projects?.length || 0}</Typography>
+            <Typography variant="body2">Storage Used: 0%</Typography>
           </Paper>
         </Grid>
       </Grid>
+
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>{editingProject ? 'Rename Project' : 'Create New Project'}</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Project Name"
+            type="text"
+            fullWidth
+            variant="standard"
+            value={projectName}
+            onChange={(e) => setProjectName(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleSubmit} disabled={!projectName}>
+            {editingProject ? 'Save' : 'Create'}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
