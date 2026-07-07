@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, AppBar, Toolbar, Typography, Drawer, List, ListItem, ListItemIcon, ListItemText, CssBaseline, ThemeProvider } from '@mui/material';
-import { Dashboard as DashboardIcon, VideoLibrary as VideoIcon, Settings as SettingsIcon } from '@mui/icons-material';
+import { Dashboard as DashboardIcon, VideoLibrary as VideoIcon, Settings as SettingsIcon, PlayArrow as PreviewIcon } from '@mui/icons-material';
 import { darkTheme } from '../theme';
 
 const drawerWidth = 240;
@@ -28,9 +28,13 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
           <Toolbar />
           <Box sx={{ overflow: 'auto' }}>
             <List>
-              <ListItem button>
+              <ListItem component="a" href="/">
                 <ListItemIcon><DashboardIcon /></ListItemIcon>
                 <ListItemText primary="Dashboard" />
+              </ListItem>
+              <ListItem component="a" href="/preview">
+                <ListItemIcon><PreviewIcon /></ListItemIcon>
+                <ListItemText primary="Preview" />
               </ListItem>
               <ListItem button>
                 <ListItemIcon><VideoIcon /></ListItemIcon>
