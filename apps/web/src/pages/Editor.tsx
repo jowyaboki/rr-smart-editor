@@ -23,7 +23,7 @@ const Editor: React.FC = () => {
           <PanelGroup direction="horizontal">
             {/* Left Sidebar */}
             <Panel defaultSize={20} minSize={15}>
-              <Sidebar />
+              <Sidebar projectId={id || ''} />
             </Panel>
 
             <PanelResizeHandle style={{ width: '4px', backgroundColor: '#333', cursor: 'col-resize' }} />
