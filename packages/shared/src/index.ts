@@ -11,6 +11,7 @@ export * from './ai';
 export * from './media';
 export * from './timeline';
 export * from './remotion';
+export * from './animation';
 
 export const ProjectCreateSchema = z.object({
   name: z.string().min(1),

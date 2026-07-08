@@ -19,6 +19,7 @@ interface TimelineStore {
   createClip: (trackId: string, asset: MediaAsset, startFrame: number) => void;
   updateClip: (clipId: string, updates: Partial<TimelineClip>) => void;
   deleteClip: (clipId: string) => void;
+  toggleClipExpansion: (clipId: string) => void;
   selectClip: (clipId: string, multi?: boolean) => void;
   clearSelection: () => void;
   setPlayhead: (frame: number) => void;
@@ -78,6 +79,7 @@ export const useTimelineStore = create<TimelineStore>()(
           selected: false,
           locked: false,
           hidden: false,
+          expanded: false,
           transform: { x: 0, y: 0, scale: 1, rotation: 0, opacity: 1 },
           style: {},
           metadata: {}
@@ -96,6 +98,13 @@ export const useTimelineStore = create<TimelineStore>()(
       tracks: state.tracks.map(t => ({
         ...t,
         clips: t.clips.filter(c => c.id !== clipId)
+      }))
+    })),
+
+    toggleClipExpansion: (clipId) => set((state) => ({
+      tracks: state.tracks.map(t => ({
+        ...t,
+        clips: t.clips.map(c => c.id === clipId ? { ...c, expanded: !c.expanded } : c)
       }))
     })),
 
