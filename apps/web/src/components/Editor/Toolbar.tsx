@@ -21,8 +21,8 @@ import {
   Movie as RenderIcon
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import { useTimelineStore } from '../../store/useTimelineStore';
-import { useTriggerRender, useRenderStatus } from '../../hooks/useRender';
+import { useTimelineStore } from '@/store/useTimelineStore';
+import { useTriggerRender, useRenderStatus } from '@/hooks/useRender';
 
 const Toolbar: React.FC<{ projectId?: string }> = ({ projectId }) => {
   const navigate = useNavigate();
