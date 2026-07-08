@@ -17,7 +17,7 @@ import {
   Image as ImageIcon,
   Mic as VoiceIcon
 } from '@mui/icons-material';
-import { useGenerateScript, useGenerateImage, useGenerateVoice } from '../../hooks/useAI';
+import { useGenerateScript, useGenerateImage, useGenerateVoice } from '@/hooks/useAI';
 
 const AIAssistant: React.FC = () => {
   const [prompt, setPrompt] = useState('');

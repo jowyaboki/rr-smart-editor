@@ -10,8 +10,8 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { CloudUpload as UploadIcon, InsertDriveFile as FileIcon } from '@mui/icons-material';
-import { useMedia, useUploadMedia } from '../../hooks/useMedia';
-import { useTimelineStore } from '../../store/useTimelineStore';
+import { useMedia, useUploadMedia } from '@/hooks/useMedia';
+import { useTimelineStore } from '@/store/useTimelineStore';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 

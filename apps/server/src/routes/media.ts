@@ -3,7 +3,6 @@ import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 import ffmpeg from 'fluent-ffmpeg';
-// @ts-ignore
 import ffprobeStatic from 'ffprobe-static';
 import { query } from '../db';
 

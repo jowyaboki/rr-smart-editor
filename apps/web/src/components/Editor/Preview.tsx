@@ -1,8 +1,8 @@
 import React, { useRef, useEffect } from 'react';
 import { Player, PlayerRef } from '@remotion/player';
 import { Box } from '@mui/material';
-import { CompositionBuilder } from '../../remotion/CompositionBuilder';
-import { useTimelineStore } from '../../store/useTimelineStore';
+import { CompositionBuilder } from '@/remotion/CompositionBuilder';
+import { useTimelineStore } from '@/store/useTimelineStore';
 
 const Preview: React.FC = () => {
   const playerRef = useRef<PlayerRef>(null);

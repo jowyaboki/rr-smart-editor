@@ -1,7 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { AIScript, AIGeneratedImage, AIVoiceover, AIRequest } from '@ai-video-editor/shared';
 
-// @ts-ignore
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
 export const useGenerateScript = () => {
