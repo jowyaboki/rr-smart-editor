@@ -8,10 +8,10 @@ import {
   CardMedia,
   CardContent,
   CircularProgress,
-  IconButton
 } from '@mui/material';
 import { CloudUpload as UploadIcon, InsertDriveFile as FileIcon } from '@mui/icons-material';
 import { useMedia, useUploadMedia } from '../../hooks/useMedia';
+import { useTimelineStore } from '../../store/useTimelineStore';
 
 // @ts-ignore
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
@@ -23,6 +23,7 @@ interface MediaManagerProps {
 const MediaManager: React.FC<MediaManagerProps> = ({ projectId }) => {
   const { data: media, isLoading } = useMedia(projectId);
   const uploadMedia = useUploadMedia(projectId);
+  const addClip = useTimelineStore((state) => state.addClip);
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     acceptedFiles.forEach((file) => {
@@ -31,6 +32,16 @@ const MediaManager: React.FC<MediaManagerProps> = ({ projectId }) => {
   }, [uploadMedia]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+
+  const handleMediaClick = (item: any) => {
+    addClip('v1', {
+      name: item.name,
+      type: item.type === 'image' ? 'image' : item.type === 'video' ? 'video' : 'audio',
+      start: 0,
+      duration: item.duration ? Math.round(item.duration * 30) : 150,
+      mediaId: item.id,
+    });
+  };
 
   return (
     <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
@@ -60,7 +71,10 @@ const MediaManager: React.FC<MediaManagerProps> = ({ projectId }) => {
         <Grid container spacing={1} sx={{ overflowY: 'auto', flexGrow: 1 }}>
           {media?.map((item) => (
             <Grid item xs={6} key={item.id}>
-              <Card sx={{ bgcolor: 'background.default' }}>
+              <Card
+                sx={{ bgcolor: 'background.default', cursor: 'pointer', '&:hover': { outline: '2px solid primary.main' } }}
+                onClick={() => handleMediaClick(item)}
+              >
                 <Box sx={{ position: 'relative', pt: '56.25%', bgcolor: '#000' }}>
                   {item.type === 'image' ? (
                     <CardMedia
@@ -82,7 +96,6 @@ const MediaManager: React.FC<MediaManagerProps> = ({ projectId }) => {
                   <Typography variant="caption" noWrap sx={{ display: 'block' }}>{item.name}</Typography>
                   <Typography variant="caption" color="text.secondary">
                     {item.type.toUpperCase()} • {(item.size / 1024 / 1024).toFixed(1)} MB
-                    {item.duration ? ` • ${Math.round(item.duration)}s` : ''}
                   </Typography>
                 </CardContent>
               </Card>
