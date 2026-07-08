@@ -40,6 +40,7 @@ const MediaManager: React.FC<MediaManagerProps> = ({ projectId }) => {
       start: 0,
       duration: item.duration ? Math.round(item.duration * 30) : 150,
       mediaId: item.id,
+      url: `${API_URL}${item.url}`,
     });
   };
 

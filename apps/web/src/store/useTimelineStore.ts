@@ -4,11 +4,14 @@ import { temporal } from 'zundo';
 export interface Clip {
   id: string;
   name: string;
-  type: 'video' | 'audio' | 'image';
+  type: 'video' | 'audio' | 'image' | 'text';
   start: number; // In frames
   duration: number; // In frames
-  mediaId: string;
+  mediaId?: string;
+  url?: string;
   trackId: string;
+  content?: string; // For text clips
+  style?: React.CSSProperties; // For text/image styles
 }
 
 export interface Track {
@@ -36,6 +39,7 @@ export const useTimelineStore = create<TimelineState>()(
   temporal((set) => ({
     tracks: [
       { id: 'v1', name: 'Video 1', type: 'video', clips: [] },
+      { id: 'v2', name: 'Video 2', type: 'video', clips: [] },
       { id: 'a1', name: 'Audio 1', type: 'audio', clips: [] },
     ],
     playhead: 0,
