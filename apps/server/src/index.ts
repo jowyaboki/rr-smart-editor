@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import projectRoutes from './routes/projects';
 import mediaRoutes from './routes/media';
+import renderRoutes from './routes/renders';
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.get('/health', (req, res) => {
 
 app.use('/projects', projectRoutes);
 app.use('/projects/:projectId/media', mediaRoutes);
+app.use('/renders', renderRoutes);
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

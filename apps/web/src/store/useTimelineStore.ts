@@ -26,6 +26,9 @@ interface TimelineState {
   playhead: number;
   zoom: number;
   snap: boolean;
+  isPlaying: boolean;
+  playbackRate: number;
+  isLooping: boolean;
   addClip: (trackId: string, clip: Omit<Clip, 'id' | 'trackId'>) => void;
   updateClip: (clipId: string, updates: Partial<Clip>) => void;
   deleteClip: (clipId: string) => void;
@@ -33,6 +36,9 @@ interface TimelineState {
   setPlayhead: (frame: number) => void;
   setZoom: (zoom: number) => void;
   toggleSnap: () => void;
+  setIsPlaying: (playing: boolean) => void;
+  setPlaybackRate: (rate: number) => void;
+  toggleLooping: () => void;
 }
 
 export const useTimelineStore = create<TimelineState>()(
@@ -45,6 +51,9 @@ export const useTimelineStore = create<TimelineState>()(
     playhead: 0,
     zoom: 1,
     snap: true,
+    isPlaying: false,
+    playbackRate: 1,
+    isLooping: false,
     addClip: (trackId, clipData) =>
       set((state) => ({
         tracks: state.tracks.map((t) =>
@@ -90,5 +99,8 @@ export const useTimelineStore = create<TimelineState>()(
     setPlayhead: (playhead) => set({ playhead }),
     setZoom: (zoom) => set({ zoom }),
     toggleSnap: () => set((state) => ({ snap: !state.snap })),
+    setIsPlaying: (isPlaying) => set({ isPlaying }),
+    setPlaybackRate: (playbackRate) => set({ playbackRate }),
+    toggleLooping: () => set((state) => ({ isLooping: !state.isLooping })),
   }))
 );
