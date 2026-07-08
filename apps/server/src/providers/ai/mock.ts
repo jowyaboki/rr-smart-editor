@@ -1,21 +1,20 @@
 import { AIServiceProvider } from './types';
 import { AIScript, AIScene, AISubtitle, AIGeneratedImage, AIVoiceover } from '@ai-video-editor/shared';
 
-export class OpenAIProvider implements AIServiceProvider {
+export class MockAIProvider implements AIServiceProvider {
   async generateScript(prompt: string): Promise<AIScript> {
-    // Real implementation would call OpenAI SDK here
-    throw new Error('OpenAI API Key not configured');
+    return { content: `Mock generated script for: ${prompt}` };
   }
   async generateScenes(script: string): Promise<AIScene[]> {
-    throw new Error('Not implemented');
+    return [{ id: '1', title: 'Mock Scene', description: 'Mock Description', duration: 5 }];
   }
   async generateSubtitles(audioUrl: string): Promise<AISubtitle[]> {
-    throw new Error('Not implemented');
+    return [{ start: 0, end: 5, text: 'Mock Subtitle' }];
   }
   async generateImage(prompt: string): Promise<AIGeneratedImage> {
-    throw new Error('Not implemented');
+    return { url: 'https://example.com/mock-image.jpg' };
   }
   async generateVoiceover(text: string): Promise<AIVoiceover> {
-    throw new Error('Not implemented');
+    return { url: 'https://example.com/mock-voiceover.mp3', duration: 10 };
   }
 }

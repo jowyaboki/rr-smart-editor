@@ -8,7 +8,8 @@ import {
   Stack,
   CircularProgress,
   Divider,
-  Grid
+  Grid,
+  Alert
 } from '@mui/material';
 import {
   AutoAwesome as AIIcon,
@@ -16,31 +17,28 @@ import {
   Image as ImageIcon,
   Mic as VoiceIcon
 } from '@mui/icons-material';
-
-// @ts-ignore
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+import { useGenerateScript, useGenerateImage, useGenerateVoice } from '../../hooks/useAI';
 
 const AIAssistant: React.FC = () => {
   const [prompt, setPrompt] = useState('');
-  const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<string | null>(null);
 
+  const scriptMutation = useGenerateScript();
+  const imageMutation = useGenerateImage();
+  const voiceMutation = useGenerateVoice();
+
   const handleGenerateScript = async () => {
-    setLoading(true);
     try {
-      const res = await fetch(`${API_URL}/ai/generate-script`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt }),
-      });
-      const data = await res.json();
-      setResult(data.script);
+      const data = await scriptMutation.mutateAsync({ prompt });
+      setResult(data.content);
     } catch (err) {
       console.error(err);
-    } finally {
-      setLoading(false);
     }
   };
+
+  const isLoading = scriptMutation.isLoading || imageMutation.isLoading || voiceMutation.isLoading;
+  const rawError = scriptMutation.error || imageMutation.error || voiceMutation.error;
+  const error = rawError as Error | null;
 
   return (
     <Box sx={{ p: 1 }}>
@@ -69,34 +67,49 @@ const AIAssistant: React.FC = () => {
               startIcon={<TextIcon />}
               size="small"
               onClick={handleGenerateScript}
-              disabled={loading || !prompt}
+              disabled={isLoading || !prompt}
             >
               Script
             </Button>
           </Grid>
           <Grid item xs={6}>
-            <Button fullWidth variant="outlined" startIcon={<ImageIcon />} size="small" disabled={loading}>
+            <Button
+              fullWidth
+              variant="outlined"
+              startIcon={<ImageIcon />}
+              size="small"
+              disabled={isLoading || !prompt}
+              onClick={() => imageMutation.mutate({ prompt })}
+            >
               Images
             </Button>
           </Grid>
           <Grid item xs={6}>
-            <Button fullWidth variant="outlined" startIcon={<VoiceIcon />} size="small" disabled={loading}>
+            <Button
+              fullWidth
+              variant="outlined"
+              startIcon={<VoiceIcon />}
+              size="small"
+              disabled={isLoading || !prompt}
+              onClick={() => voiceMutation.mutate({ text: prompt })}
+            >
               Voice
             </Button>
           </Grid>
           <Grid item xs={6}>
-            <Button fullWidth variant="outlined" startIcon={<AIIcon />} size="small" disabled={loading}>
+            <Button fullWidth variant="outlined" startIcon={<AIIcon />} size="small" disabled={isLoading}>
               Full Video
             </Button>
           </Grid>
         </Grid>
 
-        {loading && <Box sx={{ display: 'flex', justifyContent: 'center' }}><CircularProgress size={24} /></Box>}
+        {isLoading && <Box sx={{ display: 'flex', justifyContent: 'center' }}><CircularProgress size={24} /></Box>}
+        {error && <Alert severity="error">{error.message || 'AI Error'}</Alert>}
 
         {result && (
           <Paper variant="outlined" sx={{ p: 1, bgcolor: 'background.default' }}>
             <Typography variant="caption" sx={{ fontWeight: 'bold', display: 'block', mb: 0.5 }}>Generated Result:</Typography>
-            <Typography variant="body2">{result}</Typography>
+            <Typography variant="body1" component="div">{result}</Typography>
           </Paper>
         )}
       </Stack>

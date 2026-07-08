@@ -1,6 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
-// @ts-ignore
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
 export const useTemplates = (category?: string) => {

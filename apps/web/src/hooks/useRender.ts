@@ -1,6 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 
-// @ts-ignore
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
 export const useTriggerRender = (projectId: string) => {
@@ -23,7 +22,7 @@ export const useRenderStatus = (renderId?: string) => {
     },
     {
       enabled: !!renderId,
-      refetchInterval: (data) => (data?.status === 'rendering' || data?.status === 'queued' ? 2000 : false),
+      refetchInterval: (data: any) => (data?.status === 'rendering' || data?.status === 'queued' ? 2000 : false),
     }
   );
 };
