@@ -66,7 +66,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
           {project.favorite ? <FavoriteIcon color="error" /> : <FavoriteBorderIcon sx={{ color: 'white' }} />}
         </IconButton>
       </Box>
-      <CardContent sx={{ flexGrow: 1 }}>
+      <CardContent sx={{ p: 2, flexGrow: 1 }}>
         <Typography variant="h6" noWrap>{project.name}</Typography>
         <Typography variant="body2" color="text.secondary">
           {project.width}x{project.height} • {project.fps} FPS • {Math.round(project.durationInFrames / project.fps)}s

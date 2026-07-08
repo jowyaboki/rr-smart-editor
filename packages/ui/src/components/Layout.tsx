@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, AppBar, Toolbar, Typography, Drawer, List, ListItem, ListItemIcon, ListItemText, CssBaseline, ThemeProvider } from '@mui/material';
+import { Box, AppBar, Toolbar, Typography, Drawer, List, ListItem, ListItemIcon, ListItemText, CssBaseline, ThemeProvider, ListItemButton } from '@mui/material';
 import {
   Dashboard as DashboardIcon,
   VideoLibrary as VideoIcon,
@@ -20,7 +20,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     { text: 'Dashboard', icon: <DashboardIcon />, path: '/' },
     { text: 'Projects', icon: <VideoIcon />, path: '/projects' },
     { text: 'Templates', icon: <TemplateIcon />, path: '/templates' },
-    { text: 'Media', icon: <MediaIcon />, path: '#' },
+    { text: 'Media', icon: <MediaIcon />, path: '/media' },
     { text: 'Settings', icon: <SettingsIcon />, path: '#' },
   ];
 
@@ -48,12 +48,13 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
             <List>
               {menuItems.map((item) => (
                 <ListItem
-                  button
                   key={item.text}
-                  onClick={() => item.path !== '#' && navigate(item.path)}
+                  disablePadding
                 >
-                  <ListItemIcon>{item.icon}</ListItemIcon>
-                  <ListItemText primary={item.text} />
+                  <ListItemButton onClick={() => item.path !== '#' && navigate(item.path)}>
+                    <ListItemIcon>{item.icon}</ListItemIcon>
+                    <ListItemText primary={item.text} />
+                  </ListItemButton>
                 </ListItem>
               ))}
             </List>
