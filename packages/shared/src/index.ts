@@ -9,6 +9,8 @@ export interface User {
 export * from './project';
 export * from './ai';
 export * from './media';
+export * from './timeline';
+export * from './remotion';
 
 export const ProjectCreateSchema = z.object({
   name: z.string().min(1),
