@@ -10,3 +10,5 @@ export interface Project {
   createdAt: string;
   updatedAt: string;
 }
+
+export * from './ai';

@@ -13,7 +13,6 @@ import { CloudUpload as UploadIcon, InsertDriveFile as FileIcon } from '@mui/ico
 import { useMedia, useUploadMedia } from '../../hooks/useMedia';
 import { useTimelineStore } from '../../store/useTimelineStore';
 
-// @ts-ignore
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
 interface MediaManagerProps {

@@ -6,6 +6,7 @@ import projectRoutes from './routes/projects';
 import mediaRoutes from './routes/media';
 import renderRoutes from './routes/renders';
 import templateRoutes from './routes/templates';
+import aiRoutes from './routes/ai';
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.use('/projects', projectRoutes);
 app.use('/projects/:projectId/media', mediaRoutes);
 app.use('/renders', renderRoutes);
 app.use('/templates', templateRoutes);
+app.use('/ai', aiRoutes);
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
