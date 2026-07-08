@@ -17,9 +17,19 @@ import {
   ListItem,
   ListItemText,
   ListItemSecondaryAction,
-  Link
+  Link,
+  Tooltip
 } from '@mui/material';
-import { Add as AddIcon, Delete as DeleteIcon, Edit as EditIcon, OpenInNew as OpenIcon } from '@mui/icons-material';
+import {
+  Add as AddIcon,
+  Delete as DeleteIcon,
+  Edit as EditIcon,
+  OpenInNew as OpenIcon,
+  ContentCopy as DuplicateIcon,
+  FileUpload as ImportIcon,
+  FileDownload as ExportIcon,
+  AutoAwesome as TemplateIcon
+} from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useProjects, useCreateProject, useUpdateProject, useDeleteProject } from '../hooks/useProjects';
 
@@ -57,6 +67,22 @@ const Dashboard: React.FC = () => {
     handleClose();
   };
 
+  const handleDuplicate = async (id: string) => {
+    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+    await fetch(`${API_URL}/projects/${id}/duplicate`, { method: 'POST' });
+    window.location.reload(); // Simple refresh for now
+  };
+
+  const handleExport = (project: any) => {
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(project));
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href",     dataStr);
+    downloadAnchorNode.setAttribute("download", project.name + ".json");
+    document.body.appendChild(downloadAnchorNode);
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+  };
+
   if (isLoading) return <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}><CircularProgress /></Box>;
   if (error) return <Alert severity="error">Error loading projects</Alert>;
 
@@ -64,9 +90,14 @@ const Dashboard: React.FC = () => {
     <Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <Typography variant="h4">Dashboard</Typography>
-        <Button variant="contained" startIcon={<AddIcon />} onClick={handleOpen}>
-          Create Project
-        </Button>
+        <Box sx={{ display: 'flex', gap: 2 }}>
+          <Button variant="outlined" startIcon={<TemplateIcon />} onClick={() => navigate('/templates')}>
+            Templates
+          </Button>
+          <Button variant="contained" startIcon={<AddIcon />} onClick={handleOpen}>
+            Create Project
+          </Button>
+        </Box>
       </Box>
 
       <Grid container spacing={3}>
@@ -93,15 +124,11 @@ const Dashboard: React.FC = () => {
                       secondary={`Last updated: ${new Date(project.updatedAt).toLocaleString()}`}
                     />
                     <ListItemSecondaryAction>
-                      <IconButton edge="end" onClick={() => navigate(`/editor/${project.id}`)}>
-                        <OpenIcon />
-                      </IconButton>
-                      <IconButton edge="end" onClick={() => handleEdit(project)}>
-                        <EditIcon />
-                      </IconButton>
-                      <IconButton edge="end" onClick={() => deleteProject.mutate(project.id)}>
-                        <DeleteIcon />
-                      </IconButton>
+                      <Tooltip title="Open"><IconButton onClick={() => navigate(`/editor/${project.id}`)}><OpenIcon /></IconButton></Tooltip>
+                      <Tooltip title="Duplicate"><IconButton onClick={() => handleDuplicate(project.id)}><DuplicateIcon /></IconButton></Tooltip>
+                      <Tooltip title="Export"><IconButton onClick={() => handleExport(project)}><ExportIcon /></IconButton></Tooltip>
+                      <Tooltip title="Edit"><IconButton onClick={() => handleEdit(project)}><EditIcon /></IconButton></Tooltip>
+                      <Tooltip title="Delete"><IconButton onClick={() => deleteProject.mutate(project.id)}><DeleteIcon /></IconButton></Tooltip>
                     </ListItemSecondaryAction>
                   </ListItem>
                 ))}
