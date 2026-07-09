@@ -14,6 +14,7 @@ export * from './remotion';
 export * from './animation';
 export * from './rendering';
 export * from './plugins';
+export * from './ai/index';
 
 export const ProjectCreateSchema = z.object({
   name: z.string().min(1),
