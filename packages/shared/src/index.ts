@@ -34,4 +34,3 @@ export const ProjectUpdateSchema = z.object({
   favorite: z.boolean().optional(),
   description: z.string().optional(),
 });
-export * from './automation';

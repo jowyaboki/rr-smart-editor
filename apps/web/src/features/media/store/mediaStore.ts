@@ -1,3 +1,4 @@
+import { pipeline } from "@/features/pipeline/services/EventPipeline";
 import { create } from 'zustand';
 import { MediaAsset, MediaFolder, MediaFilter } from '../types';
 import { MediaRepository, LocalStorageMediaRepository } from '../services/MediaRepository';

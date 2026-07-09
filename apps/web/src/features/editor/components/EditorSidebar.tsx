@@ -4,17 +4,15 @@ import {
   FolderSpecial as MediaIcon,
   AutoAwesome as AIIcon,
   VideoLibrary as ProjectsIcon,
-  TextFields as TextIcon,
-  AutoFixHigh as TransitionsIcon,
   History as HistoryIcon,
   Chat as ChatIcon,
-  AutoAwesomeMotion as AutomationIcon
+  Favorite as HealthIcon
 } from '@mui/icons-material';
 import { useEditorStore } from '../store/editorStore';
 import MediaPage from '@/features/media/pages/MediaPage';
 import { RenderQueuePanel } from '@/features/rendering/components/RenderQueuePanel';
 import { AIChatPanel } from '@/features/ai/chat/AIChatPanel';
-import { AutomationDashboard } from '@/features/automation/components/AutomationDashboard';
+import { ProjectHealthPanel } from '@/features/pipeline/components/ProjectHealthPanel';
 
 export const Sidebar: React.FC = () => {
   const { activeSidebarTab, setActiveSidebarTab } = useEditorStore();
@@ -34,14 +32,14 @@ export const Sidebar: React.FC = () => {
         <Tab icon={<ProjectsIcon fontSize="small" />} value="projects" />
         <Tab icon={<MediaIcon fontSize="small" />} value="media" />
         <Tab icon={<ChatIcon fontSize="small" />} value="ai" />
+        <Tab icon={<HealthIcon fontSize="small" />} value="health" />
         <Tab icon={<HistoryIcon fontSize="small" />} value="rendering" />
-        <Tab icon={<AutomationIcon fontSize="small" />} value="automation" />
       </Tabs>
       <Box sx={{ flexGrow: 1, overflowY: 'auto' }}>
         {activeSidebarTab === 'media' && <MediaPage />}
         {activeSidebarTab === 'ai' && <AIChatPanel />}
+        {activeSidebarTab === 'health' && <ProjectHealthPanel />}
         {activeSidebarTab === 'rendering' && <RenderQueuePanel />}
-        {activeSidebarTab === 'automation' && <AutomationDashboard />}
         {activeSidebarTab === 'projects' && <Typography sx={{ p: 2, color: 'text.secondary' }}>Projects Library</Typography>}
       </Box>
     </Box>

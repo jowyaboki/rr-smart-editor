@@ -1,3 +1,4 @@
+import { pipeline } from "@/features/pipeline/services/EventPipeline";
 import { create } from 'zustand';
 import { RenderJob, RenderStatus, RenderSettings } from '../types';
 import { RenderEngine } from '../engine/RenderEngine';
