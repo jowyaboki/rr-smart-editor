@@ -52,6 +52,7 @@ export const Toolbar: React.FC = () => {
           >
             Export
           </Button>
+<Button size="small" variant="outlined" color="secondary" sx={{ mr: 1 }}>Save as Template</Button>
           <Button startIcon={<SaveIcon />} variant="contained" size="small" color="primary">Save</Button>
           <IconButton size="small"><SettingsIcon fontSize="small" /></IconButton>
         </Box>
