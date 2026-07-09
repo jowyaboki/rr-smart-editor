@@ -16,6 +16,7 @@ export * from './rendering';
 export * from './plugins';
 export * from './ai/index';
 export * from './templates/index';
+export * from './data/index';
 
 export const ProjectCreateSchema = z.object({
   name: z.string().min(1),
@@ -33,3 +34,4 @@ export const ProjectUpdateSchema = z.object({
   favorite: z.boolean().optional(),
   description: z.string().optional(),
 });
+export * from './automation';
