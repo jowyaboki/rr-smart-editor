@@ -3,13 +3,16 @@ import { Sequence, Video, Audio, Img, AbsoluteFill } from 'remotion';
 import { useTimelineStore } from '@/features/timeline/store/timelineStore';
 import { useTransitionStore } from '@/features/transitions/store/transitionStore';
 import { useEffectStore } from '@/features/effects/store/effectStore';
+import { useTextStore } from '@/features/text/store/textStore';
 import { TransitionWrapper } from './TransitionWrapper';
 import { EffectWrapper } from './EffectWrapper';
+import { TextLayer } from './TextLayer';
 
 export const CompositionBuilder: React.FC = () => {
   const tracks = useTimelineStore((state) => state.tracks);
   const { instances: transitions, presets: transPresets } = useTransitionStore();
   const { clipEffects } = useEffectStore();
+  const { textObjects } = useTextStore();
 
   return (
     <AbsoluteFill style={{ backgroundColor: '#000' }}>
@@ -19,6 +22,7 @@ export const CompositionBuilder: React.FC = () => {
             const transition = transitions.find(i => i.toClipId === clip.id || i.fromClipId === clip.id);
             const transPreset = transition ? transPresets.find(p => p.id === transition.transitionId) : null;
             const effects = clipEffects[clip.id] || [];
+            const textObj = textObjects[clip.id];
 
             const baseContent = (
               <>
@@ -37,7 +41,10 @@ export const CompositionBuilder: React.FC = () => {
                     style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                   />
                 )}
-                {clip.type === 'text' && (
+                {clip.type === 'text' && textObj && (
+                  <TextLayer textObj={textObj} />
+                )}
+                {clip.type === 'text' && !textObj && (
                   <AbsoluteFill style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <div style={{ color: 'white', fontSize: 50 }}>
                       {(clip as any).content}
@@ -47,7 +54,6 @@ export const CompositionBuilder: React.FC = () => {
               </>
             );
 
-            // Apply Effects, then Transition
             const contentWithEffects = (
               <EffectWrapper instances={effects}>
                 {baseContent}
