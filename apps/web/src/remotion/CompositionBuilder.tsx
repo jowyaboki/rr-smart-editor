@@ -4,18 +4,22 @@ import { useTimelineStore } from '@/features/timeline/store/timelineStore';
 import { useTransitionStore } from '@/features/transitions/store/transitionStore';
 import { useEffectStore } from '@/features/effects/store/effectStore';
 import { useTextStore } from '@/features/text/store/textStore';
+import { useCaptionStore } from '@/features/captions/store/captionStore';
 import { TransitionWrapper } from './TransitionWrapper';
 import { EffectWrapper } from './EffectWrapper';
 import { TextLayer } from './TextLayer';
+import { CaptionLayer } from './CaptionLayer';
 
 export const CompositionBuilder: React.FC = () => {
   const tracks = useTimelineStore((state) => state.tracks);
   const { instances: transitions, presets: transPresets } = useTransitionStore();
   const { clipEffects } = useEffectStore();
   const { textObjects } = useTextStore();
+  const { tracks: captionTracks } = useCaptionStore();
 
   return (
     <AbsoluteFill style={{ backgroundColor: '#000' }}>
+      {/* Content Tracks */}
       {tracks.map((track) => (
         <React.Fragment key={track.id}>
           {track.clips.map((clip) => {
@@ -79,6 +83,11 @@ export const CompositionBuilder: React.FC = () => {
             );
           })}
         </React.Fragment>
+      ))}
+
+      {/* Caption Overlay */}
+      {captionTracks.filter(t => t.isEnabled).map(track => (
+        <CaptionLayer key={track.id} track={track} />
       ))}
     </AbsoluteFill>
   );
