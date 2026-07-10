@@ -2,30 +2,37 @@ import React from 'react';
 import { Box, Typography, Divider } from '@mui/material';
 import { useTimelineStore } from '@/features/timeline/store/timelineStore';
 import { useTransitionStore } from '@/features/transitions/store/transitionStore';
+import { useAudioStore } from '@/features/audio/store/audioStore';
 import { TransitionInspector } from '@/features/transitions/components/TransitionInspector';
 import { EffectStackPanel } from '@/features/effects/components/EffectStackPanel';
 import { TypographyPanel } from '@/features/text/inspector/TypographyPanel';
+import { AudioInspector } from '@/features/audio/components/AudioInspector';
 
 export const InspectorPanel: React.FC = () => {
-  const { selectedClipId } = useTimelineStore();
+  const { selectedClipId: selectedVisualClipId } = useTimelineStore();
   const { selectedInstanceId: selectedTransitionId } = useTransitionStore();
+  const { selectedClipId: selectedAudioClipId } = useAudioStore();
 
-  const tracks = useTimelineStore((state) => state.tracks);
-  const selectedClip = tracks.flatMap(t => t.clips).find(c => c.id === selectedClipId);
+  const visualTracks = useTimelineStore((state) => state.tracks);
+  const selectedVisualClip = visualTracks.flatMap(t => t.clips).find(c => c.id === selectedVisualClipId);
 
   return (
     <Box sx={{ height: '100%', bgcolor: 'background.paper', borderLeft: '1px solid #333', overflowY: 'auto' }}>
       {selectedTransitionId && <TransitionInspector />}
 
-      {selectedClip && (
+      {selectedVisualClip && (
         <>
-          {selectedClip.type === 'text' && <TypographyPanel clipId={selectedClip.id} />}
+          {selectedVisualClip.type === 'text' && <TypographyPanel clipId={selectedVisualClip.id} />}
           <Divider />
-          <EffectStackPanel clipId={selectedClip.id} />
+          <EffectStackPanel clipId={selectedVisualClip.id} />
         </>
       )}
 
-      {!selectedTransitionId && !selectedClip && (
+      {selectedAudioClipId && (
+        <AudioInspector clipId={selectedAudioClipId} />
+      )}
+
+      {!selectedTransitionId && !selectedVisualClip && !selectedAudioClipId && (
         <Box sx={{ p: 2 }}>
           <Typography variant="subtitle1">Inspector</Typography>
           <Typography variant="body2" color="text.secondary">

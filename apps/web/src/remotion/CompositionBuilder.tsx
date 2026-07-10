@@ -5,6 +5,7 @@ import { useTransitionStore } from '@/features/transitions/store/transitionStore
 import { useEffectStore } from '@/features/effects/store/effectStore';
 import { useTextStore } from '@/features/text/store/textStore';
 import { useCaptionStore } from '@/features/captions/store/captionStore';
+import { useAudioStore } from '@/features/audio/store/audioStore';
 import { TransitionWrapper } from './TransitionWrapper';
 import { EffectWrapper } from './EffectWrapper';
 import { TextLayer } from './TextLayer';
@@ -16,10 +17,11 @@ export const CompositionBuilder: React.FC = () => {
   const { clipEffects } = useEffectStore();
   const { textObjects } = useTextStore();
   const { tracks: captionTracks } = useCaptionStore();
+  const { tracks: audioTracks, masterVolume } = useAudioStore();
 
   return (
     <AbsoluteFill style={{ backgroundColor: '#000' }}>
-      {/* Content Tracks */}
+      {/* Visual Content Tracks */}
       {tracks.map((track) => (
         <React.Fragment key={track.id}>
           {track.clips.map((clip) => {
@@ -48,13 +50,6 @@ export const CompositionBuilder: React.FC = () => {
                 {clip.type === 'text' && textObj && (
                   <TextLayer textObj={textObj} />
                 )}
-                {clip.type === 'text' && !textObj && (
-                  <AbsoluteFill style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    <div style={{ color: 'white', fontSize: 50 }}>
-                      {(clip as any).content}
-                    </div>
-                  </AbsoluteFill>
-                )}
               </>
             );
 
@@ -82,6 +77,20 @@ export const CompositionBuilder: React.FC = () => {
               </Sequence>
             );
           })}
+        </React.Fragment>
+      ))}
+
+      {/* Audio Tracks */}
+      {audioTracks.map(track => (
+        <React.Fragment key={track.id}>
+          {track.clips.map(clip => (
+            <Sequence key={clip.id} from={clip.startFrame} durationInFrames={clip.durationFrames}>
+              <Audio
+                src={(clip as any).url}
+                volume={track.isMuted ? 0 : clip.volume * track.volume * masterVolume}
+              />
+            </Sequence>
+          ))}
         </React.Fragment>
       ))}
 
