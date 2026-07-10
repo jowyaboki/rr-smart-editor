@@ -2,21 +2,25 @@ import React from 'react';
 import { Sequence, Video, Audio, Img, AbsoluteFill } from 'remotion';
 import { useTimelineStore } from '@/features/timeline/store/timelineStore';
 import { useTransitionStore } from '@/features/transitions/store/transitionStore';
+import { useEffectStore } from '@/features/effects/store/effectStore';
 import { TransitionWrapper } from './TransitionWrapper';
+import { EffectWrapper } from './EffectWrapper';
 
 export const CompositionBuilder: React.FC = () => {
   const tracks = useTimelineStore((state) => state.tracks);
-  const { instances, presets } = useTransitionStore();
+  const { instances: transitions, presets: transPresets } = useTransitionStore();
+  const { clipEffects } = useEffectStore();
 
   return (
     <AbsoluteFill style={{ backgroundColor: '#000' }}>
       {tracks.map((track) => (
         <React.Fragment key={track.id}>
           {track.clips.map((clip) => {
-            const transition = instances.find(i => i.toClipId === clip.id || i.fromClipId === clip.id);
-            const preset = transition ? presets.find(p => p.id === transition.transitionId) : null;
+            const transition = transitions.find(i => i.toClipId === clip.id || i.fromClipId === clip.id);
+            const transPreset = transition ? transPresets.find(p => p.id === transition.transitionId) : null;
+            const effects = clipEffects[clip.id] || [];
 
-            const content = (
+            const baseContent = (
               <>
                 {clip.type === 'video' && (
                   <Video
@@ -43,21 +47,28 @@ export const CompositionBuilder: React.FC = () => {
               </>
             );
 
+            // Apply Effects, then Transition
+            const contentWithEffects = (
+              <EffectWrapper instances={effects}>
+                {baseContent}
+              </EffectWrapper>
+            );
+
             return (
               <Sequence
                 key={clip.id}
                 from={clip.startFrame}
                 durationInFrames={clip.durationFrames}
               >
-                {preset ? (
+                {transPreset ? (
                   <TransitionWrapper
-                    type={preset.type}
-                    duration={preset.defaultSettings.durationFrames}
-                    settings={preset.defaultSettings}
+                    type={transPreset.type}
+                    duration={transPreset.defaultSettings.durationFrames}
+                    settings={transPreset.defaultSettings}
                   >
-                    {content}
+                    {contentWithEffects}
                   </TransitionWrapper>
-                ) : content}
+                ) : contentWithEffects}
               </Sequence>
             );
           })}
