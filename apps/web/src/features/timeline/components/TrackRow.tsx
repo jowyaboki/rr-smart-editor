@@ -1,9 +1,10 @@
 import React from 'react';
-import { Box, Typography, IconButton } from '@mui/material';
-import { TimelineTrack, TimelineClip } from '../types';
+import { Box, Typography } from '@mui/material';
+import { TimelineTrack } from '@ai-video-editor/shared';
 import { ClipView } from './ClipView';
 import { useTimelineStore } from '../store/timelineStore';
-import { ExpandMore as ExpandIcon, ExpandLess as CollapseIcon } from '@mui/icons-material';
+import { TimelineTransitionBlock } from '@/features/transitions/components/TimelineTransitionBlock';
+import { useTransitionStore } from '@/features/transitions/store/transitionStore';
 
 interface TrackRowProps {
   track: TimelineTrack;
@@ -11,7 +12,8 @@ interface TrackRowProps {
 }
 
 export const TrackRow: React.FC<TrackRowProps> = ({ track, zoom }) => {
-  const { toggleClipExpansion } = useTimelineStore();
+  const { instances } = useTransitionStore();
+  const trackTransitions = instances.filter(i => i.trackId === track.id);
 
   return (
     <Box sx={{ display: 'flex', borderBottom: '1px solid #333', minHeight: 60, flexDirection: 'column' }}>
@@ -23,20 +25,11 @@ export const TrackRow: React.FC<TrackRowProps> = ({ track, zoom }) => {
           {track.clips.map(clip => (
             <ClipView key={clip.id} clip={clip} zoom={zoom} />
           ))}
-        </Box>
-      </Box>
-
-      {/* Animation Lanes would go here if any clip is expanded */}
-      {track.clips.some(c => (c as any).expanded) && (
-        <Box sx={{ pl: 200, bgcolor: 'rgba(0,0,0,0.2)' }}>
-          {track.clips.filter(c => (c as any).expanded).map(clip => (
-            <Box key={`lanes-${clip.id}`} sx={{ p: 1 }}>
-              <Typography variant="caption" color="text.secondary">Animation Lanes for {clip.label}</Typography>
-              {/* Lane implementation */}
-            </Box>
+          {trackTransitions.map(instance => (
+            <TimelineTransitionBlock key={instance.id} instance={instance} zoom={zoom} />
           ))}
         </Box>
-      )}
+      </Box>
     </Box>
   );
 };
