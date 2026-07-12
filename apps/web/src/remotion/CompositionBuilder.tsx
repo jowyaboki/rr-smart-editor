@@ -6,10 +6,12 @@ import { useEffectStore } from '@/features/effects/store/effectStore';
 import { useTextStore } from '@/features/text/store/textStore';
 import { useCaptionStore } from '@/features/captions/store/captionStore';
 import { useAudioStore } from '@/features/audio/store/audioStore';
+import { useChartStore } from '@/features/charts/store/chartStore';
 import { TransitionWrapper } from './TransitionWrapper';
 import { EffectWrapper } from './EffectWrapper';
 import { TextLayer } from './TextLayer';
 import { CaptionLayer } from './CaptionLayer';
+import { ChartLayer } from './ChartLayer';
 
 export const CompositionBuilder: React.FC = () => {
   const tracks = useTimelineStore((state) => state.tracks);
@@ -18,6 +20,7 @@ export const CompositionBuilder: React.FC = () => {
   const { textObjects } = useTextStore();
   const { tracks: captionTracks } = useCaptionStore();
   const { tracks: audioTracks, masterVolume } = useAudioStore();
+  const { charts } = useChartStore();
 
   return (
     <AbsoluteFill style={{ backgroundColor: '#000' }}>
@@ -29,6 +32,7 @@ export const CompositionBuilder: React.FC = () => {
             const transPreset = transition ? transPresets.find(p => p.id === transition.transitionId) : null;
             const effects = clipEffects[clip.id] || [];
             const textObj = textObjects[clip.id];
+            const chart = charts[clip.id];
 
             const baseContent = (
               <>
@@ -50,6 +54,8 @@ export const CompositionBuilder: React.FC = () => {
                 {clip.type === 'text' && textObj && (
                   <TextLayer textObj={textObj} />
                 )}
+                {/* Chart Integration */}
+                {chart && <ChartLayer chart={chart} />}
               </>
             );
 
