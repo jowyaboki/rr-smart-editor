@@ -3,7 +3,7 @@ import { Box, Slider, IconButton, Stack, Typography } from '@mui/material';
 import {
   ZoomIn as ZoomInIcon,
   ZoomOut as ZoomOutIcon,
-  CenterFocusStrong as CenterIcon
+  CenterFocusStrong as CenterIcon,
 } from '@mui/icons-material';
 import { useTimelineStore } from '../../../store/useTimelineStore';
 import TrackItem from './TrackItem';
@@ -22,7 +22,15 @@ const TimelineContainer: React.FC = () => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-      <Box sx={{ p: 1, borderBottom: '1px solid #333', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <Box
+        sx={{
+          p: 1,
+          borderBottom: '1px solid #333',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
         <Typography variant="caption">Timeline</Typography>
         <Stack direction="row" spacing={1} alignItems="center">
           <ZoomOutIcon fontSize="small" />

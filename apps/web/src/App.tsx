@@ -9,9 +9,30 @@ import Templates from './pages/Templates';
 const App: React.FC = () => {
   return (
     <Routes>
-      <Route path="/" element={<Layout><Dashboard /></Layout>} />
-      <Route path="/preview" element={<Layout><Preview /></Layout>} />
-      <Route path="/templates" element={<Layout><Templates /></Layout>} />
+      <Route
+        path="/"
+        element={
+          <Layout>
+            <Dashboard />
+          </Layout>
+        }
+      />
+      <Route
+        path="/preview"
+        element={
+          <Layout>
+            <Preview />
+          </Layout>
+        }
+      />
+      <Route
+        path="/templates"
+        element={
+          <Layout>
+            <Templates />
+          </Layout>
+        }
+      />
       <Route path="/editor/:id" element={<Editor />} />
     </Routes>
   );

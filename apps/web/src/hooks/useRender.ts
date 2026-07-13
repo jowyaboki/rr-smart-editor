@@ -22,7 +22,8 @@ export const useRenderStatus = (renderId?: string) => {
     },
     {
       enabled: !!renderId,
-      refetchInterval: (data: any) => (data?.status === 'rendering' || data?.status === 'queued' ? 2000 : false),
-    }
+      refetchInterval: (data: any) =>
+        data?.status === 'rendering' || data?.status === 'queued' ? 2000 : false,
+    },
   );
 };

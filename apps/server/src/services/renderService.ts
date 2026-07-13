@@ -33,12 +33,17 @@ export const renderProject = async (projectId: string, renderId: string, timelin
       },
     });
 
-    await query(
-      'UPDATE renders SET status = $1, progress = 100, "outputUrl" = $2 WHERE id = $3',
-      ['completed', `/uploads/renders/${renderId}.mp4`, renderId]
-    );
+    await query('UPDATE renders SET status = $1, progress = 100, "outputUrl" = $2 WHERE id = $3', [
+      'completed',
+      `/uploads/renders/${renderId}.mp4`,
+      renderId,
+    ]);
   } catch (err: any) {
     console.error('Render failed:', err);
-    await query('UPDATE renders SET status = $1, error = $2 WHERE id = $3', ['failed', err.message, renderId]);
+    await query('UPDATE renders SET status = $1, error = $2 WHERE id = $3', [
+      'failed',
+      err.message,
+      renderId,
+    ]);
   }
 };

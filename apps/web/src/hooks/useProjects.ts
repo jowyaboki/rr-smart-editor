@@ -27,7 +27,7 @@ export const useCreateProject = () => {
       onSuccess: () => {
         queryClient.invalidateQueries(['projects']);
       },
-    }
+    },
   );
 };
 
@@ -48,7 +48,7 @@ export const useUpdateProject = () => {
         await queryClient.cancelQueries(['projects']);
         const previousProjects = queryClient.getQueryData<Project[]>(['projects']);
         queryClient.setQueryData<Project[]>(['projects'], (old) =>
-          old?.map((p) => (p.id === updatedProject.id ? { ...p, name: updatedProject.name } : p))
+          old?.map((p) => (p.id === updatedProject.id ? { ...p, name: updatedProject.name } : p)),
         );
         return { previousProjects };
       },
@@ -58,7 +58,7 @@ export const useUpdateProject = () => {
       onSettled: () => {
         queryClient.invalidateQueries(['projects']);
       },
-    }
+    },
   );
 };
 
@@ -76,9 +76,7 @@ export const useDeleteProject = () => {
       onMutate: async (id) => {
         await queryClient.cancelQueries(['projects']);
         const previousProjects = queryClient.getQueryData<Project[]>(['projects']);
-        queryClient.setQueryData<Project[]>(['projects'], (old) =>
-          old?.filter((p) => p.id !== id)
-        );
+        queryClient.setQueryData<Project[]>(['projects'], (old) => old?.filter((p) => p.id !== id));
         return { previousProjects };
       },
       onError: (err, id, context: any) => {
@@ -87,6 +85,6 @@ export const useDeleteProject = () => {
       onSettled: () => {
         queryClient.invalidateQueries(['projects']);
       },
-    }
+    },
   );
 };

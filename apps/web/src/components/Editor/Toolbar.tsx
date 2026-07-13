@@ -10,7 +10,7 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions
+  DialogActions,
 } from '@mui/material';
 import {
   Save as SaveIcon,
@@ -18,7 +18,7 @@ import {
   Undo as UndoIcon,
   Redo as RedoIcon,
   Home as HomeIcon,
-  Movie as RenderIcon
+  Movie as RenderIcon,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useTimelineStore } from '@/store/useTimelineStore';
@@ -48,13 +48,21 @@ const Toolbar: React.FC<{ projectId?: string }> = ({ projectId }) => {
         <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
           {renderStatus?.status === 'rendering' && (
             <Box sx={{ width: 100, mr: 2 }}>
-              <Typography variant="caption">Rendering: {Math.round(renderStatus.progress)}%</Typography>
+              <Typography variant="caption">
+                Rendering: {Math.round(renderStatus.progress)}%
+              </Typography>
               <LinearProgress variant="determinate" value={renderStatus.progress} />
             </Box>
           )}
-          <IconButton size="small" onClick={() => undo()}><UndoIcon /></IconButton>
-          <IconButton size="small" onClick={() => redo()}><RedoIcon /></IconButton>
-          <Button startIcon={<PlayIcon />} size="small">Preview</Button>
+          <IconButton size="small" onClick={() => undo()}>
+            <UndoIcon />
+          </IconButton>
+          <IconButton size="small" onClick={() => redo()}>
+            <RedoIcon />
+          </IconButton>
+          <Button startIcon={<PlayIcon />} size="small">
+            Preview
+          </Button>
           <Button
             startIcon={<RenderIcon />}
             onClick={handleRender}
@@ -63,11 +71,16 @@ const Toolbar: React.FC<{ projectId?: string }> = ({ projectId }) => {
           >
             Render
           </Button>
-          <Button startIcon={<SaveIcon />} variant="contained" size="small">Save</Button>
+          <Button startIcon={<SaveIcon />} variant="contained" size="small">
+            Save
+          </Button>
         </Box>
       </MuiToolbar>
 
-      <Dialog open={!!renderStatus && renderStatus.status === 'completed'} onClose={() => setActiveRenderId(null)}>
+      <Dialog
+        open={!!renderStatus && renderStatus.status === 'completed'}
+        onClose={() => setActiveRenderId(null)}
+      >
         <DialogTitle>Render Complete</DialogTitle>
         <DialogContent>
           <Typography>Your video is ready!</Typography>
@@ -76,7 +89,11 @@ const Toolbar: React.FC<{ projectId?: string }> = ({ projectId }) => {
           <Button onClick={() => setActiveRenderId(null)}>Close</Button>
           <Button
             component="a"
-            href={renderStatus?.outputUrl ? `${import.meta.env.VITE_API_URL || 'http://localhost:3001'}${renderStatus.outputUrl}` : '#'}
+            href={
+              renderStatus?.outputUrl
+                ? `${import.meta.env.VITE_API_URL || 'http://localhost:3001'}${renderStatus.outputUrl}`
+                : '#'
+            }
             target="_blank"
             variant="contained"
           >

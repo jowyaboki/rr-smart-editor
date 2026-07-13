@@ -18,7 +18,7 @@ import {
   ListItemText,
   ListItemSecondaryAction,
   Link,
-  Tooltip
+  Tooltip,
 } from '@mui/material';
 import {
   Add as AddIcon,
@@ -28,10 +28,15 @@ import {
   ContentCopy as DuplicateIcon,
   FileUpload as ImportIcon,
   FileDownload as ExportIcon,
-  AutoAwesome as TemplateIcon
+  AutoAwesome as TemplateIcon,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import { useProjects, useCreateProject, useUpdateProject, useDeleteProject } from '../hooks/useProjects';
+import {
+  useProjects,
+  useCreateProject,
+  useUpdateProject,
+  useDeleteProject,
+} from '../hooks/useProjects';
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
@@ -41,7 +46,7 @@ const Dashboard: React.FC = () => {
   const deleteProject = useDeleteProject();
 
   const [open, setOpen] = useState(false);
-  const [editingProject, setEditingProject] = useState<{ id: string, name: string } | null>(null);
+  const [editingProject, setEditingProject] = useState<{ id: string; name: string } | null>(null);
   const [projectName, setProjectName] = useState('');
 
   const handleOpen = () => {
@@ -50,7 +55,7 @@ const Dashboard: React.FC = () => {
     setOpen(true);
   };
 
-  const handleEdit = (project: { id: string, name: string }) => {
+  const handleEdit = (project: { id: string; name: string }) => {
     setProjectName(project.name);
     setEditingProject(project);
     setOpen(true);
@@ -74,16 +79,21 @@ const Dashboard: React.FC = () => {
   };
 
   const handleExport = (project: any) => {
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(project));
+    const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(project));
     const downloadAnchorNode = document.createElement('a');
-    downloadAnchorNode.setAttribute("href",     dataStr);
-    downloadAnchorNode.setAttribute("download", project.name + ".json");
+    downloadAnchorNode.setAttribute('href', dataStr);
+    downloadAnchorNode.setAttribute('download', project.name + '.json');
     document.body.appendChild(downloadAnchorNode);
     downloadAnchorNode.click();
     downloadAnchorNode.remove();
   };
 
-  if (isLoading) return <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}><CircularProgress /></Box>;
+  if (isLoading)
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+        <CircularProgress />
+      </Box>
+    );
   if (error) return <Alert severity="error">Error loading projects</Alert>;
 
   return (
@@ -91,7 +101,11 @@ const Dashboard: React.FC = () => {
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <Typography variant="h4">Dashboard</Typography>
         <Box sx={{ display: 'flex', gap: 2 }}>
-          <Button variant="outlined" startIcon={<TemplateIcon />} onClick={() => navigate('/templates')}>
+          <Button
+            variant="outlined"
+            startIcon={<TemplateIcon />}
+            onClick={() => navigate('/templates')}
+          >
             Templates
           </Button>
           <Button variant="contained" startIcon={<AddIcon />} onClick={handleOpen}>
@@ -103,7 +117,9 @@ const Dashboard: React.FC = () => {
       <Grid container spacing={3}>
         <Grid item xs={12} md={8}>
           <Paper sx={{ p: 2 }}>
-            <Typography variant="h6" gutterBottom>Projects</Typography>
+            <Typography variant="h6" gutterBottom>
+              Projects
+            </Typography>
             {projects?.length === 0 ? (
               <Typography color="text.secondary">No projects yet. Create one!</Typography>
             ) : (
@@ -124,11 +140,31 @@ const Dashboard: React.FC = () => {
                       secondary={`Last updated: ${new Date(project.updatedAt).toLocaleString()}`}
                     />
                     <ListItemSecondaryAction>
-                      <Tooltip title="Open"><IconButton onClick={() => navigate(`/editor/${project.id}`)}><OpenIcon /></IconButton></Tooltip>
-                      <Tooltip title="Duplicate"><IconButton onClick={() => handleDuplicate(project.id)}><DuplicateIcon /></IconButton></Tooltip>
-                      <Tooltip title="Export"><IconButton onClick={() => handleExport(project)}><ExportIcon /></IconButton></Tooltip>
-                      <Tooltip title="Edit"><IconButton onClick={() => handleEdit(project)}><EditIcon /></IconButton></Tooltip>
-                      <Tooltip title="Delete"><IconButton onClick={() => deleteProject.mutate(project.id)}><DeleteIcon /></IconButton></Tooltip>
+                      <Tooltip title="Open">
+                        <IconButton onClick={() => navigate(`/editor/${project.id}`)}>
+                          <OpenIcon />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="Duplicate">
+                        <IconButton onClick={() => handleDuplicate(project.id)}>
+                          <DuplicateIcon />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="Export">
+                        <IconButton onClick={() => handleExport(project)}>
+                          <ExportIcon />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="Edit">
+                        <IconButton onClick={() => handleEdit(project)}>
+                          <EditIcon />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="Delete">
+                        <IconButton onClick={() => deleteProject.mutate(project.id)}>
+                          <DeleteIcon />
+                        </IconButton>
+                      </Tooltip>
                     </ListItemSecondaryAction>
                   </ListItem>
                 ))}
@@ -138,7 +174,9 @@ const Dashboard: React.FC = () => {
         </Grid>
         <Grid item xs={12} md={4}>
           <Paper sx={{ p: 2 }}>
-            <Typography variant="h6" gutterBottom>Quick Stats</Typography>
+            <Typography variant="h6" gutterBottom>
+              Quick Stats
+            </Typography>
             <Typography variant="body2">Total Videos: {projects?.length || 0}</Typography>
             <Typography variant="body2">Storage Used: 0%</Typography>
           </Paper>
