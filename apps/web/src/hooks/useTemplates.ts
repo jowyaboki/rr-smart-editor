@@ -14,7 +14,15 @@ export const useTemplates = (category?: string) => {
 export const useCreateTemplate = () => {
   const queryClient = useQueryClient();
   return useMutation(
-    async ({ name, projectId, category }: { name?: string; projectId: string; category?: string }) => {
+    async ({
+      name,
+      projectId,
+      category,
+    }: {
+      name?: string;
+      projectId: string;
+      category?: string;
+    }) => {
       const res = await fetch(`${API_URL}/templates`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -27,7 +35,7 @@ export const useCreateTemplate = () => {
       onSuccess: () => {
         queryClient.invalidateQueries(['templates']);
       },
-    }
+    },
   );
 };
 
@@ -45,6 +53,6 @@ export const useUseTemplate = () => {
       onSuccess: () => {
         queryClient.invalidateQueries(['projects']);
       },
-    }
+    },
   );
 };

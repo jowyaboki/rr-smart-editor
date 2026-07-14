@@ -1,5 +1,11 @@
 import { AIServiceProvider } from './types';
-import { AIScript, AIScene, AISubtitle, AIGeneratedImage, AIVoiceover } from '@ai-video-editor/shared';
+import {
+  AIScript,
+  AIScene,
+  AISubtitle,
+  AIGeneratedImage,
+  AIVoiceover,
+} from '@ai-video-editor/shared';
 
 export class OpenAIProvider implements AIServiceProvider {
   async generateScript(prompt: string): Promise<AIScript> {

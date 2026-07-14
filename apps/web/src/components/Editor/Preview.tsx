@@ -15,7 +15,15 @@ const Preview: React.FC = () => {
   }, [playhead]);
 
   return (
-    <Box sx={{ height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', bgcolor: '#000' }}>
+    <Box
+      sx={{
+        height: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        bgcolor: '#000',
+      }}
+    >
       <Player
         ref={playerRef}
         component={CompositionBuilder}

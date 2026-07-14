@@ -9,13 +9,13 @@ import {
   CircularProgress,
   Divider,
   Grid,
-  Alert
+  Alert,
 } from '@mui/material';
 import {
   AutoAwesome as AIIcon,
   TextFields as TextIcon,
   Image as ImageIcon,
-  Mic as VoiceIcon
+  Mic as VoiceIcon,
 } from '@mui/icons-material';
 import { useGenerateScript, useGenerateImage, useGenerateVoice } from '@/hooks/useAI';
 
@@ -42,7 +42,11 @@ const AIAssistant: React.FC = () => {
 
   return (
     <Box sx={{ p: 1 }}>
-      <Typography variant="subtitle2" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+      <Typography
+        variant="subtitle2"
+        gutterBottom
+        sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
+      >
         <AIIcon fontSize="small" color="primary" /> AI Assistant
       </Typography>
       <Divider sx={{ mb: 2 }} />
@@ -97,19 +101,33 @@ const AIAssistant: React.FC = () => {
             </Button>
           </Grid>
           <Grid item xs={6}>
-            <Button fullWidth variant="outlined" startIcon={<AIIcon />} size="small" disabled={isLoading}>
+            <Button
+              fullWidth
+              variant="outlined"
+              startIcon={<AIIcon />}
+              size="small"
+              disabled={isLoading}
+            >
               Full Video
             </Button>
           </Grid>
         </Grid>
 
-        {isLoading && <Box sx={{ display: 'flex', justifyContent: 'center' }}><CircularProgress size={24} /></Box>}
+        {isLoading && (
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <CircularProgress size={24} />
+          </Box>
+        )}
         {error && <Alert severity="error">{error.message || 'AI Error'}</Alert>}
 
         {result && (
           <Paper variant="outlined" sx={{ p: 1, bgcolor: 'background.default' }}>
-            <Typography variant="caption" sx={{ fontWeight: 'bold', display: 'block', mb: 0.5 }}>Generated Result:</Typography>
-            <Typography variant="body1" component="div">{result}</Typography>
+            <Typography variant="caption" sx={{ fontWeight: 'bold', display: 'block', mb: 0.5 }}>
+              Generated Result:
+            </Typography>
+            <Typography variant="body1" component="div">
+              {result}
+            </Typography>
           </Paper>
         )}
       </Stack>

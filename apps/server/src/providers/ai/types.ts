@@ -1,4 +1,10 @@
-import { AIScript, AIScene, AISubtitle, AIGeneratedImage, AIVoiceover } from '@ai-video-editor/shared';
+import {
+  AIScript,
+  AIScene,
+  AISubtitle,
+  AIGeneratedImage,
+  AIVoiceover,
+} from '@ai-video-editor/shared';
 
 export interface AIServiceProvider {
   generateScript(prompt: string): Promise<AIScript>;
