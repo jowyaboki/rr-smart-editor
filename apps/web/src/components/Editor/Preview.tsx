@@ -1,8 +1,10 @@
-import React from 'react';
-import { PreviewPlayer } from '@/features/remotion/player/PreviewPlayer';
+import React, { useRef, useEffect } from 'react';
+import { Player, PlayerRef } from '@remotion/player';
+import { Box } from '@mui/material';
+import { CompositionBuilder } from '@/remotion/CompositionBuilder';
+import { useTimelineStore } from '@/store/useTimelineStore';
 
 const Preview: React.FC = () => {
-  return <PreviewPlayer />;
   const playerRef = useRef<PlayerRef>(null);
   const playhead = useTimelineStore((state) => state.playhead);
 
