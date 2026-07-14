@@ -27,3 +27,4 @@ export const ProjectUpdateSchema = z.object({
 
 export * from './ai';
 export * from './recovery';
+export * from './performance';
