@@ -6,23 +6,33 @@ export interface User {
   name: string;
 }
 
-export interface Project {
-  id: string;
-  name: string;
-  createdAt: string;
-  updatedAt: string;
-  timeline: any;
-  templateId?: string;
-}
+export * from './project';
+export * from './ai';
+export * from './media';
+export * from './timeline';
+export * from './remotion';
+export * from './animation';
+export * from './rendering';
+export * from './plugins';
+export * from './ai/index';
+export * from './templates/index';
+export * from './data/index';
 
 export const ProjectCreateSchema = z.object({
   name: z.string().min(1),
   timeline: z.any().optional(),
+  width: z.number().optional(),
+  height: z.number().optional(),
+  fps: z.number().optional(),
+  durationInFrames: z.number().optional(),
+  backgroundColor: z.string().optional(),
 });
 
 export const ProjectUpdateSchema = z.object({
   name: z.string().min(1).optional(),
   timeline: z.any().optional(),
+  favorite: z.boolean().optional(),
+  description: z.string().optional(),
 });
 
 export * from './ai';

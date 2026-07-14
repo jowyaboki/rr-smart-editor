@@ -1,3 +1,9 @@
+import React, { useState } from 'react';
+import { Box, Typography } from '@mui/material';
+import { TemplateBrowser } from '@/features/templates/browser/TemplateBrowser';
+import { TemplateVariableDialog } from '@/features/templates/components/TemplateVariableDialog';
+import { useTemplateStore } from '@/features/templates/store/templateStore';
+import { useProjectStore } from '@/features/projects/store/projectStore';
 import React from 'react';
 import {
   Typography,
@@ -11,18 +17,47 @@ import {
   Alert,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { useTemplates, useUseTemplate } from '../hooks/useTemplates';
+import { TemplateCompiler } from '@/features/templates/services/TemplateCompiler';
 
-const Templates: React.FC = () => {
+const TemplatesPage: React.FC = () => {
   const navigate = useNavigate();
-  const { data: templates, isLoading, error } = useTemplates();
-  const useTemplate = useUseTemplate();
+  const { templates, selectTemplate, selectedTemplateId } = useTemplateStore();
+  const createProject = useProjectStore(state => state.createProject);
 
-  const handleUseTemplate = async (templateId: string) => {
-    const project = await useTemplate.mutateAsync(templateId);
+  const [variableDialogOpen, setVariableDialogOpen] = useState(false);
+  const selectedTemplate = templates.find(t => t.id === selectedTemplateId) || null;
+
+  const handleUseTemplate = (id: string) => {
+    selectTemplate(id);
+    setVariableDialogOpen(true);
+  };
+
+  const handleConfirmTemplate = async (values: Record<string, any>) => {
+    if (!selectedTemplate) return;
+
+    const timeline = TemplateCompiler.compile(selectedTemplate, selectedTemplate.currentVersionId, values);
+    const project = await createProject({
+      name: `New ${selectedTemplate.metadata.name}`,
+      timeline
+    });
+
     navigate(`/editor/${project.id}`);
   };
 
+  return (
+    <Box>
+      <Typography variant="h4" gutterBottom>Templates Library</Typography>
+
+      <Box sx={{ mt: 4 }}>
+        <TemplateBrowser onUseTemplate={handleUseTemplate} />
+      </Box>
+
+      <TemplateVariableDialog
+        template={selectedTemplate}
+        open={variableDialogOpen}
+        onClose={() => setVariableDialogOpen(false)}
+        onConfirm={handleConfirmTemplate}
+      />
   if (isLoading)
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
@@ -83,4 +118,4 @@ const Templates: React.FC = () => {
   );
 };
 
-export default Templates;
+export default TemplatesPage;

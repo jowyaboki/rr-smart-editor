@@ -1,3 +1,5 @@
+import React from 'react';
+import { EditorWorkspace } from '@/features/editor/components/EditorWorkspace';
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Box, CssBaseline, ThemeProvider } from '@mui/material';
@@ -18,6 +20,7 @@ import { RecoveryNotifications } from '../features/recovery/components/RecoveryN
 import { useProjects } from '../hooks/useProjects';
 
 const Editor: React.FC = () => {
+  return <EditorWorkspace />;
   const { id } = useParams<{ id: string }>();
   const { data: projects } = useProjects();
 
