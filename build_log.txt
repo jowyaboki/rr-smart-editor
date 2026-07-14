@@ -1,0 +1,18 @@
+
+> @ai-video-editor/server@1.0.0 build
+> tsc
+
+
+> @ai-video-editor/web@1.0.0 build
+> tsc && vite build
+
+src/features/timeline/store/timelineStore.ts(3,56): error TS2307: Cannot find module '../types' or its corresponding type declarations.
+src/features/timeline/store/timelineStore.ts(91,28): error TS7006: Parameter 'c' implicitly has an 'any' type.
+src/features/timeline/store/timelineStore.ts(98,31): error TS7006: Parameter 'c' implicitly has an 'any' type.
+npm error Lifecycle script `build` failed with error:
+npm error code 2
+npm error path /app/apps/web
+npm error workspace @ai-video-editor/web@1.0.0
+npm error location /app/apps/web
+npm error command failed
+npm error command sh -c tsc && vite build

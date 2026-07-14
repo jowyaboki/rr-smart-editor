@@ -1,0 +1,38 @@
+
+> @ai-video-editor/server@1.0.0 build
+> tsc
+
+../../packages/shared/src/index.ts(12,15): error TS2307: Cannot find module './timeline' or its corresponding type declarations.
+npm error Lifecycle script `build` failed with error:
+npm error code 2
+npm error path /app/apps/server
+npm error workspace @ai-video-editor/server@1.0.0
+npm error location /app/apps/server
+npm error command failed
+npm error command sh -c tsc
+
+
+> @ai-video-editor/web@1.0.0 build
+> tsc && vite build
+
+src/features/editor/components/EditorWorkspace.tsx(4,10): error TS2305: Module '"@ai-video-editor/ui"' has no exported member 'theme'.
+src/features/editor/components/EditorWorkspace.tsx(5,32): error TS2307: Cannot find module '../store/editorStore' or its corresponding type declarations.
+src/features/editor/components/EditorWorkspace.tsx(6,42): error TS2307: Cannot find module './EditorToolbar' or its corresponding type declarations.
+src/features/editor/components/EditorWorkspace.tsx(7,42): error TS2307: Cannot find module './EditorSidebar' or its corresponding type declarations.
+src/features/editor/components/EditorWorkspace.tsx(8,32): error TS2307: Cannot find module './InspectorPanel' or its corresponding type declarations.
+src/features/editor/hooks/useKeyboardShortcuts.ts(3,33): error TS2307: Cannot find module '../services/ShortcutService' or its corresponding type declarations.
+src/features/remotion/engine/CompositionBuilder.ts(1,55): error TS2307: Cannot find module '@/features/timeline/types' or its corresponding type declarations.
+src/features/remotion/engine/CompositionBuilder.ts(19,32): error TS7006: Parameter 'clip' implicitly has an 'any' type.
+src/features/remotion/renderer/RemotionRenderer.tsx(51,15): error TS2739: Type '{ src: string; style: { width: string; height: string; objectFit: "contain"; accentColor?: AccentColor | undefined; alignContent?: AlignContent | undefined; ... 851 more ...; glyphOrientationVertical?: GlyphOrientationVertical | undefined; }; }' is missing the following properties from type 'Pick<Omit<DetailedHTMLProps<ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>, "src"> & { ...; }, "id" | ... 268 more ... | "maxRetries">': placeholder, onResize, onResizeCapture, onPointerEnterCapture, onPointerLeaveCapture
+src/features/remotion/renderer/RemotionRenderer.tsx(53,15): error TS2739: Type '{ src: string; }' is missing the following properties from type 'Pick<Omit<DetailedHTMLProps<AudioHTMLAttributes<HTMLAudioElement>, HTMLAudioElement>, "nonce" | ... 4 more ... | "onResizeCapture"> & { ...; } & RemotionMainAudioProps, "id" | ... 265 more ... | keyof RemotionMainAudioProps>': placeholder, onPointerEnterCapture, onPointerLeaveCapture
+src/features/timeline/store/timelineStore.ts(3,56): error TS2307: Cannot find module '../types' or its corresponding type declarations.
+src/features/timeline/store/timelineStore.ts(91,28): error TS7006: Parameter 'c' implicitly has an 'any' type.
+src/features/timeline/store/timelineStore.ts(98,31): error TS7006: Parameter 'c' implicitly has an 'any' type.
+../../packages/shared/src/index.ts(12,15): error TS2307: Cannot find module './timeline' or its corresponding type declarations.
+npm error Lifecycle script `build` failed with error:
+npm error code 2
+npm error path /app/apps/web
+npm error workspace @ai-video-editor/web@1.0.0
+npm error location /app/apps/web
+npm error command failed
+npm error command sh -c tsc && vite build
