@@ -1,4 +1,3 @@
-import { pipeline } from "@/features/pipeline/services/EventPipeline";
 import { create } from 'zustand';
 import { temporal } from 'zundo';
 
