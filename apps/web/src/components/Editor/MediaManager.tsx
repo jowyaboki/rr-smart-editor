@@ -24,11 +24,14 @@ const MediaManager: React.FC<MediaManagerProps> = ({ projectId }) => {
   const uploadMedia = useUploadMedia(projectId);
   const addClip = useTimelineStore((state) => state.addClip);
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    acceptedFiles.forEach((file) => {
-      uploadMedia.mutate(file);
-    });
-  }, [uploadMedia]);
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      acceptedFiles.forEach((file) => {
+        uploadMedia.mutate(file);
+      });
+    },
+    [uploadMedia],
+  );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
@@ -55,7 +58,7 @@ const MediaManager: React.FC<MediaManagerProps> = ({ projectId }) => {
           textAlign: 'center',
           cursor: 'pointer',
           bgcolor: isDragActive ? 'action.hover' : 'transparent',
-          '&:hover': { bgcolor: 'action.hover' }
+          '&:hover': { bgcolor: 'action.hover' },
         }}
       >
         <input {...getInputProps()} />
@@ -66,13 +69,19 @@ const MediaManager: React.FC<MediaManagerProps> = ({ projectId }) => {
       </Box>
 
       {isLoading ? (
-        <Box sx={{ display: 'flex', justifyContent: 'center', p: 2 }}><CircularProgress size={24} /></Box>
+        <Box sx={{ display: 'flex', justifyContent: 'center', p: 2 }}>
+          <CircularProgress size={24} />
+        </Box>
       ) : (
         <Grid container spacing={1} sx={{ overflowY: 'auto', flexGrow: 1 }}>
           {media?.map((item) => (
             <Grid item xs={6} key={item.id}>
               <Card
-                sx={{ bgcolor: 'background.default', cursor: 'pointer', '&:hover': { outline: '2px solid primary.main' } }}
+                sx={{
+                  bgcolor: 'background.default',
+                  cursor: 'pointer',
+                  '&:hover': { outline: '2px solid primary.main' },
+                }}
                 onClick={() => handleMediaClick(item)}
               >
                 <Box sx={{ position: 'relative', pt: '56.25%', bgcolor: '#000' }}>
@@ -80,20 +89,54 @@ const MediaManager: React.FC<MediaManagerProps> = ({ projectId }) => {
                     <CardMedia
                       component="img"
                       image={`${API_URL}${item.url}`}
-                      sx={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'contain' }}
+                      sx={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'contain',
+                      }}
                     />
                   ) : item.type === 'video' ? (
-                    <Box sx={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <video src={`${API_URL}${item.url}`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                    <Box
+                      sx={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <video
+                        src={`${API_URL}${item.url}`}
+                        style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                      />
                     </Box>
                   ) : (
-                    <Box sx={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Box
+                      sx={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
                       <FileIcon sx={{ fontSize: 40 }} />
                     </Box>
                   )}
                 </Box>
                 <CardContent sx={{ p: '8px !important' }}>
-                  <Typography variant="caption" noWrap sx={{ display: 'block' }}>{item.name}</Typography>
+                  <Typography variant="caption" noWrap sx={{ display: 'block' }}>
+                    {item.name}
+                  </Typography>
                   <Typography variant="caption" color="text.secondary">
                     {item.type.toUpperCase()} • {(item.size / 1024 / 1024).toFixed(1)} MB
                   </Typography>

@@ -67,7 +67,7 @@ router.post('/', upload.single('file'), async (req: Request, res: Response) => {
         metadata.duration || null,
         metadata.width || null,
         metadata.height || null,
-      ]
+      ],
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
@@ -81,7 +81,7 @@ router.get('/', async (req: Request, res: Response) => {
   try {
     const result = await query(
       'SELECT * FROM media WHERE "projectId" = $1 ORDER BY "createdAt" DESC',
-      [projectId]
+      [projectId],
     );
     res.json(result.rows);
   } catch (err) {

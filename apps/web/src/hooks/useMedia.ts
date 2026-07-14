@@ -41,6 +41,6 @@ export const useUploadMedia = (projectId: string) => {
       onSuccess: () => {
         queryClient.invalidateQueries([['media', projectId]]);
       },
-    }
+    },
   );
 };

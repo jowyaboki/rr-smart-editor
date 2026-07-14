@@ -34,3 +34,9 @@ export const ProjectUpdateSchema = z.object({
   favorite: z.boolean().optional(),
   description: z.string().optional(),
 });
+
+export * from './ai';
+export * from './recovery';
+export * from './performance';
+export * from './release';
+export * from './collaboration';

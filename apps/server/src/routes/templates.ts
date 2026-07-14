@@ -8,7 +8,10 @@ router.get('/', async (req, res) => {
   try {
     let result;
     if (category) {
-      result = await query('SELECT * FROM templates WHERE category = $1 ORDER BY "createdAt" DESC', [category]);
+      result = await query(
+        'SELECT * FROM templates WHERE category = $1 ORDER BY "createdAt" DESC',
+        [category],
+      );
     } else {
       result = await query('SELECT * FROM templates ORDER BY "createdAt" DESC');
     }
@@ -27,7 +30,9 @@ router.post('/', async (req, res) => {
     let finalName = name;
 
     if (projectId) {
-      const projectRes = await query('SELECT name, timeline FROM projects WHERE id = $1', [projectId]);
+      const projectRes = await query('SELECT name, timeline FROM projects WHERE id = $1', [
+        projectId,
+      ]);
       if (projectRes.rowCount && projectRes.rowCount > 0) {
         finalTimeline = projectRes.rows[0].timeline;
         finalName = finalName || projectRes.rows[0].name;
@@ -38,7 +43,7 @@ router.post('/', async (req, res) => {
 
     const result = await query(
       'INSERT INTO templates (name, category, timeline) VALUES ($1, $2, $3) RETURNING *',
-      [finalName || 'Untitled Template', category || 'General', finalTimeline]
+      [finalName || 'Untitled Template', category || 'General', finalTimeline],
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
@@ -56,7 +61,7 @@ router.post('/:templateId/use', async (req, res) => {
 
     const result = await query(
       'INSERT INTO projects (name, timeline, "templateId") VALUES ($1, $2, $3) RETURNING *',
-      [template.name, template.timeline, templateId]
+      [template.name, template.timeline, templateId],
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {

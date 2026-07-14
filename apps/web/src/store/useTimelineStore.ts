@@ -59,8 +59,14 @@ export const useTimelineStore = create<TimelineState>()(
       set((state) => ({
         tracks: state.tracks.map((t) =>
           t.id === trackId
-            ? { ...t, clips: [...t.clips, { ...clipData, id: Math.random().toString(36).substr(2, 9), trackId }] }
-            : t
+            ? {
+                ...t,
+                clips: [
+                  ...t.clips,
+                  { ...clipData, id: Math.random().toString(36).substr(2, 9), trackId },
+                ],
+              }
+            : t,
         ),
       })),
     updateClip: (clipId, updates) =>
@@ -103,5 +109,5 @@ export const useTimelineStore = create<TimelineState>()(
     setIsPlaying: (isPlaying) => set({ isPlaying }),
     setPlaybackRate: (playbackRate) => set({ playbackRate }),
     toggleLooping: () => set((state) => ({ isLooping: !state.isLooping })),
-  }))
+  })),
 );

@@ -19,7 +19,7 @@ router.post('/', async (req, res) => {
     const validated = ProjectCreateSchema.parse(req.body);
     const result = await query(
       'INSERT INTO projects (name, timeline) VALUES ($1, $2) RETURNING *',
-      [validated.name, validated.timeline || '{"tracks": [], "playhead": 0, "zoom": 1}']
+      [validated.name, validated.timeline || '{"tracks": [], "playhead": 0, "zoom": 1}'],
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
@@ -36,7 +36,7 @@ router.post('/:id/duplicate', async (req, res) => {
 
     const result = await query(
       'INSERT INTO projects (name, timeline) VALUES ($1, $2) RETURNING *',
-      [`${project.name} (Copy)`, project.timeline]
+      [`${project.name} (Copy)`, project.timeline],
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
@@ -52,12 +52,18 @@ router.put('/:id', async (req, res) => {
     if (validated.name && validated.timeline) {
       result = await query(
         'UPDATE projects SET name = $1, timeline = $2 WHERE id = $3 RETURNING *',
-        [validated.name, validated.timeline, id]
+        [validated.name, validated.timeline, id],
       );
     } else if (validated.name) {
-      result = await query('UPDATE projects SET name = $1 WHERE id = $2 RETURNING *', [validated.name, id]);
+      result = await query('UPDATE projects SET name = $1 WHERE id = $2 RETURNING *', [
+        validated.name,
+        id,
+      ]);
     } else if (validated.timeline) {
-      result = await query('UPDATE projects SET timeline = $1 WHERE id = $2 RETURNING *', [validated.timeline, id]);
+      result = await query('UPDATE projects SET timeline = $1 WHERE id = $2 RETURNING *', [
+        validated.timeline,
+        id,
+      ]);
     } else {
       throw new ApiError(400, 'Name or timeline required');
     }

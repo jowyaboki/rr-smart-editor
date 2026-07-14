@@ -10,10 +10,9 @@ router.post('/:projectId', async (req, res) => {
     const projectRes = await query('SELECT timeline FROM projects WHERE id = $1', [projectId]);
     if (projectRes.rowCount === 0) return res.status(404).json({ error: 'Project not found' });
 
-    const renderRes = await query(
-      'INSERT INTO renders ("projectId") VALUES ($1) RETURNING *',
-      [projectId]
-    );
+    const renderRes = await query('INSERT INTO renders ("projectId") VALUES ($1) RETURNING *', [
+      projectId,
+    ]);
     const render = renderRes.rows[0];
 
     // Trigger render in background

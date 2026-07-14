@@ -7,7 +7,7 @@ interface ClipItemProps {
   zoom: number;
 }
 
-const ClipItem: React.FC<ClipItemProps> = ({ clip, zoom }) => {
+const ClipItem: React.FC<ClipItemProps> = React.memo(({ clip, zoom }) => {
   const updateClip = useTimelineStore((state) => state.updateClip);
   const left = clip.start * zoom;
   const width = clip.duration * zoom;
@@ -61,7 +61,11 @@ const ClipItem: React.FC<ClipItemProps> = ({ clip, zoom }) => {
         },
       }}
     >
-      <Typography variant="caption" noWrap sx={{ color: 'white', fontWeight: 'bold', pointerEvents: 'none' }}>
+      <Typography
+        variant="caption"
+        noWrap
+        sx={{ color: 'white', fontWeight: 'bold', pointerEvents: 'none' }}
+      >
         {clip.name}
       </Typography>
       {/* Resizer Handle */}
@@ -88,11 +92,13 @@ const ClipItem: React.FC<ClipItemProps> = ({ clip, zoom }) => {
           bottom: 0,
           width: 5,
           cursor: 'ew-resize',
-          '&:hover': { bgcolor: 'rgba(255,255,255,0.3)' }
+          '&:hover': { bgcolor: 'rgba(255,255,255,0.3)' },
         }}
       />
     </Box>
   );
-};
+});
+
+ClipItem.displayName = 'ClipItem';
 
 export default ClipItem;

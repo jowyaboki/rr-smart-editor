@@ -1,6 +1,19 @@
 import React from 'react';
 import { Box, AppBar, Toolbar, Typography, Drawer, List, ListItem, ListItemIcon, ListItemText, CssBaseline, ThemeProvider, ListItemButton } from '@mui/material';
 import {
+  Box,
+  AppBar,
+  Toolbar,
+  Typography,
+  Drawer,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  CssBaseline,
+  ThemeProvider,
+} from '@mui/material';
+import {
   Dashboard as DashboardIcon,
   VideoLibrary as VideoIcon,
   Settings as SettingsIcon,
@@ -9,6 +22,7 @@ import {
   FolderSpecial as MediaIcon
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+} from '@mui/icons-material';
 import { darkTheme } from '../theme';
 
 const drawerWidth = 240;
@@ -57,6 +71,30 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                   </ListItemButton>
                 </ListItem>
               ))}
+              <ListItem component="a" href="/">
+                <ListItemIcon>
+                  <DashboardIcon />
+                </ListItemIcon>
+                <ListItemText primary="Dashboard" />
+              </ListItem>
+              <ListItem component="a" href="/preview">
+                <ListItemIcon>
+                  <PreviewIcon />
+                </ListItemIcon>
+                <ListItemText primary="Preview" />
+              </ListItem>
+              <ListItem button>
+                <ListItemIcon>
+                  <VideoIcon />
+                </ListItemIcon>
+                <ListItemText primary="Projects" />
+              </ListItem>
+              <ListItem button>
+                <ListItemIcon>
+                  <SettingsIcon />
+                </ListItemIcon>
+                <ListItemText primary="Settings" />
+              </ListItem>
             </List>
           </Box>
         </Drawer>
