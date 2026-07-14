@@ -61,7 +61,8 @@ export class ErrorBoundary extends Component<Props, State> {
               Editor Render Crash Detected
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-              An unexpected error occurred while rendering the workspace layout: {this.state.error?.message || 'Unknown render context exception.'}
+              An unexpected error occurred while rendering the workspace layout:{' '}
+              {this.state.error?.message || 'Unknown render context exception.'}
             </Typography>
             <Button
               variant="contained"

@@ -18,7 +18,10 @@ export interface TranslationDictionary {
   videoPreview: string;
 }
 
-export const LOCALES: Record<Locale, { direction: 'ltr' | 'rtl'; dictionary: TranslationDictionary }> = {
+export const LOCALES: Record<
+  Locale,
+  { direction: 'ltr' | 'rtl'; dictionary: TranslationDictionary }
+> = {
   en: {
     direction: 'ltr',
     dictionary: {

@@ -6,9 +6,11 @@ import {
   Audiotrack as AudioIcon,
   AutoAwesome as AIIcon,
   Speed as SpeedIcon,
+  RateReview as ReviewIcon,
 } from '@mui/icons-material';
 import MediaManager from './MediaManager';
 import AIAssistant from './AIAssistant';
+import { ReviewSidebar } from '../../features/collaboration/components/ReviewSidebar';
 
 // Lazy load heavy diagnostics panel
 const PerformanceDashboard = React.lazy(() =>
@@ -54,6 +56,11 @@ const Sidebar: React.FC<SidebarProps> = ({ projectId }) => {
           sx={{ minWidth: 'auto', textTransform: 'none', fontSize: '0.75rem' }}
         />
         <Tab
+          icon={<ReviewIcon />}
+          label="Review"
+          sx={{ minWidth: 'auto', textTransform: 'none', fontSize: '0.75rem' }}
+        />
+        <Tab
           icon={<SpeedIcon />}
           label="Performance"
           sx={{ minWidth: 'auto', textTransform: 'none', fontSize: '0.75rem' }}
@@ -72,7 +79,8 @@ const Sidebar: React.FC<SidebarProps> = ({ projectId }) => {
             Audio Tracks
           </Typography>
         )}
-        {value === 4 && (
+        {value === 4 && <ReviewSidebar projectId={projectId} />}
+        {value === 5 && (
           <Suspense
             fallback={
               <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>

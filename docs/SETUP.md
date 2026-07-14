@@ -3,11 +3,14 @@
 Follow these instructions to quickly get your development environment configured and running for the RR Smart Editor workspace.
 
 ## 1. Prerequisites
+
 Ensure you have the following packages installed locally:
+
 - **Node.js:** `v18` or newer.
 - **Git**
 
 ## 2. Quickstart Setup
+
 Run the following commands in order to set up dependencies and build local workspace symlinks:
 
 ```bash
@@ -23,6 +26,7 @@ npm run build
 ```
 
 ## 3. Command Scripts
+
 The root `package.json` contains several workspace-wide orchestration scripts:
 
 - `npm run dev`: starts both the server and web application in concurrent watch mode.
@@ -31,6 +35,7 @@ The root `package.json` contains several workspace-wide orchestration scripts:
 - `npm run format`: formats all typescript, markdown, and configuration files with Prettier.
 
 ## 4. Testing
+
 We use Node.js's native test runner to test services with high performance. Run the unit test suites with:
 
 ```bash

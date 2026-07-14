@@ -32,7 +32,7 @@ export const useI18n = () => {
       const locInfo = LOCALES[currentLocale] || LOCALES['en'];
       return locInfo.dictionary[key] || LOCALES['en'].dictionary[key] || String(key);
     },
-    [currentLocale]
+    [currentLocale],
   );
 
   return {

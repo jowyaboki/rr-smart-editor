@@ -3,6 +3,7 @@
 This document describes the design patterns, classes, and method signatures for the core services powering the RR Smart Editor's Recovery and Performance frameworks.
 
 ## 1. ProjectValidationService
+
 `apps/web/src/features/recovery/services/ProjectValidationService.ts`
 
 Validates schema structure and checks for broken references or corrupted hashes.
@@ -17,6 +18,7 @@ Validates schema structure and checks for broken references or corrupted hashes.
   Recalculates snapshot hash and compares with metadata to detect corruption.
 
 ## 2. SnapshotService
+
 `apps/web/src/features/recovery/services/SnapshotService.ts`
 
 Manages local segmented storage and indices of immutable project checkpoints.
@@ -31,6 +33,7 @@ Manages local segmented storage and indices of immutable project checkpoints.
   Retrieves all snapshots for a project, sorted by timestamp descending.
 
 ## 3. PerformanceProfiler
+
 `apps/web/src/features/performance/services/PerformanceProfiler.ts`
 
 Aggregates render time delays and manages web FPS analytics.
@@ -45,6 +48,7 @@ Aggregates render time delays and manages web FPS analytics.
   Retrieves historical average stats.
 
 ## 4. CacheService
+
 `apps/web/src/features/performance/services/CacheService.ts`
 
 Central LRU Cache managing waveform and thumbnail assets with automatic budget eviction policies.
