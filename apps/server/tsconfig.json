@@ -2,7 +2,18 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "rootDir": "./src"
+    "rootDir": "../../",
+    "baseUrl": ".",
+    "paths": {
+      "@ai-video-editor/shared": ["../../packages/shared/src/index.ts"],
+      "@ai-video-editor/shared/*": ["../../packages/shared/src/*"],
+      "@ai-video-editor/render-core": ["../../packages/render-core/src/index.ts"],
+      "@ai-video-editor/render-core/*": ["../../packages/render-core/src/*"]
+    }
   },
-  "include": ["src/**/*"]
+  "include": [
+    "src/**/*",
+    "../../packages/shared/src/**/*",
+    "../../packages/render-core/src/**/*"
+  ]
 }

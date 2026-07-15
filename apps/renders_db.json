@@ -1,0 +1,44 @@
+{
+  "jobs": {},
+  "workers": {
+    "local-worker-1": {
+      "id": "local-worker-1",
+      "name": "Primary Local Worker",
+      "status": "idle",
+      "capabilities": {
+        "maxConcurrentJobs": 1,
+        "supportedFormats": [
+          "mp4",
+          "webm",
+          "gif",
+          "png",
+          "jpeg",
+          "mp3",
+          "wav"
+        ],
+        "supportedCodecs": [
+          "h264",
+          "vp8",
+          "gif",
+          "png",
+          "jpeg",
+          "mp3"
+        ],
+        "gpuAcceleration": false,
+        "maxResolution": {
+          "width": 3840,
+          "height": 2160
+        }
+      },
+      "lastHeartbeat": "2026-07-15T19:11:19.344Z",
+      "systemInfo": {
+        "cpuUsage": 26,
+        "memoryUsage": 67,
+        "platform": "linux",
+        "arch": "x64"
+      }
+    }
+  },
+  "artifacts": {},
+  "queueStatus": "running"
+}
