@@ -17,6 +17,7 @@ import {
   VideoLibrary as VideoIcon,
   Settings as SettingsIcon,
   PlayArrow as PreviewIcon,
+  AutoAwesome as WorkflowsIcon,
 } from '@mui/icons-material';
 import { darkTheme } from '../theme';
 
@@ -56,6 +57,12 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                   <PreviewIcon />
                 </ListItemIcon>
                 <ListItemText primary="Preview" />
+              </ListItem>
+              <ListItem component="a" href="/workflows">
+                <ListItemIcon>
+                  <WorkflowsIcon />
+                </ListItemIcon>
+                <ListItemText primary="Workflows" />
               </ListItem>
               <ListItem button>
                 <ListItemIcon>
