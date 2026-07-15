@@ -32,3 +32,7 @@ export * from './release';
 export * from './collaboration';
 export * from './agents';
 export * from './workflows';
+export * from './render';
+
+// Resolve duplicate export conflicts
+export { WorkflowStep, WorkflowStepSchema } from './workflows';

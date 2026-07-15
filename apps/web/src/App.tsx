@@ -6,6 +6,7 @@ import Preview from './pages/Preview';
 import Editor from './pages/Editor';
 import Templates from './pages/Templates';
 import Workflows from './pages/Workflows';
+import Renders from './pages/Renders';
 import { ErrorBoundary } from './features/release/components/ErrorBoundary';
 
 const App: React.FC = () => {
@@ -41,6 +42,14 @@ const App: React.FC = () => {
           element={
             <Layout>
               <Workflows />
+            </Layout>
+          }
+        />
+        <Route
+          path="/renders"
+          element={
+            <Layout>
+              <Renders />
             </Layout>
           }
         />

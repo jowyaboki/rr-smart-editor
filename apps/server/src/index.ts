@@ -8,6 +8,9 @@ import renderRoutes from './routes/renders';
 import templateRoutes from './routes/templates';
 import aiRoutes from './routes/ai';
 
+import { localWorker } from './render/workers/LocalWorker';
+import { renderScheduler } from './render/scheduler/RenderScheduler';
+
 dotenv.config();
 
 const app = express();
@@ -26,6 +29,12 @@ app.use('/projects/:projectId/media', mediaRoutes);
 app.use('/renders', renderRoutes);
 app.use('/templates', templateRoutes);
 app.use('/ai', aiRoutes);
+
+// Boot up local distributed render worker and scheduler
+localWorker.start().catch((err) => {
+  console.error('Failed to start local worker:', err);
+});
+renderScheduler.start();
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
