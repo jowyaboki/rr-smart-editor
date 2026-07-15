@@ -65,7 +65,6 @@ export const WorkflowVariables: React.FC = () => {
 
     engine.updateWorkflow(activeWf.id, { variables: updatedVars });
 
-    // Clear fields
     setNewVarName('');
     setNewVarValue('');
   };
@@ -118,7 +117,6 @@ export const WorkflowVariables: React.FC = () => {
       </Typography>
       <Divider sx={{ mb: 2 }} />
 
-      {/* Declared variables listing table */}
       {activeWf.variables.length === 0 ? (
         <Typography color="text.secondary" variant="body2" sx={{ py: 2, textAlign: 'center' }}>
           No custom variables declared. Add one below to use it as ${'{name}'} placeholder in configs.
@@ -138,7 +136,7 @@ export const WorkflowVariables: React.FC = () => {
             <TableBody>
               {activeWf.variables.map((v, i) => (
                 <TableRow key={i}>
-                  <TableCell fontWeight="bold">
+                  <TableCell sx={{ fontWeight: 'bold' }}>
                     <code>${'{'}{v.name}{'}'}</code>
                   </TableCell>
                   <TableCell>
@@ -168,11 +166,10 @@ export const WorkflowVariables: React.FC = () => {
         </TableContainer>
       )}
 
-      {/* Add new variable block */}
       <Typography variant="subtitle2" fontWeight="bold" sx={{ mb: 1.5 }}>
         Declare New Variable:
       </Typography>
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, p: 2, border: '1px dashed divider', borderRadius: 1 }}>
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, p: 2, border: '1px dashed', borderColor: 'divider', borderRadius: 1 }}>
         <TextField
           size="small"
           label="Variable Name"
