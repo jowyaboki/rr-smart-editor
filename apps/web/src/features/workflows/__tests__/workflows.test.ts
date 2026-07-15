@@ -20,7 +20,6 @@ describe('Workflow Automation Engine Foundation Tests', () => {
     const templates = TemplateService.getAllTemplates();
     assert.ok(templates.length >= 3);
 
-    // Instantiate travel montage template
     const wf = TemplateService.instantiateTemplate('tpl_smart_montage', 'My Holiday Montage');
     assert.strictEqual(wf.name, 'My Holiday Montage');
     assert.ok(wf.id.startsWith('wf_'));
@@ -49,7 +48,6 @@ describe('Workflow Automation Engine Foundation Tests', () => {
     assert.strictEqual(resolvedStr1, 'Creator: Jules');
     assert.strictEqual(resolvedStr2, 'Target API: http://test-server:3001');
 
-    // Nested object variable resolution
     const config = {
       nested: {
         label: 'Frame counts: ${loopIndex}',
@@ -60,7 +58,6 @@ describe('Workflow Automation Engine Foundation Tests', () => {
   });
 
   test('Workflow Validation - Cycle & Parameter Checks', () => {
-    // 1. Valid linear workflow
     const wf: Workflow = {
       id: 'wf_valid_1',
       name: 'Valid Linear Flow',
@@ -88,7 +85,6 @@ describe('Workflow Automation Engine Foundation Tests', () => {
     const errors = ValidationService.validateWorkflow(wf);
     assert.strictEqual(errors.length, 0);
 
-    // 2. Cyclic workflow (Infinite loop)
     const cyclicWf: Workflow = {
       ...wf,
       id: 'wf_cyclic_1',
@@ -113,7 +109,6 @@ describe('Workflow Automation Engine Foundation Tests', () => {
     const cyclicErrors = ValidationService.validateWorkflow(cyclicWf);
     assert.ok(cyclicErrors.some((e) => e.message.includes('Infinite connection loop detected')));
 
-    // 3. Configuration syntax failure (Missing durationMs in delay step)
     const badDelayWf: Workflow = {
       ...wf,
       steps: [
@@ -130,7 +125,6 @@ describe('Workflow Automation Engine Foundation Tests', () => {
   });
 
   test('Workflow Execution - Standard & Branching Conditions', async () => {
-    // Condition testing workflow
     const wf: Workflow = {
       id: 'wf_test_cond',
       name: 'Branching Flow',
@@ -173,10 +167,8 @@ describe('Workflow Automation Engine Foundation Tests', () => {
       updatedAt: new Date().toISOString(),
     };
 
-    // Run execution
     const execution = await ExecutionService.startExecution(wf);
 
-    // Wait for the async run to conclude
     await new Promise((resolve) => setTimeout(resolve, 200));
 
     const finalExec = ExecutionService.getExecution(execution.id);
@@ -205,11 +197,9 @@ describe('Workflow Automation Engine Foundation Tests', () => {
 
     const execution = await ExecutionService.startExecution(wf);
 
-    // Quick delay check
     await new Promise((resolve) => setTimeout(resolve, 50));
     assert.strictEqual(execution.status, 'running');
 
-    // Cancel the ongoing execution
     await ExecutionService.cancelExecution(execution.id);
 
     assert.strictEqual(execution.status, 'cancelled');
@@ -219,11 +209,9 @@ describe('Workflow Automation Engine Foundation Tests', () => {
   test('JSON Schema Metadata Import and Export', () => {
     const origWf = TemplateService.instantiateTemplate('tpl_auto_caption', 'Test Import Export');
 
-    // Export to JSON string
     const jsonStr = TemplateService.exportWorkflowToJson(origWf);
-    assert.ok(jsonStr.includes('tpl_auto_caption') === false); // copy has a random wf id
+    assert.ok(jsonStr.includes('tpl_auto_caption') === false);
 
-    // Re-import from JSON
     const importedWf = TemplateService.importWorkflowFromJson(jsonStr);
     assert.strictEqual(importedWf.name, 'Test Import Export');
     assert.strictEqual(importedWf.steps.length, 5);
