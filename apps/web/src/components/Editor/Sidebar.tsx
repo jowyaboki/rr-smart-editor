@@ -7,12 +7,12 @@ import {
   AutoAwesome as AIIcon,
   Speed as SpeedIcon,
   RateReview as ReviewIcon,
-  SmartToy as AgentIcon,
+  Extension as ExtensionIcon,
 } from '@mui/icons-material';
 import MediaManager from './MediaManager';
 import AIAssistant from './AIAssistant';
 import { ReviewSidebar } from '../../features/collaboration/components/ReviewSidebar';
-import { AgentStudio } from '../../features/agents/components/AgentStudio';
+import { PluginManagerPanel } from '../../plugins/components/PluginManagerPanel';
 
 // Lazy load heavy diagnostics panel
 const PerformanceDashboard = React.lazy(() =>
@@ -63,8 +63,8 @@ const Sidebar: React.FC<SidebarProps> = ({ projectId }) => {
           sx={{ minWidth: 'auto', textTransform: 'none', fontSize: '0.75rem' }}
         />
         <Tab
-          icon={<AgentIcon />}
-          label="Studio"
+          icon={<ExtensionIcon />}
+          label="Plugins"
           sx={{ minWidth: 'auto', textTransform: 'none', fontSize: '0.75rem' }}
         />
         <Tab
@@ -87,7 +87,7 @@ const Sidebar: React.FC<SidebarProps> = ({ projectId }) => {
           </Typography>
         )}
         {value === 4 && <ReviewSidebar projectId={projectId} />}
-        {value === 5 && <AgentStudio projectId={projectId} />}
+        {value === 5 && <PluginManagerPanel />}
         {value === 6 && (
           <Suspense
             fallback={
