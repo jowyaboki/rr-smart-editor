@@ -31,3 +31,4 @@ export * from './performance';
 export * from './release';
 export * from './collaboration';
 export * from './agents';
+export * from './workflows';
