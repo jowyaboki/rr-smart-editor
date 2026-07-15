@@ -45,7 +45,6 @@ const Workflows: React.FC = () => {
   const [newFlowName, setNewFlowName] = useState('');
   const [newFlowTrigger, setNewFlowTrigger] = useState('manual');
 
-  // Load standard presets on startup
   useEffect(() => {
     store.initializeStore();
   }, []);
@@ -55,7 +54,7 @@ const Workflows: React.FC = () => {
     engine.createWorkflow(newFlowName, newFlowTrigger);
     setNewFlowName('');
     setCreateDialogOpen(false);
-    setActiveTab(0); // Switch to designer/canvas tab
+    setActiveTab(0);
   };
 
   const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,7 +66,7 @@ const Workflows: React.FC = () => {
       try {
         const text = event.target?.result as string;
         engine.importWorkflow(text);
-        setActiveTab(0); // Go to designer
+        setActiveTab(0);
       } catch (err) {
         alert('Failed to parse imported workflow JSON.');
       }
@@ -79,7 +78,6 @@ const Workflows: React.FC = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      {/* Page Header */}
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <Box>
           <Typography variant="h4" fontWeight="bold" gutterBottom>
@@ -109,7 +107,6 @@ const Workflows: React.FC = () => {
       </Box>
 
       <Grid container spacing={3}>
-        {/* Sidebar Flow Navigator List */}
         <Grid item xs={12} md={3}>
           <Paper sx={{ p: 2, height: '100%', minHeight: 500 }}>
             <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
@@ -150,7 +147,6 @@ const Workflows: React.FC = () => {
           </Paper>
         </Grid>
 
-        {/* Tabbed Central Workspace Container */}
         <Grid item xs={12} md={9}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3 }}>
             <Tabs value={activeTab} onChange={(_, nv) => setActiveTab(nv)}>
@@ -170,7 +166,6 @@ const Workflows: React.FC = () => {
         </Grid>
       </Grid>
 
-      {/* Pipeline Creation Dialog */}
       <Dialog open={createDialogOpen} onClose={() => setCreateDialogOpen(false)}>
         <DialogTitle>Create New Pipeline</DialogTitle>
         <DialogContent>

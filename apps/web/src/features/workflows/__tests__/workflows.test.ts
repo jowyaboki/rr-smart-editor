@@ -95,6 +95,7 @@ describe('Workflow Automation Engine Foundation Tests', () => {
           type: 'delay',
           config: { durationMs: 100 },
           nextStepId: 'step_cycle_2',
+          collapsed: false,
         },
         {
           id: 'step_cycle_2',
@@ -102,6 +103,7 @@ describe('Workflow Automation Engine Foundation Tests', () => {
           type: 'delay',
           config: { durationMs: 100 },
           nextStepId: 'step_cycle_1',
+          collapsed: false,
         },
       ],
     };
