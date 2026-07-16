@@ -14,6 +14,11 @@ export interface RenderEvents {
   JobCompleted: { jobId: string; artifacts: RenderArtifact[]; timestamp: string };
   JobFailed: { jobId: string; error: string; timestamp: string };
   WorkerHeartbeat: { workerId: string; status: string; systemInfo?: any; timestamp: string };
+  StageStarted: { jobId: string; stageId: string; timestamp: string };
+  StageCompleted: { jobId: string; stageId: string; timestamp: string };
+  StageFailed: { jobId: string; stageId: string; error: string; timestamp: string };
+  PipelineCompleted: { jobId: string; timestamp: string };
+  PipelineFailed: { jobId: string; error: string; timestamp: string };
 }
 
 export type RenderEventKey = keyof RenderEvents;

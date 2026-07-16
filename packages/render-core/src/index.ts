@@ -1,4 +1,9 @@
 import { RenderPreset, RenderJob } from '@ai-video-editor/shared';
+import { PipelineStage, PipelineContext, PipelineConfig, CancellationToken } from './pipeline/types';
+import { CancellationTokenImpl } from './pipeline/CancellationToken';
+
+export * from './pipeline/types';
+export * from './pipeline/CancellationToken';
 
 export interface ExportFormat {
   id: string;
@@ -38,6 +43,7 @@ class RenderPluginRegistry {
   private presets = new Map<string, RenderPreset>();
   private exportFormats = new Map<string, ExportFormat>();
   private postProcessingSteps = new Map<string, PostProcessingStep>();
+  private stages = new Map<string, PipelineStage>();
 
   constructor() {
     this.registerPreset({
@@ -183,6 +189,62 @@ class RenderPluginRegistry {
 
   getAllPostProcessingSteps(): PostProcessingStep[] {
     return Array.from(this.postProcessingSteps.values());
+  }
+
+  registerStage(stage: PipelineStage) {
+    this.stages.set(stage.id, stage);
+  }
+
+  getStages(): PipelineStage[] {
+    return Array.from(this.stages.values()).sort((a, b) => a.order - b.order);
+  }
+
+  removeStage(id: string) {
+    this.stages.delete(id);
+  }
+
+  insertStageBefore(targetId: string, stage: PipelineStage) {
+    const sorted = this.getStages();
+    const targetIndex = sorted.findIndex((s) => s.id === targetId);
+    if (targetIndex === -1) {
+      this.registerStage(stage);
+      return;
+    }
+    const target = sorted[targetIndex];
+    let newOrder: number;
+    if (targetIndex === 0) {
+      newOrder = target.order - 1;
+    } else {
+      const prev = sorted[targetIndex - 1];
+      newOrder = prev.order + (target.order - prev.order) / 2;
+    }
+    const newStage = {
+      ...stage,
+      order: newOrder,
+    } as PipelineStage;
+    this.stages.set(stage.id, newStage);
+  }
+
+  insertStageAfter(targetId: string, stage: PipelineStage) {
+    const sorted = this.getStages();
+    const targetIndex = sorted.findIndex((s) => s.id === targetId);
+    if (targetIndex === -1) {
+      this.registerStage(stage);
+      return;
+    }
+    const target = sorted[targetIndex];
+    let newOrder: number;
+    if (targetIndex === sorted.length - 1) {
+      newOrder = target.order + 1;
+    } else {
+      const next = sorted[targetIndex + 1];
+      newOrder = target.order + (next.order - target.order) / 2;
+    }
+    const newStage = {
+      ...stage,
+      order: newOrder,
+    } as PipelineStage;
+    this.stages.set(stage.id, newStage);
   }
 }
 
