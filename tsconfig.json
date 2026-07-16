@@ -13,7 +13,9 @@
     "baseUrl": ".",
     "paths": {
       "@ai-video-editor/shared/*": ["packages/shared/src/*"],
-      "@ai-video-editor/ui/*": ["packages/ui/src/*"]
+      "@ai-video-editor/ui/*": ["packages/ui/src/*"],
+      "@ai-video-editor/render-core": ["packages/render-core/src/index.ts"],
+      "@ai-video-editor/render-core/*": ["packages/render-core/src/*"]
     }
   },
   "exclude": ["node_modules", "dist"]
