@@ -1,5 +1,7 @@
 import { create } from 'zustand';
-import { temporal } from 'zundo';
+import { TransactionEngine } from '../core/transactions/engine/TransactionEngine';
+import { TransactionHistory } from '../core/transactions/history/TransactionHistory';
+import { useTransactionStore } from '../core/transactions/store/transactionStore';
 
 export interface Clip {
   id: string;
@@ -41,20 +43,20 @@ interface TimelineState {
   toggleLooping: () => void;
 }
 
-export const useTimelineStore = create<TimelineState>()(
-  temporal((set) => ({
-    tracks: [
-      { id: 'v1', name: 'Video 1', type: 'video', clips: [] },
-      { id: 'v2', name: 'Video 2', type: 'video', clips: [] },
-      { id: 'a1', name: 'Audio 1', type: 'audio', clips: [] },
-    ],
-    playhead: 0,
-    zoom: 1,
-    snap: true,
-    isPlaying: false,
-    playbackRate: 1,
-    isLooping: false,
-    addClip: (trackId, clipData) =>
+export const useTimelineStore = create<TimelineState>((set) => ({
+  tracks: [
+    { id: 'v1', name: 'Video 1', type: 'video', clips: [] },
+    { id: 'v2', name: 'Video 2', type: 'video', clips: [] },
+    { id: 'a1', name: 'Audio 1', type: 'audio', clips: [] },
+  ],
+  playhead: 0,
+  zoom: 1,
+  snap: true,
+  isPlaying: false,
+  playbackRate: 1,
+  isLooping: false,
+  addClip: (trackId, clipData) => {
+    const runMutation = () =>
       set((state) => ({
         tracks: state.tracks.map((t) =>
           t.id === trackId
@@ -67,22 +69,55 @@ export const useTimelineStore = create<TimelineState>()(
               }
             : t,
         ),
-      })),
-    updateClip: (clipId, updates) =>
+      }));
+
+    const active = useTransactionStore.getState().activeTransaction;
+    if (active) {
+      runMutation();
+    } else {
+      TransactionEngine.begin('Add Clip');
+      runMutation();
+      TransactionEngine.commit();
+    }
+  },
+  updateClip: (clipId, updates) => {
+    const runMutation = () =>
       set((state) => ({
         tracks: state.tracks.map((t) => ({
           ...t,
           clips: t.clips.map((c) => (c.id === clipId ? { ...c, ...updates } : c)),
         })),
-      })),
-    deleteClip: (clipId) =>
+      }));
+
+    const active = useTransactionStore.getState().activeTransaction;
+    if (active) {
+      runMutation();
+    } else {
+      TransactionEngine.begin('Update Clip');
+      runMutation();
+      TransactionEngine.commit();
+    }
+  },
+  deleteClip: (clipId) => {
+    const runMutation = () =>
       set((state) => ({
         tracks: state.tracks.map((t) => ({
           ...t,
           clips: t.clips.filter((c) => c.id !== clipId),
         })),
-      })),
-    splitClip: (clipId, frame) =>
+      }));
+
+    const active = useTransactionStore.getState().activeTransaction;
+    if (active) {
+      runMutation();
+    } else {
+      TransactionEngine.begin('Delete Clip');
+      runMutation();
+      TransactionEngine.commit();
+    }
+  },
+  splitClip: (clipId, frame) => {
+    const runMutation = () =>
       set((state) => ({
         tracks: state.tracks.map((t) => {
           const clipIndex = t.clips.findIndex((c) => c.id === clipId);
@@ -101,12 +136,35 @@ export const useTimelineStore = create<TimelineState>()(
           newClips.push(secondClip);
           return { ...t, clips: newClips };
         }),
-      })),
-    setPlayhead: (playhead) => set({ playhead }),
-    setZoom: (zoom) => set({ zoom }),
-    toggleSnap: () => set((state) => ({ snap: !state.snap })),
-    setIsPlaying: (isPlaying) => set({ isPlaying }),
-    setPlaybackRate: (playbackRate) => set({ playbackRate }),
-    toggleLooping: () => set((state) => ({ isLooping: !state.isLooping })),
-  })),
-);
+      }));
+
+    const active = useTransactionStore.getState().activeTransaction;
+    if (active) {
+      runMutation();
+    } else {
+      TransactionEngine.begin('Split Clip');
+      runMutation();
+      TransactionEngine.commit();
+    }
+  },
+  setPlayhead: (playhead) => set({ playhead }),
+  setZoom: (zoom) => set({ zoom }),
+  toggleSnap: () => set((state) => ({ snap: !state.snap })),
+  setIsPlaying: (isPlaying) => set({ isPlaying }),
+  setPlaybackRate: (playbackRate) => set({ playbackRate }),
+  toggleLooping: () => set((state) => ({ isLooping: !state.isLooping })),
+}));
+
+// Mock temporal state to preserve backward compatibility but delegate to unified Transaction Engine!
+(useTimelineStore as any).temporal = {
+  getState: () => ({
+    undo: () => {
+      TransactionHistory.undo();
+    },
+    redo: () => {
+      TransactionHistory.redo();
+    },
+    canUndo: () => TransactionHistory.canUndo(),
+    canRedo: () => TransactionHistory.canRedo(),
+  }),
+};
