@@ -21,7 +21,9 @@
       "@ai-video-editor/project-graph": ["packages/project-graph/src/index.ts"],
       "@ai-video-editor/project-graph/*": ["packages/project-graph/src/*"],
       "@ai-video-editor/timeline-engine": ["packages/timeline-engine/src/index.ts"],
-      "@ai-video-editor/timeline-engine/*": ["packages/timeline-engine/src/*"]
+      "@ai-video-editor/timeline-engine/*": ["packages/timeline-engine/src/*"],
+      "@ai-video-editor/playback-engine": ["packages/playback-engine/src/index.ts"],
+      "@ai-video-editor/playback-engine/*": ["packages/playback-engine/src/*"]
     }
   },
   "exclude": ["node_modules", "dist"]
