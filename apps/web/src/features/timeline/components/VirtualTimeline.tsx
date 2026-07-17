@@ -2,6 +2,8 @@ import React, { useRef, useEffect, useState } from 'react';
 import { useTimelineStore } from '../store/timelineStore';
 import { useTimelineVirtualization } from '../hooks/useTimelineVirtualization';
 import { GeometryService } from '@ai-video-editor/timeline-engine';
+import { EditToolMode, NleMarker } from '../tools/types';
+import { NleShortcutService } from '../tools/shortcuts/NleShortcutService';
 import { VirtualClip, VirtualTrack } from '../types';
 
 export type TrackRenderer = (track: VirtualTrack, children: React.ReactNode) => React.ReactNode;
@@ -43,26 +45,40 @@ export const VirtualTimeline: React.FC = () => {
   const {
     clips,
     selectedClipIds,
+    toolMode,
+    snappingConfig,
+    nleMarkers,
+    playbackSpeed,
+    trackStates,
     setViewport,
     selectClips,
+    setToolMode,
+    setSnappingConfig,
+    addNleMarker,
+    removeNleMarker,
+    setPlaybackSpeed,
+    setTrackState,
     startDrag,
     updateDrag,
     endDrag,
     moveClip,
     resizeClip,
+    razorSplitClip,
+    rippleEditClip,
+    rollEditClips,
+    slipEditClip,
+    slideEditClip,
   } = useTimelineStore();
 
   const [fps, setFps] = useState(60);
   const [scaleFactor, setScaleFactor] = useState(0.5); // pxPerFrame
 
-  // 1. Zoom handler
   const handleZoom = (newScale: number) => {
     const scale = Math.max(0.1, Math.min(newScale, 5));
     setScaleFactor(scale);
     setViewport({ pxPerFrame: scale });
   };
 
-  // 2. Measure scroll offsets
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const target = e.currentTarget;
     setViewport({
@@ -71,7 +87,41 @@ export const VirtualTimeline: React.FC = () => {
     });
   };
 
-  // 3. Keep track of FPS during active drag/pan animations
+  // 1. Keyboard shortcuts & J-K-L playback listener
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Toggle Edit tool modes
+      const mode = NleShortcutService.getModeFromKey(e.key);
+      if (mode) {
+        setToolMode(mode);
+        return;
+      }
+
+      // Playback speed triggers: J-K-L
+      if (e.key === 'j' || e.key === 'k' || e.key === 'l') {
+        const speed = NleShortcutService.handleJkl(e.key as any);
+        setPlaybackSpeed(speed);
+        return;
+      }
+
+      // Mark in-point (I) & out-point (O)
+      if (e.key.toLowerCase() === 'i') {
+        const currentFrame = GeometryService.xToFrame(viewport.scrollLeft, scaleFactor);
+        NleShortcutService.setInPoint(currentFrame);
+        alert(`Mark In-point set at frame ${currentFrame}`);
+      }
+      if (e.key.toLowerCase() === 'o') {
+        const currentFrame = GeometryService.xToFrame(viewport.scrollLeft + viewport.width, scaleFactor);
+        NleShortcutService.setOutPoint(currentFrame);
+        alert(`Mark Out-point set at frame ${currentFrame}`);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [viewport, scaleFactor]);
+
+  // FPS ticker
   useEffect(() => {
     let lastTime = performance.now();
     let frameCount = 0;
@@ -92,7 +142,7 @@ export const VirtualTimeline: React.FC = () => {
     return () => cancelAnimationFrame(animId);
   }, []);
 
-  // 4. Drag & Drop interactions
+  // 2. Drag / NLE Tool Action Handlers
   const [activeDragId, setActiveDragId] = useState<string | null>(null);
   const [dragStartFrame, setDragStartFrame] = useState(0);
 
@@ -101,13 +151,19 @@ export const VirtualTimeline: React.FC = () => {
     const clip = clips.find(c => c.id === clipId);
     if (!clip) return;
 
-    selectClips([clipId]);
-
     const rect = e.currentTarget.getBoundingClientRect();
     const clickXOffset = e.clientX - rect.left;
-    const clickedFrameOffset = GeometryService.xToFrame(clickXOffset, viewport.pxPerFrame);
+    const clickedFrame = GeometryService.xToFrame(clickXOffset, viewport.pxPerFrame);
 
-    startDrag(clipId, clickedFrameOffset);
+    // If Razor Tool, perform instantaneous split and return
+    if (toolMode === 'razor') {
+      const splitAbsoluteFrame = clip.startFrame + clickedFrame;
+      razorSplitClip(clipId, splitAbsoluteFrame);
+      return;
+    }
+
+    selectClips([clipId]);
+    startDrag(clipId, clickedFrame);
     setActiveDragId(clipId);
     setDragStartFrame(clip.startFrame);
   };
@@ -117,14 +173,10 @@ export const VirtualTimeline: React.FC = () => {
 
     const containerRect = containerRef.current.getBoundingClientRect();
     const currentX = e.clientX - containerRect.left + viewport.scrollLeft;
-
-    // Convert clientX back into absolute frame offset
     const currentFrame = GeometryService.xToFrame(currentX, viewport.pxPerFrame);
 
-    // Find track boundary under mouse clientY
     const currentY = e.clientY - containerRect.top + viewport.scrollTop;
 
-    // Simple vertical track mapping based on track coordinates
     let targetTrackId: string | undefined = undefined;
     for (const tr of tracks) {
       if (currentY >= tr.yOffset && currentY < tr.yOffset + tr.height) {
@@ -133,7 +185,36 @@ export const VirtualTimeline: React.FC = () => {
       }
     }
 
-    updateDrag(currentFrame, targetTrackId);
+    // Adapt movement based on active NLE Tool Mode!
+    if (toolMode === 'select') {
+      updateDrag(currentFrame, targetTrackId);
+    } else if (toolMode === 'ripple') {
+      // Ripple dragging shifts preceding/subsequent on the same track
+      const delta = currentFrame - dragStartFrame;
+      rippleEditClip(activeDragId, delta, 'end');
+    } else if (toolMode === 'roll') {
+      // Roll edit expects an adjacent clip, mock with A & B
+      const idx = clips.findIndex(c => c.id === activeDragId);
+      const clipA = clips[idx];
+      const clipB = clips[idx + 1];
+      if (clipA && clipB) {
+        const delta = currentFrame - (clipA.startFrame + clipA.duration);
+        rollEditClips(clipA.id, clipB.id, delta);
+      }
+    } else if (toolMode === 'slip') {
+      // Slip shifts source media frames internally
+      const delta = currentFrame - dragStartFrame;
+      slipEditClip(activeDragId, delta);
+    } else if (toolMode === 'slide') {
+      // Slide shifts target clip, trimming clip A & extending B
+      const idx = clips.findIndex(c => c.id === activeDragId);
+      const clipA = clips[idx - 1];
+      const clipB = clips[idx + 1];
+      if (clipA && clipB) {
+        const delta = currentFrame - dragStartFrame;
+        slideEditClip(activeDragId, delta, clipA.id, clipB.id);
+      }
+    }
   };
 
   const handleMouseUp = () => {
@@ -141,6 +222,19 @@ export const VirtualTimeline: React.FC = () => {
       endDrag();
       setActiveDragId(null);
     }
+  };
+
+  // Add marker helper
+  const handleAddMarker = () => {
+    const id = `marker_${Date.now()}`;
+    const frame = GeometryService.xToFrame(viewport.scrollLeft, scaleFactor);
+    addNleMarker({
+      id,
+      name: `Marker ${nleMarkers.length + 1}`,
+      frame,
+      type: 'timeline',
+      color: '#ef5350',
+    });
   };
 
   return (
@@ -159,17 +253,48 @@ export const VirtualTimeline: React.FC = () => {
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
     >
+      {/* NLE Toolbar */}
+      <div style={{ display: 'flex', gap: '8px', backgroundColor: '#102031', padding: '8px', borderRadius: '4px', marginBottom: '16px', flexWrap: 'wrap', alignItems: 'center' }}>
+        <span style={{ fontSize: '11px', fontWeight: 'bold', color: '#b2bac2', marginRight: '4px' }}>NLE Tools:</span>
+        {(['select', 'razor', 'ripple', 'roll', 'slip', 'slide'] as EditToolMode[]).map(mode => (
+          <button
+            key={mode}
+            onClick={() => setToolMode(mode)}
+            style={{
+              padding: '4px 8px',
+              fontSize: '11px',
+              backgroundColor: toolMode === mode ? '#3b82f6' : '#1e293b',
+              color: '#ffffff',
+              border: 'none',
+              borderRadius: '3px',
+              cursor: 'pointer',
+              textTransform: 'capitalize',
+            }}
+          >
+            {mode} Tool
+          </button>
+        ))}
+
+        <button onClick={handleAddMarker} style={{ padding: '4px 8px', fontSize: '11px', backgroundColor: '#ef5350', border: 'none', borderRadius: '3px', color: '#fff', cursor: 'pointer', marginLeft: 'auto' }}>
+          Add Marker
+        </button>
+
+        <span style={{ fontSize: '11px', color: '#fbbf24', marginLeft: '8px' }}>
+          Playback: {playbackSpeed === 0 ? '⏸ Stopped' : `▶ ${playbackSpeed}x`}
+        </span>
+      </div>
+
       {/* Top dashboard metadata */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
         <div>
-          <h2 style={{ margin: 0, fontSize: '20px' }}>Virtual Timeline Engine</h2>
+          <h2 style={{ margin: 0, fontSize: '20px' }}>Upgraded Virtual NLE Timeline</h2>
           <div style={{ fontSize: '11px', color: '#b2bac2', marginTop: '4px' }}>
-            Horizontal + Vertical virtual scroll window culling • <strong>{fps} FPS target</strong>
+            60 FPS target • Multi-clip grouping • Keyboard-driven J-K-L playback
           </div>
         </div>
         <div style={{ display: 'flex', gap: '16px', fontSize: '12px' }}>
           <div>Visible Clips: <strong>{visibleClips.length}</strong> / {clips.length}</div>
-          <div>Visible Tracks: <strong>{tracks.length}</strong> / {totalTracksCount}</div>
+          <div>Markers: <strong>{nleMarkers.length}</strong></div>
         </div>
       </div>
 
@@ -187,6 +312,15 @@ export const VirtualTimeline: React.FC = () => {
             style={{ width: '120px' }}
           />
           <span>{Math.round(scaleFactor * 100)}%</span>
+        </div>
+
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center', fontSize: '11px' }}>
+          <input
+            type="checkbox"
+            checked={snappingConfig.enabled}
+            onChange={e => setSnappingConfig({ enabled: e.target.checked })}
+          />
+          <span>Snapping</span>
         </div>
 
         <div style={{ marginLeft: 'auto', display: 'flex', gap: '10px' }}>
@@ -242,6 +376,27 @@ export const VirtualTimeline: React.FC = () => {
           borderRadius: '4px',
         }}
       >
+        {/* Draw Markers Overlays */}
+        {nleMarkers.map(marker => {
+          const x = GeometryService.frameToX(marker.frame, scaleFactor);
+          return (
+            <div
+              key={marker.id}
+              onClick={() => removeNleMarker(marker.id)}
+              style={{
+                position: 'absolute',
+                left: `${x}px`,
+                width: '2px',
+                height: '100%',
+                backgroundColor: marker.color || '#ef5350',
+                zIndex: 20,
+                cursor: 'pointer',
+              }}
+              title={`${marker.name}: Click to remove`}
+            />
+          );
+        })}
+
         {/* Virtual track grid */}
         <div
           style={{
@@ -252,11 +407,18 @@ export const VirtualTimeline: React.FC = () => {
         >
           {/* Render Tracks (only visible ones culling vertical tracks) */}
           {tracks.map(track => {
+            const state = trackStates[track.id] || { isLocked: false, isMuted: false, isSolo: false, isHidden: false };
+            if (state.isHidden) return null;
+
             const children = (
               <>
                 {/* Track label */}
-                <div style={{ position: 'sticky', left: 0, width: '120px', height: '100%', backgroundColor: '#102031', borderRight: '1px solid #1e293b', zIndex: 10, fontSize: '11px', fontWeight: 'bold', display: 'flex', alignItems: 'center', paddingLeft: '8px', pointerEvents: 'none' }}>
-                  {track.name}
+                <div style={{ position: 'sticky', left: 0, width: '120px', height: '100%', backgroundColor: '#102031', borderRight: '1px solid #1e293b', zIndex: 10, fontSize: '11px', fontWeight: 'bold', display: 'flex', alignItems: 'center', padding: '0 8px', justifyContent: 'space-between', boxSizing: 'border-box', pointerEvents: 'auto' }}>
+                  <span>{track.name}</span>
+                  <div style={{ display: 'flex', gap: '3px' }}>
+                    <button onClick={() => setTrackState(track.id, { isMuted: !state.isMuted })} style={{ fontSize: '9px', padding: '1px 3px', backgroundColor: state.isMuted ? '#ef5350' : '#1e293b', border: 'none', color: '#fff', cursor: 'pointer' }}>M</button>
+                    <button onClick={() => setTrackState(track.id, { isSolo: !state.isSolo })} style={{ fontSize: '9px', padding: '1px 3px', backgroundColor: state.isSolo ? '#fbbf24' : '#1e293b', border: 'none', color: '#fff', cursor: 'pointer' }}>S</button>
+                  </div>
                 </div>
 
                 {/* Visible Clips inside this track */}
@@ -282,7 +444,7 @@ export const VirtualTimeline: React.FC = () => {
                           borderRadius: '4px',
                           border: isSelected ? '2px solid #ffffff' : '1px solid rgba(0,0,0,0.2)',
                           boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
-                          cursor: 'grab',
+                          cursor: toolMode === 'razor' ? 'cell' : 'grab',
                           display: 'flex',
                           alignItems: 'center',
                           padding: '0 8px',
