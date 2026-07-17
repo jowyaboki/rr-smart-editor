@@ -15,7 +15,11 @@
       "@ai-video-editor/shared/*": ["packages/shared/src/*"],
       "@ai-video-editor/ui/*": ["packages/ui/src/*"],
       "@ai-video-editor/render-core": ["packages/render-core/src/index.ts"],
-      "@ai-video-editor/render-core/*": ["packages/render-core/src/*"]
+      "@ai-video-editor/render-core/*": ["packages/render-core/src/*"],
+      "@ai-video-editor/design-system": ["packages/design-system/src/index.ts"],
+      "@ai-video-editor/design-system/*": ["packages/design-system/src/*"],
+      "@ai-video-editor/project-graph": ["packages/project-graph/src/index.ts"],
+      "@ai-video-editor/project-graph/*": ["packages/project-graph/src/*"]
     }
   },
   "exclude": ["node_modules", "dist"]
