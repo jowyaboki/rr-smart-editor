@@ -19,7 +19,9 @@
       "@ai-video-editor/design-system": ["packages/design-system/src/index.ts"],
       "@ai-video-editor/design-system/*": ["packages/design-system/src/*"],
       "@ai-video-editor/project-graph": ["packages/project-graph/src/index.ts"],
-      "@ai-video-editor/project-graph/*": ["packages/project-graph/src/*"]
+      "@ai-video-editor/project-graph/*": ["packages/project-graph/src/*"],
+      "@ai-video-editor/timeline-engine": ["packages/timeline-engine/src/index.ts"],
+      "@ai-video-editor/timeline-engine/*": ["packages/timeline-engine/src/*"]
     }
   },
   "exclude": ["node_modules", "dist"]
