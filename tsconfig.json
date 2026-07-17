@@ -23,7 +23,9 @@
       "@ai-video-editor/timeline-engine": ["packages/timeline-engine/src/index.ts"],
       "@ai-video-editor/timeline-engine/*": ["packages/timeline-engine/src/*"],
       "@ai-video-editor/playback-engine": ["packages/playback-engine/src/index.ts"],
-      "@ai-video-editor/playback-engine/*": ["packages/playback-engine/src/*"]
+      "@ai-video-editor/playback-engine/*": ["packages/playback-engine/src/*"],
+      "@ai-video-editor/media-pipeline": ["packages/media-pipeline/src/index.ts"],
+      "@ai-video-editor/media-pipeline/*": ["packages/media-pipeline/src/*"]
     }
   },
   "exclude": ["node_modules", "dist"]
