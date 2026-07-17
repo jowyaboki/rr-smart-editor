@@ -1,6 +1,8 @@
 import { create } from 'zustand';
 import { TimelineViewport, VirtualTrack, VirtualClip, TimelineMarker, VirtualKeyframe } from '../types';
+import { EditToolMode, SnappingConfig, NleMarker, TrackStateOverrides } from '../tools/types';
 import { TimelineIndexService, GeometryService, DirtyRegionRenderer } from '@ai-video-editor/timeline-engine';
+import { NleToolService, NleSnappingService, NleGroupingService } from '../tools/services';
 
 export const webTimelineIndex = new TimelineIndexService(500);
 export const webTimelineRenderer = new DirtyRegionRenderer(1000);
@@ -12,6 +14,13 @@ interface TimelineState {
   markers: TimelineMarker[];
   keyframes: VirtualKeyframe[];
   selectedClipIds: string[];
+
+  // NLE extended state
+  toolMode: EditToolMode;
+  snappingConfig: SnappingConfig;
+  nleMarkers: NleMarker[];
+  playbackSpeed: number;
+  trackStates: Record<string, TrackStateOverrides>;
 
   // Dragging interaction state
   isDragging: boolean;
@@ -25,10 +34,25 @@ interface TimelineState {
   setMarkers: (markers: TimelineMarker[]) => void;
   setKeyframes: (keyframes: VirtualKeyframe[]) => void;
 
+  // NLE tools setters
+  setToolMode: (mode: EditToolMode) => void;
+  setSnappingConfig: (config: Partial<SnappingConfig>) => void;
+  addNleMarker: (marker: NleMarker) => void;
+  removeNleMarker: (id: string) => void;
+  setPlaybackSpeed: (speed: number) => void;
+  setTrackState: (trackId: string, overrides: Partial<TrackStateOverrides>) => void;
+
   // Interactions
   selectClips: (ids: string[]) => void;
   moveClip: (clipId: string, newStartFrame: number, newTrackId?: string) => void;
   resizeClip: (clipId: string, newDuration: number) => void;
+
+  // NLE Clip Operations (executed through virtual tools)
+  razorSplitClip: (clipId: string, splitFrame: number) => void;
+  rippleEditClip: (clipId: string, deltaFrames: number, edge: 'start' | 'end') => void;
+  rollEditClips: (clipAId: string, clipBId: string, deltaFrames: number) => void;
+  slipEditClip: (clipId: string, deltaFrames: number) => void;
+  slideEditClip: (clipId: string, deltaFrames: number, clipAId: string, clipBId: string) => void;
 
   // Drag state setters
   startDrag: (clipId: string, offsetFrame: number) => void;
@@ -43,7 +67,7 @@ export const useTimelineStore = create<TimelineState>((set, get) => {
       scrollTop: 0,
       width: 800,
       height: 400,
-      pxPerFrame: 0.5, // horizontal zoom level: pixels per frame
+      pxPerFrame: 0.5,
     },
     tracks: [],
     clips: [],
@@ -51,15 +75,28 @@ export const useTimelineStore = create<TimelineState>((set, get) => {
     keyframes: [],
     selectedClipIds: [],
 
+    // Default NLE settings
+    toolMode: 'select',
+    snappingConfig: {
+      enabled: true,
+      snapToPlayhead: true,
+      snapToMarkers: true,
+      snapToClipEdges: true,
+      snapToTransitions: false,
+      snapToKeyframes: false,
+      snapToAudioPeaks: false,
+      snapThreshold: 8,
+    },
+    nleMarkers: [],
+    playbackSpeed: 0,
+    trackStates: {},
+
     isDragging: false,
     draggedClipId: null,
     dragOffsetFrame: 0,
 
     setViewport: (newViewport) => {
-      set(state => {
-        const viewport = { ...state.viewport, ...newViewport };
-        return { viewport };
-      });
+      set(state => ({ viewport: { ...state.viewport, ...newViewport } }));
     },
 
     setTracks: (tracks) => {
@@ -82,25 +119,51 @@ export const useTimelineStore = create<TimelineState>((set, get) => {
       webTimelineIndex.rebuildIndex(get().tracks, get().clips, get().markers, keyframes);
     },
 
+    setToolMode: (toolMode) => set({ toolMode }),
+
+    setSnappingConfig: (config) => {
+      set(state => ({ snappingConfig: { ...state.snappingConfig, ...config } }));
+    },
+
+    addNleMarker: (marker) => {
+      set(state => ({ nleMarkers: [...state.nleMarkers, marker] }));
+    },
+
+    removeNleMarker: (id) => {
+      set(state => ({ nleMarkers: state.nleMarkers.filter(m => m.id !== id) }));
+    },
+
+    setPlaybackSpeed: (playbackSpeed) => set({ playbackSpeed }),
+
+    setTrackState: (trackId, overrides) => {
+      set(state => {
+        const current = state.trackStates[trackId] || { isLocked: false, isMuted: false, isSolo: false, isHidden: false };
+        return {
+          trackStates: {
+            ...state.trackStates,
+            [trackId]: { ...current, ...overrides },
+          },
+        };
+      });
+    },
+
     selectClips: (ids) => {
-      set({ selectedClipIds: ids });
-      webTimelineIndex.setSelections(ids);
+      const expanded = NleGroupingService.expandSelection(ids);
+      set({ selectedClipIds: expanded });
+      webTimelineIndex.setSelections(expanded);
     },
 
     moveClip: (clipId, newStartFrame, newTrackId) => {
       set(state => {
-        const clips = state.clips.map(clip => {
-          if (clip.id === clipId) {
-            return {
-              ...clip,
-              startFrame: Math.max(0, newStartFrame),
-              trackId: newTrackId || clip.trackId,
-            };
-          }
-          return clip;
-        });
+        const target = state.clips.find(c => c.id === clipId);
+        if (!target) return {};
 
-        // Inform index and mark dirty for partial invalidation!
+        const delta = newStartFrame - target.startFrame;
+
+        // Apply grouped selections movement together!
+        const clips = NleGroupingService.shiftClipsTogether(state.selectedClipIds, delta, state.clips);
+
+        // Inform index and mark dirty
         webTimelineIndex.deindexClip(clipId);
         const updatedClip = clips.find(c => c.id === clipId);
         if (updatedClip) {
@@ -135,6 +198,64 @@ export const useTimelineStore = create<TimelineState>((set, get) => {
       });
     },
 
+    razorSplitClip: (clipId, splitFrame) => {
+      set(state => {
+        const target = state.clips.find(c => c.id === clipId);
+        if (!target) return {};
+
+        try {
+          const { left, right } = NleToolService.splitClip(target, splitFrame);
+          const filtered = state.clips.filter(c => c.id !== clipId);
+          const clips = [...filtered, left, right];
+
+          webTimelineIndex.deindexClip(clipId);
+          webTimelineIndex.indexClip(left);
+          webTimelineIndex.indexClip(right);
+
+          return { clips, selectedClipIds: [left.id] };
+        } catch (e) {
+          console.error(e);
+          return {};
+        }
+      });
+    },
+
+    rippleEditClip: (clipId, deltaFrames, edge) => {
+      set(state => {
+        const clips = NleToolService.applyRippleEdit(clipId, deltaFrames, edge, state.clips);
+
+        webTimelineIndex.deindexClip(clipId);
+        const updated = clips.find(c => c.id === clipId);
+        if (updated) {
+          webTimelineIndex.indexClip(updated);
+          webTimelineRenderer.markClipDirty(clipId);
+        }
+
+        return { clips };
+      });
+    },
+
+    rollEditClips: (clipAId, clipBId, deltaFrames) => {
+      set(state => {
+        const clips = NleToolService.applyRollEdit(clipAId, clipBId, deltaFrames, state.clips);
+        return { clips };
+      });
+    },
+
+    slipEditClip: (clipId, deltaFrames) => {
+      set(state => {
+        const clips = NleToolService.applySlipEdit(clipId, deltaFrames, state.clips);
+        return { clips };
+      });
+    },
+
+    slideEditClip: (clipId, deltaFrames, clipAId, clipBId) => {
+      set(state => {
+        const clips = NleToolService.applySlideEdit(clipId, deltaFrames, clipAId, clipBId, state.clips);
+        return { clips };
+      });
+    },
+
     startDrag: (clipId, offsetFrame) => {
       webTimelineRenderer.setInteracting(true);
       set({
@@ -145,17 +266,22 @@ export const useTimelineStore = create<TimelineState>((set, get) => {
     },
 
     updateDrag: (currentFrame, newTrackId) => {
-      const { draggedClipId, dragOffsetFrame, clips } = get();
+      const { draggedClipId, dragOffsetFrame, clips, snappingConfig, markers, keyframes } = get();
       if (!draggedClipId) return;
 
       const clip = clips.find(c => c.id === draggedClipId);
       if (!clip) return;
 
-      // Apply drag target calculation
       let targetFrame = Math.max(0, currentFrame - dragOffsetFrame);
 
-      // Snapping candidate calculation: snap to other clips start/end
-      targetFrame = GeometryService.getSnapFrame(targetFrame, clips.filter(c => c.id !== draggedClipId), 8);
+      // Perform NLE Snapping
+      targetFrame = NleSnappingService.calculateSnapFrame(
+        targetFrame,
+        snappingConfig,
+        clips.filter(c => c.id !== draggedClipId),
+        markers,
+        keyframes
+      );
 
       get().moveClip(draggedClipId, targetFrame, newTrackId);
     },
