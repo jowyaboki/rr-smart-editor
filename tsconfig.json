@@ -33,7 +33,9 @@
       "@ai-video-editor/extension-sdk": ["packages/extension-sdk/src/index.ts"],
       "@ai-video-editor/extension-sdk/*": ["packages/extension-sdk/src/*"],
       "@ai-video-editor/package-manager": ["packages/package-manager/src/index.ts"],
-      "@ai-video-editor/package-manager/*": ["packages/package-manager/src/*"]
+      "@ai-video-editor/package-manager/*": ["packages/package-manager/src/*"],
+      "@ai-video-editor/observability": ["packages/observability/src/index.ts"],
+      "@ai-video-editor/observability/*": ["packages/observability/src/*"]
     }
   },
   "exclude": ["node_modules", "dist"]
