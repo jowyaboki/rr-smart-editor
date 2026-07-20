@@ -1,90 +1,38 @@
-import { useCallback, useMemo } from 'react';
 import { useCollaborationStore } from '../store/collaborationStore';
-import { ReviewThread } from '@ai-video-editor/shared';
+import { webCollaborationService } from '../services';
 
-export const useCollaboration = (projectId: string) => {
+export function useCollaboration() {
   const store = useCollaborationStore();
 
-  // Filter threads based on project, selection, and filters query
-  const filteredThreads = useMemo(() => {
-    return store.threads.filter((t) => {
-      // Must match active project ID
-      if (t.projectId !== projectId) return false;
+  const joinSession = (sessionId: string, projectId: string, participants: any[]) => {
+    webCollaborationService.startSession(sessionId, projectId, participants);
+    store.joinSession(sessionId, projectId, participants);
+  };
 
-      // Status filters
-      if (store.filters.status === 'resolved' && !t.resolved) return false;
-      if (store.filters.status === 'unresolved' && t.resolved) return false;
+  const publishOperation = (op: any) => {
+    const res = webCollaborationService.sync.handleOperation(op);
+    if (res.status === 'broadcasted') {
+      store.appendOperation(op);
+    }
+  };
 
-      // Target Type filters
-      if (store.filters.targetType && t.targetType !== store.filters.targetType) return false;
-
-      // Text search query
-      if (store.filters.searchQuery) {
-        const query = store.filters.searchQuery.toLowerCase();
-        const matchesTitle = t.title.toLowerCase().includes(query);
-        const matchesComments = t.comments.some((c) => c.content.toLowerCase().includes(query));
-        return matchesTitle || matchesComments;
-      }
-
-      return true;
-    });
-  }, [store.threads, store.filters, projectId]);
-
-  // Project annotations
-  const projectAnnotations = useMemo(() => {
-    return store.annotations.filter((a) => a.projectId === projectId);
-  }, [store.annotations, projectId]);
+  const toggleConnectionState = (online: boolean) => {
+    store.setConnected(online);
+    const flushedOps = webCollaborationService.sync.setConnectionState(online);
+    if (online && flushedOps.length > 0) {
+      flushedOps.forEach(op => store.appendOperation(op));
+    }
+  };
 
   return {
-    threads: filteredThreads,
-    annotations: projectAnnotations,
-    selectedThreadId: store.selectedThreadId,
-    reviewStatus: store.reviewStatus,
-    filters: store.filters,
-
-    // Thread Actions
-    addThread: useCallback(
-      (params: {
-        targetType: ReviewThread['targetType'];
-        targetId: string;
-        title: string;
-        authorId: string;
-        authorName: string;
-        content: string;
-      }) => {
-        return store.addThread({ ...params, projectId });
-      },
-      [store.addThread, projectId],
-    ),
-
-    addReply: store.addReply,
-    resolveThread: store.resolveThread,
-    reopenThread: store.reopenThread,
-    deleteThread: store.deleteThread,
-
-    // Annotation Actions
-    addAnnotation: useCallback(
-      (params: {
-        type: 'marker' | 'frame' | 'region' | 'text';
-        timeStart: number;
-        timeEnd?: number;
-        label: string;
-        color?: string;
-        priority?: 'low' | 'medium' | 'high';
-        authorId: string;
-      }) => {
-        return store.addAnnotation({ ...params, projectId });
-      },
-      [store.addAnnotation, projectId],
-    ),
-
-    deleteAnnotation: store.deleteAnnotation,
-
-    // UI & Config
-    setSelectedThreadId: store.setSelectedThreadId,
-    setFilters: store.setFilters,
-    setReviewStatus: store.setReviewStatus,
-    exportData: store.exportData,
-    importData: store.importData,
+    sessionId: store.sessionId,
+    projectId: store.projectId,
+    participants: store.participants,
+    operations: store.operations,
+    isConnected: store.isConnected,
+    joinSession,
+    leaveSession: store.leaveSession,
+    publishOperation,
+    toggleConnectionState,
   };
-};
+}
