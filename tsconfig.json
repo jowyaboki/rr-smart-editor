@@ -25,7 +25,11 @@
       "@ai-video-editor/playback-engine": ["packages/playback-engine/src/index.ts"],
       "@ai-video-editor/playback-engine/*": ["packages/playback-engine/src/*"],
       "@ai-video-editor/media-pipeline": ["packages/media-pipeline/src/index.ts"],
-      "@ai-video-editor/media-pipeline/*": ["packages/media-pipeline/src/*"]
+      "@ai-video-editor/media-pipeline/*": ["packages/media-pipeline/src/*"],
+      "@ai-video-editor/effects-engine": ["packages/effects-engine/src/index.ts"],
+      "@ai-video-editor/effects-engine/*": ["packages/effects-engine/src/*"],
+      "@ai-video-editor/agent-runtime": ["packages/agent-runtime/src/index.ts"],
+      "@ai-video-editor/agent-runtime/*": ["packages/agent-runtime/src/*"]
     }
   },
   "exclude": ["node_modules", "dist"]
