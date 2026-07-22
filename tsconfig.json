@@ -47,7 +47,11 @@
       "@ai-video-editor/api-sdk": ["packages/api-sdk/src/index.ts"],
       "@ai-video-editor/api-sdk/*": ["packages/api-sdk/src/*"],
       "@ai-video-editor/api-client": ["packages/api-client/src/index.ts"],
-      "@ai-video-editor/api-client/*": ["packages/api-client/src/*"]
+      "@ai-video-editor/api-client/*": ["packages/api-client/src/*"],
+      "@ai-video-editor/workspace-core": ["packages/workspace-core/src/index.ts"],
+      "@ai-video-editor/workspace-core/*": ["packages/workspace-core/src/*"],
+      "@ai-video-editor/ai-copilot": ["packages/ai-copilot/src/index.ts"],
+      "@ai-video-editor/ai-copilot/*": ["packages/ai-copilot/src/*"]
     }
   },
   "exclude": ["node_modules", "dist"]
