@@ -24,6 +24,8 @@
     "@ai-video-editor/template-engine": "*",
     "@ai-video-editor/dam": "*",
     "@ai-video-editor/workflow-designer": "*",
+    "@ai-video-editor/api-sdk": "*",
+    "@ai-video-editor/api-client": "*",
     "@remotion/player": "4.0.0",
     "@tanstack/react-query": "^4.29.0",
     "d3": "^7.8.0",
