@@ -41,7 +41,9 @@
       "@ai-video-editor/template-engine": ["packages/template-engine/src/index.ts"],
       "@ai-video-editor/template-engine/*": ["packages/template-engine/src/*"],
       "@ai-video-editor/dam": ["packages/dam/src/index.ts"],
-      "@ai-video-editor/dam/*": ["packages/dam/src/*"]
+      "@ai-video-editor/dam/*": ["packages/dam/src/*"],
+      "@ai-video-editor/workflow-designer": ["packages/workflow-designer/src/index.ts"],
+      "@ai-video-editor/workflow-designer/*": ["packages/workflow-designer/src/*"]
     }
   },
   "exclude": ["node_modules", "dist"]
