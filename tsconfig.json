@@ -43,7 +43,11 @@
       "@ai-video-editor/dam": ["packages/dam/src/index.ts"],
       "@ai-video-editor/dam/*": ["packages/dam/src/*"],
       "@ai-video-editor/workflow-designer": ["packages/workflow-designer/src/index.ts"],
-      "@ai-video-editor/workflow-designer/*": ["packages/workflow-designer/src/*"]
+      "@ai-video-editor/workflow-designer/*": ["packages/workflow-designer/src/*"],
+      "@ai-video-editor/api-sdk": ["packages/api-sdk/src/index.ts"],
+      "@ai-video-editor/api-sdk/*": ["packages/api-sdk/src/*"],
+      "@ai-video-editor/api-client": ["packages/api-client/src/index.ts"],
+      "@ai-video-editor/api-client/*": ["packages/api-client/src/*"]
     }
   },
   "exclude": ["node_modules", "dist"]
