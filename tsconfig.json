@@ -37,7 +37,9 @@
       "@ai-video-editor/observability": ["packages/observability/src/index.ts"],
       "@ai-video-editor/observability/*": ["packages/observability/src/*"],
       "@ai-video-editor/collaboration": ["packages/collaboration/src/index.ts"],
-      "@ai-video-editor/collaboration/*": ["packages/collaboration/src/*"]
+      "@ai-video-editor/collaboration/*": ["packages/collaboration/src/*"],
+      "@ai-video-editor/template-engine": ["packages/template-engine/src/index.ts"],
+      "@ai-video-editor/template-engine/*": ["packages/template-engine/src/*"]
     }
   },
   "exclude": ["node_modules", "dist"]
