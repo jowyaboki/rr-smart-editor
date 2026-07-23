@@ -787,10 +787,10 @@
           "height": 2160
         }
       },
-      "lastHeartbeat": "2026-07-23T21:53:36.643Z",
+      "lastHeartbeat": "2026-07-23T21:54:01.645Z",
       "systemInfo": {
-        "cpuUsage": 16,
-        "memoryUsage": 57,
+        "cpuUsage": 26,
+        "memoryUsage": 67,
         "platform": "win32",
         "arch": "x64"
       }
