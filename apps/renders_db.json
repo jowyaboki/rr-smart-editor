@@ -563,13 +563,205 @@
         }
       ],
       "completedAt": "2026-07-16T22:22:07.973Z"
+    },
+    "job_shn2kfiow": {
+      "id": "job_shn2kfiow",
+      "projectId": "d6d5d571-cae0-42a4-815a-e15752fc48a9",
+      "timeline": {
+        "zoom": 1,
+        "tracks": [],
+        "playhead": 0
+      },
+      "priority": "normal",
+      "status": "completed",
+      "progress": 100,
+      "createdAt": "2026-07-22T17:16:02.536Z",
+      "updatedAt": "2026-07-22T17:16:06.618Z",
+      "preset": "mp4-1080p",
+      "settings": {
+        "format": "mp4",
+        "codec": "h264",
+        "resolution": {
+          "width": 1920,
+          "height": 1080
+        },
+        "fps": 30
+      },
+      "dependencies": [],
+      "logs": [
+        "Job enqueued with priority normal",
+        "[2026-07-22T17:16:03.225Z] [Stage: VALIDATE] Validating project timeline and settings...",
+        "[2026-07-22T17:16:03.426Z] [Stage: PREPARE] Preparing assets and scratch disk space...",
+        "[2026-07-22T17:16:03.684Z] [Stage: BUILD_COMPOSITION] Bundling Remotion code and parsing clips...",
+        "[2026-07-22T17:16:03.987Z] [Stage: ALLOCATE_WORKER] Allocating worker local-worker-1...",
+        "[2026-07-22T17:16:03.989Z] Entering Render stage: Evaluation and rasterization",
+        "[2026-07-22T17:16:03.989Z] Rendered frame 1/100 - FPS: 10 - ETA: 10s",
+        "[2026-07-22T17:16:04.008Z] Rendered frame 2/100 - FPS: 105.3 - ETA: 1s",
+        "[2026-07-22T17:16:04.024Z] Rendered frame 3/100 - FPS: 85.7 - ETA: 2s",
+        "[2026-07-22T17:16:04.040Z] Rendered frame 4/100 - FPS: 78.4 - ETA: 2s",
+        "[2026-07-22T17:16:04.055Z] Rendered frame 5/100 - FPS: 75.8 - ETA: 2s",
+        "[2026-07-22T17:16:04.070Z] Rendered frame 6/100 - FPS: 74.1 - ETA: 2s",
+        "[2026-07-22T17:16:04.086Z] Rendered frame 7/100 - FPS: 72.2 - ETA: 2s",
+        "[2026-07-22T17:16:04.101Z] Rendered frame 8/100 - FPS: 71.4 - ETA: 2s",
+        "[2026-07-22T17:16:04.119Z] Rendered frame 9/100 - FPS: 69.2 - ETA: 2s",
+        "[2026-07-22T17:16:04.135Z] Rendered frame 10/100 - FPS: 68.5 - ETA: 2s",
+        "[2026-07-22T17:16:04.153Z] Rendered frame 11/100 - FPS: 67.1 - ETA: 2s",
+        "[2026-07-22T17:16:04.170Z] Rendered frame 12/100 - FPS: 66.3 - ETA: 2s",
+        "[2026-07-22T17:16:04.187Z] Rendered frame 13/100 - FPS: 65.7 - ETA: 2s",
+        "[2026-07-22T17:16:04.204Z] Rendered frame 14/100 - FPS: 65.1 - ETA: 2s",
+        "[2026-07-22T17:16:04.220Z] Rendered frame 15/100 - FPS: 64.9 - ETA: 2s",
+        "[2026-07-22T17:16:04.236Z] Rendered frame 16/100 - FPS: 64.8 - ETA: 2s",
+        "[2026-07-22T17:16:04.252Z] Rendered frame 17/100 - FPS: 64.6 - ETA: 2s",
+        "[2026-07-22T17:16:04.268Z] Rendered frame 18/100 - FPS: 64.5 - ETA: 2s",
+        "[2026-07-22T17:16:04.285Z] Rendered frame 19/100 - FPS: 64.2 - ETA: 2s",
+        "[2026-07-22T17:16:04.300Z] Rendered frame 20/100 - FPS: 64.3 - ETA: 2s",
+        "[2026-07-22T17:16:04.319Z] Rendered frame 21/100 - FPS: 63.6 - ETA: 2s",
+        "[2026-07-22T17:16:04.335Z] Rendered frame 22/100 - FPS: 63.6 - ETA: 2s",
+        "[2026-07-22T17:16:04.351Z] Rendered frame 23/100 - FPS: 63.5 - ETA: 2s",
+        "[2026-07-22T17:16:04.369Z] Rendered frame 24/100 - FPS: 63.2 - ETA: 2s",
+        "[2026-07-22T17:16:04.387Z] Rendered frame 25/100 - FPS: 62.8 - ETA: 2s",
+        "[2026-07-22T17:16:04.402Z] Rendered frame 26/100 - FPS: 63 - ETA: 2s",
+        "[2026-07-22T17:16:04.417Z] Rendered frame 27/100 - FPS: 63.1 - ETA: 2s",
+        "[2026-07-22T17:16:04.433Z] Rendered frame 28/100 - FPS: 63.1 - ETA: 2s",
+        "[2026-07-22T17:16:04.450Z] Rendered frame 29/100 - FPS: 62.9 - ETA: 2s",
+        "[2026-07-22T17:16:04.466Z] Rendered frame 30/100 - FPS: 62.9 - ETA: 2s",
+        "[2026-07-22T17:16:04.481Z] Rendered frame 31/100 - FPS: 63 - ETA: 2s",
+        "[2026-07-22T17:16:04.497Z] Rendered frame 32/100 - FPS: 63 - ETA: 2s",
+        "[2026-07-22T17:16:04.512Z] Rendered frame 33/100 - FPS: 63.1 - ETA: 2s",
+        "[2026-07-22T17:16:04.528Z] Rendered frame 34/100 - FPS: 63.1 - ETA: 2s",
+        "[2026-07-22T17:16:04.544Z] Rendered frame 35/100 - FPS: 63.1 - ETA: 2s",
+        "[2026-07-22T17:16:04.559Z] Rendered frame 36/100 - FPS: 63.2 - ETA: 2s",
+        "[2026-07-22T17:16:04.576Z] Rendered frame 37/100 - FPS: 63 - ETA: 1s",
+        "[2026-07-22T17:16:04.592Z] Rendered frame 38/100 - FPS: 63 - ETA: 1s",
+        "[2026-07-22T17:16:04.608Z] Rendered frame 39/100 - FPS: 63 - ETA: 1s",
+        "[2026-07-22T17:16:04.623Z] Rendered frame 40/100 - FPS: 63.1 - ETA: 1s",
+        "[2026-07-22T17:16:04.638Z] Rendered frame 41/100 - FPS: 63.2 - ETA: 1s",
+        "[2026-07-22T17:16:04.655Z] Rendered frame 42/100 - FPS: 63.1 - ETA: 1s",
+        "[2026-07-22T17:16:04.673Z] Rendered frame 43/100 - FPS: 62.9 - ETA: 1s",
+        "[2026-07-22T17:16:04.688Z] Rendered frame 44/100 - FPS: 62.9 - ETA: 1s",
+        "[2026-07-22T17:16:04.704Z] Rendered frame 45/100 - FPS: 62.9 - ETA: 1s",
+        "[2026-07-22T17:16:04.719Z] Rendered frame 46/100 - FPS: 63 - ETA: 1s",
+        "[2026-07-22T17:16:04.734Z] Rendered frame 47/100 - FPS: 63.1 - ETA: 1s",
+        "[2026-07-22T17:16:04.750Z] Rendered frame 48/100 - FPS: 63.1 - ETA: 1s",
+        "[2026-07-22T17:16:04.765Z] Rendered frame 49/100 - FPS: 63.1 - ETA: 1s",
+        "[2026-07-22T17:16:04.781Z] Rendered frame 50/100 - FPS: 63.1 - ETA: 1s",
+        "[2026-07-22T17:16:04.797Z] Rendered frame 51/100 - FPS: 63.1 - ETA: 1s",
+        "[2026-07-22T17:16:04.813Z] Rendered frame 52/100 - FPS: 63.1 - ETA: 1s",
+        "[2026-07-22T17:16:04.828Z] Rendered frame 53/100 - FPS: 63.2 - ETA: 1s",
+        "[2026-07-22T17:16:04.846Z] Rendered frame 54/100 - FPS: 63 - ETA: 1s",
+        "[2026-07-22T17:16:04.862Z] Rendered frame 55/100 - FPS: 63 - ETA: 1s",
+        "[2026-07-22T17:16:04.878Z] Rendered frame 56/100 - FPS: 63 - ETA: 1s",
+        "[2026-07-22T17:16:04.894Z] Rendered frame 57/100 - FPS: 63 - ETA: 1s",
+        "[2026-07-22T17:16:04.909Z] Rendered frame 58/100 - FPS: 63 - ETA: 1s",
+        "[2026-07-22T17:16:04.925Z] Rendered frame 59/100 - FPS: 63 - ETA: 1s",
+        "[2026-07-22T17:16:04.941Z] Rendered frame 60/100 - FPS: 63 - ETA: 1s",
+        "[2026-07-22T17:16:04.956Z] Rendered frame 61/100 - FPS: 63.1 - ETA: 1s",
+        "[2026-07-22T17:16:04.972Z] Rendered frame 62/100 - FPS: 63.1 - ETA: 1s",
+        "[2026-07-22T17:16:04.987Z] Rendered frame 63/100 - FPS: 63.1 - ETA: 1s",
+        "[2026-07-22T17:16:05.002Z] Rendered frame 64/100 - FPS: 63.2 - ETA: 1s",
+        "[2026-07-22T17:16:05.018Z] Rendered frame 65/100 - FPS: 63.2 - ETA: 1s",
+        "[2026-07-22T17:16:05.034Z] Rendered frame 66/100 - FPS: 63.2 - ETA: 1s",
+        "[2026-07-22T17:16:05.049Z] Rendered frame 67/100 - FPS: 63.2 - ETA: 1s",
+        "[2026-07-22T17:16:05.067Z] Rendered frame 68/100 - FPS: 63.1 - ETA: 1s",
+        "[2026-07-22T17:16:05.082Z] Rendered frame 69/100 - FPS: 63.1 - ETA: 1s",
+        "[2026-07-22T17:16:05.098Z] Rendered frame 70/100 - FPS: 63.1 - ETA: 1s",
+        "[2026-07-22T17:16:05.114Z] Rendered frame 71/100 - FPS: 63.1 - ETA: 1s",
+        "[2026-07-22T17:16:05.129Z] Rendered frame 72/100 - FPS: 63.2 - ETA: 1s",
+        "[2026-07-22T17:16:05.144Z] Rendered frame 73/100 - FPS: 63.2 - ETA: 1s",
+        "[2026-07-22T17:16:05.161Z] Rendered frame 74/100 - FPS: 63.1 - ETA: 1s",
+        "[2026-07-22T17:16:05.177Z] Rendered frame 75/100 - FPS: 63.1 - ETA: 1s",
+        "[2026-07-22T17:16:05.195Z] Rendered frame 76/100 - FPS: 63 - ETA: 1s",
+        "[2026-07-22T17:16:05.211Z] Rendered frame 77/100 - FPS: 63 - ETA: 1s",
+        "[2026-07-22T17:16:05.227Z] Rendered frame 78/100 - FPS: 63 - ETA: 1s",
+        "[2026-07-22T17:16:05.243Z] Rendered frame 79/100 - FPS: 63 - ETA: 1s",
+        "[2026-07-22T17:16:05.260Z] Rendered frame 80/100 - FPS: 62.9 - ETA: 1s",
+        "[2026-07-22T17:16:05.276Z] Rendered frame 81/100 - FPS: 62.9 - ETA: 1s",
+        "[2026-07-22T17:16:05.294Z] Rendered frame 82/100 - FPS: 62.8 - ETA: 1s",
+        "[2026-07-22T17:16:05.310Z] Rendered frame 83/100 - FPS: 62.8 - ETA: 1s",
+        "[2026-07-22T17:16:05.326Z] Rendered frame 84/100 - FPS: 62.8 - ETA: 1s",
+        "[2026-07-22T17:16:05.343Z] Rendered frame 85/100 - FPS: 62.8 - ETA: 1s",
+        "[2026-07-22T17:16:05.359Z] Rendered frame 86/100 - FPS: 62.8 - ETA: 1s",
+        "[2026-07-22T17:16:05.375Z] Rendered frame 87/100 - FPS: 62.8 - ETA: 1s",
+        "[2026-07-22T17:16:05.392Z] Rendered frame 88/100 - FPS: 62.7 - ETA: 1s",
+        "[2026-07-22T17:16:05.408Z] Rendered frame 89/100 - FPS: 62.7 - ETA: 1s",
+        "[2026-07-22T17:16:05.423Z] Rendered frame 90/100 - FPS: 62.8 - ETA: 1s",
+        "[2026-07-22T17:16:05.438Z] Rendered frame 91/100 - FPS: 62.8 - ETA: 1s",
+        "[2026-07-22T17:16:05.456Z] Rendered frame 92/100 - FPS: 62.7 - ETA: 1s",
+        "[2026-07-22T17:16:05.475Z] Rendered frame 93/100 - FPS: 62.6 - ETA: 1s",
+        "[2026-07-22T17:16:05.491Z] Rendered frame 94/100 - FPS: 62.6 - ETA: 1s",
+        "[2026-07-22T17:16:05.507Z] Rendered frame 95/100 - FPS: 62.6 - ETA: 1s",
+        "[2026-07-22T17:16:05.522Z] Rendered frame 96/100 - FPS: 62.6 - ETA: 1s",
+        "[2026-07-22T17:16:05.538Z] Rendered frame 97/100 - FPS: 62.6 - ETA: 1s",
+        "[2026-07-22T17:16:05.556Z] Rendered frame 98/100 - FPS: 62.5 - ETA: 1s",
+        "[2026-07-22T17:16:05.572Z] Rendered frame 99/100 - FPS: 62.5 - ETA: 1s",
+        "[2026-07-22T17:16:05.588Z] Rendered frame 100/100 - FPS: 62.5 - ETA: 0s",
+        "[2026-07-22T17:16:05.605Z] [Stage: ENCODE] Encoding visual frame sequences and stitching audio...",
+        "[2026-07-22T17:16:05.907Z] [Stage: GENERATE_THUMBNAIL] Generating poster poster preview thumbnail...",
+        "[2026-07-22T17:16:06.110Z] [Stage: GENERATE_PREVIEW] Generating streamable low-res preview...",
+        "[2026-07-22T17:16:06.264Z] [Stage: COLLECT_METRICS] Collecting performance telemetries and metrics...",
+        "[2026-07-22T17:16:06.380Z] [Stage: PERSIST_ARTIFACTS] Creating and persisting render artifacts...",
+        "[2026-07-22T17:16:06.516Z] [Stage: CLEANUP] Cleaning temporary render frames and caches...",
+        "[2026-07-22T17:16:06.618Z] Render pipeline completed successfully."
+      ],
+      "warnings": [
+        "[Warning] High complexity detected at frame 45. Memory usage is close to threshold."
+      ],
+      "stage": "completed",
+      "startedAt": "2026-07-22T17:16:03.987Z",
+      "workerId": "local-worker-1",
+      "telemetry": {
+        "cpuUsage": 15,
+        "memoryUsage": 50,
+        "fps": 62.5,
+        "etaSeconds": 0,
+        "queueLatencyMs": 3052,
+        "workerUtilization": 100,
+        "activeConnections": 1,
+        "throughput": 20
+      },
+      "metrics": {
+        "durationMs": 1599,
+        "fps": 62.5,
+        "cpuUsage": 15,
+        "memoryUsage": 50,
+        "frameCount": 100,
+        "renderTimePerFrameMs": 15.99
+      },
+      "artifacts": [
+        {
+          "id": "art_i9ezhklew",
+          "jobId": "job_shn2kfiow",
+          "url": "/uploads/renders/job_shn2kfiow.mp4",
+          "format": "mp4",
+          "size": 102400,
+          "metadata": {
+            "duration": 3.3333333333333335,
+            "resolution": {
+              "width": 1920,
+              "height": 1080
+            },
+            "codec": "h264",
+            "settings": {
+              "format": "mp4",
+              "codec": "h264",
+              "resolution": {
+                "width": 1920,
+                "height": 1080
+              },
+              "fps": 30
+            }
+          },
+          "createdAt": "2026-07-22T17:16:06.383Z"
+        }
+      ],
+      "completedAt": "2026-07-22T17:16:06.618Z"
     }
   },
   "workers": {
     "local-worker-1": {
       "id": "local-worker-1",
       "name": "Primary Local Worker",
-      "status": "busy",
+      "status": "idle",
       "capabilities": {
         "maxConcurrentJobs": 1,
         "supportedFormats": [
@@ -595,116 +787,13 @@
           "height": 2160
         }
       },
-      "lastHeartbeat": "2026-07-16T23:04:27.193Z",
+      "lastHeartbeat": "2026-07-23T21:51:51.602Z",
       "systemInfo": {
-        "cpuUsage": 26,
-        "memoryUsage": 52,
+        "cpuUsage": 27,
+        "memoryUsage": 66,
         "platform": "win32",
         "arch": "x64"
-      },
-      "currentJobId": "pipe-job-cancel"
-    }
-  },
-  "artifacts": {
-    "art_i1qq1kiur": {
-      "id": "art_i1qq1kiur",
-      "jobId": "pipe-job-1",
-      "url": "/uploads/renders/pipe-job-1.mp4",
-      "format": "mp4",
-      "size": 102400,
-      "metadata": {
-        "duration": 3.3333333333333335,
-        "resolution": {
-          "width": 1920,
-          "height": 1080
-        },
-        "codec": "h264",
-        "settings": {
-          "format": "mp4",
-          "codec": "h264",
-          "resolution": {
-            "width": 1920,
-            "height": 1080
-          },
-          "fps": 30
-        }
-      },
-      "createdAt": "2026-07-16T16:54:15.634Z"
-    },
-    "art_hh99vgpxj": {
-      "id": "art_hh99vgpxj",
-      "jobId": "pipe-job-retry",
-      "url": "/uploads/renders/pipe-job-retry.mp4",
-      "format": "mp4",
-      "size": 102400,
-      "metadata": {
-        "duration": 3.3333333333333335,
-        "resolution": {
-          "width": 1920,
-          "height": 1080
-        },
-        "codec": "h264",
-        "settings": {
-          "format": "mp4",
-          "codec": "h264",
-          "resolution": {
-            "width": 1920,
-            "height": 1080
-          },
-          "fps": 30
-        }
-      },
-      "createdAt": "2026-07-16T16:54:19.603Z"
-    },
-    "art_6faoinf5m": {
-      "id": "art_6faoinf5m",
-      "jobId": "pipe-job-1",
-      "url": "/uploads/renders/pipe-job-1.mp4",
-      "format": "mp4",
-      "size": 102400,
-      "metadata": {
-        "duration": 3.3333333333333335,
-        "resolution": {
-          "width": 1920,
-          "height": 1080
-        },
-        "codec": "h264",
-        "settings": {
-          "format": "mp4",
-          "codec": "h264",
-          "resolution": {
-            "width": 1920,
-            "height": 1080
-          },
-          "fps": 30
-        }
-      },
-      "createdAt": "2026-07-16T16:56:04.247Z"
-    },
-    "art_4g66jd6hz": {
-      "id": "art_4g66jd6hz",
-      "jobId": "pipe-job-retry",
-      "url": "/uploads/renders/pipe-job-retry.mp4",
-      "format": "mp4",
-      "size": 102400,
-      "metadata": {
-        "duration": 3.3333333333333335,
-        "resolution": {
-          "width": 1920,
-          "height": 1080
-        },
-        "codec": "h264",
-        "settings": {
-          "format": "mp4",
-          "codec": "h264",
-          "resolution": {
-            "width": 1920,
-            "height": 1080
-          },
-          "fps": 30
-        }
-      },
-      "createdAt": "2026-07-16T16:56:08.217Z"
+      }
     }
   },
   "artifacts": {
@@ -782,6 +871,31 @@
         }
       },
       "createdAt": "2026-07-16T22:22:07.971Z"
+    },
+    "art_i9ezhklew": {
+      "id": "art_i9ezhklew",
+      "jobId": "job_shn2kfiow",
+      "url": "/uploads/renders/job_shn2kfiow.mp4",
+      "format": "mp4",
+      "size": 102400,
+      "metadata": {
+        "duration": 3.3333333333333335,
+        "resolution": {
+          "width": 1920,
+          "height": 1080
+        },
+        "codec": "h264",
+        "settings": {
+          "format": "mp4",
+          "codec": "h264",
+          "resolution": {
+            "width": 1920,
+            "height": 1080
+          },
+          "fps": 30
+        }
+      },
+      "createdAt": "2026-07-22T17:16:06.383Z"
     }
   },
   "queueStatus": "running"
