@@ -141,6 +141,4 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
-apps/renders_db.json
-.gitignore
-apps/renders_db.json
+
