@@ -10,7 +10,6 @@
   "dependencies": {
     "@ai-video-editor/shared": "*",
     "@ai-video-editor/ui": "*",
-    "@ai-video-editor/design-system": "*",
     "@ai-video-editor/project-graph": "*",
     "@ai-video-editor/timeline-engine": "*",
     "@ai-video-editor/playback-engine": "*",
