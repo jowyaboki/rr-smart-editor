@@ -7,6 +7,7 @@ import mediaRoutes from './routes/media';
 import renderRoutes from './routes/renders';
 import templateRoutes from './routes/templates';
 import aiRoutes from './routes/ai';
+import assetIntelligenceRoutes from './routes/asset-intelligence';
 
 import { localWorker } from './render/workers/LocalWorker';
 import { renderScheduler } from './render/scheduler/RenderScheduler';
@@ -29,6 +30,7 @@ app.use('/projects/:projectId/media', mediaRoutes);
 app.use('/renders', renderRoutes);
 app.use('/templates', templateRoutes);
 app.use('/ai', aiRoutes);
+app.use('/asset-intelligence', assetIntelligenceRoutes);
 
 // Boot up local distributed render worker and scheduler
 localWorker.start().catch((err) => {
