@@ -10,6 +10,7 @@ import aiRoutes from './routes/ai';
 import assetIntelligenceRoutes from './routes/asset-intelligence';
 import renderClusterRoutes from './routes/render-cluster';
 import deploymentRoutes from './routes/deployment';
+import brandRoutes from './routes/brand';
 
 import { localWorker } from './render/workers/LocalWorker';
 import { renderScheduler } from './render/scheduler/RenderScheduler';
@@ -35,6 +36,7 @@ app.use('/ai', aiRoutes);
 app.use('/asset-intelligence', assetIntelligenceRoutes);
 app.use('/render-cluster', renderClusterRoutes);
 app.use('/deployment', deploymentRoutes);
+app.use('/brand', brandRoutes);
 
 // Boot up local distributed render worker and scheduler
 localWorker.start().catch((err) => {
