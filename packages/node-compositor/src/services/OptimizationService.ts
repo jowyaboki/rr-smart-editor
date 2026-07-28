@@ -7,27 +7,16 @@ export class OptimizationService {
   public foldConstants(graph: NodeGraph): number {
     let optimizationsCount = 0;
 
-    graph.nodes.forEach((node) => {
+    graph.nodes.forEach(node => {
       if (node.type === 'math_add') {
-        const aPort = node.inputs.find((i) => i.name === 'a');
-        const bPort = node.inputs.find((i) => i.name === 'b');
+        const aPort = node.inputs.find(i => i.name === 'a');
+        const bPort = node.inputs.find(i => i.name === 'b');
 
         // Check if both ports have static literal constants and are not connected
-        const isAConnected = graph.connections.some(
-          (c) => c.toNodeId === node.id && c.toPortId === aPort?.id,
-        );
-        const isBConnected = graph.connections.some(
-          (c) => c.toNodeId === node.id && c.toPortId === bPort?.id,
-        );
+        const isAConnected = graph.connections.some(c => c.toNodeId === node.id && c.toPortId === aPort?.id);
+        const isBConnected = graph.connections.some(c => c.toNodeId === node.id && c.toPortId === bPort?.id);
 
-        if (
-          aPort &&
-          bPort &&
-          !isAConnected &&
-          !isBConnected &&
-          typeof aPort.value === 'number' &&
-          typeof bPort.value === 'number'
-        ) {
+        if (aPort && bPort && !isAConnected && !isBConnected && typeof aPort.value === 'number' && typeof bPort.value === 'number') {
           // Fold into a single output
           const outputPort = node.outputs[0];
           if (outputPort) {
@@ -51,9 +40,9 @@ export class OptimizationService {
     // Walk connections to find Transform -> Transform chains
     const connectionsToFuse: string[] = [];
 
-    graph.connections.forEach((conn) => {
-      const parent = graph.nodes.find((n) => n.id === conn.fromNodeId);
-      const child = graph.nodes.find((n) => n.id === conn.toNodeId);
+    graph.connections.forEach(conn => {
+      const parent = graph.nodes.find(n => n.id === conn.fromNodeId);
+      const child = graph.nodes.find(n => n.id === conn.toNodeId);
 
       if (parent && child && parent.type === 'transform_2d' && child.type === 'transform_2d') {
         // Fuse! Adjust child positions and bypass parent
@@ -64,8 +53,8 @@ export class OptimizationService {
         child.properties.y = (child.properties.y || 0) + parentY;
 
         // Bypass connection: reconnect grandchildren of parent directly to child
-        const parentInputs = graph.connections.filter((c) => c.toNodeId === parent.id);
-        parentInputs.forEach((inC) => {
+        const parentInputs = graph.connections.filter(c => c.toNodeId === parent.id);
+        parentInputs.forEach(inC => {
           inC.toNodeId = child.id;
           // Map source connection output port properly
         });
@@ -76,8 +65,8 @@ export class OptimizationService {
     });
 
     // Remove the fused redundant parent nodes
-    connectionsToFuse.forEach((nodeId) => {
-      graph.nodes = graph.nodes.filter((n) => n.id !== nodeId);
+    connectionsToFuse.forEach(nodeId => {
+      graph.nodes = graph.nodes.filter(n => n.id !== nodeId);
     });
 
     return fusionsCount;
@@ -94,18 +83,18 @@ export class OptimizationService {
       activeIds.add(nodeId);
 
       // Find parents feeding into this node's input ports
-      const inputs = graph.connections.filter((c) => c.toNodeId === nodeId);
-      inputs.forEach((inC) => {
+      const inputs = graph.connections.filter(c => c.toNodeId === nodeId);
+      inputs.forEach(inC => {
         traverse(inC.fromNodeId);
       });
     };
 
     // Find all primary terminal rendering or publishing output nodes
     const terminalNodes = graph.nodes.filter(
-      (n) => n.category === 'rendering' || n.type === 'video_writer' || n.isBookmarked,
+      n => n.category === 'rendering' || n.type === 'video_writer' || n.isBookmarked
     );
 
-    terminalNodes.forEach((node) => {
+    terminalNodes.forEach(node => {
       traverse(node.id);
     });
 
@@ -115,11 +104,11 @@ export class OptimizationService {
     }
 
     const originalCount = graph.nodes.length;
-    graph.nodes = graph.nodes.filter((n) => activeIds.has(n.id));
+    graph.nodes = graph.nodes.filter(n => activeIds.has(n.id));
 
     // Cleanup broken connections
     graph.connections = graph.connections.filter(
-      (c) => activeIds.has(c.fromNodeId) && activeIds.has(c.toNodeId),
+      c => activeIds.has(c.fromNodeId) && activeIds.has(c.toNodeId)
     );
 
     return originalCount - graph.nodes.length;

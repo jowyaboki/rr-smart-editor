@@ -95,7 +95,7 @@ export class DirtyRegionRenderer {
         this.frameCount++;
 
         if (this.pendingUpdateCallback) {
-          const runUpdate = !this.isInteracting || this.frameCount % 2 === 0;
+          const runUpdate = !this.isInteracting || (this.frameCount % 2 === 0);
 
           if (runUpdate) {
             this.pendingUpdateCallback();

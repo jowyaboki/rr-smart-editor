@@ -28,7 +28,7 @@ export class VirtualStudioEngine {
   public publish(event: string, data: any): void {
     const list = this.listeners.get(event);
     if (list) {
-      list.forEach((cb) => {
+      list.forEach(cb => {
         try {
           cb(data);
         } catch (e) {
@@ -50,10 +50,7 @@ export class VirtualStudioEngine {
     return () => {
       const list = this.listeners.get(event);
       if (list) {
-        this.listeners.set(
-          event,
-          list.filter((cb) => cb !== callback),
-        );
+        this.listeners.set(event, list.filter(cb => cb !== callback));
       }
     };
   }
@@ -61,10 +58,7 @@ export class VirtualStudioEngine {
   /**
    * Triggers re-evaluation and emits StudioChanged events
    */
-  public updateStudioState(
-    studio: VirtualStudio,
-    updateFn: (studio: VirtualStudio) => VirtualStudio,
-  ): VirtualStudio {
+  public updateStudioState(studio: VirtualStudio, updateFn: (studio: VirtualStudio) => VirtualStudio): VirtualStudio {
     const nextState = updateFn(studio);
     this.publish('StudioChanged', nextState);
     return nextState;

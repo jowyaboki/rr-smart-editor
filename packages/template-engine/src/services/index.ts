@@ -1,10 +1,4 @@
-import {
-  Template,
-  TemplateParameter,
-  TemplateInstance,
-  TemplateVersion,
-  TemplatePreset,
-} from '../types';
+import { Template, TemplateParameter, TemplateInstance, TemplateVersion, TemplatePreset } from '../types';
 
 // ==========================================
 // 1. VALIDATION SERVICE
@@ -15,7 +9,7 @@ export class ValidationService {
    */
   public validateValues(
     params: TemplateParameter[],
-    values: Record<string, any>,
+    values: Record<string, any>
   ): { valid: boolean; errors: string[] } {
     const errors: string[] = [];
 
@@ -64,7 +58,11 @@ export class ParameterResolver {
    * Resolves and interpolates parameter values into slots paths on the blueprint timeline.
    * Returns a fully edited project clone.
    */
-  public resolveBindings(blueprint: any, slots: any[], parameterValues: Record<string, any>): any {
+  public resolveBindings(
+    blueprint: any,
+    slots: any[],
+    parameterValues: Record<string, any>
+  ): any {
     // Deep clone blueprint to preserve public blueprint APIs
     const project = JSON.parse(JSON.stringify(blueprint));
 
@@ -117,7 +115,10 @@ export class PreviewService {
   /**
    * Generates a mock visual preview or frame payload
    */
-  public generateMockPreviewFrame(templateId: string, values: Record<string, any>): string {
+  public generateMockPreviewFrame(
+    templateId: string,
+    values: Record<string, any>
+  ): string {
     return `preview-frame-url-for-tpl-${templateId}-with-values-${JSON.stringify(values).slice(0, 30)}`;
   }
 }
@@ -160,7 +161,11 @@ export class TemplateRuntime {
   /**
    * Performs schema structure migration from an old template version manifest to the latest v2 structure
    */
-  public migrateManifest(templateId: string, legacyManifest: any, targetVersion: string): any {
+  public migrateManifest(
+    templateId: string,
+    legacyManifest: any,
+    targetVersion: string
+  ): any {
     const migrated = { ...legacyManifest };
     // Simulated migration logic
     if (targetVersion === '2.0.0') {
@@ -189,7 +194,10 @@ export class TemplateEngine {
   /**
    * Instantiates a template by applying parameter values onto its blueprint project
    */
-  public executeTemplate(template: Template, instance: TemplateInstance): any {
+  public executeTemplate(
+    template: Template,
+    instance: TemplateInstance
+  ): any {
     // Validate inputs
     const check = this.validation.validateValues(template.parameters, instance.parameterValues);
     if (!check.valid) {
@@ -200,7 +208,7 @@ export class TemplateEngine {
     return this.resolver.resolveBindings(
       template.blueprintProject,
       template.slots,
-      instance.parameterValues,
+      instance.parameterValues
     );
   }
 }

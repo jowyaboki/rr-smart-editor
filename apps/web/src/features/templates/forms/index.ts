@@ -5,7 +5,7 @@ import { TemplateParameter } from '../types';
  */
 export const getVisibleParameters = (
   params: TemplateParameter[],
-  values: Record<string, any>,
+  values: Record<string, any>
 ): TemplateParameter[] => {
   return params.filter((p) => {
     if (!p.dependsOn) return true;

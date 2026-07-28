@@ -1,10 +1,4 @@
-import {
-  RenderWorker,
-  RenderJob,
-  RenderTelemetry,
-  RenderArtifact,
-  WorkerCapability,
-} from '@ai-video-editor/shared';
+import { RenderWorker, RenderJob, RenderTelemetry, RenderArtifact, WorkerCapability } from '@ai-video-editor/shared';
 import { RenderWorkerAdapter, CancellationTokenImpl } from '@ai-video-editor/render-core';
 import { workerService } from './WorkerService';
 import { jobStorage } from '../storage/JobStorage';

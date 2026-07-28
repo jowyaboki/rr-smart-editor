@@ -8,7 +8,7 @@ export class NleMarkerService {
   }
 
   public static removeMarker(id: string): void {
-    this.markers = this.markers.filter((m) => m.id !== id);
+    this.markers = this.markers.filter(m => m.id !== id);
   }
 
   public static getMarkers(): NleMarker[] {
@@ -24,10 +24,10 @@ export class NleMarkerService {
    */
   public static searchMarkers(query: string): NleMarker[] {
     const q = query.toLowerCase();
-    return this.markers.filter((m) => {
+    return this.markers.filter(m => {
       const matchName = m.name.toLowerCase().includes(q);
       const matchComment = m.comments?.toLowerCase().includes(q);
-      const matchLabels = m.labels?.some((l) => l.toLowerCase().includes(q));
+      const matchLabels = m.labels?.some(l => l.toLowerCase().includes(q));
       return matchName || matchComment || matchLabels;
     });
   }

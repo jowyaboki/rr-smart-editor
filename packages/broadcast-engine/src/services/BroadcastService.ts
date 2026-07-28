@@ -16,12 +16,13 @@ export class BroadcastService {
   constructor(
     project: BroadcastProject,
     defaultRecordingConfig: RecordingConfig,
-    defaultReplayConfig: ReplayConfig,
+    defaultReplayConfig: ReplayConfig
   ) {
     this.project = project;
 
-    const initialScenes =
-      project.sceneCollections.find((c) => c.id === project.activeSceneCollectionId)?.scenes || [];
+    const initialScenes = project.sceneCollections.find(
+      c => c.id === project.activeSceneCollectionId
+    )?.scenes || [];
 
     this.switcher = new SwitcherService(initialScenes);
     this.streaming = new StreamingService(project.streamingDestinations);
@@ -35,10 +36,9 @@ export class BroadcastService {
   }
 
   public getActiveScenes(): LiveScene[] {
-    return (
-      this.project.sceneCollections.find((c) => c.id === this.project.activeSceneCollectionId)
-        ?.scenes || []
-    );
+    return this.project.sceneCollections.find(
+      c => c.id === this.project.activeSceneCollectionId
+    )?.scenes || [];
   }
 
   public async shutdownBroadcast(): Promise<void> {

@@ -17,9 +17,7 @@ export class PrepareCompositionStage implements PipelineStage {
 
     freshJob.stage = 'build_composition';
     freshJob.progress = 30;
-    freshJob.logs.push(
-      `[${new Date().toISOString()}] [Stage: BUILD_COMPOSITION] Bundling Remotion code and parsing clips...`,
-    );
+    freshJob.logs.push(`[${new Date().toISOString()}] [Stage: BUILD_COMPOSITION] Bundling Remotion code and parsing clips...`);
     await jobStorage.saveJob(freshJob);
     context.job = freshJob;
 

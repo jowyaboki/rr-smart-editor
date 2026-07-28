@@ -39,10 +39,7 @@ export function useExpressions() {
       for (const id of Object.keys(activeExpressions)) {
         try {
           // Attempt to evaluate singly with the current global variables
-          const res = RuntimeEvaluator.evaluate(activeExpressions[id], {
-            ...globalVariables,
-            ...evaluations,
-          });
+          const res = RuntimeEvaluator.evaluate(activeExpressions[id], { ...globalVariables, ...evaluations });
           evaluations[id] = res;
         } catch (singleErr: any) {
           errors[id] = { message: singleErr.message || 'Evaluation error' };

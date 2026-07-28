@@ -6,14 +6,7 @@ export const RenderPrioritySchema = z.enum(['low', 'normal', 'high', 'critical']
 
 export type RenderStatus = 'queued' | 'rendering' | 'completed' | 'failed' | 'paused' | 'cancelled';
 
-export const RenderStatusSchema = z.enum([
-  'queued',
-  'rendering',
-  'completed',
-  'failed',
-  'paused',
-  'cancelled',
-]);
+export const RenderStatusSchema = z.enum(['queued', 'rendering', 'completed', 'failed', 'paused', 'cancelled']);
 
 export type RenderPipelineStage =
   | 'validate'
@@ -101,14 +94,12 @@ export const RenderWorkerSchema = z.object({
   capabilities: WorkerCapabilitySchema,
   lastHeartbeat: z.string(),
   currentJobId: z.string().optional(),
-  systemInfo: z
-    .object({
-      cpuUsage: z.number(),
-      memoryUsage: z.number(),
-      platform: z.string(),
-      arch: z.string(),
-    })
-    .optional(),
+  systemInfo: z.object({
+    cpuUsage: z.number(),
+    memoryUsage: z.number(),
+    platform: z.string(),
+    arch: z.string(),
+  }).optional(),
 });
 
 export interface RenderPreset {
@@ -181,12 +172,10 @@ export const RenderArtifactSchema = z.object({
   metadata: z.object({
     previewUrl: z.string().optional(),
     duration: z.number().optional(),
-    resolution: z
-      .object({
-        width: z.number(),
-        height: z.number(),
-      })
-      .optional(),
+    resolution: z.object({
+      width: z.number(),
+      height: z.number(),
+    }).optional(),
     codec: z.string().optional(),
     settings: z.any().optional(),
   }),

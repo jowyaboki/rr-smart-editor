@@ -1,16 +1,8 @@
 import { z } from 'zod';
 
-export type WorkspaceRole =
-  'owner' | 'administrator' | 'manager' | 'editor' | 'reviewer' | 'viewer';
+export type WorkspaceRole = 'owner' | 'administrator' | 'manager' | 'editor' | 'reviewer' | 'viewer';
 
-export const WorkspaceRoleSchema = z.enum([
-  'owner',
-  'administrator',
-  'manager',
-  'editor',
-  'reviewer',
-  'viewer',
-]);
+export const WorkspaceRoleSchema = z.enum(['owner', 'administrator', 'manager', 'editor', 'reviewer', 'viewer']);
 
 // ==========================================
 // CORE PLATFORM MODELS
@@ -112,14 +104,7 @@ export interface AuditEntry {
   userId: string;
   organizationId: string;
   workspaceId: string;
-  action:
-    | 'login'
-    | 'project_change'
-    | 'publishing'
-    | 'rendering'
-    | 'plugin_installation'
-    | 'permission_change'
-    | 'api_usage';
+  action: 'login' | 'project_change' | 'publishing' | 'rendering' | 'plugin_installation' | 'permission_change' | 'api_usage';
   message: string;
   ipAddress?: string;
 }

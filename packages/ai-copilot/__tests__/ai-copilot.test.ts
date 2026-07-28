@@ -11,6 +11,7 @@ import {
 } from '../src/index';
 
 describe('AI Editing Copilot Core Unit Tests', () => {
+
   test('Natural Language Parsing & Intent Detection', () => {
     const intents = new IntentService();
 
@@ -53,7 +54,7 @@ describe('AI Editing Copilot Core Unit Tests', () => {
 
     const badProject = {
       timeline: {
-        audioGapsCount: 1, // 1 gap
+        audioGapsCount: 1,       // 1 gap
         subtitleOverlaysCount: 1, // 1 overlap
       },
     };

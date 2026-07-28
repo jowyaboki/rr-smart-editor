@@ -4,6 +4,7 @@ import { NativeDesktopPlatformEngine } from '@ai-video-editor/native-services';
 import { Project } from '@ai-video-editor/shared';
 
 describe('Native Desktop Platform Core Unit Tests', () => {
+
   test('Installation Bootstrap and Window registration', async () => {
     const engine = new NativeDesktopPlatformEngine();
 
@@ -69,13 +70,13 @@ describe('Native Desktop Platform Core Unit Tests', () => {
 
     const text = await engine.nativeAIService.generateTextLocal(
       { provider: 'ollama', endpoint: 'http://localhost:11434', modelName: 'llama3' },
-      'Write a video editing script.',
+      'Write a video editing script.'
     );
     assert.ok(text.includes('[Ollama - llama3]'));
 
     const transcript = await engine.nativeAIService.transcribeLocal(
       { provider: 'local_whisper', endpoint: '', modelName: 'whisper-base' },
-      '/user/movies/audio.wav',
+      '/user/movies/audio.wav'
     );
     assert.ok(transcript.includes('Speech decoded locally'));
   });

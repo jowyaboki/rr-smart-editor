@@ -195,11 +195,7 @@ export interface OverlayTypePlugin {
   id: string;
   name: string;
   type: OverlayType;
-  renderOverlay: (
-    canvasContext: any,
-    overlay: Overlay,
-    dimensions: { width: number; height: number },
-  ) => void;
+  renderOverlay: (canvasContext: any, overlay: Overlay, dimensions: { width: number; height: number }) => void;
 }
 
 export interface GraphicsPackPlugin {

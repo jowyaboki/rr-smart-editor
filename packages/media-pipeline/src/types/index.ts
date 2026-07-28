@@ -6,16 +6,16 @@ export const MediaAssetTypeSchema = z.enum(['video', 'audio', 'image']);
 
 export interface MediaMetadata {
   resolution?: { width: number; height: number };
-  duration?: number; // duration in seconds
+  duration?: number;      // duration in seconds
   fps?: number;
   codec?: string;
-  bitrate?: number; // in kbps
+  bitrate?: number;       // in kbps
   audioChannels?: number;
   colorSpace?: string;
   aspectRatio?: string;
   rotation?: number;
   embeddedMetadata?: Record<string, any>;
-  checksum: string; // fingerprint checksum hash
+  checksum: string;       // fingerprint checksum hash
 }
 
 export const MediaMetadataSchema = z.object({
@@ -104,12 +104,10 @@ export const MediaAssetSchema = z.object({
   fingerprint: z.string().min(1),
   metadata: MediaMetadataSchema,
   collectionId: z.string().optional(),
-  proxy: z
-    .object({
-      low: ProxyAssetSchema.optional(),
-      medium: ProxyAssetSchema.optional(),
-    })
-    .optional(),
+  proxy: z.object({
+    low: ProxyAssetSchema.optional(),
+    medium: ProxyAssetSchema.optional(),
+  }).optional(),
   thumbnail: ThumbnailAssetSchema.optional(),
   waveform: WaveformAssetSchema.optional(),
 });

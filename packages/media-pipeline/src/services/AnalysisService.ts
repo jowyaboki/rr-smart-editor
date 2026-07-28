@@ -4,12 +4,7 @@ export class AnalysisService {
   /**
    * Deep analyze a media file path to extract codec, resolution, rotation, embedded headers, etc.
    */
-  public static analyzeMedia(
-    filepath: string,
-    filename: string,
-    size: number,
-    checksumHash: string,
-  ): MediaMetadata {
+  public static analyzeMedia(filepath: string, filename: string, size: number, checksumHash: string): MediaMetadata {
     const ext = filename.split('.').pop()?.toLowerCase() || '';
 
     // Standard mock analysis profiles for realistic metadata extraction

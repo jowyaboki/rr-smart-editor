@@ -9,26 +9,13 @@ import {
 } from '../src/index';
 
 describe('Smart Template Engine Core Unit Tests', () => {
+
   test('Dynamic parameter schema validations', () => {
     const valService = new ValidationService();
 
     const parameters = [
-      {
-        id: 'logo_scale',
-        name: 'Logo Scale',
-        type: 'number' as const,
-        defaultValue: 1.0,
-        required: true,
-        min: 0.1,
-        max: 2.0,
-      },
-      {
-        id: 'subtitle',
-        name: 'Subtitle text',
-        type: 'text' as const,
-        defaultValue: '',
-        required: false,
-      },
+      { id: 'logo_scale', name: 'Logo Scale', type: 'number' as const, defaultValue: 1.0, required: true, min: 0.1, max: 2.0 },
+      { id: 'subtitle', name: 'Subtitle text', type: 'text' as const, defaultValue: '', required: false },
     ];
 
     // 1. Success check
@@ -45,13 +32,7 @@ describe('Smart Template Engine Core Unit Tests', () => {
     const valService = new ValidationService();
 
     const parameters = [
-      {
-        id: 'show_logo',
-        name: 'Show Logo',
-        type: 'boolean' as const,
-        defaultValue: false,
-        required: true,
-      },
+      { id: 'show_logo', name: 'Show Logo', type: 'boolean' as const, defaultValue: false, required: true },
       // logo_url depends on show_logo being true
       {
         id: 'logo_url',
@@ -84,25 +65,17 @@ describe('Smart Template Engine Core Unit Tests', () => {
         tracks: [
           {
             id: 'v-track',
-            clips: [{ id: 'clip-1', name: 'Intro Blueprint', style: { color: '#000000' } }],
-          },
+            clips: [
+              { id: 'clip-1', name: 'Intro Blueprint', style: { color: '#000000' } }
+            ],
+          }
         ],
       },
     };
 
     const slots = [
-      {
-        id: 'title_val',
-        name: 'Title Text',
-        targetPath: 'timeline.tracks[0].clips[0].name',
-        type: 'text' as const,
-      },
-      {
-        id: 'bg_color',
-        name: 'BG Color',
-        targetPath: 'timeline.tracks[0].clips[0].style.color',
-        type: 'color' as const,
-      },
+      { id: 'title_val', name: 'Title Text', targetPath: 'timeline.tracks[0].clips[0].name', type: 'text' as const },
+      { id: 'bg_color', name: 'BG Color', targetPath: 'timeline.tracks[0].clips[0].style.color', type: 'color' as const },
     ];
 
     const values = {
@@ -124,7 +97,7 @@ describe('Smart Template Engine Core Unit Tests', () => {
       templateId: 'tpl-business',
       version: '1.0.0',
       parameters: [
-        { id: 'title', name: 'Title', type: 'text', defaultValue: 'Business' }, // missing group category
+        { id: 'title', name: 'Title', type: 'text', defaultValue: 'Business' } // missing group category
       ],
     };
 

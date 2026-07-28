@@ -40,13 +40,11 @@ export const ToolResultSchema = z.object({
   callId: z.string(),
   success: z.boolean(),
   result: z.any().optional(),
-  error: z
-    .object({
-      code: z.string(),
-      message: z.string(),
-      details: z.any().optional(),
-    })
-    .optional(),
+  error: z.object({
+    code: z.string(),
+    message: z.string(),
+    details: z.any().optional(),
+  }).optional(),
 });
 
 // ==========================================

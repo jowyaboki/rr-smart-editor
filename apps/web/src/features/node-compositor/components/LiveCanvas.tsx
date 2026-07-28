@@ -34,33 +34,22 @@ export const LiveCanvas: React.FC = () => {
   };
 
   return (
-    <div
-      style={{
-        flex: 1,
-        backgroundColor: '#18181c',
-        backgroundImage: 'radial-gradient(#2d2d34 1px, transparent 1px)',
-        backgroundSize: '20px 20px',
-        position: 'relative',
-        overflow: 'hidden',
-        borderRadius: '8px',
-        border: '1px solid #27272a',
-        minHeight: '400px',
-      }}
-    >
+    <div style={{
+      flex: 1,
+      backgroundColor: '#18181c',
+      backgroundImage: 'radial-gradient(#2d2d34 1px, transparent 1px)',
+      backgroundSize: '20px 20px',
+      position: 'relative',
+      overflow: 'hidden',
+      borderRadius: '8px',
+      border: '1px solid #27272a',
+      minHeight: '400px',
+    }}>
       {/* SVG Connections Layer */}
-      <svg
-        style={{
-          position: 'absolute',
-          inset: 0,
-          width: '100%',
-          height: '100%',
-          pointerEvents: 'none',
-          zIndex: 1,
-        }}
-      >
+      <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 1 }}>
         {graph.connections.map((conn) => {
-          const fromNode = graph.nodes.find((n) => n.id === conn.fromNodeId);
-          const toNode = graph.nodes.find((n) => n.id === conn.toNodeId);
+          const fromNode = graph.nodes.find(n => n.id === conn.fromNodeId);
+          const toNode = graph.nodes.find(n => n.id === conn.toNodeId);
 
           if (!fromNode || !toNode) return null;
 
@@ -94,12 +83,7 @@ export const LiveCanvas: React.FC = () => {
         {graph.nodes.map((node) => {
           const isSelected = selectedNodeId === node.id;
           const isDirty = node.isDirty;
-          const tempColor =
-            heatmap[node.id] === 'hot'
-              ? '#ef4444'
-              : heatmap[node.id] === 'warm'
-                ? '#f59e0b'
-                : '#3b82f6';
+          const tempColor = heatmap[node.id] === 'hot' ? '#ef4444' : heatmap[node.id] === 'warm' ? '#f59e0b' : '#3b82f6';
 
           return (
             <div
@@ -118,51 +102,31 @@ export const LiveCanvas: React.FC = () => {
                 borderRadius: '8px',
                 color: '#e2e8f0',
                 fontFamily: 'sans-serif',
-                boxShadow: isSelected
-                  ? '0 10px 15px -3px rgba(59, 130, 246, 0.3)'
-                  : '0 4px 6px -1px rgba(0,0,0,0.2)',
+                boxShadow: isSelected ? '0 10px 15px -3px rgba(59, 130, 246, 0.3)' : '0 4px 6px -1px rgba(0,0,0,0.2)',
                 cursor: 'move',
               }}
             >
               {/* Node Title header block */}
-              <div
-                style={{
-                  backgroundColor: viewMode === 'heatmap' ? tempColor : '#18181c',
-                  padding: '6px 10px',
-                  borderTopLeftRadius: '6px',
-                  borderTopRightRadius: '6px',
-                  borderBottom: '1px solid #27272a',
-                  fontSize: '11px',
-                  fontWeight: 'bold',
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}
-              >
+              <div style={{
+                backgroundColor: viewMode === 'heatmap' ? tempColor : '#18181c',
+                padding: '6px 10px',
+                borderTopLeftRadius: '6px',
+                borderTopRightRadius: '6px',
+                borderBottom: '1px solid #27272a',
+                fontSize: '11px',
+                fontWeight: 'bold',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}>
                 <span>{node.name}</span>
                 {isDirty && (
-                  <span
-                    style={{
-                      width: '6px',
-                      height: '6px',
-                      borderRadius: '50%',
-                      backgroundColor: '#ef4444',
-                    }}
-                    title="Unsaved Node Output"
-                  />
+                  <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#ef4444' }} title="Unsaved Node Output" />
                 )}
               </div>
 
               {/* Ports (Inputs on Left, Outputs on Right) */}
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: '1fr 1fr',
-                  padding: '8px 6px',
-                  gap: '8px',
-                  fontSize: '10px',
-                }}
-              >
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', padding: '8px 6px', gap: '8px', fontSize: '10px' }}>
                 {/* Inputs list */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                   {node.inputs.map((p) => (
@@ -180,29 +144,14 @@ export const LiveCanvas: React.FC = () => {
                         color: '#a1a1aa',
                       }}
                     >
-                      <span
-                        style={{
-                          width: '8px',
-                          height: '8px',
-                          borderRadius: '50%',
-                          backgroundColor: '#10b981',
-                          display: 'inline-block',
-                        }}
-                      />
+                      <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#10b981', display: 'inline-block' }} />
                       <span>{p.name}</span>
                     </div>
                   ))}
                 </div>
 
                 {/* Outputs list */}
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '6px',
-                    alignItems: 'flex-end',
-                  }}
-                >
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', alignItems: 'flex-end' }}>
                   {node.outputs.map((p) => (
                     <div
                       key={p.id}
@@ -219,15 +168,7 @@ export const LiveCanvas: React.FC = () => {
                       }}
                     >
                       <span>{p.name}</span>
-                      <span
-                        style={{
-                          width: '8px',
-                          height: '8px',
-                          borderRadius: '50%',
-                          backgroundColor: '#3b82f6',
-                          display: 'inline-block',
-                        }}
-                      />
+                      <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#3b82f6', display: 'inline-block' }} />
                     </div>
                   ))}
                 </div>

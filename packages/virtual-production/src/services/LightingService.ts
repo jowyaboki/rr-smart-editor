@@ -39,7 +39,7 @@ export class LightingService {
    * Selects all light nodes grouped under a specific namespace ID
    */
   public filterGroup(lights: Record<string, LightRig>, groupName: string): LightRig[] {
-    return Object.values(lights).filter((l) => l.groupName === groupName);
+    return Object.values(lights).filter(l => l.groupName === groupName);
   }
 
   /**
@@ -48,7 +48,7 @@ export class LightingService {
   public setGroupIntensity(
     lights: Record<string, LightRig>,
     groupName: string,
-    intensity: number,
+    intensity: number
   ): Record<string, LightRig> {
     const updated = { ...lights };
     for (const key of Object.keys(updated)) {

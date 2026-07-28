@@ -7,7 +7,7 @@ export class ThumbnailService {
   public static async generateThumbnail(
     assetId: string,
     inputPath: string,
-    offsetSec: number = 2.0,
+    offsetSec: number = 2.0
   ): Promise<ThumbnailAsset> {
     await new Promise((resolve) => setTimeout(resolve, 50));
 
@@ -24,7 +24,7 @@ export class ThumbnailService {
    */
   public static async generateContactSheet(
     inputPath: string,
-    gridSize: { cols: number; rows: number },
+    gridSize: { cols: number; rows: number }
   ): Promise<string> {
     return inputPath.replace(/\.[^/.]+$/, '_contact_sheet.jpg');
   }

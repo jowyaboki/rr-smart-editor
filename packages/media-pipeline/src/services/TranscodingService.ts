@@ -6,7 +6,7 @@ export class TranscodingService {
   public static async transcode(
     inputPath: string,
     outputFormat: 'mp4' | 'mov' | 'webm' | 'audio_only',
-    onProgress: (percent: number) => void,
+    onProgress: (percent: number) => void
   ): Promise<{ success: boolean; outputPath: string; size: number }> {
     return new Promise((resolve) => {
       let percent = 0;
@@ -18,10 +18,7 @@ export class TranscodingService {
           clearInterval(interval);
           resolve({
             success: true,
-            outputPath: inputPath.replace(
-              /\.[^/.]+$/,
-              `_transcoded.${outputFormat === 'audio_only' ? 'mp3' : outputFormat}`,
-            ),
+            outputPath: inputPath.replace(/\.[^/.]+$/, `_transcoded.${outputFormat === 'audio_only' ? 'mp3' : outputFormat}`),
             size: Math.round(1024 * 1024 * 5), // 5 MB transcoded file
           });
         }

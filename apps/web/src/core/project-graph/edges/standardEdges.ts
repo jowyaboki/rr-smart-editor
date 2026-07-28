@@ -5,7 +5,7 @@ export function createGraphEdge(
   sourceId: string,
   targetId: string,
   type: DependencyType,
-  metadata?: Record<string, any>,
+  metadata?: Record<string, any>
 ): GraphEdge {
   return {
     id,
@@ -18,14 +18,9 @@ export function createGraphEdge(
 
 export const EdgeBuilders = {
   uses: (id: string, srcId: string, tgtId: string) => createGraphEdge(id, srcId, tgtId, 'uses'),
-  produces: (id: string, srcId: string, tgtId: string) =>
-    createGraphEdge(id, srcId, tgtId, 'produces'),
-  dependsOn: (id: string, srcId: string, tgtId: string) =>
-    createGraphEdge(id, srcId, tgtId, 'depends_on'),
-  references: (id: string, srcId: string, tgtId: string) =>
-    createGraphEdge(id, srcId, tgtId, 'references'),
-  generates: (id: string, srcId: string, tgtId: string) =>
-    createGraphEdge(id, srcId, tgtId, 'generates'),
-  overrides: (id: string, srcId: string, tgtId: string) =>
-    createGraphEdge(id, srcId, tgtId, 'overrides'),
+  produces: (id: string, srcId: string, tgtId: string) => createGraphEdge(id, srcId, tgtId, 'produces'),
+  dependsOn: (id: string, srcId: string, tgtId: string) => createGraphEdge(id, srcId, tgtId, 'depends_on'),
+  references: (id: string, srcId: string, tgtId: string) => createGraphEdge(id, srcId, tgtId, 'references'),
+  generates: (id: string, srcId: string, tgtId: string) => createGraphEdge(id, srcId, tgtId, 'generates'),
+  overrides: (id: string, srcId: string, tgtId: string) => createGraphEdge(id, srcId, tgtId, 'overrides'),
 };

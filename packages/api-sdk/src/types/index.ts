@@ -34,14 +34,7 @@ export const ApiKeySchema = z.object({
 
 export interface WebhookDelivery {
   id: string;
-  event:
-    | 'render_completed'
-    | 'project_updated'
-    | 'workflow_finished'
-    | 'publishing_completed'
-    | 'asset_imported'
-    | 'ai_task_completed'
-    | 'plugin_installed';
+  event: 'render_completed' | 'project_updated' | 'workflow_finished' | 'publishing_completed' | 'asset_imported' | 'ai_task_completed' | 'plugin_installed';
   payload: any;
   timestamp: number;
   status: 'sent' | 'failed' | 'retry';

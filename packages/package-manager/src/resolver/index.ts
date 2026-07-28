@@ -5,7 +5,10 @@ export class DependencyResolver {
    * Resolves a list of dependency nodes in safe execution order (topological sort).
    * Throws errors if circular references or conflicts are detected.
    */
-  public resolve(nodes: DependencyNode[], allPackages: Record<string, DependencyNode>): string[] {
+  public resolve(
+    nodes: DependencyNode[],
+    allPackages: Record<string, DependencyNode>
+  ): string[] {
     const visited = new Set<string>();
     const tempVisited = new Set<string>();
     const order: string[] = [];
@@ -17,7 +20,7 @@ export class DependencyResolver {
       if (!visited.has(nodeId)) {
         tempVisited.add(nodeId);
 
-        const node = allPackages[nodeId] || nodes.find((n) => n.id === nodeId);
+        const node = allPackages[nodeId] || nodes.find(n => n.id === nodeId);
         if (!node) {
           throw new Error(`Missing dependency: unable to locate extension package "${nodeId}"`);
         }

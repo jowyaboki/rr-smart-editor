@@ -8,14 +8,14 @@ export class ClusteringService {
   public async cluster(
     library: Asset[],
     embeddings: SemanticEmbedding[],
-    criteria: ClusterCriteria,
+    criteria: ClusterCriteria
   ): Promise<AssetCluster[]> {
     const clusters: AssetCluster[] = [];
 
     if (criteria === 'topic') {
       // Group by categories/keywords
       const groups = new Map<string, string[]>();
-      library.forEach((asset) => {
+      library.forEach(asset => {
         const category = asset.metadata.categories?.[0] || 'Uncategorized';
         const list = groups.get(category) || [];
         list.push(asset.id);
@@ -34,7 +34,7 @@ export class ClusteringService {
     } else if (criteria === 'color_palette') {
       // Group by dominant color matches
       const colorGroups = new Map<string, string[]>();
-      library.forEach((asset) => {
+      library.forEach(asset => {
         const color = asset.metadata.dominantColors?.[0] || '#888888';
         const list = colorGroups.get(color) || [];
         list.push(asset.id);
@@ -52,7 +52,7 @@ export class ClusteringService {
       });
     } else if (criteria === 'location') {
       const locGroups = new Map<string, string[]>();
-      library.forEach((asset) => {
+      library.forEach(asset => {
         const loc = asset.metadata.location || 'Studio Set';
         const list = locGroups.get(loc) || [];
         list.push(asset.id);
@@ -70,7 +70,7 @@ export class ClusteringService {
       });
     } else {
       // General fallbacks: clustering by name prefixes or types
-      const list = library.map((a) => a.id);
+      const list = library.map(a => a.id);
       clusters.push({
         id: `cluster_general_${criteria}`,
         name: `Visual Style Grouping`,

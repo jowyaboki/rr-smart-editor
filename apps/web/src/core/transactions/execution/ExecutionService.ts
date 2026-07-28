@@ -20,7 +20,7 @@ export class ExecutionService {
 
   public static async execute(
     transaction: EditorTransaction,
-    context: TransactionContext,
+    context: TransactionContext
   ): Promise<void> {
     const { handlers } = useTransactionStore.getState();
 
@@ -51,7 +51,7 @@ export class ExecutionService {
             throw new TransactionExecutionError(
               `Operation ${op.type} failed after ${maxRetries + 1} attempts: ${err.message}`,
               transaction.id,
-              err,
+              err
             );
           }
           // Short delay before retry

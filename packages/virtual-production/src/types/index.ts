@@ -7,8 +7,8 @@ import { z } from 'zod';
 export const Transform3DSchema = z.object({
   position: z.tuple([z.number(), z.number(), z.number()]), // [x, y, z]
   rotation: z.tuple([z.number(), z.number(), z.number()]), // [rx, ry, rz] in degrees
-  scale: z.tuple([z.number(), z.number(), z.number()]), // [sx, sy, sz]
-  anchorPoint: z.tuple([z.number(), z.number()]), // [ax, ay]
+  scale: z.tuple([z.number(), z.number(), z.number()]),    // [sx, sy, sz]
+  anchorPoint: z.tuple([z.number(), z.number()]),          // [ax, ay]
   opacity: z.number().min(0).max(1).default(1.0),
 });
 
@@ -163,7 +163,7 @@ export const CameraRigSchema = z.object({
   activeCameraId: z.string(),
   constraints: z.object({
     trackLength: z.number().optional(), // for dolly
-    armLength: z.number().optional(), // for crane
+    armLength: z.number().optional(),   // for crane
     orbitRadius: z.number().optional(), // for orbit
     handheldJitter: z.number().optional(), // for handheld
   }),
@@ -175,7 +175,12 @@ export type CameraRig = z.infer<typeof CameraRigSchema>;
 // LIGHTING
 // ============================================================================
 
-export const LightTypeSchema = z.enum(['directional', 'point', 'spot', 'area']);
+export const LightTypeSchema = z.enum([
+  'directional',
+  'point',
+  'spot',
+  'area',
+]);
 
 export type LightType = z.infer<typeof LightTypeSchema>;
 

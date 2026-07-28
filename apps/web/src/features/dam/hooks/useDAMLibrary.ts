@@ -15,14 +15,13 @@ export function useDAMLibrary() {
         status: asset.approval.status,
         url: asset.url,
         isPinned: false,
-      },
+      }
     ]);
   };
 
   const filteredAssets = store.assets.filter((asset) => {
     const matchesQuery = asset.displayName.toLowerCase().includes(store.searchQuery.toLowerCase());
-    const matchesCategory =
-      store.categoryFilter === 'all' || asset.category === store.categoryFilter;
+    const matchesCategory = store.categoryFilter === 'all' || asset.category === store.categoryFilter;
     return matchesQuery && matchesCategory;
   });
 

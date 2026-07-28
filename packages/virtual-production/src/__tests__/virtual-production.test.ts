@@ -17,13 +17,7 @@ test('Virtual Camera Movement - Lens Presets, Bookmarks, Rig Solves', () => {
     id: 'cam-test',
     name: 'A-Camera',
     type: 'perspective',
-    transform: {
-      position: [0, 1.6, 5],
-      rotation: [0, 0, 0],
-      scale: [1, 1, 1],
-      anchorPoint: [0, 0],
-      opacity: 1.0,
-    },
+    transform: { position: [0, 1.6, 5], rotation: [0, 0, 0], scale: [1, 1, 1], anchorPoint: [0, 0], opacity: 1.0 },
     projection: 'perspective',
     fov: 60,
     focalLength: 50,
@@ -42,20 +36,8 @@ test('Virtual Camera Movement - Lens Presets, Bookmarks, Rig Solves', () => {
   assert.strictEqual(bookmarkCam.bookmarks.length, 1);
   assert.strictEqual(bookmarkCam.bookmarks[0].name, 'Close-Up View');
 
-  const startTransform: Transform3D = {
-    position: [0, 0, 0],
-    rotation: [0, 0, 0],
-    scale: [1, 1, 1],
-    anchorPoint: [0, 0],
-    opacity: 1.0,
-  };
-  const endTransform: Transform3D = {
-    position: [10, 10, 10],
-    rotation: [0, 90, 0],
-    scale: [2, 2, 2],
-    anchorPoint: [0, 0],
-    opacity: 0.5,
-  };
+  const startTransform: Transform3D = { position: [0, 0, 0], rotation: [0, 0, 0], scale: [1, 1, 1], anchorPoint: [0, 0], opacity: 1.0 };
+  const endTransform: Transform3D = { position: [10, 10, 10], rotation: [0, 90, 0], scale: [2, 2, 2], anchorPoint: [0, 0], opacity: 0.5 };
 
   const middle = engine.cameraService.interpolator.interpolate(startTransform, endTransform, 0.5);
   assert.deepStrictEqual(middle.position, [5, 5, 5]);
@@ -67,7 +49,7 @@ test('Virtual Camera Movement - Lens Presets, Bookmarks, Rig Solves', () => {
     'dolly_track',
     startTransform,
     { trackLength: 10.0 },
-    Math.PI, // sin(pi * 0.5) = 1.0 -> offset = 5.0
+    Math.PI // sin(pi * 0.5) = 1.0 -> offset = 5.0
   );
   assert.ok(dollyTransform.position[0] > 4.9 && dollyTransform.position[0] < 5.1);
 });
@@ -88,13 +70,7 @@ test('Compositing Translation - Green Screen Mapping & Layers', () => {
       chroma: { keyColor: '#00ff00', tolerance: 0.35, edgeFeather: 2, spillReduction: 0.6 },
       luma: { threshold: 0.5, tolerance: 0.1, invert: false },
     },
-    transform3d: {
-      position: [1, 2, 0],
-      rotation: [0, 0, 45],
-      scale: [1.2, 1.2, 1],
-      anchorPoint: [0.5, 0.5],
-      opacity: 1.0,
-    },
+    transform3d: { position: [1, 2, 0], rotation: [0, 0, 45], scale: [1.2, 1.2, 1], anchorPoint: [0.5, 0.5], opacity: 1.0 },
     isVirtualSetBackground: false,
   };
 
@@ -156,13 +132,7 @@ test('Hardware Tracking Alignment & Latency Synchronization', () => {
     id: 'cam-01',
     name: 'Virtual camera tracking',
     type: 'perspective',
-    transform: {
-      position: [0, 0, 0],
-      rotation: [0, 0, 0],
-      scale: [1, 1, 1],
-      anchorPoint: [0, 0],
-      opacity: 1.0,
-    },
+    transform: { position: [0, 0, 0], rotation: [0, 0, 0], scale: [1, 1, 1], anchorPoint: [0, 0], opacity: 1.0 },
     projection: 'perspective',
     fov: 60,
     focalLength: 50,
@@ -217,13 +187,7 @@ test('Large Scene Performance Stress Test', () => {
       id: `cam-${i}`,
       name: `Stress Cam ${i}`,
       type: 'perspective',
-      transform: {
-        position: [0, 1.6, 5],
-        rotation: [0, 0, 0],
-        scale: [1, 1, 1],
-        anchorPoint: [0, 0],
-        opacity: 1.0,
-      },
+      transform: { position: [0, 1.6, 5], rotation: [0, 0, 0], scale: [1, 1, 1], anchorPoint: [0, 0], opacity: 1.0 },
       projection: 'perspective',
       fov: 60,
       focalLength: 50,
@@ -239,13 +203,7 @@ test('Large Scene Performance Stress Test', () => {
       id: `light-${i}`,
       name: `Stress Light ${i}`,
       type: 'point',
-      transform: {
-        position: [Math.sin(i), 4, Math.cos(i)],
-        rotation: [0, 0, 0],
-        scale: [1, 1, 1],
-        anchorPoint: [0, 0],
-        opacity: 1.0,
-      },
+      transform: { position: [Math.sin(i), 4, Math.cos(i)], rotation: [0, 0, 0], scale: [1, 1, 1], anchorPoint: [0, 0], opacity: 1.0 },
       color: '#ffffff',
       intensity: 1.0,
       temperature: 6500,
@@ -269,13 +227,7 @@ test('Plugin Registration and Adapter validation', () => {
   const customCamera: any = {
     id: 'my-red-camera',
     name: 'RED V-Raptor Adapter',
-    getTransform: () => ({
-      position: [0, 1.5, 0],
-      rotation: [0, 0, 0],
-      scale: [1, 1, 1],
-      anchorPoint: [0, 0],
-      opacity: 1.0,
-    }),
+    getTransform: () => ({ position: [0, 1.5, 0], rotation: [0, 0, 0], scale: [1, 1, 1], anchorPoint: [0, 0], opacity: 1.0 }),
     setLensPreset: () => {},
     setDepthOfField: () => {},
   };

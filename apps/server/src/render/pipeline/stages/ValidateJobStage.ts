@@ -17,9 +17,7 @@ export class ValidateJobStage implements PipelineStage {
 
     freshJob.stage = 'validate';
     freshJob.progress = 10;
-    freshJob.logs.push(
-      `[${new Date().toISOString()}] [Stage: VALIDATE] Validating project timeline and settings...`,
-    );
+    freshJob.logs.push(`[${new Date().toISOString()}] [Stage: VALIDATE] Validating project timeline and settings...`);
     await jobStorage.saveJob(freshJob);
     context.job = freshJob;
 

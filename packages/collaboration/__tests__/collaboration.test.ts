@@ -10,32 +10,19 @@ import {
 } from '../src/index';
 
 describe('Real-Time Collaboration Engine Core Unit Tests', () => {
+
   test('Concurrent Operations Synchronization and Offline Replay Queues', () => {
     const sync = new SynchronizationService();
 
     // 1. Simulate standard online operation streaming
-    const op1 = {
-      id: 'op-1',
-      timestamp: Date.now(),
-      authorId: 'user-A',
-      type: 'move_clip',
-      path: 'timeline.clips[0].x',
-      value: 150,
-    };
+    const op1 = { id: 'op-1', timestamp: Date.now(), authorId: 'user-A', type: 'move_clip', path: 'timeline.clips[0].x', value: 150 };
     const res1 = sync.handleOperation(op1);
     assert.strictEqual(res1.status, 'broadcasted');
     assert.strictEqual(sync.getOperationsLog().length, 1);
 
     // 2. Simulate connectivity drop (Offline mode)
     sync.setConnectionState(false);
-    const op2 = {
-      id: 'op-2',
-      timestamp: Date.now(),
-      authorId: 'user-A',
-      type: 'split_clip',
-      path: 'timeline.clips[0]',
-      value: { offset: 45 },
-    };
+    const op2 = { id: 'op-2', timestamp: Date.now(), authorId: 'user-A', type: 'split_clip', path: 'timeline.clips[0]', value: { offset: 45 } };
     const res2 = sync.handleOperation(op2);
     assert.strictEqual(res2.status, 'queued'); // Buffers in offline queue
     assert.strictEqual(sync.getOfflineQueue().length, 1);
@@ -86,12 +73,7 @@ describe('Real-Time Collaboration Engine Core Unit Tests', () => {
     const comments = new CommentService();
 
     // Create feedback comment with mentions
-    const comment = comments.addComment(
-      'user-A',
-      'Jules',
-      'Hey @alex and @sarah, please review this transition.',
-      { frame: 90 },
-    );
+    const comment = comments.addComment('user-A', 'Jules', 'Hey @alex and @sarah, please review this transition.', { frame: 90 });
     assert.strictEqual(comment.authorName, 'Jules');
     assert.strictEqual(comment.frame, 90);
 

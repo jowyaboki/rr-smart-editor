@@ -1,11 +1,5 @@
 import { Asset } from '@ai-video-editor/dam';
-import {
-  SearchQuery,
-  SearchResult,
-  SemanticEmbedding,
-  SimilarityScore,
-  SearchRankingStrategy,
-} from '../types';
+import { SearchQuery, SearchResult, SemanticEmbedding, SimilarityScore, SearchRankingStrategy } from '../types';
 
 export class SearchService {
   private rankingStrategies: SearchRankingStrategy[] = [];
@@ -39,17 +33,13 @@ export class SearchService {
   public async search(
     query: SearchQuery,
     library: Asset[],
-    embeddings: SemanticEmbedding[],
+    embeddings: SemanticEmbedding[]
   ): Promise<SearchResult[]> {
     const results: SearchResult[] = [];
     const threshold = query.threshold !== undefined ? query.threshold : 0.35;
 
     // If no text query exists, we shouldn't use traditional keyword metadata weight (set to 0.0)
-    const hybridWeight = query.text
-      ? query.hybridWeight !== undefined
-        ? query.hybridWeight
-        : 0.5
-      : 0.0;
+    const hybridWeight = query.text ? (query.hybridWeight !== undefined ? query.hybridWeight : 0.5) : 0.0;
 
     for (const asset of library) {
       // 1. Calculate traditional metadata match score (0.0 to 1.0)
@@ -75,9 +65,7 @@ export class SearchService {
 
         // Keywords check
         if (asset.metadata.keywords) {
-          const matchCount = asset.metadata.keywords.filter((k) =>
-            k.toLowerCase().includes(textQuery),
-          ).length;
+          const matchCount = asset.metadata.keywords.filter(k => k.toLowerCase().includes(textQuery)).length;
           if (matchCount > 0) {
             matches += 0.2 * matchCount;
             matchedConcepts.push('keyword_match');
@@ -104,13 +92,13 @@ export class SearchService {
       // 2. Calculate semantic vector score
       let semanticScore = 0;
       if (query.embedding) {
-        const emb = embeddings.find((e) => e.assetId === asset.id);
+        const emb = embeddings.find(e => e.assetId === asset.id);
         if (emb) {
           semanticScore = this.computeCosineSimilarity(query.embedding, emb.vector);
         }
       } else if (textQuery) {
         // Fallback semantic score if no vector passed (approximate via overlap / keyword embeddings)
-        const emb = embeddings.find((e) => e.assetId === asset.id);
+        const emb = embeddings.find(e => e.assetId === asset.id);
         if (emb) {
           // If no query embedding provided but text exists, generate an on-the-fly pseudo vector
           const mockQueryVector = this.generateDefaultMockEmbedding(textQuery, emb.vector.length);
@@ -119,9 +107,7 @@ export class SearchService {
       }
 
       // 3. Compute hybrid score
-      const finalScore = query.embedding
-        ? semanticScore * (1 - hybridWeight) + metadataScore * hybridWeight
-        : semanticScore || metadataScore;
+      const finalScore = query.embedding ? (semanticScore * (1 - hybridWeight) + metadataScore * hybridWeight) : (semanticScore || metadataScore);
 
       // Filter by fileType
       const matchType = query.fileTypes ? query.fileTypes.includes(asset.metadata.fileType) : true;
@@ -157,6 +143,6 @@ export class SearchService {
       vector[idx] = (vector[idx] + charCode) / 255;
     }
     const magnitude = Math.sqrt(vector.reduce((sum, val) => sum + val * val, 0)) || 1;
-    return vector.map((val) => val / magnitude);
+    return vector.map(val => val / magnitude);
   }
 }

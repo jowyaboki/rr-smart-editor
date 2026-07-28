@@ -764,8 +764,23 @@
       "status": "idle",
       "capabilities": {
         "maxConcurrentJobs": 1,
-        "supportedFormats": ["mp4", "webm", "gif", "png", "jpeg", "mp3", "wav"],
-        "supportedCodecs": ["h264", "vp8", "gif", "png", "jpeg", "mp3"],
+        "supportedFormats": [
+          "mp4",
+          "webm",
+          "gif",
+          "png",
+          "jpeg",
+          "mp3",
+          "wav"
+        ],
+        "supportedCodecs": [
+          "h264",
+          "vp8",
+          "gif",
+          "png",
+          "jpeg",
+          "mp3"
+        ],
         "gpuAcceleration": false,
         "maxResolution": {
           "width": 3840,

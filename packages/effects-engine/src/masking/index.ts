@@ -11,7 +11,7 @@ export class MaskService {
     width: number,
     height: number,
     masks: Mask[],
-    context: EffectContext,
+    context: EffectContext
   ): void {
     if (!masks || masks.length === 0) return;
 
@@ -55,7 +55,7 @@ export class MaskService {
             let finalPts = pts;
             if (mask.expansion !== 0) {
               const center = this.calculateCenter(pts);
-              finalPts = pts.map((p) => {
+              finalPts = pts.map(p => {
                 const dx = p.x - center.x;
                 const dy = p.y - center.y;
                 const len = Math.sqrt(dx * dx + dy * dy) || 1;
@@ -93,7 +93,7 @@ export class MaskService {
               gradSettings.start.x,
               gradSettings.start.y,
               gradSettings.end.x,
-              gradSettings.end.y,
+              gradSettings.end.y
             );
             for (const stop of gradSettings.stops) {
               grad.addColorStop(stop.offset, stop.color);
@@ -129,7 +129,7 @@ export class MaskService {
         const imgData = maskCtx.getImageData(0, 0, width, height);
         const data = imgData.data;
         for (let i = 0; i < data.length; i += 4) {
-          data[i] = 255 - data[i]; // Invert red
+          data[i] = 255 - data[i];         // Invert red
           data[i + 1] = 255 - data[i + 1]; // Invert green
           data[i + 2] = 255 - data[i + 2]; // Invert blue
         }
@@ -169,7 +169,7 @@ export class MaskService {
     y: number,
     width: number,
     height: number,
-    time: number = 0,
+    time: number = 0
   ): number {
     if (!mask.enabled) return 1.0;
 
@@ -187,7 +187,8 @@ export class MaskService {
           const xj = pts[j].x;
           const yj = pts[j].y;
 
-          const intersect = yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi || 1) + xi;
+          const intersect = ((yi > y) !== (yj > y)) &&
+            (x < (xj - xi) * (y - yi) / ((yj - yi) || 1) + xi);
           if (intersect) inside = !inside;
         }
         val = inside ? 1.0 : 0.0;
@@ -201,16 +202,12 @@ export class MaskService {
         const dx = grad.end.x - grad.start.x;
         const dy = grad.end.y - grad.start.y;
         const lenSq = dx * dx + dy * dy || 1;
-        const t = Math.min(
-          1,
-          Math.max(0, ((x - grad.start.x) * dx + (y - grad.start.y) * dy) / lenSq),
-        );
+        const t = Math.min(1, Math.max(0, ((x - grad.start.x) * dx + (y - grad.start.y) * dy) / lenSq));
 
         // Piecewise linear interpolation of gradient stops
         const sortedStops = [...grad.stops].sort((a, b) => a.offset - b.offset);
         if (sortedStops.length === 0) val = t;
-        else if (t <= sortedStops[0].offset)
-          val = 1.0; // simple luma proxy
+        else if (t <= sortedStops[0].offset) val = 1.0; // simple luma proxy
         else if (t >= sortedStops[sortedStops.length - 1].offset) val = 0.0;
         else {
           for (let i = 0; i < sortedStops.length - 1; i++) {

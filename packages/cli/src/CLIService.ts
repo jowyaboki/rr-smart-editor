@@ -5,10 +5,7 @@ export class CLIService {
   /**
    * Orchestrates the rr CLI core command interface
    */
-  public async executeCommand(
-    command: string,
-    args: string[] = [],
-  ): Promise<{
+  public async executeCommand(command: string, args: string[] = []): Promise<{
     success: boolean;
     output: string;
     metadata?: any;
@@ -54,8 +51,7 @@ export class CLIService {
       case 'doctor': {
         return {
           success: true,
-          output:
-            '[rr doctor] Doctor diagnostics completed. Node system, monorepo workspaces, and external decoders are healthy and fully compliant.',
+          output: '[rr doctor] Doctor diagnostics completed. Node system, monorepo workspaces, and external decoders are healthy and fully compliant.',
         };
       }
 
@@ -68,15 +64,14 @@ export class CLIService {
           entrypoint: 'src/index.ts',
           permissions: ['filesystem_read', 'ai_assistant'],
           dependencies: {
-            react: '^18.2.0',
+            'react': '^18.2.0',
           },
           compatibility: {
             minEditorVersion: '1.0.0',
             targetNodeVersion: '18.x',
           },
         };
-        const result =
-          await globalDevKitPlatformEngine.validationService.validateManifest(mockManifest);
+        const result = await globalDevKitPlatformEngine.validationService.validateManifest(mockManifest);
         return {
           success: result.isValid,
           output: result.isValid
@@ -89,16 +84,14 @@ export class CLIService {
       case 'dev': {
         return {
           success: true,
-          output:
-            '[rr dev] Dev Server bootup completed. Hot Reload & Live Preview active on http://localhost:3002.',
+          output: '[rr dev] Dev Server bootup completed. Hot Reload & Live Preview active on http://localhost:3002.',
         };
       }
 
       case 'test': {
         return {
           success: true,
-          output:
-            '[rr test] Automated tests execution completed. 100% assertions successful (pass/fail matches).',
+          output: '[rr test] Automated tests execution completed. 100% assertions successful (pass/fail matches).',
         };
       }
 

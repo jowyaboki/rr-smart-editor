@@ -1,12 +1,6 @@
 import { create } from 'zustand';
 import { MediaAsset, ImportJob, MediaCollection, JobStatus } from '../types';
-import {
-  MediaImportService,
-  AnalysisService,
-  ProxyService,
-  ThumbnailService,
-  WaveformService,
-} from '@ai-video-editor/media-pipeline';
+import { MediaImportService, AnalysisService, ProxyService, ThumbnailService, WaveformService } from '@ai-video-editor/media-pipeline';
 
 interface MediaStoreState {
   assets: MediaAsset[];
@@ -60,12 +54,12 @@ export const useMediaStore = create<MediaStoreState>((set, get) => {
         return;
       }
 
-      set((state) => ({
+      set(state => ({
         jobs: { ...state.jobs, [job.id]: { ...job, status: 'processing', progress: 10 } },
       }));
 
       // Simulate step-by-step ingestion stages (non-blocking)
-      const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+      const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
       try {
         // Analysis stage
@@ -73,7 +67,7 @@ export const useMediaStore = create<MediaStoreState>((set, get) => {
         const fingerprint = MediaImportService.generateFingerprint(filename, size);
         const metadata = AnalysisService.analyzeMedia(filepath, filename, size, fingerprint);
 
-        set((state) => ({
+        set(state => ({
           jobs: { ...state.jobs, [job.id]: { ...state.jobs[job.id], progress: 40 } },
         }));
 
@@ -87,7 +81,7 @@ export const useMediaStore = create<MediaStoreState>((set, get) => {
           waveform = await WaveformService.generateWaveform(job.assetId, filepath);
         }
 
-        set((state) => ({
+        set(state => ({
           jobs: { ...state.jobs, [job.id]: { ...state.jobs[job.id], progress: 80 } },
         }));
 
@@ -97,12 +91,7 @@ export const useMediaStore = create<MediaStoreState>((set, get) => {
           id: job.assetId,
           filename,
           filepath,
-          type:
-            filename.endsWith('.mp3') || filename.endsWith('.wav')
-              ? 'audio'
-              : filename.endsWith('.png') || filename.endsWith('.jpg')
-                ? 'image'
-                : 'video',
+          type: filename.endsWith('.mp3') || filename.endsWith('.wav') ? 'audio' : filename.endsWith('.png') || filename.endsWith('.jpg') ? 'image' : 'video',
           size,
           fingerprint,
           metadata,
@@ -114,7 +103,7 @@ export const useMediaStore = create<MediaStoreState>((set, get) => {
 
         MediaImportService.registerAsset(asset);
 
-        set((state) => {
+        set(state => {
           const updatedJobs = { ...state.jobs };
           updatedJobs[job.id] = { ...updatedJobs[job.id], status: 'completed', progress: 100 };
           return {
@@ -123,20 +112,16 @@ export const useMediaStore = create<MediaStoreState>((set, get) => {
           };
         });
       } catch (err: any) {
-        set((state) => {
+        set(state => {
           const updatedJobs = { ...state.jobs };
-          updatedJobs[job.id] = {
-            ...updatedJobs[job.id],
-            status: 'failed',
-            error: err.message || String(err),
-          };
+          updatedJobs[job.id] = { ...updatedJobs[job.id], status: 'failed', error: err.message || String(err) };
           return { jobs: updatedJobs };
         });
       }
     },
 
     createCollection: (col) => {
-      set((state) => ({ collections: [...state.collections, col] }));
+      set(state => ({ collections: [...state.collections, col] }));
     },
   };
 });

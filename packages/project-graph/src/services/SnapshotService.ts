@@ -69,10 +69,7 @@ export class SnapshotService {
       const beforeNode = before.nodes[id];
       if (!beforeNode) {
         addedNodes.push(JSON.parse(JSON.stringify(afterNode)));
-      } else if (
-        beforeNode.state.version !== afterNode.state.version ||
-        beforeNode.state.value !== afterNode.state.value
-      ) {
+      } else if (beforeNode.state.version !== afterNode.state.version || beforeNode.state.value !== afterNode.state.value) {
         updatedNodes.push({
           nodeId: id,
           before: JSON.parse(JSON.stringify(beforeNode)),

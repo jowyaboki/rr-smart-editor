@@ -5,29 +5,12 @@ export const TimelineCommentsPanel: React.FC = () => {
   const { comments, resolveComment } = useReviewComments();
 
   return (
-    <div
-      style={{
-        padding: '12px',
-        background: '#111',
-        color: '#fff',
-        border: '1px solid #333',
-        borderRadius: '4px',
-        marginTop: '12px',
-      }}
-    >
+    <div style={{ padding: '12px', background: '#111', color: '#fff', border: '1px solid #333', borderRadius: '4px', marginTop: '12px' }}>
       <span style={{ fontSize: '12px', fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>
         Timeline Frame Feedback
       </span>
 
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '6px',
-          maxHeight: '200px',
-          overflowY: 'auto',
-        }}
-      >
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', maxHeight: '200px', overflowY: 'auto' }}>
         {comments.map((comment) => (
           <div
             key={comment.id}
@@ -39,17 +22,8 @@ export const TimelineCommentsPanel: React.FC = () => {
               opacity: comment.resolved ? 0.5 : 1,
             }}
           >
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginBottom: '4px',
-              }}
-            >
-              <span style={{ fontSize: '10px', fontWeight: 'bold', color: '#1976d2' }}>
-                {comment.authorName}
-              </span>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+              <span style={{ fontSize: '10px', fontWeight: 'bold', color: '#1976d2' }}>{comment.authorName}</span>
               <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
                 {comment.frame !== undefined && (
                   <span style={{ fontSize: '9px', color: '#888' }}>Frame {comment.frame}</span>
@@ -57,15 +31,7 @@ export const TimelineCommentsPanel: React.FC = () => {
                 {!comment.resolved && (
                   <button
                     onClick={() => resolveComment(comment.id)}
-                    style={{
-                      padding: '1px 4px',
-                      fontSize: '8px',
-                      background: '#2e7d32',
-                      color: '#fff',
-                      border: 'none',
-                      borderRadius: '2px',
-                      cursor: 'pointer',
-                    }}
+                    style={{ padding: '1px 4px', fontSize: '8px', background: '#2e7d32', color: '#fff', border: 'none', borderRadius: '2px', cursor: 'pointer' }}
                   >
                     Resolve
                   </button>

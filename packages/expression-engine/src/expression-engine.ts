@@ -86,9 +86,7 @@ export class ExpressionEngine {
   /**
    * Registers a custom AST validator (Plugin extension).
    */
-  public registerValidator(
-    validator: (expression: string, ast: ASTNode) => ExpressionError | null,
-  ): void {
+  public registerValidator(validator: (expression: string, ast: ASTNode) => ExpressionError | null): void {
     this.pluginValidators.push(validator);
   }
 
@@ -142,14 +140,8 @@ export class ExpressionEngine {
     // Bind time/frame to wiggle helper
     if ('wiggle' in mergedFunctions) {
       const origWiggle = mergedFunctions.wiggle;
-      mergedFunctions.wiggle = (
-        freq: number,
-        amp: number,
-        customTime?: number,
-        octaves?: number,
-      ) => {
-        const activeTime =
-          customTime !== undefined ? customTime : variables.time !== undefined ? variables.time : 0;
+      mergedFunctions.wiggle = (freq: number, amp: number, customTime?: number, octaves?: number) => {
+        const activeTime = customTime !== undefined ? customTime : (variables.time !== undefined ? variables.time : 0);
         return origWiggle(freq, amp, activeTime, octaves);
       };
     }

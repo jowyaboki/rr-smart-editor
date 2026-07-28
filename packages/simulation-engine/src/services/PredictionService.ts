@@ -1,10 +1,4 @@
-import {
-  IDigitalTwin,
-  PredictionProvider,
-  Prediction,
-  PerformanceEstimate,
-  CostEstimate,
-} from '../types';
+import { IDigitalTwin, PredictionProvider, Prediction, PerformanceEstimate, CostEstimate } from '../types';
 
 export class PredictionService {
   private providers: PredictionProvider[] = [];
@@ -29,7 +23,7 @@ export class PredictionService {
 
     // AI token usage calculations
     let aiTokenUsage = 0;
-    twin.history.forEach((evt) => {
+    twin.history.forEach(evt => {
       if (evt.type === 'ai_operation') {
         aiTokenUsage += 1500; // Estimated tokens per AI task
       }
@@ -43,18 +37,12 @@ export class PredictionService {
     for (const provider of this.providers) {
       const custom = await provider.estimate(twin);
       if (custom.performance) {
-        if (custom.performance.renderDurationMs !== undefined)
-          renderDurationMs = custom.performance.renderDurationMs;
-        if (custom.performance.memoryUsageMb !== undefined)
-          memoryUsageMb = custom.performance.memoryUsageMb;
-        if (custom.performance.cpuUsagePercent !== undefined)
-          cpuUsagePercent = custom.performance.cpuUsagePercent;
-        if (custom.performance.gpuUsagePercent !== undefined)
-          gpuUsagePercent = custom.performance.gpuUsagePercent;
-        if (custom.performance.storageGrowthMb !== undefined)
-          storageGrowthMb = custom.performance.storageGrowthMb;
-        if (custom.performance.networkTransferMb !== undefined)
-          networkTransferMb = custom.performance.networkTransferMb;
+        if (custom.performance.renderDurationMs !== undefined) renderDurationMs = custom.performance.renderDurationMs;
+        if (custom.performance.memoryUsageMb !== undefined) memoryUsageMb = custom.performance.memoryUsageMb;
+        if (custom.performance.cpuUsagePercent !== undefined) cpuUsagePercent = custom.performance.cpuUsagePercent;
+        if (custom.performance.gpuUsagePercent !== undefined) gpuUsagePercent = custom.performance.gpuUsagePercent;
+        if (custom.performance.storageGrowthMb !== undefined) storageGrowthMb = custom.performance.storageGrowthMb;
+        if (custom.performance.networkTransferMb !== undefined) networkTransferMb = custom.performance.networkTransferMb;
       }
       if (custom.cost) {
         if (custom.cost.aiTokenCost !== undefined) aiTokenCost = custom.cost.aiTokenCost;

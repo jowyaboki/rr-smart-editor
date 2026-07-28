@@ -1,13 +1,5 @@
 import { create } from 'zustand';
-import {
-  VirtualStudio,
-  UIViewportState,
-  VirtualCamera,
-  LightRig,
-  Environment,
-  TrackingSource,
-  CalibrationProfile,
-} from '../types';
+import { VirtualStudio, UIViewportState, VirtualCamera, LightRig, Environment, TrackingSource, CalibrationProfile } from '../types';
 import { globalVirtualStudioEngine } from '@ai-video-editor/virtual-production';
 
 interface VirtualProductionState {
@@ -54,10 +46,9 @@ export const useVirtualProductionStore = create<VirtualProductionState>((set, ge
 
   setStudio: (studio) => set({ studio }),
 
-  updateViewportState: (viewport) =>
-    set((state) => ({
-      viewportState: { ...state.viewportState, ...viewport },
-    })),
+  updateViewportState: (viewport) => set((state) => ({
+    viewportState: { ...state.viewportState, ...viewport },
+  })),
 
   selectCamera: (id) => set({ selectedCameraId: id }),
   selectLight: (id) => set({ selectedLightId: id }),
@@ -79,7 +70,7 @@ export const useVirtualProductionStore = create<VirtualProductionState>((set, ge
             cam.type as any,
             cam.transform,
             { trackLength: 5.0, armLength: 3.0 },
-            nextTime,
+            nextTime
           );
           updatedCameras[id] = {
             ...cam,
@@ -97,98 +88,92 @@ export const useVirtualProductionStore = create<VirtualProductionState>((set, ge
     }
   },
 
-  addCamera: (camera) =>
-    set((state) => {
-      if (!state.studio) return {};
-      const updatedStudio = {
+  addCamera: (camera) => set((state) => {
+    if (!state.studio) return {};
+    const updatedStudio = {
+      ...state.studio,
+      cameras: {
+        ...state.studio.cameras,
+        [camera.id]: camera,
+      },
+    };
+    globalVirtualStudioEngine.publish('CameraUpdated', camera);
+    return { studio: updatedStudio, selectedCameraId: camera.id };
+  }),
+
+  removeCamera: (id) => set((state) => {
+    if (!state.studio) return {};
+    const updatedCameras = { ...state.studio.cameras };
+    delete updatedCameras[id];
+    return {
+      studio: {
         ...state.studio,
-        cameras: {
-          ...state.studio.cameras,
-          [camera.id]: camera,
-        },
-      };
-      globalVirtualStudioEngine.publish('CameraUpdated', camera);
-      return { studio: updatedStudio, selectedCameraId: camera.id };
-    }),
+        cameras: updatedCameras,
+      },
+      selectedCameraId: state.selectedCameraId === id ? null : state.selectedCameraId,
+    };
+  }),
 
-  removeCamera: (id) =>
-    set((state) => {
-      if (!state.studio) return {};
-      const updatedCameras = { ...state.studio.cameras };
-      delete updatedCameras[id];
-      return {
-        studio: {
-          ...state.studio,
-          cameras: updatedCameras,
-        },
-        selectedCameraId: state.selectedCameraId === id ? null : state.selectedCameraId,
-      };
-    }),
+  addLight: (light) => set((state) => {
+    if (!state.studio) return {};
+    const updatedStudio = {
+      ...state.studio,
+      lightRigs: {
+        ...state.studio.lightRigs,
+        [light.id]: light,
+      },
+    };
+    globalVirtualStudioEngine.publish('LightingUpdated', light);
+    return { studio: updatedStudio, selectedLightId: light.id };
+  }),
 
-  addLight: (light) =>
-    set((state) => {
-      if (!state.studio) return {};
-      const updatedStudio = {
-        ...state.studio,
-        lightRigs: {
-          ...state.studio.lightRigs,
-          [light.id]: light,
-        },
-      };
-      globalVirtualStudioEngine.publish('LightingUpdated', light);
-      return { studio: updatedStudio, selectedLightId: light.id };
-    }),
+  updateLight: (id, updates) => set((state) => {
+    if (!state.studio || !state.studio.lightRigs[id]) return {};
+    const updatedLight = {
+      ...state.studio.lightRigs[id],
+      ...updates,
+    };
+    const updatedStudio = {
+      ...state.studio,
+      lightRigs: {
+        ...state.studio.lightRigs,
+        [id]: updatedLight,
+      },
+    };
+    globalVirtualStudioEngine.publish('LightingUpdated', updatedLight);
+    return { studio: updatedStudio };
+  }),
 
-  updateLight: (id, updates) =>
-    set((state) => {
-      if (!state.studio || !state.studio.lightRigs[id]) return {};
-      const updatedLight = {
-        ...state.studio.lightRigs[id],
-        ...updates,
-      };
-      const updatedStudio = {
-        ...state.studio,
-        lightRigs: {
-          ...state.studio.lightRigs,
-          [id]: updatedLight,
-        },
-      };
-      globalVirtualStudioEngine.publish('LightingUpdated', updatedLight);
-      return { studio: updatedStudio };
-    }),
+  updateEnvironment: (updates) => set((state) => {
+    if (!state.studio) return {};
+    const activeEnvId = Object.keys(state.studio.environments)[0];
+    if (!activeEnvId) return {};
 
-  updateEnvironment: (updates) =>
-    set((state) => {
-      if (!state.studio) return {};
-      const activeEnvId = Object.keys(state.studio.environments)[0];
-      if (!activeEnvId) return {};
+    const updatedEnv = {
+      ...state.studio.environments[activeEnvId],
+      ...updates,
+    };
+    const updatedStudio = {
+      ...state.studio,
+      environments: {
+        ...state.studio.environments,
+        [activeEnvId]: updatedEnv,
+      },
+    };
+    globalVirtualStudioEngine.publish('EnvironmentChanged', updatedEnv);
+    return { studio: updatedStudio };
+  }),
 
-      const updatedEnv = {
-        ...state.studio.environments[activeEnvId],
-        ...updates,
-      };
-      const updatedStudio = {
-        ...state.studio,
-        environments: {
-          ...state.studio.environments,
-          [activeEnvId]: updatedEnv,
-        },
-      };
-      globalVirtualStudioEngine.publish('EnvironmentChanged', updatedEnv);
-      return { studio: updatedStudio };
-    }),
-
-  addTracker: (tracker) =>
-    set((state) => {
-      if (!state.studio) return {};
-      const updatedStudio = {
-        ...state.studio,
-        trackingSources: {
-          ...state.studio.trackingSources,
-          [tracker.id]: tracker,
-        },
-      };
-      globalVirtualStudioEngine.publish('TrackingUpdated', tracker);
-      return { studio: updatedStudio, activeTrackerId: tracker.id };
-    }),
+  addTracker: (tracker) => set((state) => {
+    if (!state.studio) return {};
+    const updatedStudio = {
+      ...state.studio,
+      trackingSources: {
+        ...state.studio.trackingSources,
+        [tracker.id]: tracker,
+      },
+    };
+    globalVirtualStudioEngine.publish('TrackingUpdated', tracker);
+    return { studio: updatedStudio, activeTrackerId: tracker.id };
+  }),
 }));

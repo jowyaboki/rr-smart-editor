@@ -11,24 +11,8 @@ export const AssetClusters: React.FC = () => {
   }, [criteria]);
 
   return (
-    <div
-      style={{
-        background: '#1e1e1e',
-        padding: '20px',
-        borderRadius: '8px',
-        border: '1px solid #333',
-        color: '#fff',
-        marginTop: '20px',
-      }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: '16px',
-        }}
-      >
+    <div style={{ background: '#1e1e1e', padding: '20px', borderRadius: '8px', border: '1px solid #333', color: '#fff', marginTop: '20px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
         <h3 style={{ margin: 0, fontSize: '16px', color: '#ff9800' }}>
           🏷️ Semantic Asset Clusters
         </h3>
@@ -54,15 +38,7 @@ export const AssetClusters: React.FC = () => {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
         {clusters.map((cluster) => (
-          <div
-            key={cluster.id}
-            style={{
-              background: '#252526',
-              padding: '12px',
-              borderRadius: '6px',
-              border: '1px solid #333',
-            }}
-          >
+          <div key={cluster.id} style={{ background: '#252526', padding: '12px', borderRadius: '6px', border: '1px solid #333' }}>
             <h4 style={{ margin: '0 0 4px 0', fontSize: '14px', color: '#ff9800' }}>
               {cluster.name}
             </h4>

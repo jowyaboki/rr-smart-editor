@@ -28,7 +28,7 @@ export class ValidationService {
     if (!res.success) {
       return {
         valid: false,
-        errors: res.error.issues.map((e) => `${e.path.join('.')}: ${e.message}`),
+        errors: res.error.issues.map(e => `${e.path.join('.')}: ${e.message}`),
       };
     }
 

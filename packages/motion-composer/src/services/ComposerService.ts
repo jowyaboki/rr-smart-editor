@@ -49,7 +49,7 @@ export class ComposerService {
   public removeLayer(compId: string, layerId: string): void {
     const comp = this.getComposition(compId);
     if (comp) {
-      comp.layers = comp.layers.filter((l) => l.id !== layerId);
+      comp.layers = comp.layers.filter(l => l.id !== layerId);
     }
   }
 }

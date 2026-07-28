@@ -11,5 +11,9 @@
       "@ai-video-editor/render-core/*": ["../../packages/render-core/src/*"]
     }
   },
-  "include": ["src/**/*", "../../packages/shared/src/**/*", "../../packages/render-core/src/**/*"]
+  "include": [
+    "src/**/*",
+    "../../packages/shared/src/**/*",
+    "../../packages/render-core/src/**/*"
+  ]
 }

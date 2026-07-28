@@ -1,13 +1,4 @@
-import {
-  Organization,
-  Workspace,
-  WorkspaceMember,
-  Invitation,
-  Quota,
-  AuditEntry,
-  WorkspaceRole,
-  WorkspaceContext,
-} from '../types';
+import { Organization, Workspace, WorkspaceMember, Invitation, Quota, AuditEntry, WorkspaceRole, WorkspaceContext } from '../types';
 
 // ==========================================
 // 1. ORGANIZATION SERVICE
@@ -54,11 +45,7 @@ export class WorkspaceService {
     this.members.set(`${member.workspaceId}-${member.userId}`, member);
   }
 
-  public switchActiveWorkspace(
-    organizationId: string,
-    workspaceId: string,
-    userId: string,
-  ): WorkspaceContext {
+  public switchActiveWorkspace(organizationId: string, workspaceId: string, userId: string): WorkspaceContext {
     const memberKey = `${workspaceId}-${userId}`;
     const member = this.members.get(memberKey);
     const role: WorkspaceRole = member ? member.role : 'viewer';
@@ -78,13 +65,13 @@ export class WorkspaceService {
   }
 
   public scopeQuery<T extends { organizationId: string; workspaceId: string }>(
-    resources: T[],
+    resources: T[]
   ): T[] {
     if (!this.activeContext) return [];
     const { organizationId, workspaceId } = this.activeContext;
 
     return resources.filter(
-      (r) => r.organizationId === organizationId && r.workspaceId === workspaceId,
+      r => r.organizationId === organizationId && r.workspaceId === workspaceId
     );
   }
 }
@@ -118,21 +105,14 @@ export class QuotaService {
     this.quotas.set(workspaceId, limit);
   }
 
-  public recordUsageIncrement(
-    workspaceId: string,
-    resource: keyof Quota,
-    incrementValue = 1,
-  ): void {
+  public recordUsageIncrement(workspaceId: string, resource: keyof Quota, incrementValue = 1): void {
     const current = this.usages.get(workspaceId) || {};
     const val = current[resource] || 0;
     current[resource] = val + incrementValue;
     this.usages.set(workspaceId, current);
   }
 
-  public checkQuotaLimits(
-    workspaceId: string,
-    resource: keyof Quota,
-  ): { allowed: boolean; current: number; limit: number } {
+  public checkQuotaLimits(workspaceId: string, resource: keyof Quota): { allowed: boolean; current: number; limit: number } {
     const limit = this.quotas.get(workspaceId);
     if (!limit) {
       return { allowed: true, current: 0, limit: Infinity };
@@ -162,7 +142,7 @@ export class AuditService {
     workspaceId: string,
     action: AuditEntry['action'],
     message: string,
-    ipAddress?: string,
+    ipAddress?: string
   ): AuditEntry {
     const entry: AuditEntry = {
       id: `audit-${Math.random().toString(36).substr(2, 9)}`,
@@ -179,7 +159,7 @@ export class AuditService {
   }
 
   public getLogsByWorkspace(workspaceId: string): AuditEntry[] {
-    return this.audits.filter((a) => a.workspaceId === workspaceId);
+    return this.audits.filter(a => a.workspaceId === workspaceId);
   }
 }
 
@@ -189,12 +169,7 @@ export class AuditService {
 export class InvitationService {
   private invitations = new Map<string, Invitation>();
 
-  public createInvitation(
-    email: string,
-    workspaceId: string,
-    role: WorkspaceRole,
-    durationDays = 7,
-  ): Invitation {
+  public createInvitation(email: string, workspaceId: string, role: WorkspaceRole, durationDays = 7): Invitation {
     const invite: Invitation = {
       id: `invite-${Math.random().toString(36).substr(2, 9)}`,
       email,

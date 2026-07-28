@@ -53,13 +53,7 @@ export interface SuggestedChange {
 
 export const SuggestedChangeSchema = z.object({
   id: z.string(),
-  type: z.enum([
-    'unused_asset',
-    'silent_gap',
-    'inconsistent_brand',
-    'subtitle_overlap',
-    'slow_pacing',
-  ]),
+  type: z.enum(['unused_asset', 'silent_gap', 'inconsistent_brand', 'subtitle_overlap', 'slow_pacing']),
   description: z.string(),
   affectedElementId: z.string(),
   parameters: z.record(z.any()),

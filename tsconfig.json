@@ -51,7 +51,9 @@
       "@ai-video-editor/ai-copilot": ["packages/ai-copilot/src/index.ts"],
       "@ai-video-editor/ai-copilot/*": ["packages/ai-copilot/src/*"],
       "@ai-video-editor/virtual-production": ["packages/virtual-production/src/index.ts"],
-      "@ai-video-editor/virtual-production/*": ["packages/virtual-production/src/*"]
+      "@ai-video-editor/virtual-production/*": ["packages/virtual-production/src/*"],
+      "@ai-video-editor/color-science": ["packages/color-science/src/index.ts"],
+      "@ai-video-editor/color-science/*": ["packages/color-science/src/*"]
     }
   },
   "exclude": ["node_modules", "dist"]

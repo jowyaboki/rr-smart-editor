@@ -45,10 +45,7 @@ export class StudioService {
   /**
    * Snaps a 3D coordinate point to the nearest physical stage grid division
    */
-  public snapToGrid(
-    position: [number, number, number],
-    gridSize: number,
-  ): [number, number, number] {
+  public snapToGrid(position: [number, number, number], gridSize: number): [number, number, number] {
     if (gridSize <= 0) return position;
     return [
       Math.round(position[0] / gridSize) * gridSize,
@@ -67,10 +64,12 @@ export class StudioService {
     }
 
     // Attempt to locate a node of type 'scene' containing 'virtual_studio' values
-    const studioNode = Object.values(graph.nodes).find((n: any) => {
-      const node = n as any;
-      return node.type === 'scene' && node.state?.value?.stage;
-    }) as any;
+    const studioNode = Object.values(graph.nodes).find(
+      (n: any) => {
+        const node = n as any;
+        return node.type === 'scene' && node.state?.value?.stage;
+      }
+    ) as any;
 
     if (studioNode && studioNode.state?.value) {
       return studioNode.state.value as VirtualStudio;

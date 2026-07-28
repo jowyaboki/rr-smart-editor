@@ -7,32 +7,13 @@ export const ModerationReport: React.FC = () => {
   if (!activeAsset) return null;
 
   return (
-    <div
-      style={{
-        background: '#1e1e1e',
-        padding: '20px',
-        borderRadius: '8px',
-        border: '1px solid #333',
-        color: '#fff',
-      }}
-    >
-      <h3
-        style={{
-          marginTop: 0,
-          marginBottom: '16px',
-          fontSize: '16px',
-          color: '#f44336',
-          borderBottom: '1px solid #333',
-          paddingBottom: '10px',
-        }}
-      >
+    <div style={{ background: '#1e1e1e', padding: '20px', borderRadius: '8px', border: '1px solid #333', color: '#fff' }}>
+      <h3 style={{ marginTop: 0, marginBottom: '16px', fontSize: '16px', color: '#f44336', borderBottom: '1px solid #333', paddingBottom: '10px' }}>
         🛡️ Safety & Quality Compliance Audit
       </h3>
 
       {isLoading ? (
-        <div style={{ textAlign: 'center', color: '#aaa', fontSize: '13px' }}>
-          Analyzing content quality...
-        </div>
+        <div style={{ textAlign: 'center', color: '#aaa', fontSize: '13px' }}>Analyzing content quality...</div>
       ) : moderationResult ? (
         <div>
           <div
@@ -40,9 +21,7 @@ export const ModerationReport: React.FC = () => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              background: moderationResult.isFlagged
-                ? 'rgba(244, 67, 54, 0.1)'
-                : 'rgba(76, 175, 80, 0.1)',
+              background: moderationResult.isFlagged ? 'rgba(244, 67, 54, 0.1)' : 'rgba(76, 175, 80, 0.1)',
               border: `1px solid ${moderationResult.isFlagged ? 'rgba(244, 67, 54, 0.3)' : 'rgba(76, 175, 80, 0.3)'}`,
               padding: '12px',
               borderRadius: '6px',
@@ -54,13 +33,7 @@ export const ModerationReport: React.FC = () => {
                 {moderationResult.isFlagged ? '🚨' : '✅'}
               </span>
               <div>
-                <div
-                  style={{
-                    fontWeight: 'bold',
-                    fontSize: '14px',
-                    color: moderationResult.isFlagged ? '#f44336' : '#4caf50',
-                  }}
-                >
+                <div style={{ fontWeight: 'bold', fontSize: '14px', color: moderationResult.isFlagged ? '#f44336' : '#4caf50' }}>
                   {moderationResult.isFlagged ? 'Action Required' : 'Asset Fully Approved'}
                 </div>
                 <div style={{ fontSize: '12px', color: '#aaa' }}>
@@ -76,15 +49,7 @@ export const ModerationReport: React.FC = () => {
 
           {moderationResult.isFlagged && (
             <div>
-              <div
-                style={{
-                  fontSize: '11px',
-                  color: '#aaa',
-                  textTransform: 'uppercase',
-                  marginBottom: '8px',
-                  fontWeight: 'bold',
-                }}
-              >
+              <div style={{ fontSize: '11px', color: '#aaa', textTransform: 'uppercase', marginBottom: '8px', fontWeight: 'bold' }}>
                 Flagged Reasons:
               </div>
               <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
@@ -109,9 +74,7 @@ export const ModerationReport: React.FC = () => {
           )}
         </div>
       ) : (
-        <div style={{ textAlign: 'center', color: '#aaa', fontSize: '13px' }}>
-          Click analyze on active asset to trigger moderation check.
-        </div>
+        <div style={{ textAlign: 'center', color: '#aaa', fontSize: '13px' }}>Click analyze on active asset to trigger moderation check.</div>
       )}
     </div>
   );

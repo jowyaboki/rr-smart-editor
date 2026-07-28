@@ -31,8 +31,7 @@ export class QueueService {
     const id = `job_${Math.random().toString(36).substring(2, 11)}`;
     const priority = params.priority || 'normal';
     const presetId = params.presetId || 'mp4-1080p';
-    const preset =
-      renderPluginRegistry.getPreset(presetId) || renderPluginRegistry.getAllPresets()[0];
+    const preset = renderPluginRegistry.getPreset(presetId) || renderPluginRegistry.getAllPresets()[0];
 
     const finalSettings = {
       format: params.settings?.format || preset.format,

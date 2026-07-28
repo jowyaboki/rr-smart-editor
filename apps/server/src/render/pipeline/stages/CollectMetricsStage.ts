@@ -30,9 +30,7 @@ export class CollectMetricsStage implements PipelineStage {
 
     freshJob.metrics = finalMetrics;
     context.metrics = finalMetrics;
-    freshJob.logs.push(
-      `[${new Date().toISOString()}] [Stage: COLLECT_METRICS] Collecting performance telemetries and metrics...`,
-    );
+    freshJob.logs.push(`[${new Date().toISOString()}] [Stage: COLLECT_METRICS] Collecting performance telemetries and metrics...`);
     await jobStorage.saveJob(freshJob);
     context.job = freshJob;
 

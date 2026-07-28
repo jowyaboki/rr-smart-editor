@@ -1,15 +1,14 @@
-import {
-  GraphEngine,
-  DependencyResolver,
-  InvalidationService,
-  SnapshotService,
-  GraphSerializer,
-} from '@ai-video-editor/project-graph';
+import { GraphEngine, DependencyResolver, InvalidationService, SnapshotService, GraphSerializer } from '@ai-video-editor/project-graph';
 import { GraphValidationRegistry, GraphValidator } from '../validation';
 
 export const webGraphEngine = new GraphEngine('web-master-graph', 'Smart Editor Main Graph');
 
-export { DependencyResolver, InvalidationService, SnapshotService, GraphSerializer };
+export {
+  DependencyResolver,
+  InvalidationService,
+  SnapshotService,
+  GraphSerializer,
+};
 
 export class ProjectGraphPluginRegistry {
   private static registeredNodeTypes = new Set<string>();

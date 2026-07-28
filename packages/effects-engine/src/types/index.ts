@@ -4,8 +4,7 @@ import { z } from 'zod';
 // CORE PARAMETERS & PRESETS
 // ==========================================
 
-export type EffectParameterType =
-  'number' | 'string' | 'boolean' | 'color' | 'curve' | 'gradient' | 'select' | 'vector2';
+export type EffectParameterType = 'number' | 'string' | 'boolean' | 'color' | 'curve' | 'gradient' | 'select' | 'vector2';
 
 export const EffectParameterTypeSchema = z.enum([
   'number',
@@ -83,13 +82,7 @@ export const EffectPresetSchema = z.object({
 export type ShaderType = 'canvas' | 'webgl' | 'webgpu';
 
 export interface ShaderSource {
-  canvas?: (
-    ctx: CanvasRenderingContext2D,
-    width: number,
-    height: number,
-    params: Record<string, any>,
-    context: EffectContext,
-  ) => void;
+  canvas?: (ctx: CanvasRenderingContext2D, width: number, height: number, params: Record<string, any>, context: EffectContext) => void;
   webgl?: {
     vertex: string;
     fragment: string;
@@ -235,13 +228,11 @@ export const MaskSchema = z.object({
   feather: z.number().default(0),
   expansion: z.number().default(0),
   points: z.array(CurvePointSchema).optional(),
-  gradient: z
-    .object({
-      start: z.object({ x: z.number(), y: z.number() }),
-      end: z.object({ x: z.number(), y: z.number() }),
-      stops: z.array(GradientStopSchema),
-    })
-    .optional(),
+  gradient: z.object({
+    start: z.object({ x: z.number(), y: z.number() }),
+    end: z.object({ x: z.number(), y: z.number() }),
+    stops: z.array(GradientStopSchema),
+  }).optional(),
   animated: z.boolean().optional(),
 });
 

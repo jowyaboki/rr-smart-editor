@@ -7,10 +7,7 @@ interface TransactionState {
   activeTransaction: EditorTransaction | null;
   activeBatch: TransactionBatch | null;
   activeScopes: TransactionScope[];
-  handlers: Map<
-    string,
-    { execute: (params: any) => any; rollback?: (params: any, beforeState?: any) => any }
-  >;
+  handlers: Map<string, { execute: (params: any) => any; rollback?: (params: any, beforeState?: any) => any }>;
 
   // Actions
   pushToUndo: (item: EditorTransaction | TransactionBatch) => void;
@@ -21,11 +18,7 @@ interface TransactionState {
   setActiveTransaction: (tx: EditorTransaction | null) => void;
   setActiveBatch: (batch: TransactionBatch | null) => void;
   setActiveScopes: (scopes: TransactionScope[]) => void;
-  registerHandler: (
-    type: string,
-    execute: (params: any) => any,
-    rollback?: (params: any, beforeState?: any) => any,
-  ) => void;
+  registerHandler: (type: string, execute: (params: any) => any, rollback?: (params: any, beforeState?: any) => any) => void;
   unregisterHandler: (type: string) => void;
 }
 

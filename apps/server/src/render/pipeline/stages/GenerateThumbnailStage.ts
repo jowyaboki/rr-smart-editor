@@ -18,9 +18,7 @@ export class GenerateThumbnailStage implements PipelineStage {
     freshJob.stage = 'generate_thumbnail';
     freshJob.progress = 95;
     context.progress = 95;
-    freshJob.logs.push(
-      `[${new Date().toISOString()}] [Stage: GENERATE_THUMBNAIL] Generating poster poster preview thumbnail...`,
-    );
+    freshJob.logs.push(`[${new Date().toISOString()}] [Stage: GENERATE_THUMBNAIL] Generating poster poster preview thumbnail...`);
     await jobStorage.saveJob(freshJob);
     context.job = freshJob;
 

@@ -11,7 +11,7 @@ function createParam(
   min?: number,
   max?: number,
   step?: number,
-  options?: string[],
+  options?: string[]
 ): EffectParameter {
   return { id, name, type, value: val, default: val, min, max, step, options };
 }
@@ -44,11 +44,7 @@ export class EffectFactory {
     };
   }
 
-  public static createGlow(
-    intensity: number = 0.5,
-    radius: number = 10,
-    color: string = '#ffffff',
-  ): Effect {
+  public static createGlow(intensity: number = 0.5, radius: number = 10, color: string = '#ffffff'): Effect {
     return {
       id: `glow-${Math.random().toString(36).substr(2, 9)}`,
       name: 'Glow',
@@ -62,13 +58,7 @@ export class EffectFactory {
     };
   }
 
-  public static createShadow(
-    offsetX: number = 5,
-    offsetY: number = 5,
-    blur: number = 5,
-    color: string = '#000000',
-    opacity: number = 0.5,
-  ): Effect {
+  public static createShadow(offsetX: number = 5, offsetY: number = 5, blur: number = 5, color: string = '#000000', opacity: number = 0.5): Effect {
     return {
       id: `shadow-${Math.random().toString(36).substr(2, 9)}`,
       name: 'Shadow',
@@ -157,12 +147,7 @@ export class EffectFactory {
     };
   }
 
-  public static createCurves(
-    points: { x: number; y: number }[] = [
-      { x: 0, y: 0 },
-      { x: 1, y: 1 },
-    ],
-  ): Effect {
+  public static createCurves(points: { x: number; y: number }[] = [{ x: 0, y: 0 }, { x: 1, y: 1 }]): Effect {
     return {
       id: `curves-${Math.random().toString(36).substr(2, 9)}`,
       name: 'Curves',
@@ -174,13 +159,7 @@ export class EffectFactory {
     };
   }
 
-  public static createLevels(
-    inputMin: number = 0,
-    inputMax: number = 255,
-    gamma: number = 1.0,
-    outputMin: number = 0,
-    outputMax: number = 255,
-  ): Effect {
+  public static createLevels(inputMin: number = 0, inputMax: number = 255, gamma: number = 1.0, outputMin: number = 0, outputMax: number = 255): Effect {
     return {
       id: `levels-${Math.random().toString(36).substr(2, 9)}`,
       name: 'Levels',
@@ -196,11 +175,7 @@ export class EffectFactory {
     };
   }
 
-  public static createColorBalance(
-    cyanRed: number = 0,
-    magentaGreen: number = 0,
-    yellowBlue: number = 0,
-  ): Effect {
+  public static createColorBalance(cyanRed: number = 0, magentaGreen: number = 0, yellowBlue: number = 0): Effect {
     return {
       id: `color-balance-${Math.random().toString(36).substr(2, 9)}`,
       name: 'Color Balance',
@@ -208,15 +183,7 @@ export class EffectFactory {
       enabled: true,
       parameters: {
         cyanRed: createParam('cyanRed', 'Cyan - Red', 'number', cyanRed, -100, 100, 1),
-        magentaGreen: createParam(
-          'magentaGreen',
-          'Magenta - Green',
-          'number',
-          magentaGreen,
-          -100,
-          100,
-          1,
-        ),
+        magentaGreen: createParam('magentaGreen', 'Magenta - Green', 'number', magentaGreen, -100, 100, 1),
         yellowBlue: createParam('yellowBlue', 'Yellow - Blue', 'number', yellowBlue, -100, 100, 1),
       },
     };
@@ -259,11 +226,7 @@ export class EffectFactory {
     };
   }
 
-  public static createVignette(
-    amount: number = 0.5,
-    falloff: number = 0.5,
-    color: string = '#000000',
-  ): Effect {
+  public static createVignette(amount: number = 0.5, falloff: number = 0.5, color: string = '#000000'): Effect {
     return {
       id: `vignette-${Math.random().toString(36).substr(2, 9)}`,
       name: 'Vignette',
@@ -347,7 +310,7 @@ export function executeEffect(
   width: number,
   height: number,
   effect: Effect,
-  context: EffectContext,
+  context: EffectContext
 ): void {
   if (!effect.enabled) return;
 
@@ -396,8 +359,7 @@ export function executeEffect(
 
     case 'hue': {
       const h = getNumVal('angle', 0);
-      ctx.filter =
-        ctx.filter === 'none' ? `hue-rotate(${h}deg)` : `${ctx.filter} hue-rotate(${h}deg)`;
+      ctx.filter = ctx.filter === 'none' ? `hue-rotate(${h}deg)` : `${ctx.filter} hue-rotate(${h}deg)`;
       break;
     }
 
@@ -406,18 +368,14 @@ export function executeEffect(
       const oy = getNumVal('offsetY', 5);
       const bl = getNumVal('blur', 5);
       const col = getStrVal('color', '#000000');
-      ctx.filter =
-        ctx.filter === 'none'
-          ? `drop-shadow(${ox}px ${oy}px ${bl}px ${col})`
-          : `${ctx.filter} drop-shadow(${ox}px ${oy}px ${bl}px ${col})`;
+      ctx.filter = ctx.filter === 'none' ? `drop-shadow(${ox}px ${oy}px ${bl}px ${col})` : `${ctx.filter} drop-shadow(${ox}px ${oy}px ${bl}px ${col})`;
       break;
     }
 
     case 'exposure': {
       const exp = getNumVal('exposure', 0);
       const mult = Math.pow(2, exp);
-      ctx.filter =
-        ctx.filter === 'none' ? `brightness(${mult})` : `${ctx.filter} brightness(${mult})`;
+      ctx.filter = ctx.filter === 'none' ? `brightness(${mult})` : `${ctx.filter} brightness(${mult})`;
       break;
     }
 
@@ -425,10 +383,7 @@ export function executeEffect(
       const intensity = getNumVal('intensity', 0.5);
       const radius = getNumVal('radius', 10);
       const color = getStrVal('color', '#ffffff');
-      ctx.filter =
-        ctx.filter === 'none'
-          ? `drop-shadow(0px 0px ${radius}px ${color})`
-          : `${ctx.filter} drop-shadow(0px 0px ${radius}px ${color})`;
+      ctx.filter = ctx.filter === 'none' ? `drop-shadow(0px 0px ${radius}px ${color})` : `${ctx.filter} drop-shadow(0px 0px ${radius}px ${color})`;
       ctx.save();
       ctx.globalAlpha = intensity;
       ctx.shadowColor = color;
@@ -462,46 +417,16 @@ export function executeEffect(
           ctx.clearRect(0, 0, width, height);
           ctx.save();
           ctx.imageSmoothingEnabled = false;
-          ctx.drawImage(
-            tempCanvas,
-            0,
-            0,
-            width,
-            height,
-            0,
-            0,
-            Math.ceil(width / size),
-            Math.ceil(height / size),
-          );
+          ctx.drawImage(tempCanvas, 0, 0, width, height, 0, 0, Math.ceil(width / size), Math.ceil(height / size));
           const pixelatedCanvas = document.createElement('canvas');
           pixelatedCanvas.width = Math.ceil(width / size);
           pixelatedCanvas.height = Math.ceil(height / size);
           const pixelatedCtx = pixelatedCanvas.getContext('2d');
           if (pixelatedCtx) {
             pixelatedCtx.imageSmoothingEnabled = false;
-            pixelatedCtx.drawImage(
-              tempCanvas,
-              0,
-              0,
-              width,
-              height,
-              0,
-              0,
-              pixelatedCanvas.width,
-              pixelatedCanvas.height,
-            );
+            pixelatedCtx.drawImage(tempCanvas, 0, 0, width, height, 0, 0, pixelatedCanvas.width, pixelatedCanvas.height);
             ctx.clearRect(0, 0, width, height);
-            ctx.drawImage(
-              pixelatedCanvas,
-              0,
-              0,
-              pixelatedCanvas.width,
-              pixelatedCanvas.height,
-              0,
-              0,
-              width,
-              height,
-            );
+            ctx.drawImage(pixelatedCanvas, 0, 0, pixelatedCanvas.width, pixelatedCanvas.height, 0, 0, width, height);
           }
           ctx.restore();
         }
@@ -536,8 +461,7 @@ export function executeEffect(
 
     case 'noise':
     case 'grain': {
-      const amount =
-        effect.type === 'noise' ? getNumVal('amount', 0.1) : getNumVal('intensity', 0.1);
+      const amount = effect.type === 'noise' ? getNumVal('amount', 0.1) : getNumVal('intensity', 0.1);
       try {
         const imgData = ctx.getImageData(0, 0, width, height);
         const data = imgData.data;
@@ -562,12 +486,8 @@ export function executeEffect(
       const centerY = height / 2;
       const maxRadius = Math.sqrt(centerX * centerX + centerY * centerY);
       const grad = ctx.createRadialGradient(
-        centerX,
-        centerY,
-        maxRadius * (1 - amount),
-        centerX,
-        centerY,
-        maxRadius * (1 - amount + falloff),
+        centerX, centerY, maxRadius * (1 - amount),
+        centerX, centerY, maxRadius * (1 - amount + falloff)
       );
       grad.addColorStop(0, 'transparent');
       grad.addColorStop(1, color);
@@ -622,10 +542,7 @@ export function executeEffect(
     }
 
     case 'curves': {
-      const points = getAnyVal('points', [
-        { x: 0, y: 0 },
-        { x: 1, y: 1 },
-      ]);
+      const points = getAnyVal('points', [{ x: 0, y: 0 }, { x: 1, y: 1 }]);
       try {
         const imgData = ctx.getImageData(0, 0, width, height);
         const data = imgData.data;
@@ -637,7 +554,7 @@ export function executeEffect(
           if (points.length >= 2) {
             const p1 = points[0];
             const p2 = points[points.length - 1];
-            y = p1.y + ((t - p1.x) * (p2.y - p1.y)) / (p2.x - p1.x);
+            y = p1.y + (t - p1.x) * (p2.y - p1.y) / (p2.x - p1.x);
           }
           lookup[i] = Math.min(255, Math.max(0, Math.round(y * 255)));
         }
@@ -683,9 +600,9 @@ export function executeEffect(
     }
 
     case 'color_balance': {
-      const cr = (getNumVal('cyanRed', 0) / 100) * 255;
-      const mg = (getNumVal('magentaGreen', 0) / 100) * 255;
-      const yb = (getNumVal('yellowBlue', 0) / 100) * 255;
+      const cr = getNumVal('cyanRed', 0) / 100 * 255;
+      const mg = getNumVal('magentaGreen', 0) / 100 * 255;
+      const yb = getNumVal('yellowBlue', 0) / 100 * 255;
 
       try {
         const imgData = ctx.getImageData(0, 0, width, height);
@@ -773,21 +690,11 @@ export function executeEffect(
               return (input[pIdx] + input[pIdx + 1] + input[pIdx + 2]) / 3;
             };
 
-            const h =
-              getIntensity(x + 1, y - 1) +
-              2 * getIntensity(x + 1, y) +
-              getIntensity(x + 1, y + 1) -
-              (getIntensity(x - 1, y - 1) +
-                2 * getIntensity(x - 1, y) +
-                getIntensity(x - 1, y + 1));
+            const h = (getIntensity(x + 1, y - 1) + 2 * getIntensity(x + 1, y) + getIntensity(x + 1, y + 1)) -
+                      (getIntensity(x - 1, y - 1) + 2 * getIntensity(x - 1, y) + getIntensity(x - 1, y + 1));
 
-            const v =
-              getIntensity(x - 1, y + 1) +
-              2 * getIntensity(x, y + 1) +
-              getIntensity(x + 1, y + 1) -
-              (getIntensity(x - 1, y - 1) +
-                2 * getIntensity(x, y - 1) +
-                getIntensity(x + 1, y - 1));
+            const v = (getIntensity(x - 1, y + 1) + 2 * getIntensity(x, y + 1) + getIntensity(x + 1, y + 1)) -
+                      (getIntensity(x - 1, y - 1) + 2 * getIntensity(x, y - 1) + getIntensity(x + 1, y - 1));
 
             const mag = Math.sqrt(h * h + v * v);
             const edgeVal = mag > threshold ? 255 : 0;

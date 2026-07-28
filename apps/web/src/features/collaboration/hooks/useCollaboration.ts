@@ -20,7 +20,7 @@ export function useCollaboration() {
     store.setConnected(online);
     const flushedOps = webCollaborationService.sync.setConnectionState(online);
     if (online && flushedOps.length > 0) {
-      flushedOps.forEach((op) => store.appendOperation(op));
+      flushedOps.forEach(op => store.appendOperation(op));
     }
   };
 

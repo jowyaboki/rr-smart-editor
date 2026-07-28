@@ -8,7 +8,7 @@ export class TokenService {
     const dictionary: Record<string, string> = {};
 
     // 1. Spacing tokens
-    Object.keys(theme.spacing).forEach((key) => {
+    Object.keys(theme.spacing).forEach(key => {
       dictionary[`spacing-${key}`] = theme.spacing[key];
     });
 
@@ -19,7 +19,7 @@ export class TokenService {
     dictionary['color-bg'] = theme.colors.background;
 
     // 3. Border radius tokens
-    Object.keys(theme.radius).forEach((key) => {
+    Object.keys(theme.radius).forEach(key => {
       dictionary[`radius-${key}`] = theme.radius[key];
     });
 

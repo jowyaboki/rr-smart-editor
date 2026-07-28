@@ -120,15 +120,11 @@ describe('Editor Transaction Engine Tests', () => {
   test('Transaction Batching - atomic batch execution and rollback on failure', async () => {
     const res = await TransactionEngine.batch('My Large Edit Batch', async () => {
       TransactionEngine.begin('Step 1');
-      useTimelineStore
-        .getState()
-        .addClip('v1', { name: 'Batch 1', type: 'video', start: 0, duration: 10 });
+      useTimelineStore.getState().addClip('v1', { name: 'Batch 1', type: 'video', start: 0, duration: 10 });
       await TransactionEngine.commit();
 
       TransactionEngine.begin('Step 2');
-      useTimelineStore
-        .getState()
-        .addClip('v2', { name: 'Batch 2', type: 'video', start: 10, duration: 10 });
+      useTimelineStore.getState().addClip('v2', { name: 'Batch 2', type: 'video', start: 10, duration: 10 });
       throw new Error('Batch simulation interrupted!');
     });
 
@@ -168,12 +164,8 @@ describe('Editor Transaction Engine Tests', () => {
     let startedTriggered = false;
     let committedTriggered = false;
 
-    PluginTransactionService.observe('started', () => {
-      startedTriggered = true;
-    });
-    PluginTransactionService.observe('committed', () => {
-      committedTriggered = true;
-    });
+    PluginTransactionService.observe('started', () => { startedTriggered = true; });
+    PluginTransactionService.observe('committed', () => { committedTriggered = true; });
 
     PluginTransactionService.addValidator('plugin_op', (params) => {
       if (params.value < 0) return 'Value cannot be negative';
@@ -183,12 +175,8 @@ describe('Editor Transaction Engine Tests', () => {
     let customVal = 0;
     PluginTransactionService.registerHandler(
       'plugin_op',
-      (params) => {
-        customVal = params.value;
-      },
-      (params) => {
-        customVal = 0;
-      },
+      (params) => { customVal = params.value; },
+      (params) => { customVal = 0; }
     );
 
     const tx = PluginTransactionService.createTransaction('Run Plugin Action');
@@ -223,17 +211,13 @@ describe('Editor Transaction Engine Tests', () => {
       {
         name: 'AI Add Text',
         execute: () => {
-          useTimelineStore
-            .getState()
-            .addClip('v1', { name: 'AI Clip 1', type: 'text', start: 0, duration: 15 });
+          useTimelineStore.getState().addClip('v1', { name: 'AI Clip 1', type: 'text', start: 0, duration: 15 });
         },
       },
       {
         name: 'AI Add Music',
         execute: () => {
-          useTimelineStore
-            .getState()
-            .addClip('a1', { name: 'AI Music 1', type: 'audio', start: 0, duration: 100 });
+          useTimelineStore.getState().addClip('a1', { name: 'AI Music 1', type: 'audio', start: 0, duration: 100 });
         },
       },
     ]);

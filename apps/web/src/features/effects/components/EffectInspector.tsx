@@ -59,38 +59,12 @@ export const EffectInspector: React.FC = () => {
   }
 
   return (
-    <div
-      style={{
-        padding: '12px',
-        background: '#111',
-        color: '#fff',
-        height: '100%',
-        overflowY: 'auto',
-        borderLeft: '1px solid #333',
-      }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: '12px',
-        }}
-      >
+    <div style={{ padding: '12px', background: '#111', color: '#fff', height: '100%', overflowY: 'auto', borderLeft: '1px solid #333' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
         <h3 style={{ margin: 0, fontSize: '14px' }}>Layer: {activeLayer.name}</h3>
         <div style={{ display: 'flex', gap: '4px' }}>
-          <button
-            onClick={undo}
-            style={{ padding: '2px 6px', fontSize: '10px', cursor: 'pointer' }}
-          >
-            Undo
-          </button>
-          <button
-            onClick={redo}
-            style={{ padding: '2px 6px', fontSize: '10px', cursor: 'pointer' }}
-          >
-            Redo
-          </button>
+          <button onClick={undo} style={{ padding: '2px 6px', fontSize: '10px', cursor: 'pointer' }}>Undo</button>
+          <button onClick={redo} style={{ padding: '2px 6px', fontSize: '10px', cursor: 'pointer' }}>Redo</button>
         </div>
       </div>
 
@@ -126,9 +100,7 @@ export const EffectInspector: React.FC = () => {
       </div>
 
       <div style={{ marginBottom: '16px' }}>
-        <label style={{ fontSize: '11px', color: '#888', display: 'block', marginBottom: '4px' }}>
-          Add Effect:
-        </label>
+        <label style={{ fontSize: '11px', color: '#888', display: 'block', marginBottom: '4px' }}>Add Effect:</label>
         <select
           onChange={(e) => {
             if (e.target.value) {
@@ -136,14 +108,7 @@ export const EffectInspector: React.FC = () => {
               e.target.value = '';
             }
           }}
-          style={{
-            width: '100%',
-            padding: '4px',
-            background: '#222',
-            color: '#fff',
-            border: '1px solid #444',
-            cursor: 'pointer',
-          }}
+          style={{ width: '100%', padding: '4px', background: '#222', color: '#fff', border: '1px solid #444', cursor: 'pointer' }}
         >
           <option value="">Select Effect...</option>
           {availableEffects.map((eff) => (
@@ -155,37 +120,12 @@ export const EffectInspector: React.FC = () => {
       </div>
 
       <div>
-        <h4 style={{ margin: '0 0 8px 0', fontSize: '12px', color: '#aaa' }}>
-          Applied Effects Chain
-        </h4>
+        <h4 style={{ margin: '0 0 8px 0', fontSize: '12px', color: '#aaa' }}>Applied Effects Chain</h4>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           {activeLayer.effects.effects.map((effect: Effect) => (
-            <div
-              key={effect.id}
-              style={{
-                background: '#222',
-                border: '1px solid #333',
-                borderRadius: '4px',
-                padding: '8px',
-              }}
-            >
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  marginBottom: '8px',
-                }}
-              >
-                <label
-                  style={{
-                    fontSize: '11px',
-                    fontWeight: 'bold',
-                    display: 'flex',
-                    gap: '4px',
-                    alignItems: 'center',
-                  }}
-                >
+            <div key={effect.id} style={{ background: '#222', border: '1px solid #333', borderRadius: '4px', padding: '8px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                <label style={{ fontSize: '11px', fontWeight: 'bold', display: 'flex', gap: '4px', alignItems: 'center' }}>
                   <input
                     type="checkbox"
                     checked={effect.enabled}
@@ -195,15 +135,7 @@ export const EffectInspector: React.FC = () => {
                 </label>
                 <button
                   onClick={() => removeEffectFromLayer(activeLayer.id, effect.id)}
-                  style={{
-                    background: '#c62828',
-                    color: '#fff',
-                    border: 'none',
-                    padding: '2px 6px',
-                    fontSize: '9px',
-                    borderRadius: '2px',
-                    cursor: 'pointer',
-                  }}
+                  style={{ background: '#c62828', color: '#fff', border: 'none', padding: '2px 6px', fontSize: '9px', borderRadius: '2px', cursor: 'pointer' }}
                 >
                   Delete
                 </button>
@@ -214,28 +146,17 @@ export const EffectInspector: React.FC = () => {
                   <div key={param.id}>
                     {param.type === 'number' && (
                       <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                        <span style={{ fontSize: '10px', color: '#888', width: '80px' }}>
-                          {param.name}:
-                        </span>
+                        <span style={{ fontSize: '10px', color: '#888', width: '80px' }}>{param.name}:</span>
                         <input
                           type="range"
                           min={param.min ?? 0}
                           max={param.max ?? 100}
                           step={param.step ?? 1}
                           value={param.value}
-                          onChange={(e) =>
-                            updateEffectParameter(
-                              activeLayer.id,
-                              effect.id,
-                              param.id,
-                              parseFloat(e.target.value),
-                            )
-                          }
+                          onChange={(e) => updateEffectParameter(activeLayer.id, effect.id, param.id, parseFloat(e.target.value))}
                           style={{ flex: 1 }}
                         />
-                        <span style={{ fontSize: '10px', width: '30px', textAlign: 'right' }}>
-                          {param.value}
-                        </span>
+                        <span style={{ fontSize: '10px', width: '30px', textAlign: 'right' }}>{param.value}</span>
                       </div>
                     )}
 
@@ -243,18 +164,14 @@ export const EffectInspector: React.FC = () => {
                       <ColorPicker
                         label={param.name}
                         color={param.value}
-                        onChange={(col) =>
-                          updateEffectParameter(activeLayer.id, effect.id, param.id, col)
-                        }
+                        onChange={(col) => updateEffectParameter(activeLayer.id, effect.id, param.id, col)}
                       />
                     )}
 
                     {param.type === 'curve' && (
                       <CurveEditor
                         points={param.value}
-                        onChange={(pts) =>
-                          updateEffectParameter(activeLayer.id, effect.id, param.id, pts)
-                        }
+                        onChange={(pts) => updateEffectParameter(activeLayer.id, effect.id, param.id, pts)}
                       />
                     )}
                   </div>

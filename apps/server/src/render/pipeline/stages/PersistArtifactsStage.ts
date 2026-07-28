@@ -18,9 +18,7 @@ export class PersistArtifactsStage implements PipelineStage {
     freshJob.stage = 'generate_thumbnail';
     freshJob.progress = 99;
     context.progress = 99;
-    freshJob.logs.push(
-      `[${new Date().toISOString()}] [Stage: PERSIST_ARTIFACTS] Creating and persisting render artifacts...`,
-    );
+    freshJob.logs.push(`[${new Date().toISOString()}] [Stage: PERSIST_ARTIFACTS] Creating and persisting render artifacts...`);
     await jobStorage.saveJob(freshJob);
     context.job = freshJob;
 

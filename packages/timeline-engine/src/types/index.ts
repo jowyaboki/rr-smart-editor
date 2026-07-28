@@ -1,11 +1,11 @@
 import { z } from 'zod';
 
 export interface TimelineViewport {
-  scrollLeft: number; // horizontal scroll in pixels
-  scrollTop: number; // vertical scroll in pixels
-  width: number; // viewport width in pixels
-  height: number; // viewport height in pixels
-  pxPerFrame: number; // horizontal zoom level (pixels per frame)
+  scrollLeft: number;    // horizontal scroll in pixels
+  scrollTop: number;     // vertical scroll in pixels
+  width: number;         // viewport width in pixels
+  height: number;        // viewport height in pixels
+  pxPerFrame: number;    // horizontal zoom level (pixels per frame)
 }
 
 export const TimelineViewportSchema = z.object({
@@ -34,8 +34,8 @@ export interface VirtualTrack {
   id: string;
   name: string;
   type: 'video' | 'audio' | 'text' | 'overlay' | string;
-  height: number; // height in pixels
-  yOffset: number; // vertical top position in pixels
+  height: number;        // height in pixels
+  yOffset: number;       // vertical top position in pixels
   isLocked?: boolean;
   isMuted?: boolean;
 }
@@ -79,8 +79,8 @@ export const VirtualClipSchema = z.object({
 export interface VirtualKeyframe {
   id: string;
   clipId: string;
-  property: string; // e.g. 'opacity', 'scale', 'volume'
-  frame: number; // offset frame inside the clip or absolute frame
+  property: string;      // e.g. 'opacity', 'scale', 'volume'
+  frame: number;         // offset frame inside the clip or absolute frame
   value: number | string;
   easing?: 'linear' | 'step' | 'bezier' | 'bounce' | string;
 }
@@ -131,12 +131,10 @@ export interface TimelineCache {
 export const TimelineCacheSchema = z.object({
   viewport: TimelineViewportSchema,
   visibleClips: z.array(z.string()),
-  clipGeometries: z.record(
-    z.object({
-      x: z.number(),
-      y: z.number(),
-      width: z.number(),
-      height: z.number(),
-    }),
-  ),
+  clipGeometries: z.record(z.object({
+    x: z.number(),
+    y: z.number(),
+    width: z.number(),
+    height: z.number(),
+  })),
 });

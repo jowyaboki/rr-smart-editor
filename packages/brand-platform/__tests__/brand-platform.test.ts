@@ -3,6 +3,7 @@ import assert from 'node:assert';
 import { BrandPlatformEngine, BrandKit } from '../src/index';
 
 describe('Brand Platform SDK Core Unit Tests', () => {
+
   const mockBrandKit: BrandKit = {
     id: 'brand_corp_1',
     name: 'Sundance Corp Brand',
@@ -100,18 +101,8 @@ describe('Brand Platform SDK Core Unit Tests', () => {
       voiceText: 'This is the cheapest editing soft on web!', // Prohibited word 'cheapest'
       timeline: {
         clips: [
-          {
-            id: 'clip_1',
-            name: 'Text clip',
-            type: 'text',
-            style: { color: '#ff0000', fontFamily: 'Comic Sans' },
-          }, // Color unallowed, font unapproved
-          {
-            id: 'logo_clip',
-            name: 'Brand Logo',
-            type: 'logo',
-            style: { width: 50, placement: 'centered' },
-          }, // Logo too small, unapproved placement
+          { id: 'clip_1', name: 'Text clip', type: 'text', style: { color: '#ff0000', fontFamily: 'Comic Sans' } }, // Color unallowed, font unapproved
+          { id: 'logo_clip', name: 'Brand Logo', type: 'logo', style: { width: 50, placement: 'centered' } }, // Logo too small, unapproved placement
         ],
       },
     };
@@ -122,36 +113,24 @@ describe('Brand Platform SDK Core Unit Tests', () => {
     assert.ok(score.consistencyScore < 50); // High violations count
     assert.strictEqual(score.approvalStatus, 'rejected');
 
-    const hasProhibitedVoice = score.violations.some((v) => v.category === 'voice');
+    const hasProhibitedVoice = score.violations.some(v => v.category === 'voice');
     assert.strictEqual(hasProhibitedVoice, true);
 
-    const hasUnapprovedFont = score.violations.some((v) => v.category === 'font');
+    const hasUnapprovedFont = score.violations.some(v => v.category === 'font');
     assert.strictEqual(hasUnapprovedFont, true);
 
-    const hasTooSmallLogo = score.violations.some(
-      (v) => v.category === 'logo' && v.message.includes('width'),
-    );
+    const hasTooSmallLogo = score.violations.some(v => v.category === 'logo' && v.message.includes('width'));
     assert.strictEqual(hasTooSmallLogo, true);
   });
 
   test('Brand Versioning & Restorations', () => {
     const engine = new BrandPlatformEngine();
 
-    engine.versionService.createVersion(
-      '1.0.0',
-      mockBrandKit,
-      'Jules',
-      'Initial brand kit release.',
-    );
+    engine.versionService.createVersion('1.0.0', mockBrandKit, 'Jules', 'Initial brand kit release.');
 
     // Modify active kit
     const modifiedKit = { ...mockBrandKit, version: '1.1.0' };
-    engine.versionService.createVersion(
-      '1.1.0',
-      modifiedKit,
-      'Jules',
-      'Update branding color palettes.',
-    );
+    engine.versionService.createVersion('1.1.0', modifiedKit, 'Jules', 'Update branding color palettes.');
 
     const history = engine.versionService.listVersions();
     assert.strictEqual(history.length, 2);

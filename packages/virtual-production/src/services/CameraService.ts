@@ -39,7 +39,10 @@ export class CameraRigSolver {
   /**
    * Translates dolly, crane, orbit, or handheld mechanical constraints into kinematic transforms
    */
-  public solveRig(rig: CameraRig, timeSeconds: number): Transform3D {
+  public solveRig(
+    rig: CameraRig,
+    timeSeconds: number
+  ): Transform3D {
     const baseTransform = rig.transform;
     const constraints = rig.constraints;
     const solved: Transform3D = {
@@ -165,13 +168,8 @@ export class CameraService {
   public solveRigConstraints(
     rigType: 'static' | 'dolly_track' | 'crane_arm' | 'orbit_arm' | 'handheld_rig',
     baseTransform: Transform3D,
-    constraints: {
-      trackLength?: number;
-      armLength?: number;
-      orbitRadius?: number;
-      handheldJitter?: number;
-    },
-    timeSeconds: number,
+    constraints: { trackLength?: number; armLength?: number; orbitRadius?: number; handheldJitter?: number },
+    timeSeconds: number
   ): Transform3D {
     const rig: CameraRig = {
       id: 'temp-rig',

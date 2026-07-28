@@ -2,7 +2,13 @@ import { z } from 'zod';
 import { ExtensionManifest } from '@ai-video-editor/extension-sdk';
 
 export type LifecycleEvent =
-  'install' | 'enable' | 'disable' | 'update' | 'rollback' | 'uninstall' | 'repair';
+  | 'install'
+  | 'enable'
+  | 'disable'
+  | 'update'
+  | 'rollback'
+  | 'uninstall'
+  | 'repair';
 
 export interface LocalPackage {
   manifest: ExtensionManifest;

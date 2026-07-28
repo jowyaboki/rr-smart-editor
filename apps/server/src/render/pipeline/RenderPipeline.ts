@@ -1,9 +1,4 @@
-import {
-  renderPluginRegistry,
-  PipelineConfig,
-  PipelineContext,
-  PipelineStage,
-} from '@ai-video-editor/render-core';
+import { renderPluginRegistry, PipelineConfig, PipelineContext, PipelineStage } from '@ai-video-editor/render-core';
 import { StageRunner } from './StageRunner';
 import { renderEventBus } from '../services/RenderEventSystem';
 import { logger } from '../../utils/logger';

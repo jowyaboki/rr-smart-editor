@@ -1,6 +1,13 @@
 import { z } from 'zod';
 
-export type NodeCategory = 'trigger' | 'ai' | 'media' | 'project' | 'data' | 'logic' | 'publishing';
+export type NodeCategory =
+  | 'trigger'
+  | 'ai'
+  | 'media'
+  | 'project'
+  | 'data'
+  | 'logic'
+  | 'publishing';
 
 export const NodeCategorySchema = z.enum([
   'trigger',

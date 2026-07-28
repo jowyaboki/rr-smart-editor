@@ -1,10 +1,6 @@
 import { create } from 'zustand';
 import { PlaybackState, PlaybackSettings, PlaybackMetrics, FrameContext } from '../types';
-import {
-  PlaybackClockManager,
-  BufferService,
-  FrameEvaluator,
-} from '@ai-video-editor/playback-engine';
+import { PlaybackClockManager, BufferService, FrameEvaluator } from '@ai-video-editor/playback-engine';
 
 export const webPlaybackClock = new PlaybackClockManager(300, 30);
 export const webPlaybackBuffer = new BufferService(100);

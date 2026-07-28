@@ -6,16 +6,7 @@ export const TracesTimeline: React.FC = () => {
   const traces = webTracer.listTraces();
 
   return (
-    <div
-      style={{
-        padding: '12px',
-        background: '#111',
-        color: '#fff',
-        border: '1px solid #333',
-        borderRadius: '4px',
-        marginTop: '12px',
-      }}
-    >
+    <div style={{ padding: '12px', background: '#111', color: '#fff', border: '1px solid #333', borderRadius: '4px', marginTop: '12px' }}>
       <span style={{ fontSize: '12px', fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>
         Distributed Tracing Timeline Visualizer (Waterfall)
       </span>
@@ -27,34 +18,13 @@ export const TracesTimeline: React.FC = () => {
           </div>
         )}
         {traces.map((trace) => (
-          <div
-            key={trace.id}
-            style={{
-              background: '#1a1a1a',
-              border: '1px solid #222',
-              borderRadius: '3px',
-              padding: '8px',
-            }}
-          >
-            <span style={{ fontSize: '11px', fontWeight: 'bold', color: '#1976d2' }}>
-              Trace ID: {trace.id}
-            </span>
+          <div key={trace.id} style={{ background: '#1a1a1a', border: '1px solid #222', borderRadius: '3px', padding: '8px' }}>
+            <span style={{ fontSize: '11px', fontWeight: 'bold', color: '#1976d2' }}>Trace ID: {trace.id}</span>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginTop: '6px' }}>
               {trace.spans.map((span) => (
-                <div
-                  key={span.id}
-                  style={{ display: 'flex', alignItems: 'center', fontSize: '10px' }}
-                >
+                <div key={span.id} style={{ display: 'flex', alignItems: 'center', fontSize: '10px' }}>
                   <span style={{ width: '120px', color: '#888' }}>{span.name}</span>
-                  <div
-                    style={{
-                      flex: 1,
-                      background: '#333',
-                      height: '6px',
-                      borderRadius: '3px',
-                      position: 'relative',
-                    }}
-                  >
+                  <div style={{ flex: 1, background: '#333', height: '6px', borderRadius: '3px', position: 'relative' }}>
                     <div
                       style={{
                         position: 'absolute',
@@ -66,15 +36,7 @@ export const TracesTimeline: React.FC = () => {
                       }}
                     />
                   </div>
-                  <span
-                    style={{
-                      width: '60px',
-                      textAlign: 'right',
-                      color: '#aaa',
-                      fontSize: '9px',
-                      marginLeft: '8px',
-                    }}
-                  >
+                  <span style={{ width: '60px', textAlign: 'right', color: '#aaa', fontSize: '9px', marginLeft: '8px' }}>
                     {span.endTime ? `${span.endTime - span.startTime}ms` : 'Pending'}
                   </span>
                 </div>

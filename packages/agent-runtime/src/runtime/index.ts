@@ -1,12 +1,4 @@
-import {
-  Agent,
-  AgentTask,
-  AgentPlan,
-  ToolCall,
-  ToolResult,
-  ConversationContext,
-  ExecutionContext,
-} from '../types';
+import { Agent, AgentTask, AgentPlan, ToolCall, ToolResult, ConversationContext, ExecutionContext } from '../types';
 import { PlannerService } from '../planner';
 import { MemoryService } from '../memory';
 import { ContextService } from '../context';
@@ -29,7 +21,7 @@ export class AgentRuntime {
    */
   public async executeAgentRun(
     userMessage: string,
-    options?: ExecutionOptions,
+    options?: ExecutionOptions
   ): Promise<{ textResponse: string; plan?: AgentPlan; toolResults: ToolResult[] }> {
     // 1. Record incoming user request to memory
     this.memory.addMessage('user', userMessage);
@@ -45,9 +37,7 @@ export class AgentRuntime {
 
     for (const batch of executionBatches) {
       if (this.contextManager.isCancelled()) {
-        batch.forEach((t) => {
-          t.status = 'cancelled';
-        });
+        batch.forEach(t => { t.status = 'cancelled'; });
         break;
       }
 
@@ -112,12 +102,12 @@ export class AgentRuntime {
    * Formulates descriptive user progress response
    */
   private formulateResponseText(plan: AgentPlan, results: ToolResult[]): string {
-    const successes = results.filter((r) => r.success).length;
-    const failures = results.filter((r) => !r.success).length;
+    const successes = results.filter(r => r.success).length;
+    const failures = results.filter(r => !r.success).length;
 
     let response = `I have analyzed your request and compiled a multi-step plan containing ${plan.tasks.length} tasks.\n\n`;
     response += `### Execution Status:\n`;
-    plan.tasks.forEach((t) => {
+    plan.tasks.forEach(t => {
       const statusIcon = t.status === 'completed' ? '✅' : t.status === 'failed' ? '❌' : '⏳';
       response += `- ${statusIcon} **${t.description}** (${t.status.toUpperCase()})\n`;
     });

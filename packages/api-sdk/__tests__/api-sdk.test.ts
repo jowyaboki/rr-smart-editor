@@ -10,6 +10,7 @@ import {
 } from '../src/index';
 
 describe('Public API Platform & SDK Ecosystem Core Unit Tests', () => {
+
   test('API Key Authentications and Scope Authorizations', () => {
     const gateway = new ApiGateway();
 
@@ -62,10 +63,7 @@ describe('Public API Platform & SDK Ecosystem Core Unit Tests', () => {
     webhooks.subscribe('render_completed', 'https://webhook.site/receiver2');
 
     // Trigger event
-    const deliveries = await webhooks.triggerEvent('render_completed', {
-      jobId: 'job-123',
-      status: 'completed',
-    });
+    const deliveries = await webhooks.triggerEvent('render_completed', { jobId: 'job-123', status: 'completed' });
 
     assert.strictEqual(deliveries.length, 2);
     assert.strictEqual(deliveries[0].event, 'render_completed');

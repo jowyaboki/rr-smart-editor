@@ -22,7 +22,7 @@ export class SemanticIndexService {
     if (!idx) {
       throw new Error(`Index '${indexId}' does not exist.`);
     }
-    idx.embeddings = idx.embeddings.filter((e) => e.assetId !== embedding.assetId);
+    idx.embeddings = idx.embeddings.filter(e => e.assetId !== embedding.assetId);
     idx.embeddings.push(embedding);
     idx.lastRebuiltAt = new Date().toISOString();
   }
@@ -30,7 +30,7 @@ export class SemanticIndexService {
   public removeEmbedding(indexId: string, assetId: string): void {
     const idx = this.getIndex(indexId);
     if (idx) {
-      idx.embeddings = idx.embeddings.filter((e) => e.assetId !== assetId);
+      idx.embeddings = idx.embeddings.filter(e => e.assetId !== assetId);
       idx.lastRebuiltAt = new Date().toISOString();
     }
   }

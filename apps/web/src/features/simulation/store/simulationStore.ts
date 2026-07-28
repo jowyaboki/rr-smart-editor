@@ -32,7 +32,7 @@ interface SimulationState {
     variables?: WorkflowVariable[],
     assets?: any[],
     plugins?: string[],
-    permissions?: string[],
+    permissions?: string[]
   ) => void;
   executeOperation: (type: SimulationType, payload: any) => Promise<void>;
   runScenario: (scenario: Scenario) => Promise<void>;
@@ -62,27 +62,16 @@ export const useSimulationStore = create<SimulationState>((set, get) => {
       description: 'Run automatic speech transcribing, overlay subtitles, and grade colors safely',
       steps: [
         { type: 'ai_operation', payload: { operation: 'auto_caption' } },
-        {
-          type: 'expression_evaluation',
-          payload: {
-            expression: 'clip.duration + 10',
-            targetField: 'duration',
-            targetClipId: 'clip_caption_ai_1',
-          },
-        },
+        { type: 'expression_evaluation', payload: { expression: 'clip.duration + 10', targetField: 'duration', targetClipId: 'clip_caption_ai_1' } },
         { type: 'rendering', payload: { preset: 'prores_422' } },
       ],
     },
     {
       id: 'scen_asset_replacement',
       name: 'Asset Upgrade Pipeline',
-      description:
-        'Replaces raw media references with high-res equivalents and re-evaluates project health',
+      description: 'Replaces raw media references with high-res equivalents and re-evaluates project health',
       steps: [
-        {
-          type: 'asset_replacement',
-          payload: { oldAssetId: 'asset_video_1', newAssetId: 'asset_video_hd_1' },
-        },
+        { type: 'asset_replacement', payload: { oldAssetId: 'asset_video_1', newAssetId: 'asset_video_hd_1' } },
         { type: 'timeline_edit', payload: { action: 'move', clipId: 'clip_1', startFrame: 15 } },
       ],
     },
@@ -97,26 +86,12 @@ export const useSimulationStore = create<SimulationState>((set, get) => {
     compareMode: false,
     replayPointer: -1,
 
-    initTwin: (
-      project,
-      workflows = [],
-      variables = [],
-      assets = [],
-      plugins = [],
-      permissions = [],
-    ) => {
+    initTwin: (project, workflows = [], variables = [], assets = [], plugins = [], permissions = []) => {
       // Clean up previous twins
       const oldTwins = webTwinManager.listTwins();
-      oldTwins.forEach((t) => webTwinManager.removeTwin(t.id));
+      oldTwins.forEach(t => webTwinManager.removeTwin(t.id));
 
-      const twin = webTwinManager.createTwin(
-        project,
-        workflows,
-        variables,
-        assets,
-        plugins,
-        permissions,
-      );
+      const twin = webTwinManager.createTwin(project, workflows, variables, assets, plugins, permissions);
       set({
         activeTwin: twin,
         activeResult: null,
@@ -141,7 +116,7 @@ export const useSimulationStore = create<SimulationState>((set, get) => {
         const optimizationProposals = await webOptimizationService.analyze(activeTwin);
         const validationIssues = await webValidationService.validate(activeTwin);
 
-        const success = validationIssues.filter((i) => i.severity === 'error').length === 0;
+        const success = validationIssues.filter(i => i.severity === 'error').length === 0;
 
         const result: SimulationResult = {
           simulationId: `sim_${Date.now()}`,
@@ -178,32 +153,28 @@ export const useSimulationStore = create<SimulationState>((set, get) => {
         createdAt: new Date().toISOString(),
       };
 
-      set((state) => ({ simulations: [newSimulation, ...state.simulations] }));
+      set(state => ({ simulations: [newSimulation, ...state.simulations] }));
 
       try {
         const result = await webSimulationService.run(activeTwin, scenario);
 
         // Synchronize activeTwin history with result
-        scenario.steps.forEach((step) => {
+        scenario.steps.forEach(step => {
           activeTwin.executeOperation(step.type, step.payload);
         });
 
         newSimulation.status = 'completed';
         newSimulation.result = result;
 
-        set((state) => ({
+        set(state => ({
           activeResult: result,
           replayPointer: activeTwin.replayPointer,
-          simulations: state.simulations.map((s) =>
-            s.id === newSimulation.id ? newSimulation : s,
-          ),
+          simulations: state.simulations.map(s => (s.id === newSimulation.id ? newSimulation : s)),
         }));
       } catch (err) {
         newSimulation.status = 'failed';
-        set((state) => ({
-          simulations: state.simulations.map((s) =>
-            s.id === newSimulation.id ? newSimulation : s,
-          ),
+        set(state => ({
+          simulations: state.simulations.map(s => (s.id === newSimulation.id ? newSimulation : s)),
         }));
         console.error('Simulation scenario run failed:', err);
       } finally {

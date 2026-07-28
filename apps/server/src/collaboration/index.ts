@@ -1,8 +1,4 @@
-import {
-  CollaborativeSession,
-  Participant,
-  Operation,
-} from '../../../packages/collaboration/src/types';
+import { CollaborativeSession, Participant, Operation } from '../../../packages/collaboration/src/types';
 
 export class ServerCollaborationManager {
   private activeRooms = new Map<string, CollaborativeSession>();
@@ -23,7 +19,7 @@ export class ServerCollaborationManager {
     if (!room) {
       throw new Error(`Room with ID "${sessionId}" does not exist.`);
     }
-    if (!room.participants.some((p) => p.id === participant.id)) {
+    if (!room.participants.some(p => p.id === participant.id)) {
       room.participants.push(participant);
     }
     return room;
@@ -32,7 +28,7 @@ export class ServerCollaborationManager {
   public leaveRoom(sessionId: string, participantId: string): void {
     const room = this.activeRooms.get(sessionId);
     if (room) {
-      room.participants = room.participants.filter((p) => p.id !== participantId);
+      room.participants = room.participants.filter(p => p.id !== participantId);
       delete room.presences[participantId];
       if (room.participants.length === 0) {
         this.activeRooms.delete(sessionId);

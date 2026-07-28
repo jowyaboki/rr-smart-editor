@@ -11,7 +11,7 @@ export class LRUCache<T> {
 
   constructor(
     public readonly maxSize: number, // Maximum size in bytes or count
-    private readonly onEvict?: (key: string, value: T) => void,
+    private readonly onEvict?: (key: string, value: T) => void
   ) {}
 
   public get(key: string): T | undefined {

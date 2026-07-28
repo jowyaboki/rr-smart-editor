@@ -4,19 +4,13 @@ export const defaultTemplates: WorkflowTemplate[] = [
   {
     id: 'tpl_auto_caption',
     name: 'Automated AI Captioning Pipeline',
-    description:
-      'Prompts AI to generate a script, synthesizes voiceovers, inserts audio and text caption clips, and sends a notification when complete.',
+    description: 'Prompts AI to generate a script, synthesizes voiceovers, inserts audio and text caption clips, and sends a notification when complete.',
     category: 'AI & Scripting',
     workflow: {
       name: 'Automated AI Captioning Flow',
       trigger: { type: 'manual' },
       variables: [
-        {
-          name: 'scriptPrompt',
-          type: 'string',
-          value: 'Create a 15 second promo for a high-tech AI video editor app.',
-          scope: 'execution',
-        },
+        { name: 'scriptPrompt', type: 'string', value: 'Create a 15 second promo for a high-tech AI video editor app.', scope: 'execution' },
         { name: 'voiceType', type: 'string', value: 'male_accent', scope: 'execution' },
         { name: 'generatedScript', type: 'string', value: '', scope: 'execution' },
         { name: 'generatedVoice', type: 'json', value: null, scope: 'execution' },
@@ -78,8 +72,7 @@ export const defaultTemplates: WorkflowTemplate[] = [
           type: 'notification',
           config: {
             title: 'Captioning Complete',
-            message:
-              'Your automated captioning and voice synthesis pipeline finished successfully.',
+            message: 'Your automated captioning and voice synthesis pipeline finished successfully.',
             level: 'info',
           },
         },
@@ -91,19 +84,13 @@ export const defaultTemplates: WorkflowTemplate[] = [
   {
     id: 'tpl_smart_montage',
     name: 'Smart Media Montage Creator',
-    description:
-      'Loops over media library file imports, creates a brand new project, inserts video sequences, applies transitions, and initiates render.',
+    description: 'Loops over media library file imports, creates a brand new project, inserts video sequences, applies transitions, and initiates render.',
     category: 'Automation & Assembly',
     workflow: {
       name: 'Smart Media Montage Flow',
       trigger: { type: 'manual' },
       variables: [
-        {
-          name: 'montageProjectName',
-          type: 'string',
-          value: 'High Tech Travel Montage',
-          scope: 'project',
-        },
+        { name: 'montageProjectName', type: 'string', value: 'High Tech Travel Montage', scope: 'project' },
         {
           name: 'mediaSources',
           type: 'json',
@@ -190,19 +177,13 @@ export const defaultTemplates: WorkflowTemplate[] = [
   {
     id: 'tpl_render_notify',
     name: 'Scheduled Render & Alert Pipeline',
-    description:
-      'Polls/opens active project, delays 2 seconds to simulate asset check, triggers server render, and notifies user of result.',
+    description: 'Polls/opens active project, delays 2 seconds to simulate asset check, triggers server render, and notifies user of result.',
     category: 'Rendering',
     workflow: {
       name: 'Scheduled Render & Alert Flow',
       trigger: { type: 'project_save' },
       variables: [
-        {
-          name: 'notifyEmail',
-          type: 'string',
-          value: 'editor@creativecompany.com',
-          scope: 'environment',
-        },
+        { name: 'notifyEmail', type: 'string', value: 'editor@creativecompany.com', scope: 'environment' },
       ],
       steps: [
         {
@@ -229,8 +210,7 @@ export const defaultTemplates: WorkflowTemplate[] = [
           type: 'notification',
           config: {
             title: 'Render Queue Dispatched',
-            message:
-              'Your composition has finished rendering. Completion mail sent to: ${notifyEmail}',
+            message: 'Your composition has finished rendering. Completion mail sent to: ${notifyEmail}',
             level: 'info',
           },
         },

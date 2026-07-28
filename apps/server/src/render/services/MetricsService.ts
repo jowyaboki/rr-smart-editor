@@ -17,10 +17,7 @@ export class MetricsService {
     if (completedJobsWithMetrics.length > 0) {
       const sumFps = completedJobsWithMetrics.reduce((sum, j) => sum + (j.metrics?.fps || 0), 0);
       avgFps = sumFps / completedJobsWithMetrics.length;
-      totalDurationMs = completedJobsWithMetrics.reduce(
-        (sum, j) => sum + (j.metrics?.durationMs || 0),
-        0,
-      );
+      totalDurationMs = completedJobsWithMetrics.reduce((sum, j) => sum + (j.metrics?.durationMs || 0), 0);
     }
 
     const activeWorkersCount = workers.filter((w) => w.status !== 'offline').length;

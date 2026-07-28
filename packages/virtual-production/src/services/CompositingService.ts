@@ -26,34 +26,10 @@ export class CompositingService {
         type: 'chroma_key',
         enabled: true,
         parameters: {
-          keyColor: {
-            id: 'keyColor',
-            name: 'Key Color',
-            type: 'color',
-            value: color,
-            default: '#00ff00',
-          },
-          tolerance: {
-            id: 'tolerance',
-            name: 'Tolerance',
-            type: 'number',
-            value: keying.chroma.tolerance,
-            default: 0.4,
-          },
-          edgeFeather: {
-            id: 'edgeFeather',
-            name: 'Edge Feather',
-            type: 'number',
-            value: keying.chroma.edgeFeather,
-            default: 0,
-          },
-          spillReduction: {
-            id: 'spillReduction',
-            name: 'Spill Reduction',
-            type: 'number',
-            value: keying.chroma.spillReduction,
-            default: 0.5,
-          },
+          keyColor: { id: 'keyColor', name: 'Key Color', type: 'color', value: color, default: '#00ff00' },
+          tolerance: { id: 'tolerance', name: 'Tolerance', type: 'number', value: keying.chroma.tolerance, default: 0.4 },
+          edgeFeather: { id: 'edgeFeather', name: 'Edge Feather', type: 'number', value: keying.chroma.edgeFeather, default: 0 },
+          spillReduction: { id: 'spillReduction', name: 'Spill Reduction', type: 'number', value: keying.chroma.spillReduction, default: 0.5 },
         },
       });
     } else if (keying.type === 'luma') {
@@ -63,27 +39,9 @@ export class CompositingService {
         type: 'luma_key', // Or Custom Shader
         enabled: true,
         parameters: {
-          threshold: {
-            id: 'threshold',
-            name: 'Threshold',
-            type: 'number',
-            value: keying.luma.threshold,
-            default: 0.5,
-          },
-          tolerance: {
-            id: 'tolerance',
-            name: 'Tolerance',
-            type: 'number',
-            value: keying.luma.tolerance,
-            default: 0.1,
-          },
-          invert: {
-            id: 'invert',
-            name: 'Invert',
-            type: 'boolean',
-            value: keying.luma.invert,
-            default: false,
-          },
+          threshold: { id: 'threshold', name: 'Threshold', type: 'number', value: keying.luma.threshold, default: 0.5 },
+          tolerance: { id: 'tolerance', name: 'Tolerance', type: 'number', value: keying.luma.tolerance, default: 0.1 },
+          invert: { id: 'invert', name: 'Invert', type: 'boolean', value: keying.luma.invert, default: false },
         },
       });
     }

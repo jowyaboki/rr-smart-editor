@@ -15,18 +15,16 @@ export const OverlayManager: React.FC = () => {
   const [awayTeam, setAwayTeam] = useState('BLUE');
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '16px',
-        backgroundColor: '#16161a',
-        padding: '20px',
-        borderRadius: '8px',
-        border: '1px solid #27272a',
-        fontFamily: 'Inter, system-ui, sans-serif',
-      }}
-    >
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '16px',
+      backgroundColor: '#16161a',
+      padding: '20px',
+      borderRadius: '8px',
+      border: '1px solid #27272a',
+      fontFamily: 'Inter, system-ui, sans-serif',
+    }}>
       <h3 style={{ fontSize: '15px', fontWeight: 600, color: '#f8fafc', margin: 0 }}>
         📺 Live Overlay & Graphics Studio
       </h3>
@@ -34,23 +32,8 @@ export const OverlayManager: React.FC = () => {
       {/* QUICK INJECTION MODULES */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
         {/* BREAKING NEWS GENERATOR */}
-        <div
-          style={{
-            backgroundColor: '#1e1e24',
-            padding: '12px',
-            borderRadius: '6px',
-            border: '1px solid #27272a',
-          }}
-        >
-          <span
-            style={{
-              fontSize: '12px',
-              fontWeight: 'bold',
-              color: '#fca5a5',
-              display: 'block',
-              marginBottom: '8px',
-            }}
-          >
+        <div style={{ backgroundColor: '#1e1e24', padding: '12px', borderRadius: '6px', border: '1px solid #27272a' }}>
+          <span style={{ fontSize: '12px', fontWeight: 'bold', color: '#fca5a5', display: 'block', marginBottom: '8px' }}>
             🚨 Breaking News Ticker
           </span>
           <input
@@ -93,58 +76,22 @@ export const OverlayManager: React.FC = () => {
         </div>
 
         {/* SCOREBOARD CONFIGURATOR */}
-        <div
-          style={{
-            backgroundColor: '#1e1e24',
-            padding: '12px',
-            borderRadius: '6px',
-            border: '1px solid #27272a',
-          }}
-        >
-          <span
-            style={{
-              fontSize: '12px',
-              fontWeight: 'bold',
-              color: '#93c5fd',
-              display: 'block',
-              marginBottom: '8px',
-            }}
-          >
+        <div style={{ backgroundColor: '#1e1e24', padding: '12px', borderRadius: '6px', border: '1px solid #27272a' }}>
+          <span style={{ fontSize: '12px', fontWeight: 'bold', color: '#93c5fd', display: 'block', marginBottom: '8px' }}>
             🏀 Sports Scoreboard
           </span>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
-              gap: '6px',
-              marginBottom: '8px',
-            }}
-          >
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px', marginBottom: '8px' }}>
             <input
               type="text"
               value={homeTeam}
               onChange={(e) => setHomeTeam(e.target.value)}
-              style={{
-                padding: '4px 6px',
-                backgroundColor: '#16161a',
-                border: '1px solid #27272a',
-                borderRadius: '4px',
-                color: '#fff',
-                fontSize: '11px',
-              }}
+              style={{ padding: '4px 6px', backgroundColor: '#16161a', border: '1px solid #27272a', borderRadius: '4px', color: '#fff', fontSize: '11px' }}
             />
             <input
               type="text"
               value={awayTeam}
               onChange={(e) => setAwayTeam(e.target.value)}
-              style={{
-                padding: '4px 6px',
-                backgroundColor: '#16161a',
-                border: '1px solid #27272a',
-                borderRadius: '4px',
-                color: '#fff',
-                fontSize: '11px',
-              }}
+              style={{ padding: '4px 6px', backgroundColor: '#16161a', border: '1px solid #27272a', borderRadius: '4px', color: '#fff', fontSize: '11px' }}
             />
           </div>
           <button
@@ -170,16 +117,7 @@ export const OverlayManager: React.FC = () => {
 
       {/* ACTIVE GRAPHICS QUEUE */}
       <div>
-        <span
-          style={{
-            fontSize: '11px',
-            color: '#a1a1aa',
-            fontWeight: 600,
-            textTransform: 'uppercase',
-            display: 'block',
-            marginBottom: '8px',
-          }}
-        >
+        <span style={{ fontSize: '11px', color: '#a1a1aa', fontWeight: 600, textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>
           Active Overlays Stack ({overlays.length}):
         </span>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -198,18 +136,8 @@ export const OverlayManager: React.FC = () => {
             >
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <span style={{ fontSize: '12px', fontWeight: 'bold', color: '#fff' }}>
-                    {ov.name}
-                  </span>
-                  <span
-                    style={{
-                      fontSize: '9px',
-                      backgroundColor: '#27272a',
-                      padding: '2px 6px',
-                      borderRadius: '4px',
-                      color: '#71717a',
-                    }}
-                  >
+                  <span style={{ fontSize: '12px', fontWeight: 'bold', color: '#fff' }}>{ov.name}</span>
+                  <span style={{ fontSize: '9px', backgroundColor: '#27272a', padding: '2px 6px', borderRadius: '4px', color: '#71717a' }}>
                     {ov.type}
                   </span>
                 </div>
