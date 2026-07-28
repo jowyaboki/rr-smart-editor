@@ -53,7 +53,9 @@
       "@ai-video-editor/virtual-production": ["packages/virtual-production/src/index.ts"],
       "@ai-video-editor/virtual-production/*": ["packages/virtual-production/src/*"],
       "@ai-video-editor/color-science": ["packages/color-science/src/index.ts"],
-      "@ai-video-editor/color-science/*": ["packages/color-science/src/*"]
+      "@ai-video-editor/color-science/*": ["packages/color-science/src/*"],
+      "@ai-video-editor/audio-engine": ["packages/audio-engine/src/index.ts"],
+      "@ai-video-editor/audio-engine/*": ["packages/audio-engine/src/*"]
     }
   },
   "exclude": ["node_modules", "dist"]
