@@ -69,10 +69,12 @@ export const TemplateParameterSchema = z.object({
   min: z.number().optional(),
   max: z.number().optional(),
   step: z.number().optional(),
-  dependsOn: z.object({
-    parameterId: z.string(),
-    conditionValue: z.any(),
-  }).optional(),
+  dependsOn: z
+    .object({
+      parameterId: z.string(),
+      conditionValue: z.any(),
+    })
+    .optional(),
 });
 
 export interface TemplateSection {

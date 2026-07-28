@@ -65,7 +65,9 @@ export class RenderScheduler {
         if (match) {
           const { job, workerId } = match;
 
-          logger.info(`Scheduler (${this.strategy.name}): Assigning job ${job.id} to worker ${workerId}`);
+          logger.info(
+            `Scheduler (${this.strategy.name}): Assigning job ${job.id} to worker ${workerId}`,
+          );
 
           renderEventBus.emit('WorkerAssigned', {
             jobId: job.id,
@@ -121,9 +123,13 @@ export class RenderScheduler {
                 job.stage = 'validate';
                 job.progress = 0;
                 job.workerId = undefined;
-                job.logs.push(`[${new Date().toISOString()}] Worker went offline. Rescheduling job (Retry ${nextRetry}/${this.maxRetries})`);
+                job.logs.push(
+                  `[${new Date().toISOString()}] Worker went offline. Rescheduling job (Retry ${nextRetry}/${this.maxRetries})`,
+                );
                 await queueRepository.saveJob(job);
-                logger.info(`Rescheduled job ${jobId} due to worker timeout (Attempt ${nextRetry}/${this.maxRetries})`);
+                logger.info(
+                  `Rescheduled job ${jobId} due to worker timeout (Attempt ${nextRetry}/${this.maxRetries})`,
+                );
               } else {
                 try {
                   RenderStateMachine.checkAndTransition(job.status, 'failed');
@@ -132,7 +138,9 @@ export class RenderScheduler {
                 job.status = 'failed';
                 job.stage = 'failed';
                 job.error = `Worker went offline and max retry limit (${this.maxRetries}) reached.`;
-                job.logs.push(`[${new Date().toISOString()}] Worker went offline. Max retries reached. Failing job.`);
+                job.logs.push(
+                  `[${new Date().toISOString()}] Worker went offline. Max retries reached. Failing job.`,
+                );
                 job.completedAt = new Date().toISOString();
                 await queueRepository.saveJob(job);
                 logger.error(`Failing job ${jobId} due to worker timeout. Max retries reached.`);

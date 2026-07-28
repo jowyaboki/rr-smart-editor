@@ -15,8 +15,21 @@ const initialNodes: Node[] = [
     id: 'as_web_node_1',
     name: 'Primary GPU Node (Local Host)',
     status: 'idle',
-    capabilities: { gpuEnabled: true, gpuModel: 'NVIDIA RTX 4090', coresCount: 16, memoryGb: 64, supportedFormats: ['mp4', 'png'] },
-    telemetry: { cpuUsagePercent: 14, gpuUsagePercent: 2, memoryUsageMb: 4096, storageUsageGb: 350, networkRxMb: 5, networkTxMb: 12 },
+    capabilities: {
+      gpuEnabled: true,
+      gpuModel: 'NVIDIA RTX 4090',
+      coresCount: 16,
+      memoryGb: 64,
+      supportedFormats: ['mp4', 'png'],
+    },
+    telemetry: {
+      cpuUsagePercent: 14,
+      gpuUsagePercent: 2,
+      memoryUsageMb: 4096,
+      storageUsageGb: 350,
+      networkRxMb: 5,
+      networkTxMb: 12,
+    },
     costPerHour: 0.0,
     provider: 'local',
     lastHeartbeat: new Date().toISOString(),
@@ -25,12 +38,25 @@ const initialNodes: Node[] = [
     id: 'as_web_node_2',
     name: 'AWS g5.xlarge Spot Instance',
     status: 'idle',
-    capabilities: { gpuEnabled: true, gpuModel: 'NVIDIA A10G', coresCount: 4, memoryGb: 16, supportedFormats: ['mp4', 'mov'] },
-    telemetry: { cpuUsagePercent: 5, gpuUsagePercent: 0, memoryUsageMb: 1024, storageUsageGb: 80, networkRxMb: 2, networkTxMb: 1 },
+    capabilities: {
+      gpuEnabled: true,
+      gpuModel: 'NVIDIA A10G',
+      coresCount: 4,
+      memoryGb: 16,
+      supportedFormats: ['mp4', 'mov'],
+    },
+    telemetry: {
+      cpuUsagePercent: 5,
+      gpuUsagePercent: 0,
+      memoryUsageMb: 1024,
+      storageUsageGb: 80,
+      networkRxMb: 2,
+      networkTxMb: 1,
+    },
     costPerHour: 0.45,
     provider: 'aws',
     lastHeartbeat: new Date().toISOString(),
-  }
+  },
 ];
 
 interface ClusterState {
@@ -88,9 +114,9 @@ export const useClusterStore = create<ClusterState>((set, get) => {
       // Clear registry and register default nodes
       localClusterEngine.nodeRegistry.clearEvents();
       const nodes = localClusterEngine.nodeRegistry.listNodes();
-      nodes.forEach(n => localClusterEngine.nodeRegistry.unregisterNode(n.id));
+      nodes.forEach((n) => localClusterEngine.nodeRegistry.unregisterNode(n.id));
 
-      initialNodes.forEach(n => localClusterEngine.nodeRegistry.registerNode(n));
+      initialNodes.forEach((n) => localClusterEngine.nodeRegistry.registerNode(n));
       localClusterEngine.scalingService.registerPolicy(defaultPolicy);
 
       const metrics = localClusterEngine.coordinator.getClusterMetrics(0);
@@ -153,7 +179,12 @@ export const useClusterStore = create<ClusterState>((set, get) => {
     },
 
     splitJob: (jobId, framesCount, shardsCount) => {
-      const generated = localClusterEngine.shardManager.generateShards(jobId, 0, framesCount - 1, shardsCount);
+      const generated = localClusterEngine.shardManager.generateShards(
+        jobId,
+        0,
+        framesCount - 1,
+        shardsCount,
+      );
       set({ shards: generated });
     },
 
@@ -177,8 +208,20 @@ export const useClusterStore = create<ClusterState>((set, get) => {
           id: `cloud_scale_node_${num}`,
           name: `AWS g5.xlarge Scale Node #${num}`,
           status: 'idle',
-          capabilities: { gpuEnabled: true, gpuModel: 'NVIDIA A10G', coresCount: 4, memoryGb: 16, supportedFormats: ['mp4'] },
-          telemetry: { cpuUsagePercent: 0, memoryUsageMb: 0, storageUsageGb: 80, networkRxMb: 0, networkTxMb: 0 },
+          capabilities: {
+            gpuEnabled: true,
+            gpuModel: 'NVIDIA A10G',
+            coresCount: 4,
+            memoryGb: 16,
+            supportedFormats: ['mp4'],
+          },
+          telemetry: {
+            cpuUsagePercent: 0,
+            memoryUsageMb: 0,
+            storageUsageGb: 80,
+            networkRxMb: 0,
+            networkTxMb: 0,
+          },
           costPerHour: 0.45,
           provider: 'aws',
           lastHeartbeat: new Date().toISOString(),
@@ -200,7 +243,7 @@ export const useClusterStore = create<ClusterState>((set, get) => {
           message: `Active load decreased. Scaled down worker pool by -${decision.increment} nodes.`,
         });
 
-        const cloudNodes = get().nodes.filter(n => n.provider === 'aws');
+        const cloudNodes = get().nodes.filter((n) => n.provider === 'aws');
         if (cloudNodes.length > 0) {
           localClusterEngine.nodeRegistry.unregisterNode(cloudNodes[cloudNodes.length - 1].id);
         }

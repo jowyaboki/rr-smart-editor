@@ -4,7 +4,6 @@ import assert from 'node:assert';
 import { AIStudioOrchestrator } from '../../apps/web/src/features/ai-studio/orchestrator';
 
 describe('AI Video Studio highest-level Orchestration unit tests', () => {
-
   test('Orchestrate Natural Prompts into Complete Video Projects', async () => {
     const studio = new AIStudioOrchestrator();
 
@@ -27,25 +26,31 @@ describe('AI Video Studio highest-level Orchestration unit tests', () => {
 
     // 1. Scenario: Good conformant project
     const goodStoryboard = [
-      { id: 'sc-1', scriptSceneId: 's-1', visualUrl: 'https://images.com/visual1.png', subtitle: 'Ok' }
+      {
+        id: 'sc-1',
+        scriptSceneId: 's-1',
+        visualUrl: 'https://images.com/visual1.png',
+        subtitle: 'Ok',
+      },
     ];
-    const goodClips = [
-      { id: 'clip-1', duration: 5.0 }
-    ];
+    const goodClips = [{ id: 'clip-1', duration: 5.0 }];
     const audit1 = studio.runQualityReview(goodStoryboard, goodClips, { palette: ['#fff'] });
     assert.strictEqual(audit1.passed, true);
     assert.strictEqual(audit1.warnings.length, 0);
 
     // 2. Scenario: Non-conformant project (missing assets & timeline timing overlaps)
     const badStoryboard = [
-      { id: 'sc-1', scriptSceneId: 's-1', visualUrl: '', subtitle: 'Super long dialogues requiring at least 10 seconds of duration' }
+      {
+        id: 'sc-1',
+        scriptSceneId: 's-1',
+        visualUrl: '',
+        subtitle: 'Super long dialogues requiring at least 10 seconds of duration',
+      },
     ];
-    const badClips = [
-      { id: 'clip-1', duration: 1.0 }
-    ];
+    const badClips = [{ id: 'clip-1', duration: 1.0 }];
     const audit2 = studio.runQualityReview(badStoryboard, badClips, { palette: [] });
     assert.strictEqual(audit2.passed, false);
-    assert.ok(audit2.warnings.some(w => w.includes('missing generated visual url')));
-    assert.ok(audit2.warnings.some(w => w.includes('duration is too short')));
+    assert.ok(audit2.warnings.some((w) => w.includes('missing generated visual url')));
+    assert.ok(audit2.warnings.some((w) => w.includes('duration is too short')));
   });
 });

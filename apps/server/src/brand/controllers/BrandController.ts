@@ -4,7 +4,6 @@ import { globalBrandPlatformEngine, BrandKit } from '@ai-video-editor/brand-plat
 const serverBrandKits: BrandKit[] = [];
 
 export class BrandController {
-
   public async registerBrandKit(req: Request, res: Response): Promise<void> {
     try {
       const kit = req.body;
@@ -41,7 +40,12 @@ export class BrandController {
         : globalBrandPlatformEngine.brandService.getActiveBrandKit();
 
       if (!kit) {
-        res.status(400).json({ success: false, error: 'Valid brand kit is required for compliance validation.' });
+        res
+          .status(400)
+          .json({
+            success: false,
+            error: 'Valid brand kit is required for compliance validation.',
+          });
         return;
       }
 
@@ -61,7 +65,12 @@ export class BrandController {
         res.status(400).json({ success: false, error: 'version and brandKit are required.' });
         return;
       }
-      const snapshot = globalBrandPlatformEngine.versionService.createVersion(version, brandKit, author || 'Admin', changelog);
+      const snapshot = globalBrandPlatformEngine.versionService.createVersion(
+        version,
+        brandKit,
+        author || 'Admin',
+        changelog,
+      );
       res.json({ success: true, snapshot });
     } catch (err: any) {
       res.status(500).json({ success: false, error: err.message });

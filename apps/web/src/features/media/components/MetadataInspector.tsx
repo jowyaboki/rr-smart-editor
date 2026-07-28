@@ -8,7 +8,15 @@ interface MetadataInspectorProps {
 export const MetadataInspector: React.FC<MetadataInspectorProps> = ({ asset }) => {
   if (!asset) {
     return (
-      <div style={{ backgroundColor: '#102031', padding: '16px', borderRadius: '6px', fontSize: '12px', opacity: 0.5 }}>
+      <div
+        style={{
+          backgroundColor: '#102031',
+          padding: '16px',
+          borderRadius: '6px',
+          fontSize: '12px',
+          opacity: 0.5,
+        }}
+      >
         Select a media asset to inspect detailed metadata properties.
       </div>
     );
@@ -17,8 +25,27 @@ export const MetadataInspector: React.FC<MetadataInspectorProps> = ({ asset }) =
   const meta = asset.metadata;
 
   return (
-    <div style={{ backgroundColor: '#102031', padding: '16px', borderRadius: '6px', fontSize: '11px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-      <h3 style={{ margin: 0, fontSize: '14px', borderBottom: '1px solid #1e293b', paddingBottom: '8px' }}>Asset Inspector</h3>
+    <div
+      style={{
+        backgroundColor: '#102031',
+        padding: '16px',
+        borderRadius: '6px',
+        fontSize: '11px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '12px',
+      }}
+    >
+      <h3
+        style={{
+          margin: 0,
+          fontSize: '14px',
+          borderBottom: '1px solid #1e293b',
+          paddingBottom: '8px',
+        }}
+      >
+        Asset Inspector
+      </h3>
 
       <div>
         <div style={{ fontWeight: 'bold', color: '#b2bac2', marginBottom: '2px' }}>Filename</div>
@@ -42,7 +69,9 @@ export const MetadataInspector: React.FC<MetadataInspectorProps> = ({ asset }) =
         {meta.resolution && (
           <div>
             <span style={{ fontWeight: 'bold', color: '#b2bac2' }}>Resolution:</span>{' '}
-            <span>{meta.resolution.width}x{meta.resolution.height}</span>
+            <span>
+              {meta.resolution.width}x{meta.resolution.height}
+            </span>
           </div>
         )}
         {meta.duration !== undefined && (
@@ -67,9 +96,19 @@ export const MetadataInspector: React.FC<MetadataInspectorProps> = ({ asset }) =
 
       {/* Proxy status */}
       <div>
-        <div style={{ fontWeight: 'bold', color: '#b2bac2', marginBottom: '4px' }}>Proxy Status</div>
+        <div style={{ fontWeight: 'bold', color: '#b2bac2', marginBottom: '4px' }}>
+          Proxy Status
+        </div>
         <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
-          <span style={{ padding: '2px 6px', backgroundColor: asset.proxy?.low?.status === 'completed' ? '#10b981' : '#ef5350', borderRadius: '3px', fontWeight: 'bold', fontSize: '9px' }}>
+          <span
+            style={{
+              padding: '2px 6px',
+              backgroundColor: asset.proxy?.low?.status === 'completed' ? '#10b981' : '#ef5350',
+              borderRadius: '3px',
+              fontWeight: 'bold',
+              fontSize: '9px',
+            }}
+          >
             LOW {asset.proxy?.low?.status === 'completed' ? 'READY' : 'PENDING'}
           </span>
           <span style={{ fontSize: '10px', opacity: 0.7 }}>
@@ -81,8 +120,19 @@ export const MetadataInspector: React.FC<MetadataInspectorProps> = ({ asset }) =
       {/* Embedded creator metadata headers */}
       {meta.embeddedMetadata && (
         <div>
-          <div style={{ fontWeight: 'bold', color: '#b2bac2', marginBottom: '4px' }}>Embedded Metadata</div>
-          <pre style={{ margin: 0, padding: '6px', backgroundColor: '#0a1929', borderRadius: '4px', fontSize: '10px', overflowX: 'auto' }}>
+          <div style={{ fontWeight: 'bold', color: '#b2bac2', marginBottom: '4px' }}>
+            Embedded Metadata
+          </div>
+          <pre
+            style={{
+              margin: 0,
+              padding: '6px',
+              backgroundColor: '#0a1929',
+              borderRadius: '4px',
+              fontSize: '10px',
+              overflowX: 'auto',
+            }}
+          >
             {JSON.stringify(meta.embeddedMetadata, null, 2)}
           </pre>
         </div>
@@ -91,8 +141,20 @@ export const MetadataInspector: React.FC<MetadataInspectorProps> = ({ asset }) =
       {/* Precomputed Audio Waveformpeaks */}
       {asset.waveform && (
         <div>
-          <div style={{ fontWeight: 'bold', color: '#b2bac2', marginBottom: '6px' }}>Waveform peak amplitudes</div>
-          <div style={{ display: 'flex', gap: '1px', height: '36px', alignItems: 'flex-end', backgroundColor: '#0a1929', padding: '4px', borderRadius: '4px' }}>
+          <div style={{ fontWeight: 'bold', color: '#b2bac2', marginBottom: '6px' }}>
+            Waveform peak amplitudes
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              gap: '1px',
+              height: '36px',
+              alignItems: 'flex-end',
+              backgroundColor: '#0a1929',
+              padding: '4px',
+              borderRadius: '4px',
+            }}
+          >
             {asset.waveform.peaks.slice(0, 50).map((peak, idx) => (
               <div
                 key={idx}

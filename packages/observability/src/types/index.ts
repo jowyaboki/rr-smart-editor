@@ -114,7 +114,13 @@ export interface Alert {
   timestamp: number;
   severity: 'warning' | 'critical';
   engine: string;
-  type: 'slow_render' | 'memory_leak' | 'worker_timeout' | 'plugin_crash' | 'expression_failure' | 'dropped_frames';
+  type:
+    | 'slow_render'
+    | 'memory_leak'
+    | 'worker_timeout'
+    | 'plugin_crash'
+    | 'expression_failure'
+    | 'dropped_frames';
   message: string;
   resolved: boolean;
 }

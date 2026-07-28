@@ -27,22 +27,22 @@ export class ExecutionService {
         tempMark.add(nodeId);
 
         // Find parent nodes connected to current node inputs
-        const incomingConnections = graph.connections.filter(c => c.toNodeId === nodeId);
-        incomingConnections.forEach(c => {
+        const incomingConnections = graph.connections.filter((c) => c.toNodeId === nodeId);
+        incomingConnections.forEach((c) => {
           visit(c.fromNodeId);
         });
 
         tempMark.delete(nodeId);
         visited.add(nodeId);
 
-        const node = graph.nodes.find(n => n.id === nodeId);
+        const node = graph.nodes.find((n) => n.id === nodeId);
         if (node) {
           order.push(node);
         }
       }
     };
 
-    graph.nodes.forEach(node => {
+    graph.nodes.forEach((node) => {
       if (!visited.has(node.id)) {
         visit(node.id);
       }
@@ -66,7 +66,8 @@ export class ExecutionService {
       // We can parallelize layer evaluation when nodes don't share sequential dependency paths
       for (const node of topOrder) {
         // Evaluate dynamic expressions or default constants
-        const isClean = !node.isDirty && node.outputs.every(o => this.cache.has(`${node.id}_${o.id}`));
+        const isClean =
+          !node.isDirty && node.outputs.every((o) => this.cache.has(`${node.id}_${o.id}`));
         if (isClean) {
           // Skip evaluation, use cache! (Lazy Incremental evaluation)
           continue;
@@ -77,9 +78,11 @@ export class ExecutionService {
         try {
           // Resolve input port values
           const resolvedInputs: Record<string, any> = {};
-          node.inputs.forEach(port => {
+          node.inputs.forEach((port) => {
             // Check if connected
-            const conn = graph.connections.find(c => c.toNodeId === node.id && c.toPortId === port.id);
+            const conn = graph.connections.find(
+              (c) => c.toNodeId === node.id && c.toPortId === port.id,
+            );
             if (conn) {
               resolvedInputs[port.name] = this.cache.get(`${conn.fromNodeId}_${conn.fromPortId}`);
             } else {
@@ -91,8 +94,8 @@ export class ExecutionService {
           const outputs = await this.mockNodeExecute(node, resolvedInputs, context);
 
           // Write output port values to cache and clear dirty flag
-          Object.keys(outputs).forEach(key => {
-            const port = node.outputs.find(o => o.name === key);
+          Object.keys(outputs).forEach((key) => {
+            const port = node.outputs.find((o) => o.name === key);
             if (port) {
               this.cache.set(`${node.id}_${port.id}`, outputs[key]);
             }
@@ -104,7 +107,10 @@ export class ExecutionService {
         }
       }
     } catch (graphErr: any) {
-      errors.push({ nodeId: 'graph', message: graphErr?.message || 'Topological sort cycle error' });
+      errors.push({
+        nodeId: 'graph',
+        message: graphErr?.message || 'Topological sort cycle error',
+      });
     }
 
     return {
@@ -118,9 +124,13 @@ export class ExecutionService {
     };
   }
 
-  private async mockNodeExecute(node: Node, inputs: Record<string, any>, context: ExecutionContext): Promise<Record<string, any>> {
+  private async mockNodeExecute(
+    node: Node,
+    inputs: Record<string, any>,
+    context: ExecutionContext,
+  ): Promise<Record<string, any>> {
     // Return output structures matching the nodes type
-    await new Promise(resolve => setTimeout(resolve, 5)); // Simulate processing latency
+    await new Promise((resolve) => setTimeout(resolve, 5)); // Simulate processing latency
 
     switch (node.type) {
       case 'gaussian_blur':
@@ -130,7 +140,9 @@ export class ExecutionService {
       case 'transform_2d':
         return { image: `[Transformed Image at offset x: ${inputs.x || 0}, y: ${inputs.y || 0}]` };
       case 'blend_merge':
-        return { image: `[Merged ${inputs.background || 'Black'} and ${inputs.foreground || 'White'} with mode ${inputs.mixMode || 'normal'}]` };
+        return {
+          image: `[Merged ${inputs.background || 'Black'} and ${inputs.foreground || 'White'} with mode ${inputs.mixMode || 'normal'}]`,
+        };
       case 'math_add':
         return { value: (parseFloat(inputs.a) || 0) + (parseFloat(inputs.b) || 0) };
       case 'ai_face_blur':

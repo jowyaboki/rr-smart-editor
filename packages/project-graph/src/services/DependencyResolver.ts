@@ -5,14 +5,14 @@ export class DependencyResolver {
    * Get all incoming edges for a node (who points to this node).
    */
   public static getIncomingEdges(nodeId: string, graph: ProjectGraph): GraphEdge[] {
-    return Object.values(graph.edges).filter(edge => edge.targetId === nodeId);
+    return Object.values(graph.edges).filter((edge) => edge.targetId === nodeId);
   }
 
   /**
    * Get all outgoing edges for a node (who does this node point to).
    */
   public static getOutgoingEdges(nodeId: string, graph: ProjectGraph): GraphEdge[] {
-    return Object.values(graph.edges).filter(edge => edge.sourceId === nodeId);
+    return Object.values(graph.edges).filter((edge) => edge.sourceId === nodeId);
   }
 
   /**
@@ -22,7 +22,7 @@ export class DependencyResolver {
   public static getDirectDependencies(nodeId: string, graph: ProjectGraph): GraphNode[] {
     const outgoing = this.getOutgoingEdges(nodeId, graph);
     return outgoing
-      .map(edge => graph.nodes[edge.targetId])
+      .map((edge) => graph.nodes[edge.targetId])
       .filter((node): node is GraphNode => !!node);
   }
 
@@ -33,7 +33,7 @@ export class DependencyResolver {
   public static getDirectDependents(nodeId: string, graph: ProjectGraph): GraphNode[] {
     const incoming = this.getIncomingEdges(nodeId, graph);
     return incoming
-      .map(edge => graph.nodes[edge.sourceId])
+      .map((edge) => graph.nodes[edge.sourceId])
       .filter((node): node is GraphNode => !!node);
   }
 
@@ -127,7 +127,11 @@ export class DependencyResolver {
   /**
    * Returns a list of path names or routes describing how Node A depends on Node B.
    */
-  public static findDependencyPaths(sourceId: string, targetId: string, graph: ProjectGraph): string[][] {
+  public static findDependencyPaths(
+    sourceId: string,
+    targetId: string,
+    graph: ProjectGraph,
+  ): string[][] {
     const paths: string[][] = [];
     const currentPath: string[] = [sourceId];
 

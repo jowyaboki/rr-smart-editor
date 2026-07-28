@@ -12,7 +12,6 @@ import {
 } from '../src/index';
 
 describe('Enterprise DAM Platform Core Unit Tests', () => {
-
   test('Incremental versioning creation and restorations', () => {
     const asset: any = {
       id: 'dam-asset-1',
@@ -21,7 +20,13 @@ describe('Enterprise DAM Platform Core Unit Tests', () => {
       url: 'https://cdn.com/premium-intro-v1.mp4',
       metadata: { fileType: 'mp4' },
       versions: [
-        { version: '1.0.0', checksum: 'sha256-hash-v1', size: 1024 * 10, url: 'https://cdn.com/premium-intro-v1.mp4', uploadedAt: Date.now() }
+        {
+          version: '1.0.0',
+          checksum: 'sha256-hash-v1',
+          size: 1024 * 10,
+          url: 'https://cdn.com/premium-intro-v1.mp4',
+          uploadedAt: Date.now(),
+        },
       ],
     };
 
@@ -72,7 +77,7 @@ describe('Enterprise DAM Platform Core Unit Tests', () => {
           fileType: 'wav',
           codec: 'pcm',
         },
-      }
+      },
     ];
 
     // 1. Search by textual queries matching keywords

@@ -1,4 +1,14 @@
-import { CopilotSession, CopilotCommand, EditingIntent, ExecutionPlan, ChangePreview, SuggestedChange, ApprovalRequest, ConversationHistory, EditingIntentType } from '../types';
+import {
+  CopilotSession,
+  CopilotCommand,
+  EditingIntent,
+  ExecutionPlan,
+  ChangePreview,
+  SuggestedChange,
+  ApprovalRequest,
+  ConversationHistory,
+  EditingIntentType,
+} from '../types';
 
 // ==========================================
 // 1. INTENT SERVICE
@@ -14,7 +24,11 @@ export class IntentService {
       return {
         type: 'timeline_edit',
         confidence: 0.95,
-        parameters: { action: p.includes('split') ? 'split' : 'move', targetId: 'clip-1', value: 5.0 },
+        parameters: {
+          action: p.includes('split') ? 'split' : 'move',
+          targetId: 'clip-1',
+          value: 5.0,
+        },
       };
     }
 
@@ -59,7 +73,7 @@ export class PlanningService {
         description: `Compile transaction: ${intent.type} on path ${JSON.stringify(intent.parameters)}`,
         action: intent.type === 'timeline_edit' ? 'MoveClipTransaction' : 'ModifyAssetTransaction',
         arguments: intent.parameters,
-      }
+      },
     ];
 
     const preview: ChangePreview = {
@@ -190,7 +204,7 @@ export class CopilotService {
    */
   public async processNaturalLanguageCommand(
     prompt: string,
-    projectContext: any
+    projectContext: any,
   ): Promise<{ textResponse: string; plan: ExecutionPlan; approvalReq: ApprovalRequest }> {
     if (!this.activeSession) {
       throw new Error('Copilot session not active.');

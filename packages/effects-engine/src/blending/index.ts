@@ -52,7 +52,7 @@ export class BlendService {
     source: Uint8ClampedArray,
     out: Uint8ClampedArray,
     mode: BlendMode,
-    opacity: number = 1.0
+    opacity: number = 1.0,
   ): void {
     const len = backdrop.length;
     for (let i = 0; i < len; i += 4) {
@@ -92,9 +92,18 @@ export class BlendService {
           rB = bB < 0.5 ? 2 * bB * sB : 1 - 2 * (1 - bB) * (1 - sB);
           break;
         case 'soft_light':
-          rR = sR < 0.5 ? 2 * bR * sR + bR * bR * (1 - 2 * sR) : Math.sqrt(bR) * (2 * sR - 1) + 2 * bR * (1 - sR);
-          rG = sG < 0.5 ? 2 * bG * sG + bG * bG * (1 - 2 * sG) : Math.sqrt(bG) * (2 * sG - 1) + 2 * bG * (1 - sG);
-          rB = sB < 0.5 ? 2 * bB * sB + bB * bB * (1 - 2 * sB) : Math.sqrt(bB) * (2 * sB - 1) + 2 * bB * (1 - sB);
+          rR =
+            sR < 0.5
+              ? 2 * bR * sR + bR * bR * (1 - 2 * sR)
+              : Math.sqrt(bR) * (2 * sR - 1) + 2 * bR * (1 - sR);
+          rG =
+            sG < 0.5
+              ? 2 * bG * sG + bG * bG * (1 - 2 * sG)
+              : Math.sqrt(bG) * (2 * sG - 1) + 2 * bG * (1 - sG);
+          rB =
+            sB < 0.5
+              ? 2 * bB * sB + bB * bB * (1 - 2 * sB)
+              : Math.sqrt(bB) * (2 * sB - 1) + 2 * bB * (1 - sB);
           break;
         case 'hard_light':
           rR = sR < 0.5 ? 2 * bR * sR : 1 - 2 * (1 - bR) * (1 - sR);

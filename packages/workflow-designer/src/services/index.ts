@@ -1,10 +1,20 @@
-import { WorkflowDefinition, WorkflowNode, WorkflowEdge, ExecutionStep, DebuggerBreakpoint, NodeLog } from '../types';
+import {
+  WorkflowDefinition,
+  WorkflowNode,
+  WorkflowEdge,
+  ExecutionStep,
+  DebuggerBreakpoint,
+  NodeLog,
+} from '../types';
 
 // ==========================================
 // 1. NODE REGISTRY
 // ==========================================
 export class NodeRegistry {
-  private registeredNodes = new Map<string, { type: string; category: string; label: string; configSchema?: any }>();
+  private registeredNodes = new Map<
+    string,
+    { type: string; category: string; label: string; configSchema?: any }
+  >();
 
   public registerNodeType(type: string, category: string, label: string, configSchema?: any): void {
     this.registeredNodes.set(type, { type, category, label, configSchema });
@@ -40,7 +50,7 @@ export class ValidationService {
       visited.add(nodeId);
       recStack.add(nodeId);
 
-      const children = wf.edges.filter(e => e.sourceNodeId === nodeId).map(e => e.targetNodeId);
+      const children = wf.edges.filter((e) => e.sourceNodeId === nodeId).map((e) => e.targetNodeId);
       for (const childId of children) {
         if (hasCycle(childId)) return true;
       }
@@ -58,8 +68,8 @@ export class ValidationService {
 
     // Check dangling edges
     for (const edge of wf.edges) {
-      const sourceExists = wf.nodes.some(n => n.id === edge.sourceNodeId);
-      const targetExists = wf.nodes.some(n => n.id === edge.targetNodeId);
+      const sourceExists = wf.nodes.some((n) => n.id === edge.sourceNodeId);
+      const targetExists = wf.nodes.some((n) => n.id === edge.targetNodeId);
       if (!sourceExists || !targetExists) {
         errors.push(`DANGLING_EDGE: Edge ${edge.id} refers to unregistered nodes.`);
       }
@@ -102,7 +112,7 @@ export class DebuggerService {
   }
 
   public getLogsForNode(nodeId: string): NodeLog[] {
-    return this.logs.filter(l => l.nodeId === nodeId);
+    return this.logs.filter((l) => l.nodeId === nodeId);
   }
 
   public getStepIndex(): number {
@@ -123,9 +133,17 @@ export class DebuggerService {
 // 4. MONITORING SERVICE
 // ==========================================
 export class MonitoringService {
-  private metrics = new Map<string, { durationMs: number; memoryBytes: number; retriesCount: number }>();
+  private metrics = new Map<
+    string,
+    { durationMs: number; memoryBytes: number; retriesCount: number }
+  >();
 
-  public recordMetrics(nodeId: string, durationMs: number, memoryBytes: number, retriesCount = 0): void {
+  public recordMetrics(
+    nodeId: string,
+    durationMs: number,
+    memoryBytes: number,
+    retriesCount = 0,
+  ): void {
     this.metrics.set(nodeId, { durationMs, memoryBytes, retriesCount });
   }
 
@@ -150,13 +168,13 @@ export class ExecutionBridge {
     return JSON.stringify({
       workflowId: wf.id,
       name: wf.name,
-      tasks: wf.nodes.map(n => ({
+      tasks: wf.nodes.map((n) => ({
         id: n.id,
         taskName: n.name,
         action: n.type,
         parameters: n.config,
       })),
-      dependencies: wf.edges.map(e => ({
+      dependencies: wf.edges.map((e) => ({
         from: e.sourceNodeId,
         to: e.targetNodeId,
       })),

@@ -14,7 +14,13 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ color, onChange, label
         type="color"
         value={color}
         onChange={(e) => onChange(e.target.value)}
-        style={{ background: 'none', border: 'none', width: '30px', height: '24px', cursor: 'pointer' }}
+        style={{
+          background: 'none',
+          border: 'none',
+          width: '30px',
+          height: '24px',
+          cursor: 'pointer',
+        }}
       />
       <input
         type="text"

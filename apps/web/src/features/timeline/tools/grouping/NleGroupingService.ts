@@ -40,7 +40,7 @@ export class NleGroupingService {
 
       // 1. Check groups
       for (const group of this.groups) {
-        const hasOverlap = group.clipIds.some(id => selected.has(id));
+        const hasOverlap = group.clipIds.some((id) => selected.has(id));
         if (hasOverlap) {
           for (const id of group.clipIds) {
             selected.add(id);
@@ -68,11 +68,11 @@ export class NleGroupingService {
   public static shiftClipsTogether(
     selectedClipIds: string[],
     deltaFrames: number,
-    clips: VirtualClip[]
+    clips: VirtualClip[],
   ): VirtualClip[] {
     const expandedIds = new Set<string>(this.expandSelection(selectedClipIds));
 
-    return clips.map(clip => {
+    return clips.map((clip) => {
       if (expandedIds.has(clip.id)) {
         return {
           ...clip,

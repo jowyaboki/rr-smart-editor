@@ -14,18 +14,28 @@ export const CurveEditor: React.FC<CurveEditorProps> = ({ points, onChange }) =>
 
   const handlePointChange = (idx: number, field: 'x' | 'y', val: number) => {
     const updated = points.map((p, i) =>
-      i === idx ? { ...p, [field]: Math.min(1, Math.max(0, val)) } : p
+      i === idx ? { ...p, [field]: Math.min(1, Math.max(0, val)) } : p,
     );
     onChange(updated);
   };
 
   return (
-    <div style={{ padding: '8px', border: '1px solid #444', borderRadius: '4px', background: '#222' }}>
+    <div
+      style={{ padding: '8px', border: '1px solid #444', borderRadius: '4px', background: '#222' }}
+    >
       <div style={{ fontSize: '12px', marginBottom: '8px', color: '#aaa' }}>Curve Editor</div>
-      <div style={{ position: 'relative', height: '120px', background: '#111', border: '1px solid #333', marginBottom: '8px' }}>
+      <div
+        style={{
+          position: 'relative',
+          height: '120px',
+          background: '#111',
+          border: '1px solid #333',
+          marginBottom: '8px',
+        }}
+      >
         <svg width="100%" height="100%" style={{ pointerEvents: 'none' }}>
           <path
-            d={`M 0,120 ${points.map(p => `L ${p.x * 150},${120 - p.y * 120}`).join(' ')} L 150,0`}
+            d={`M 0,120 ${points.map((p) => `L ${p.x * 150},${120 - p.y * 120}`).join(' ')} L 150,0`}
             fill="none"
             stroke="#888"
             strokeWidth="2"
@@ -42,7 +52,13 @@ export const CurveEditor: React.FC<CurveEditorProps> = ({ points, onChange }) =>
               value={p.x}
               step="0.05"
               onChange={(e) => handlePointChange(idx, 'x', parseFloat(e.target.value))}
-              style={{ width: '50px', background: '#333', color: '#fff', border: '1px solid #444', fontSize: '10px' }}
+              style={{
+                width: '50px',
+                background: '#333',
+                color: '#fff',
+                border: '1px solid #444',
+                fontSize: '10px',
+              }}
             />
             <label style={{ fontSize: '10px' }}>Y</label>
             <input
@@ -50,14 +66,29 @@ export const CurveEditor: React.FC<CurveEditorProps> = ({ points, onChange }) =>
               value={p.y}
               step="0.05"
               onChange={(e) => handlePointChange(idx, 'y', parseFloat(e.target.value))}
-              style={{ width: '50px', background: '#333', color: '#fff', border: '1px solid #444', fontSize: '10px' }}
+              style={{
+                width: '50px',
+                background: '#333',
+                color: '#fff',
+                border: '1px solid #444',
+                fontSize: '10px',
+              }}
             />
           </div>
         ))}
       </div>
       <button
         onClick={addPoint}
-        style={{ marginTop: '8px', padding: '4px 8px', fontSize: '10px', background: '#555', color: '#fff', border: 'none', borderRadius: '2px', cursor: 'pointer' }}
+        style={{
+          marginTop: '8px',
+          padding: '4px 8px',
+          fontSize: '10px',
+          background: '#555',
+          color: '#fff',
+          border: 'none',
+          borderRadius: '2px',
+          cursor: 'pointer',
+        }}
       >
         + Add Point
       </button>

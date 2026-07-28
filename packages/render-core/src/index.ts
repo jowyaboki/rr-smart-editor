@@ -1,5 +1,10 @@
 import { RenderPreset, RenderJob } from '@ai-video-editor/shared';
-import { PipelineStage, PipelineContext, PipelineConfig, CancellationToken } from './pipeline/types';
+import {
+  PipelineStage,
+  PipelineContext,
+  PipelineConfig,
+  CancellationToken,
+} from './pipeline/types';
 import { CancellationTokenImpl } from './pipeline/CancellationToken';
 
 export * from './pipeline/types';
@@ -22,7 +27,9 @@ export interface PostProcessingContext {
 export interface PostProcessingStep {
   id: string;
   name: string;
-  execute: (context: PostProcessingContext) => Promise<{ success: boolean; url?: string; logs?: string[]; warnings?: string[] }>;
+  execute: (
+    context: PostProcessingContext,
+  ) => Promise<{ success: boolean; url?: string; logs?: string[]; warnings?: string[] }>;
 }
 
 export interface RenderWorkerAdapter {
@@ -36,7 +43,10 @@ export interface RenderWorkerAdapter {
 
 export interface SchedulingStrategy {
   name: string;
-  selectJob(eligibleJobs: RenderJob[], workers: any[]): Promise<{ job: RenderJob; workerId: string } | null>;
+  selectJob(
+    eligibleJobs: RenderJob[],
+    workers: any[],
+  ): Promise<{ job: RenderJob; workerId: string } | null>;
 }
 
 class RenderPluginRegistry {

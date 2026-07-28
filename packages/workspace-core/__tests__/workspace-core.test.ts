@@ -11,7 +11,6 @@ import {
 } from '../src/index';
 
 describe('Enterprise Workspaces & Multi-Tenant Platform Core Unit Tests', () => {
-
   test('Automatic Tenant Isolation Query Scoping', () => {
     const wsService = new WorkspaceService();
 

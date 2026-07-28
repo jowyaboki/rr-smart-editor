@@ -7,13 +7,25 @@ export const CollaborativeCursorsCanvas: React.FC = () => {
   const { presences } = useCollaborativeCursors('');
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: '100px', background: '#000', border: '1px solid #222', borderRadius: '4px', overflow: 'hidden' }}>
-      <div style={{ position: 'absolute', top: '40px', left: '10px', fontSize: '11px', color: '#444' }}>
+    <div
+      style={{
+        position: 'relative',
+        width: '100%',
+        height: '100px',
+        background: '#000',
+        border: '1px solid #222',
+        borderRadius: '4px',
+        overflow: 'hidden',
+      }}
+    >
+      <div
+        style={{ position: 'absolute', top: '40px', left: '10px', fontSize: '11px', color: '#444' }}
+      >
         Interactive Shared Selection Space
       </div>
 
       {Object.entries(presences).map(([userId, presence]) => {
-        const participant = participants.find(p => p.id === userId);
+        const participant = participants.find((p) => p.id === userId);
         const cursor = presence.cursor;
         if (!cursor) return null;
 

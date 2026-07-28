@@ -47,7 +47,9 @@ export class FileJobStorage implements JobStorage {
           artifacts: parsed.artifacts || {},
           queueStatus: parsed.queueStatus || 'running',
         };
-        logger.info(`Loaded render database from ${this.filePath}. Active jobs: ${Object.keys(this.data.jobs).length}`);
+        logger.info(
+          `Loaded render database from ${this.filePath}. Active jobs: ${Object.keys(this.data.jobs).length}`,
+        );
       } else {
         this.saveSync();
       }

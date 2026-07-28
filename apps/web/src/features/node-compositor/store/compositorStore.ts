@@ -32,7 +32,12 @@ interface CompositorState {
   selectNode: (nodeId: string | null) => void;
   addNode: (node: Node) => void;
   removeNode: (id: string) => void;
-  connectPorts: (fromNodeId: string, fromPortId: string, toNodeId: string, toPortId: string) => void;
+  connectPorts: (
+    fromNodeId: string,
+    fromPortId: string,
+    toNodeId: string,
+    toPortId: string,
+  ) => void;
   disconnectConnection: (connectionId: string) => void;
   runExecution: () => Promise<void>;
   optimizeGraph: () => void;
@@ -76,8 +81,8 @@ export const useCompositorStore = create<CompositorState>((set, get) => {
 
     removeNode: (id) => {
       const { graph } = get();
-      graph.nodes = graph.nodes.filter(n => n.id !== id);
-      graph.connections = graph.connections.filter(c => c.fromNodeId !== id && c.toNodeId !== id);
+      graph.nodes = graph.nodes.filter((n) => n.id !== id);
+      graph.connections = graph.connections.filter((c) => c.fromNodeId !== id && c.toNodeId !== id);
       set({
         graph: { ...graph, nodes: [...graph.nodes], connections: [...graph.connections] },
         selectedNodeId: get().selectedNodeId === id ? null : get().selectedNodeId,
@@ -88,7 +93,9 @@ export const useCompositorStore = create<CompositorState>((set, get) => {
     connectPorts: (fromNodeId, fromPortId, toNodeId, toPortId) => {
       const { graph } = get();
       // Remove any duplicate connection pointing to same input port
-      graph.connections = graph.connections.filter(c => !(c.toNodeId === toNodeId && c.toPortId === toPortId));
+      graph.connections = graph.connections.filter(
+        (c) => !(c.toNodeId === toNodeId && c.toPortId === toPortId),
+      );
 
       const connection: NodeConnection = {
         id: `conn_${Date.now()}`,
@@ -100,7 +107,7 @@ export const useCompositorStore = create<CompositorState>((set, get) => {
 
       graph.connections.push(connection);
 
-      const target = graph.nodes.find(n => n.id === toNodeId);
+      const target = graph.nodes.find((n) => n.id === toNodeId);
       if (target) target.isDirty = true;
 
       set({ graph: { ...graph, connections: [...graph.connections] } });
@@ -109,12 +116,12 @@ export const useCompositorStore = create<CompositorState>((set, get) => {
 
     disconnectConnection: (connectionId) => {
       const { graph } = get();
-      const conn = graph.connections.find(c => c.id === connectionId);
+      const conn = graph.connections.find((c) => c.id === connectionId);
       if (conn) {
-        const target = graph.nodes.find(n => n.id === conn.toNodeId);
+        const target = graph.nodes.find((n) => n.id === conn.toNodeId);
         if (target) target.isDirty = true;
       }
-      graph.connections = graph.connections.filter(c => c.id !== connectionId);
+      graph.connections = graph.connections.filter((c) => c.id !== connectionId);
       set({ graph: { ...graph, connections: [...graph.connections] } });
       get().runExecution();
     },
@@ -137,7 +144,7 @@ export const useCompositorStore = create<CompositorState>((set, get) => {
 
         // Generate simulated latencies for heatmap visualization
         const heatmapMock: Record<string, 'cold' | 'warm' | 'hot'> = {};
-        graph.nodes.forEach(n => {
+        graph.nodes.forEach((n) => {
           if (n.type === 'chroma_key') {
             heatmapMock[n.id] = 'hot';
           } else if (n.category === 'blur' || n.category === 'merge') {
@@ -147,7 +154,7 @@ export const useCompositorStore = create<CompositorState>((set, get) => {
           }
         });
 
-        set(state => ({
+        set((state) => ({
           executionHistory: [report, ...state.executionHistory],
           heatmap: heatmapMock,
           graph: { ...graph }, // Sync layout values
@@ -181,7 +188,7 @@ export const useCompositorStore = create<CompositorState>((set, get) => {
 
     updateNodeProperties: (nodeId, props) => {
       const { graph } = get();
-      const node = graph.nodes.find(n => n.id === nodeId);
+      const node = graph.nodes.find((n) => n.id === nodeId);
       if (node) {
         node.properties = { ...node.properties, ...props };
         node.isDirty = true;

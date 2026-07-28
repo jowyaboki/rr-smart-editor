@@ -49,7 +49,9 @@
       "@ai-video-editor/workspace-core": ["packages/workspace-core/src/index.ts"],
       "@ai-video-editor/workspace-core/*": ["packages/workspace-core/src/*"],
       "@ai-video-editor/ai-copilot": ["packages/ai-copilot/src/index.ts"],
-      "@ai-video-editor/ai-copilot/*": ["packages/ai-copilot/src/*"]
+      "@ai-video-editor/ai-copilot/*": ["packages/ai-copilot/src/*"],
+      "@ai-video-editor/virtual-production": ["packages/virtual-production/src/index.ts"],
+      "@ai-video-editor/virtual-production/*": ["packages/virtual-production/src/*"]
     }
   },
   "exclude": ["node_modules", "dist"]

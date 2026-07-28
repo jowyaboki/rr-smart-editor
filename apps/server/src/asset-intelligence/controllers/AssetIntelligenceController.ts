@@ -20,7 +20,13 @@ const serverLibrary: Asset[] = [
     },
     license: { licenseType: 'commercial', attributionRequired: false, commercialUse: true },
     approval: { status: 'approved', history: [] },
-    usage: { projectsUsedIn: [], scenesCount: 0, timelineClipsCount: 0, templatesUsedIn: [], publishedVideos: [] },
+    usage: {
+      projectsUsedIn: [],
+      scenesCount: 0,
+      timelineClipsCount: 0,
+      templatesUsedIn: [],
+      publishedVideos: [],
+    },
     versions: [],
     collections: [],
   },
@@ -39,26 +45,43 @@ const serverLibrary: Asset[] = [
     },
     license: { licenseType: 'royalty_free', attributionRequired: false, commercialUse: true },
     approval: { status: 'approved', history: [] },
-    usage: { projectsUsedIn: [], scenesCount: 0, timelineClipsCount: 0, templatesUsedIn: [], publishedVideos: [] },
+    usage: {
+      projectsUsedIn: [],
+      scenesCount: 0,
+      timelineClipsCount: 0,
+      templatesUsedIn: [],
+      publishedVideos: [],
+    },
     versions: [],
     collections: [],
-  }
+  },
 ];
 
 const serverEmbeddings = [
-  { assetId: 'asset_server_promo', vector: [0.85, 0.15, 0.05, 0.0], provider: 'openai', dimensions: 4, createdAt: new Date().toISOString() },
-  { assetId: 'asset_server_audio', vector: [0.05, 0.05, 0.9, 0.1], provider: 'openai', dimensions: 4, createdAt: new Date().toISOString() }
+  {
+    assetId: 'asset_server_promo',
+    vector: [0.85, 0.15, 0.05, 0.0],
+    provider: 'openai',
+    dimensions: 4,
+    createdAt: new Date().toISOString(),
+  },
+  {
+    assetId: 'asset_server_audio',
+    vector: [0.05, 0.05, 0.9, 0.1],
+    provider: 'openai',
+    dimensions: 4,
+    createdAt: new Date().toISOString(),
+  },
 ];
 
 export class AssetIntelligenceController {
-
   public async search(req: Request, res: Response): Promise<void> {
     try {
       const query = req.body;
       const results = await globalAssetIntelligenceEngine.searchService.search(
         query,
         serverLibrary,
-        serverEmbeddings
+        serverEmbeddings,
       );
       res.json({ success: true, results });
     } catch (err: any) {
@@ -72,7 +95,7 @@ export class AssetIntelligenceController {
       const clusters = await globalAssetIntelligenceEngine.clusteringService.cluster(
         serverLibrary,
         serverEmbeddings,
-        criteria || 'topic'
+        criteria || 'topic',
       );
       res.json({ success: true, clusters });
     } catch (err: any) {
@@ -83,7 +106,7 @@ export class AssetIntelligenceController {
   public async recommendations(req: Request, res: Response): Promise<void> {
     try {
       const { assetId } = req.body;
-      const targetAsset = serverLibrary.find(a => a.id === assetId);
+      const targetAsset = serverLibrary.find((a) => a.id === assetId);
       if (!targetAsset) {
         res.status(404).json({ success: false, error: `Asset '${assetId}' not found.` });
         return;
@@ -91,7 +114,7 @@ export class AssetIntelligenceController {
       const recommendations = await globalAssetIntelligenceEngine.recommendationService.recommend(
         targetAsset,
         serverLibrary,
-        serverEmbeddings
+        serverEmbeddings,
       );
       res.json({ success: true, recommendations });
     } catch (err: any) {
@@ -102,14 +125,14 @@ export class AssetIntelligenceController {
   public async moderate(req: Request, res: Response): Promise<void> {
     try {
       const { assetId } = req.body;
-      const targetAsset = serverLibrary.find(a => a.id === assetId);
+      const targetAsset = serverLibrary.find((a) => a.id === assetId);
       if (!targetAsset) {
         res.status(404).json({ success: false, error: `Asset '${assetId}' not found.` });
         return;
       }
       const result = await globalAssetIntelligenceEngine.moderationService.moderate(
         targetAsset,
-        serverLibrary
+        serverLibrary,
       );
       res.json({ success: true, result });
     } catch (err: any) {
@@ -120,7 +143,7 @@ export class AssetIntelligenceController {
   public async analyzeAndIndex(req: Request, res: Response): Promise<void> {
     try {
       const { assetId, profile } = req.body;
-      const targetAsset = serverLibrary.find(a => a.id === assetId);
+      const targetAsset = serverLibrary.find((a) => a.id === assetId);
       if (!targetAsset) {
         res.status(404).json({ success: false, error: `Asset '${assetId}' not found.` });
         return;
@@ -138,14 +161,14 @@ export class AssetIntelligenceController {
         extractDominantColors: false,
         extractEmotionTags: false,
         extractLanguage: false,
-        ...profile
+        ...profile,
       };
 
       const result = await globalAssetIntelligenceEngine.analyzeAndIndexAsset(
         targetAsset,
         'server_main_index',
         defaultProfile,
-        serverLibrary
+        serverLibrary,
       );
       res.json({ success: true, result });
     } catch (err: any) {

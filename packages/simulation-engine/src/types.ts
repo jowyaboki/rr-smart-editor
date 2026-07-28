@@ -62,7 +62,13 @@ export interface Prediction {
 
 export interface OptimizationProposal {
   id: string;
-  category: 'merge_layers' | 'optimize_assets' | 'reduce_effects' | 'cache_opportunities' | 'proxy_recommendations' | 'workflow_improvements';
+  category:
+    | 'merge_layers'
+    | 'optimize_assets'
+    | 'reduce_effects'
+    | 'cache_opportunities'
+    | 'proxy_recommendations'
+    | 'workflow_improvements';
   title: string;
   description: string;
   potentialSavings: {
@@ -76,7 +82,13 @@ export interface OptimizationProposal {
 
 export interface ValidationIssue {
   id: string;
-  category: 'broken_reference' | 'invalid_expression' | 'missing_asset' | 'circular_workflow' | 'plugin_conflict' | 'permission_failure';
+  category:
+    | 'broken_reference'
+    | 'invalid_expression'
+    | 'missing_asset'
+    | 'circular_workflow'
+    | 'plugin_conflict'
+    | 'permission_failure';
   severity: 'warning' | 'error';
   message: string;
   targetId?: string; // id of clip, track, workflow step, etc.

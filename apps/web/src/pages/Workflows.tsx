@@ -88,11 +88,7 @@ const Workflows: React.FC = () => {
           </Typography>
         </Box>
         <Box sx={{ display: 'flex', gap: 1.5 }}>
-          <Button
-            component="label"
-            variant="outlined"
-            startIcon={<ImportIcon />}
-          >
+          <Button component="label" variant="outlined" startIcon={<ImportIcon />}>
             Import JSON
             <input type="file" accept=".json" hidden onChange={handleImport} />
           </Button>
@@ -150,10 +146,20 @@ const Workflows: React.FC = () => {
         <Grid item xs={12} md={9}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3 }}>
             <Tabs value={activeTab} onChange={(_, nv) => setActiveTab(nv)}>
-              <Tab icon={<DesignerIcon />} iconPosition="start" label="Visual Designer" disabled={!activeWf} />
+              <Tab
+                icon={<DesignerIcon />}
+                iconPosition="start"
+                label="Visual Designer"
+                disabled={!activeWf}
+              />
               <Tab icon={<HistoryIcon />} iconPosition="start" label="Execution & Monitor" />
               <Tab icon={<TemplateIcon />} iconPosition="start" label="Blueprints & Templates" />
-              <Tab icon={<VarIcon />} iconPosition="start" label="Pipeline Variables" disabled={!activeWf} />
+              <Tab
+                icon={<VarIcon />}
+                iconPosition="start"
+                label="Pipeline Variables"
+                disabled={!activeWf}
+              />
             </Tabs>
           </Box>
 

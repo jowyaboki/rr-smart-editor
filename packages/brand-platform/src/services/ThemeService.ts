@@ -26,10 +26,7 @@ export class ThemeService {
           ...parentKit.theme.colors.semantic,
           ...kit.theme.colors.semantic,
         },
-        allowedColors: [
-          ...parentKit.theme.colors.allowedColors,
-          ...kit.theme.colors.allowedColors,
-        ],
+        allowedColors: [...parentKit.theme.colors.allowedColors, ...kit.theme.colors.allowedColors],
       },
       typography: {
         ...parentKit.theme.typography,

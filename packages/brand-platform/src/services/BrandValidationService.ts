@@ -54,7 +54,9 @@ export class BrandValidationService {
     });
 
     // 3. Logo placement rules check
-    const logoClips = clips.filter((c: any) => c.type === 'logo' || c.name?.toLowerCase().includes('logo'));
+    const logoClips = clips.filter(
+      (c: any) => c.type === 'logo' || c.name?.toLowerCase().includes('logo'),
+    );
     logoClips.forEach((clip: any) => {
       if (clip.style && clip.style.width && clip.style.width < kit.logos.rules.minWidthPx) {
         violations.push({
@@ -66,7 +68,11 @@ export class BrandValidationService {
           suggestedFix: `Resize logo to at least ${kit.logos.rules.minWidthPx}px to maintain clear resolution.`,
         });
       }
-      if (clip.style && clip.style.placement && clip.style.placement !== kit.logos.rules.preferredPlacement) {
+      if (
+        clip.style &&
+        clip.style.placement &&
+        clip.style.placement !== kit.logos.rules.preferredPlacement
+      ) {
         violations.push({
           id: `viol_logo_placement_${clip.id}`,
           category: 'logo',
@@ -81,7 +87,7 @@ export class BrandValidationService {
     // 4. Voice check (Tonal rules)
     if (project.voiceText) {
       const text = project.voiceText.toLowerCase();
-      kit.voice.prohibitedWords.forEach(word => {
+      kit.voice.prohibitedWords.forEach((word) => {
         if (text.includes(word.toLowerCase())) {
           violations.push({
             id: `viol_voice_prohibited_${word}`,
@@ -102,16 +108,17 @@ export class BrandValidationService {
     }
 
     // Calculate Consistency Score
-    const errorsCount = violations.filter(v => v.severity === 'error').length;
-    const warningsCount = violations.filter(v => v.severity === 'warning').length;
+    const errorsCount = violations.filter((v) => v.severity === 'error').length;
+    const warningsCount = violations.filter((v) => v.severity === 'warning').length;
     const consistencyScore = Math.max(0, 100 - errorsCount * 15 - warningsCount * 5);
 
-    const approvalStatus = consistencyScore > 85 ? 'approved' : consistencyScore > 65 ? 'conditional' : 'rejected';
+    const approvalStatus =
+      consistencyScore > 85 ? 'approved' : consistencyScore > 65 ? 'conditional' : 'rejected';
 
     return {
       consistencyScore,
       violations,
-      suggestedFixes: violations.map(v => v.suggestedFix),
+      suggestedFixes: violations.map((v) => v.suggestedFix),
       approvalStatus,
     };
   }

@@ -27,7 +27,8 @@ export const useTemplateStore = create<TemplateState>((set) => ({
     {
       id: 'tpl-promo',
       displayName: 'Corporate Business Promo',
-      description: 'Clean professional business template blueprint with customizable text overlays and brand palette colors.',
+      description:
+        'Clean professional business template blueprint with customizable text overlays and brand palette colors.',
       category: 'promo',
       version: '1.0.0',
       installed: false,
@@ -37,13 +38,14 @@ export const useTemplateStore = create<TemplateState>((set) => ({
     {
       id: 'tpl-social-shorts',
       displayName: 'Vibrant TikTok Shorts Grid',
-      description: 'Fast-paced, modern social shorts template featuring text zoom effects and custom transitions.',
+      description:
+        'Fast-paced, modern social shorts template featuring text zoom effects and custom transitions.',
       category: 'social_media',
       version: '1.1.0',
       installed: true,
       isFavorite: true,
       rating: 4.9,
-    }
+    },
   ],
   searchQuery: '',
   categoryFilter: 'all',
@@ -57,25 +59,26 @@ export const useTemplateStore = create<TemplateState>((set) => ({
 
   setCategoryFilter: (categoryFilter) => set({ categoryFilter }),
 
-  updateParameterValue: (paramId, value) => set((state) => ({
-    parameterValues: { ...state.parameterValues, [paramId]: value },
-  })),
+  updateParameterValue: (paramId, value) =>
+    set((state) => ({
+      parameterValues: { ...state.parameterValues, [paramId]: value },
+    })),
 
   setParameterValues: (parameterValues) => set({ parameterValues }),
 
   setPreviewFrame: (currentPreviewFrame) => set({ currentPreviewFrame }),
 
-  toggleFavorite: (id) => set((state) => ({
-    templates: state.templates.map((t) =>
-      t.id === id ? { ...t, isFavorite: !t.isFavorite } : t
-    ),
-  })),
+  toggleFavorite: (id) =>
+    set((state) => ({
+      templates: state.templates.map((t) =>
+        t.id === id ? { ...t, isFavorite: !t.isFavorite } : t,
+      ),
+    })),
 
-  toggleInstalled: (id) => set((state) => ({
-    templates: state.templates.map((t) =>
-      t.id === id ? { ...t, installed: !t.installed } : t
-    ),
-  })),
+  toggleInstalled: (id) =>
+    set((state) => ({
+      templates: state.templates.map((t) => (t.id === id ? { ...t, installed: !t.installed } : t)),
+    })),
 
   setLoading: (loading) => set({ loading }),
 

@@ -7,7 +7,16 @@ export const ExecutionMonitorTimeline: React.FC = () => {
   const stepsList = Object.values(executionSteps);
 
   return (
-    <div style={{ padding: '12px', background: '#111', color: '#fff', border: '1px solid #333', borderRadius: '4px', marginTop: '12px' }}>
+    <div
+      style={{
+        padding: '12px',
+        background: '#111',
+        color: '#fff',
+        border: '1px solid #333',
+        borderRadius: '4px',
+        marginTop: '12px',
+      }}
+    >
       <span style={{ fontSize: '12px', fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>
         Execution Timeline & Telemetry
       </span>
@@ -32,7 +41,12 @@ export const ExecutionMonitorTimeline: React.FC = () => {
             }}
           >
             <span>Node: {step.nodeId}</span>
-            <span style={{ textTransform: 'uppercase', color: step.status === 'completed' ? '#4caf50' : '#ff9800' }}>
+            <span
+              style={{
+                textTransform: 'uppercase',
+                color: step.status === 'completed' ? '#4caf50' : '#ff9800',
+              }}
+            >
               {step.status}
             </span>
           </div>

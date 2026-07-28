@@ -10,7 +10,7 @@ export class ShardManager {
     jobId: string,
     startFrame: number,
     endFrame: number,
-    shardsCount: number
+    shardsCount: number,
   ): RenderShard[] {
     const totalFrames = endFrame - startFrame + 1;
     const chunkSize = Math.floor(totalFrames / shardsCount);
@@ -39,11 +39,16 @@ export class ShardManager {
     return this.shards.get(jobId) || [];
   }
 
-  public updateShardProgress(jobId: string, shardId: string, progress: number, checkpointFrame?: number): boolean {
+  public updateShardProgress(
+    jobId: string,
+    shardId: string,
+    progress: number,
+    checkpointFrame?: number,
+  ): boolean {
     const jobShards = this.shards.get(jobId);
     if (!jobShards) return false;
 
-    const shard = jobShards.find(s => s.id === shardId);
+    const shard = jobShards.find((s) => s.id === shardId);
     if (!shard) return false;
 
     shard.progress = progress;
@@ -58,7 +63,7 @@ export class ShardManager {
     const jobShards = this.shards.get(jobId);
     if (!jobShards) return false;
 
-    const shard = jobShards.find(s => s.id === shardId);
+    const shard = jobShards.find((s) => s.id === shardId);
     if (!shard) return false;
 
     shard.status = 'failed';

@@ -9,7 +9,7 @@ export class LayerService {
       return layer.transform;
     }
 
-    const parent = allLayers.find(l => l.id === layer.parentId);
+    const parent = allLayers.find((l) => l.id === layer.parentId);
     if (!parent) {
       return layer.transform;
     }

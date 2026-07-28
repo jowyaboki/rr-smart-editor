@@ -4,10 +4,7 @@ export class WaveformService {
   /**
    * Extract peak amplitudes from audio stream to build waveform.
    */
-  public static async generateWaveform(
-    assetId: string,
-    inputPath: string
-  ): Promise<WaveformAsset> {
+  public static async generateWaveform(assetId: string, inputPath: string): Promise<WaveformAsset> {
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     // Generate 100 mock normalized wave peak amplitudes

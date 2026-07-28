@@ -1,15 +1,18 @@
-import { MediaImportService, AnalysisService, ProxyService, ThumbnailService, WaveformService, TranscodingService } from '@ai-video-editor/media-pipeline';
+import {
+  MediaImportService,
+  AnalysisService,
+  ProxyService,
+  ThumbnailService,
+  WaveformService,
+  TranscodingService,
+} from '@ai-video-editor/media-pipeline';
 
 export class ServerMediaController {
   /**
    * Orchestrates the complete media ingestion pipeline on server side.
    * Runs local-first background analysis, proxy transcode, thumbnail, and waveforms.
    */
-  public static async handleIngest(
-    filename: string,
-    size: number,
-    filepath: string
-  ): Promise<any> {
+  public static async handleIngest(filename: string, size: number, filepath: string): Promise<any> {
     // 1. Create a background import job
     const job = MediaImportService.createImportJob(filename, size, filepath);
     MediaImportService.updateJob(job.id, 'processing', 10);
@@ -65,7 +68,7 @@ export class ServerMediaController {
    */
   public static async handleTranscode(
     inputPath: string,
-    targetFormat: 'mp4' | 'webm' | 'mov'
+    targetFormat: 'mp4' | 'webm' | 'mov',
   ): Promise<any> {
     const transcoded = await TranscodingService.transcode(inputPath, targetFormat, (percent) => {
       console.log(`Transcoding progress: ${percent}%`);

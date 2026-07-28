@@ -6,14 +6,42 @@ interface FunctionBrowserProps {
 
 export const FunctionBrowser: React.FC<FunctionBrowserProps> = ({ onInsert }) => {
   const functions = [
-    { name: 'clamp(val, min, max)', insert: 'clamp(val, 0, 100)', desc: 'Clamps value between min and max' },
-    { name: 'lerp(start, end, t)', insert: 'lerp(0, 100, t)', desc: 'Linear interpolation from start to end' },
-    { name: 'linear(t, tMin, tMax, val1, val2)', insert: 'linear(time, 0, 5, 0, 100)', desc: 'Maps t range to val range' },
-    { name: 'ease(t, tMin, tMax, val1, val2)', insert: 'ease(time, 0, 5, 0, 100)', desc: 'Ease-in-out mapping' },
-    { name: 'wiggle(freq, amp)', insert: 'wiggle(2, 50)', desc: 'Wiggle values (frequency, amplitude)' },
-    { name: 'smooth(values, width)', insert: 'smooth(values, 5)', desc: 'Smoothing moving average filter' },
+    {
+      name: 'clamp(val, min, max)',
+      insert: 'clamp(val, 0, 100)',
+      desc: 'Clamps value between min and max',
+    },
+    {
+      name: 'lerp(start, end, t)',
+      insert: 'lerp(0, 100, t)',
+      desc: 'Linear interpolation from start to end',
+    },
+    {
+      name: 'linear(t, tMin, tMax, val1, val2)',
+      insert: 'linear(time, 0, 5, 0, 100)',
+      desc: 'Maps t range to val range',
+    },
+    {
+      name: 'ease(t, tMin, tMax, val1, val2)',
+      insert: 'ease(time, 0, 5, 0, 100)',
+      desc: 'Ease-in-out mapping',
+    },
+    {
+      name: 'wiggle(freq, amp)',
+      insert: 'wiggle(2, 50)',
+      desc: 'Wiggle values (frequency, amplitude)',
+    },
+    {
+      name: 'smooth(values, width)',
+      insert: 'smooth(values, 5)',
+      desc: 'Smoothing moving average filter',
+    },
     { name: 'noise(x, y, z)', insert: 'noise(time)', desc: 'Deterministic 1D/2D/3D pseudo-noise' },
-    { name: 'random(min, max)', insert: 'random(0, 10)', desc: 'Deterministic pseudo-random value' },
+    {
+      name: 'random(min, max)',
+      insert: 'random(0, 10)',
+      desc: 'Deterministic pseudo-random value',
+    },
     { name: 'sin(x)', insert: 'sin(time)', desc: 'Trigonometric sine function' },
     { name: 'cos(x)', insert: 'cos(time)', desc: 'Trigonometric cosine function' },
     { name: 'tan(x)', insert: 'tan(time)', desc: 'Trigonometric tangent function' },

@@ -7,9 +7,9 @@ export class DocumentationService {
   public async generateDocs(
     title: string,
     category: DocumentationMetadata['category'],
-    sectionsList: string[]
+    sectionsList: string[],
   ): Promise<DocumentationMetadata> {
-    const sections = sectionsList.map(heading => ({
+    const sections = sectionsList.map((heading) => ({
       heading,
       content: `### ${heading}\nThis section describes the detailed usage instructions, schemas, and examples for ${heading.toLowerCase()}.`,
     }));

@@ -4,7 +4,10 @@ import { WorkflowContext } from '@ai-video-editor/shared';
 export const useWorkflowEngine = () => {
   const store = useWorkflowStore();
 
-  const handleStartWorkflow = async (workflowId: string, initialContext?: Partial<WorkflowContext>) => {
+  const handleStartWorkflow = async (
+    workflowId: string,
+    initialContext?: Partial<WorkflowContext>,
+  ) => {
     return store.startWorkflow(workflowId, initialContext);
   };
 
@@ -25,7 +28,7 @@ export const useWorkflowEngine = () => {
   };
 
   const activeExecutionList = Object.values(store.executions).sort(
-    (a, b) => new Date(b.startedAt).getTime() - new Date(a.startedAt).getTime()
+    (a, b) => new Date(b.startedAt).getTime() - new Date(a.startedAt).getTime(),
   );
 
   return {

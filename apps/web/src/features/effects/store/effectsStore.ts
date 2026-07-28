@@ -82,7 +82,7 @@ export const useEffectsStore = create<EffectsState>((set, get) => {
     updateLayerTransform: (id, transform) => {
       const { layers } = get();
       const updated = layers.map((l) =>
-        l.id === id ? { ...l, transform: { ...l.transform, ...transform } } : l
+        l.id === id ? { ...l, transform: { ...l.transform, ...transform } } : l,
       );
       set({ layers: updated });
       pushToHistory(updated);
@@ -105,7 +105,7 @@ export const useEffectsStore = create<EffectsState>((set, get) => {
     addMaskToLayer: (layerId, mask) => {
       const { layers } = get();
       const updated = layers.map((l) =>
-        l.id === layerId ? { ...l, masks: [...l.masks, mask] } : l
+        l.id === layerId ? { ...l, masks: [...l.masks, mask] } : l,
       );
       set({ layers: updated });
       pushToHistory(updated);
@@ -114,7 +114,7 @@ export const useEffectsStore = create<EffectsState>((set, get) => {
     removeMaskFromLayer: (layerId, maskId) => {
       const { layers } = get();
       const updated = layers.map((l) =>
-        l.id === layerId ? { ...l, masks: l.masks.filter((m) => m.id !== maskId) } : l
+        l.id === layerId ? { ...l, masks: l.masks.filter((m) => m.id !== maskId) } : l,
       );
       set({ layers: updated });
       pushToHistory(updated);
@@ -128,7 +128,7 @@ export const useEffectsStore = create<EffectsState>((set, get) => {
               ...l,
               masks: l.masks.map((m) => (m.id === maskId ? { ...m, ...updates } : m)),
             }
-          : l
+          : l,
       );
       set({ layers: updated });
       pushToHistory(updated);
@@ -214,7 +214,7 @@ export const useEffectsStore = create<EffectsState>((set, get) => {
               ...l,
               effects: { ...l.effects, effects: [...l.effects.effects, effect] },
             }
-          : l
+          : l,
       );
       set({ layers: updated });
       pushToHistory(updated);
@@ -231,7 +231,7 @@ export const useEffectsStore = create<EffectsState>((set, get) => {
                 effects: l.effects.effects.filter((e) => e.id !== effectId),
               },
             }
-          : l
+          : l,
       );
       set({ layers: updated });
       pushToHistory(updated);
@@ -254,11 +254,11 @@ export const useEffectsStore = create<EffectsState>((set, get) => {
                           [paramKey]: { ...e.parameters[paramKey], value },
                         },
                       }
-                    : e
+                    : e,
                 ),
               },
             }
-          : l
+          : l,
       );
       set({ layers: updated });
       pushToHistory(updated);
@@ -273,11 +273,11 @@ export const useEffectsStore = create<EffectsState>((set, get) => {
               effects: {
                 ...l.effects,
                 effects: l.effects.effects.map((e) =>
-                  e.id === effectId ? { ...e, enabled: !e.enabled } : e
+                  e.id === effectId ? { ...e, enabled: !e.enabled } : e,
                 ),
               },
             }
-          : l
+          : l,
       );
       set({ layers: updated });
       pushToHistory(updated);
@@ -310,7 +310,7 @@ export const useEffectsStore = create<EffectsState>((set, get) => {
                 }),
               },
             }
-          : l
+          : l,
       );
       set({ layers: updated });
       pushToHistory(updated);

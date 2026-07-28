@@ -15,9 +15,9 @@ export type ShapeType = 'rectangle' | 'ellipse' | 'polygon' | 'star' | 'bezier';
 export interface Transform3D {
   position: [number, number, number]; // [x, y, z]
   rotation: [number, number, number]; // [rx, ry, rz]
-  scale: [number, number, number];    // [sx, sy, sz]
-  anchorPoint: [number, number];      // [ax, ay]
-  opacity: number;                    // 0.0 to 1.0
+  scale: [number, number, number]; // [sx, sy, sz]
+  anchorPoint: [number, number]; // [ax, ay]
+  opacity: number; // 0.0 to 1.0
 }
 
 export interface CompositionLayer {

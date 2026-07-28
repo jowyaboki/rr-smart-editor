@@ -21,7 +21,8 @@ export class OptimizationService {
         id: 'opt_merge_layers',
         category: 'merge_layers',
         title: 'Consolidate redundant tracks',
-        description: 'You have more than 5 parallel tracks. Merging inactive tracks or overlapping static items can reduce CPU/GPU workload.',
+        description:
+          'You have more than 5 parallel tracks. Merging inactive tracks or overlapping static items can reduce CPU/GPU workload.',
         potentialSavings: {
           costReduction: 0.05,
           renderDurationReductionMs: 1200,
@@ -38,7 +39,8 @@ export class OptimizationService {
         id: 'opt_optimize_assets',
         category: 'optimize_assets',
         title: 'Convert 4K sources to Smart Proxies',
-        description: 'Large raw 4K source assets detected. Down-sampling to 1080p proxies will improve timeline scrolling and scrubbing speed.',
+        description:
+          'Large raw 4K source assets detected. Down-sampling to 1080p proxies will improve timeline scrolling and scrubbing speed.',
         potentialSavings: {
           costReduction: 0,
           renderDurationReductionMs: 3500,
@@ -55,7 +57,8 @@ export class OptimizationService {
         id: 'opt_reduce_effects',
         category: 'reduce_effects',
         title: 'Bake heavy nested filters',
-        description: 'Some clips contain more than 3 stacked heavy filters. Pre-rendering or flattening effects will prevent latency drops.',
+        description:
+          'Some clips contain more than 3 stacked heavy filters. Pre-rendering or flattening effects will prevent latency drops.',
         potentialSavings: {
           costReduction: 0.02,
           renderDurationReductionMs: 800,
@@ -72,7 +75,8 @@ export class OptimizationService {
         id: 'opt_cache',
         category: 'cache_opportunities',
         title: 'Pre-cache composition regions',
-        description: 'Caching complex timeline clip groups will bypass full frame re-evaluation during export.',
+        description:
+          'Caching complex timeline clip groups will bypass full frame re-evaluation during export.',
         potentialSavings: {
           costReduction: 0.1,
           renderDurationReductionMs: 2000,
@@ -83,13 +87,14 @@ export class OptimizationService {
     }
 
     // Strategy 5: Workflow improvements
-    const slowWorkflowSteps = workflows.some(w => w.steps.length > 5);
+    const slowWorkflowSteps = workflows.some((w) => w.steps.length > 5);
     if (slowWorkflowSteps) {
       proposals.push({
         id: 'opt_workflow',
         category: 'workflow_improvements',
         title: 'Parallellize serial workflows',
-        description: 'Large workflow sequence found. Run script steps in parallel to reduce overall execution delay.',
+        description:
+          'Large workflow sequence found. Run script steps in parallel to reduce overall execution delay.',
         potentialSavings: {
           costReduction: 0.01,
           renderDurationReductionMs: 500,

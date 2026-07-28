@@ -28,13 +28,13 @@ export class SwitcherService {
   }
 
   public selectPreview(sceneId: string): void {
-    const scene = this.scenes.find(s => s.id === sceneId);
+    const scene = this.scenes.find((s) => s.id === sceneId);
     if (!scene) throw new Error(`Scene with ID ${sceneId} does not exist.`);
     this.state.previewSceneId = sceneId;
   }
 
   public selectProgramDirectly(sceneId: string): void {
-    const scene = this.scenes.find(s => s.id === sceneId);
+    const scene = this.scenes.find((s) => s.id === sceneId);
     if (!scene) throw new Error(`Scene with ID ${sceneId} does not exist.`);
     this.state.programSceneId = sceneId;
   }
@@ -55,7 +55,7 @@ export class SwitcherService {
     const intervalMs = transition.durationMs / steps;
 
     for (let i = 1; i <= steps; i++) {
-      await new Promise(resolve => setTimeout(resolve, intervalMs));
+      await new Promise((resolve) => setTimeout(resolve, intervalMs));
       this.state.transitionProgress = i / steps;
     }
 

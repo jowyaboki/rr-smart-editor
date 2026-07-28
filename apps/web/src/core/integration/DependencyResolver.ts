@@ -18,9 +18,11 @@ export class DependencyResolver {
         tempVisited.add(engine.name);
 
         for (const depName of engine.dependencies) {
-          const depInstance = engines.find(e => e.name === depName);
+          const depInstance = engines.find((e) => e.name === depName);
           if (!depInstance) {
-            throw new Error(`Missing dependency: engine "${engine.name}" depends on unregistered engine "${depName}"`);
+            throw new Error(
+              `Missing dependency: engine "${engine.name}" depends on unregistered engine "${depName}"`,
+            );
           }
           visit(depInstance);
         }

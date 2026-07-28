@@ -53,7 +53,7 @@ export const useExtensionStore = create<ExtensionState>((set) => ({
       enabled: true,
       downloads: 1200,
       rating: 4.5,
-    }
+    },
   ],
   searchQuery: '',
   categoryFilter: 'all',
@@ -63,17 +63,17 @@ export const useExtensionStore = create<ExtensionState>((set) => ({
   setSearchQuery: (searchQuery) => set({ searchQuery }),
   setCategoryFilter: (categoryFilter) => set({ categoryFilter }),
 
-  toggleInstalled: (id) => set((state) => ({
-    extensions: state.extensions.map((e) =>
-      e.id === id ? { ...e, installed: !e.installed, enabled: !e.installed ? true : false } : e
-    ),
-  })),
+  toggleInstalled: (id) =>
+    set((state) => ({
+      extensions: state.extensions.map((e) =>
+        e.id === id ? { ...e, installed: !e.installed, enabled: !e.installed ? true : false } : e,
+      ),
+    })),
 
-  toggleEnabled: (id) => set((state) => ({
-    extensions: state.extensions.map((e) =>
-      e.id === id ? { ...e, enabled: !e.enabled } : e
-    ),
-  })),
+  toggleEnabled: (id) =>
+    set((state) => ({
+      extensions: state.extensions.map((e) => (e.id === id ? { ...e, enabled: !e.enabled } : e)),
+    })),
 
   setLoading: (loading) => set({ loading }),
 }));

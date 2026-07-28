@@ -20,7 +20,9 @@ export class EncodeOutputStage implements PipelineStage {
     freshJob.stage = 'encode';
     freshJob.progress = 90;
     context.progress = 90;
-    freshJob.logs.push(`[${new Date().toISOString()}] [Stage: ENCODE] Encoding visual frame sequences and stitching audio...`);
+    freshJob.logs.push(
+      `[${new Date().toISOString()}] [Stage: ENCODE] Encoding visual frame sequences and stitching audio...`,
+    );
     await jobStorage.saveJob(freshJob);
     context.job = freshJob;
 

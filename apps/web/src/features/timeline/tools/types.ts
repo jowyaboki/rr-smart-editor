@@ -1,15 +1,7 @@
 import { VirtualClip, VirtualTrack } from '../types';
 
 export type EditToolMode =
-  | 'select'
-  | 'razor'
-  | 'ripple'
-  | 'roll'
-  | 'slip'
-  | 'slide'
-  | 'stretch'
-  | 'hand'
-  | 'zoom';
+  'select' | 'razor' | 'ripple' | 'roll' | 'slip' | 'slide' | 'stretch' | 'hand' | 'zoom';
 
 export type ClipOperationType =
   | 'split'
@@ -55,14 +47,14 @@ export interface TrackStateOverrides {
 }
 
 export interface KeyboardShortcutConfig {
-  playPause: string;     // default Space
-  jklPlayback: boolean;  // toggle J-K-L playback rate
-  markIn: string;        // default I
-  markOut: string;       // default O
-  zoomIn: string;        // default = or +
-  zoomOut: string;       // default -
-  splitClip: string;     // default Ctrl+B or S
-  rippleDelete: string;  // default Shift+Delete
+  playPause: string; // default Space
+  jklPlayback: boolean; // toggle J-K-L playback rate
+  markIn: string; // default I
+  markOut: string; // default O
+  zoomIn: string; // default = or +
+  zoomOut: string; // default -
+  splitClip: string; // default Ctrl+B or S
+  rippleDelete: string; // default Shift+Delete
 }
 
 export interface NleClipGroup {

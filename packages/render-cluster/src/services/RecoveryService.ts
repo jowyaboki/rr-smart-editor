@@ -21,7 +21,7 @@ export class RecoveryService {
   public handleNodeFailures(deadNodeIds: string[]): ShardAssignment[] {
     const reassignedAssignments: ShardAssignment[] = [];
 
-    deadNodeIds.forEach(nodeId => {
+    deadNodeIds.forEach((nodeId) => {
       // Find active shards assigned to this offline node
       const nodes = this.registry.listNodes();
       const node = this.registry.getNode(nodeId);

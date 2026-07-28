@@ -29,18 +29,32 @@ export const RiggingControls: React.FC = () => {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', fontFamily: 'sans-serif' }}>
+    <div
+      style={{ display: 'flex', flexDirection: 'column', gap: '16px', fontFamily: 'sans-serif' }}
+    >
       <div>
         <h3 style={{ fontSize: '14px', margin: '0 0 12px 0', fontWeight: 600, color: '#f8fafc' }}>
           🔗 Rigging Constraints Engine
         </h3>
         <p style={{ fontSize: '11px', color: '#71717a', margin: '0 0 16px 0' }}>
-          Connect vector shapes, track layers, and cameras to establish parent relationships or automated look-at tracking.
+          Connect vector shapes, track layers, and cameras to establish parent relationships or
+          automated look-at tracking.
         </p>
       </div>
 
       {/* CREATE NEW CONSTRAINT FORM */}
-      <form onSubmit={handleCreateConstraint} style={{ display: 'flex', flexDirection: 'column', gap: '12px', border: '1px solid #27272a', padding: '12px', borderRadius: '8px', backgroundColor: '#18181b' }}>
+      <form
+        onSubmit={handleCreateConstraint}
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '12px',
+          border: '1px solid #27272a',
+          padding: '12px',
+          borderRadius: '8px',
+          backgroundColor: '#18181b',
+        }}
+      >
         <h4 style={{ fontSize: '12px', margin: '0 0 8px 0', fontWeight: 600, color: '#e2e8f0' }}>
           ➕ Add Rig Constraint
         </h4>
@@ -63,8 +77,10 @@ export const RiggingControls: React.FC = () => {
             }}
           >
             <option value="">-- Choose Source --</option>
-            {activeComp.layers.map(l => (
-              <option key={l.id} value={l.id}>{l.name}</option>
+            {activeComp.layers.map((l) => (
+              <option key={l.id} value={l.id}>
+                {l.name}
+              </option>
             ))}
           </select>
         </div>
@@ -87,8 +103,10 @@ export const RiggingControls: React.FC = () => {
             }}
           >
             <option value="">-- Choose Target --</option>
-            {activeComp.layers.map(l => (
-              <option key={l.id} value={l.id}>{l.name}</option>
+            {activeComp.layers.map((l) => (
+              <option key={l.id} value={l.id}>
+                {l.name}
+              </option>
             ))}
           </select>
         </div>
@@ -162,8 +180,8 @@ export const RiggingControls: React.FC = () => {
         </h4>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           {activeComp.constraints.map((constObj) => {
-            const source = activeComp.layers.find(l => l.id === constObj.sourceLayerId);
-            const target = activeComp.layers.find(l => l.id === constObj.targetId);
+            const source = activeComp.layers.find((l) => l.id === constObj.sourceLayerId);
+            const target = activeComp.layers.find((l) => l.id === constObj.targetId);
 
             return (
               <div
@@ -180,14 +198,20 @@ export const RiggingControls: React.FC = () => {
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span style={{ fontWeight: 600, color: '#e2e8f0' }}>⚙️ {constObj.type.toUpperCase()}</span>
+                  <span style={{ fontWeight: 600, color: '#e2e8f0' }}>
+                    ⚙️ {constObj.type.toUpperCase()}
+                  </span>
                   <span style={{ color: '#71717a' }}>weight: {constObj.weight}</span>
                 </div>
                 <div style={{ color: '#a1a1aa' }}>
-                  Source: <strong style={{ color: '#3b82f6' }}>{source?.name || constObj.sourceLayerId}</strong>
+                  Source:{' '}
+                  <strong style={{ color: '#3b82f6' }}>
+                    {source?.name || constObj.sourceLayerId}
+                  </strong>
                 </div>
                 <div style={{ color: '#a1a1aa' }}>
-                  Tracks: <strong style={{ color: '#10b981' }}>{target?.name || constObj.targetId}</strong>
+                  Tracks:{' '}
+                  <strong style={{ color: '#10b981' }}>{target?.name || constObj.targetId}</strong>
                 </div>
               </div>
             );

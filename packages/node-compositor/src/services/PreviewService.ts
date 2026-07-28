@@ -26,7 +26,7 @@ export class PreviewService {
   public generateHeatmap(nodeIds: string[]): Record<string, 'cold' | 'warm' | 'hot'> {
     const heatmap: Record<string, 'cold' | 'warm' | 'hot'> = {};
 
-    nodeIds.forEach(nodeId => {
+    nodeIds.forEach((nodeId) => {
       const history = this.timingHistory.get(nodeId) || [];
       if (history.length === 0) {
         heatmap[nodeId] = 'cold';
@@ -50,7 +50,11 @@ export class PreviewService {
   /**
    * Simulates split video screen preview logic by blending the output of two nodes
    */
-  public generateSplitComparison(nodeAOutput: any, nodeBOutput: any, splitRatio: number = 0.5): string {
+  public generateSplitComparison(
+    nodeAOutput: any,
+    nodeBOutput: any,
+    splitRatio: number = 0.5,
+  ): string {
     return `[Split-Compare Image: Side A (${splitRatio * 100}% of ${nodeAOutput}) blended with Side B (${(1 - splitRatio) * 100}% of ${nodeBOutput})]`;
   }
 

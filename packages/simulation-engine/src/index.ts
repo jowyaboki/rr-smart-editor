@@ -44,7 +44,7 @@ export class SimulationEngine {
     variables: WorkflowVariable[] = [],
     assets: any[] = [],
     plugins: string[] = [],
-    permissions: string[] = []
+    permissions: string[] = [],
   ): IDigitalTwin {
     return new DigitalTwin(
       `twin_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`,
@@ -53,7 +53,7 @@ export class SimulationEngine {
       variables,
       assets,
       plugins,
-      permissions
+      permissions,
     );
   }
 
@@ -68,7 +68,7 @@ export class SimulationEngine {
     if (scenario && scenario.steps) {
       for (const step of scenario.steps) {
         // Run adapter if registered, otherwise default
-        const adapter = this.adapters.find(a => a.supportedTypes.includes(step.type));
+        const adapter = this.adapters.find((a) => a.supportedTypes.includes(step.type));
         if (adapter) {
           await adapter.execute(cloneTwin, step.type, step.payload);
         } else {
@@ -85,7 +85,7 @@ export class SimulationEngine {
     // Generate Transactions that can apply these changes to the real project
     const transactions = this.generateTransactions(cloneTwin.history);
 
-    const success = validationIssues.filter(i => i.severity === 'error').length === 0;
+    const success = validationIssues.filter((i) => i.severity === 'error').length === 0;
 
     return {
       simulationId,
@@ -105,7 +105,7 @@ export class SimulationEngine {
    */
   private generateTransactions(events: SimulationEvent[]): any[] {
     const transactions: any[] = [];
-    events.forEach(event => {
+    events.forEach((event) => {
       if (event.type === 'timeline_edit') {
         const payload = event.metadata;
         if (payload?.action === 'move') {

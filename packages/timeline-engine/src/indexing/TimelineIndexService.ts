@@ -29,7 +29,7 @@ export class TimelineIndexService {
     tracks: VirtualTrack[],
     clips: VirtualClip[],
     markers: TimelineMarker[],
-    keyframes: VirtualKeyframe[]
+    keyframes: VirtualKeyframe[],
   ): void {
     this.clear();
     this.tracks = [...tracks].sort((a, b) => a.yOffset - b.yOffset);

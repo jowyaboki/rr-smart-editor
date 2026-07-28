@@ -10,7 +10,7 @@ export class ModerationService {
     let details = 'Asset is completely clean, high-quality and compliant.';
 
     // 1. Check for duplicate hashes (checksum)
-    const isDuplicate = library.some(a => a.id !== asset.id && a.checksum === asset.checksum);
+    const isDuplicate = library.some((a) => a.id !== asset.id && a.checksum === asset.checksum);
     if (isDuplicate) {
       reasons.push('duplicate');
     }
@@ -22,21 +22,30 @@ export class ModerationService {
     }
 
     // 3. Corrupt checks
-    if (asset.url && (asset.url.includes('corrupt') || asset.checksum === '00000000000000000000000000000000')) {
+    if (
+      asset.url &&
+      (asset.url.includes('corrupt') || asset.checksum === '00000000000000000000000000000000')
+    ) {
       reasons.push('corrupt_media');
     }
 
     // 4. Inappropriate content checks
     const tags = asset.metadata.aiGeneratedTags || [];
     const keywords = asset.metadata.keywords || [];
-    const hasUnsafe = tags.some(t => t.includes('violence') || t.includes('nsfw') || t.includes('inappropriate')) ||
-                      keywords.some(k => k.includes('violence') || k.includes('inappropriate'));
+    const hasUnsafe =
+      tags.some(
+        (t) => t.includes('violence') || t.includes('nsfw') || t.includes('inappropriate'),
+      ) || keywords.some((k) => k.includes('violence') || k.includes('inappropriate'));
     if (hasUnsafe) {
       reasons.push('inappropriate_content');
     }
 
     // 5. Missing critical metadata check
-    if (!asset.metadata.title || !asset.metadata.description || asset.metadata.title === 'Untitled') {
+    if (
+      !asset.metadata.title ||
+      !asset.metadata.description ||
+      asset.metadata.title === 'Untitled'
+    ) {
       reasons.push('missing_metadata');
     }
 

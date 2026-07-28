@@ -8,7 +8,6 @@ import { NleShortcutService } from '../tools/shortcuts/NleShortcutService';
 import { VirtualClip, TimelineMarker, VirtualKeyframe } from '../types';
 
 describe('Professional NLE Upgraded Timeline Engine Unit Tests', () => {
-
   test('Razor Tool - Splitting a Clip', () => {
     const clip: VirtualClip = {
       id: 'clip_main',
@@ -47,19 +46,19 @@ describe('Professional NLE Upgraded Timeline Engine Unit Tests', () => {
     const rippleEnd = NleToolService.applyRippleEdit('c1', -20, 'end', clips);
 
     // c1 duration should shrink to 80
-    assert.strictEqual(rippleEnd.find(c => c.id === 'c1')?.duration, 80);
+    assert.strictEqual(rippleEnd.find((c) => c.id === 'c1')?.duration, 80);
     // c2 and c3 should shift left by 20 frames
-    assert.strictEqual(rippleEnd.find(c => c.id === 'c2')?.startFrame, 130);
-    assert.strictEqual(rippleEnd.find(c => c.id === 'c3')?.startFrame, 280);
+    assert.strictEqual(rippleEnd.find((c) => c.id === 'c2')?.startFrame, 130);
+    assert.strictEqual(rippleEnd.find((c) => c.id === 'c3')?.startFrame, 280);
 
     // Ripple Edit: Extend c1 start (shifts left) by 10 frames from start
     const rippleStart = NleToolService.applyRippleEdit('c1', 10, 'start', clips);
     // c1 starts at 10, duration is 100 - 10 = 90
-    assert.strictEqual(rippleStart.find(c => c.id === 'c1')?.startFrame, 10);
-    assert.strictEqual(rippleStart.find(c => c.id === 'c1')?.duration, 90);
+    assert.strictEqual(rippleStart.find((c) => c.id === 'c1')?.startFrame, 10);
+    assert.strictEqual(rippleStart.find((c) => c.id === 'c1')?.duration, 90);
     // c2 and c3 should shift right by 10 frames
-    assert.strictEqual(rippleStart.find(c => c.id === 'c2')?.startFrame, 160);
-    assert.strictEqual(rippleStart.find(c => c.id === 'c3')?.startFrame, 310);
+    assert.strictEqual(rippleStart.find((c) => c.id === 'c2')?.startFrame, 160);
+    assert.strictEqual(rippleStart.find((c) => c.id === 'c3')?.startFrame, 310);
   });
 
   test('Roll Edit - Adjacent clips transition point adjustment', () => {
@@ -72,10 +71,10 @@ describe('Professional NLE Upgraded Timeline Engine Unit Tests', () => {
     const rolled = NleToolService.applyRollEdit('c1', 'c2', 15, clips);
 
     // Clip 1 duration increases to 115
-    assert.strictEqual(rolled.find(c => c.id === 'c1')?.duration, 115);
+    assert.strictEqual(rolled.find((c) => c.id === 'c1')?.duration, 115);
     // Clip 2 start shifts to 115, duration shrinks to 85 (maintains overall end frame 200)
-    assert.strictEqual(rolled.find(c => c.id === 'c2')?.startFrame, 115);
-    assert.strictEqual(rolled.find(c => c.id === 'c2')?.duration, 85);
+    assert.strictEqual(rolled.find((c) => c.id === 'c2')?.startFrame, 115);
+    assert.strictEqual(rolled.find((c) => c.id === 'c2')?.duration, 85);
   });
 
   test('Slip and Slide Edits', () => {
@@ -87,25 +86,46 @@ describe('Professional NLE Upgraded Timeline Engine Unit Tests', () => {
 
     // 1. Slip edit: Slide clip content startFrame in source by 30 frames
     const slipped = NleToolService.applySlipEdit('c2', 30, clips);
-    assert.strictEqual(slipped.find(c => c.id === 'c2')?.metadata?.sourceStartFrame, 30);
+    assert.strictEqual(slipped.find((c) => c.id === 'c2')?.metadata?.sourceStartFrame, 30);
     // Check that timeline coordinates are untouched!
-    assert.strictEqual(slipped.find(c => c.id === 'c2')?.startFrame, 100);
-    assert.strictEqual(slipped.find(c => c.id === 'c2')?.duration, 100);
+    assert.strictEqual(slipped.find((c) => c.id === 'c2')?.startFrame, 100);
+    assert.strictEqual(slipped.find((c) => c.id === 'c2')?.duration, 100);
 
     // 2. Slide edit: Moves Target c2 right by 20 frames
     // This should extend preceding c1, and shrink succeeding c3
     const slided = NleToolService.applySlideEdit('c2', 20, 'c1', 'c3', clips);
-    assert.strictEqual(slided.find(c => c.id === 'c2')?.startFrame, 120);
-    assert.strictEqual(slided.find(c => c.id === 'c1')?.duration, 120);
-    assert.strictEqual(slided.find(c => c.id === 'c3')?.startFrame, 220);
-    assert.strictEqual(slided.find(c => c.id === 'c3')?.duration, 80);
+    assert.strictEqual(slided.find((c) => c.id === 'c2')?.startFrame, 120);
+    assert.strictEqual(slided.find((c) => c.id === 'c1')?.duration, 120);
+    assert.strictEqual(slided.find((c) => c.id === 'c3')?.startFrame, 220);
+    assert.strictEqual(slided.find((c) => c.id === 'c3')?.duration, 80);
   });
 
   test('Grouped and Linked selections and moving together', () => {
     const clips: VirtualClip[] = [
-      { id: 'video_1', trackId: 'v1', name: 'Video Component', startFrame: 50, duration: 100, type: 'v' },
-      { id: 'audio_1', trackId: 'a1', name: 'Audio Component', startFrame: 50, duration: 100, type: 'a' },
-      { id: 'independent', trackId: 'v1', name: 'Standalone', startFrame: 300, duration: 50, type: 'v' },
+      {
+        id: 'video_1',
+        trackId: 'v1',
+        name: 'Video Component',
+        startFrame: 50,
+        duration: 100,
+        type: 'v',
+      },
+      {
+        id: 'audio_1',
+        trackId: 'a1',
+        name: 'Audio Component',
+        startFrame: 50,
+        duration: 100,
+        type: 'a',
+      },
+      {
+        id: 'independent',
+        trackId: 'v1',
+        name: 'Standalone',
+        startFrame: 300,
+        duration: 50,
+        type: 'v',
+      },
     ];
 
     NleGroupingService.clear();
@@ -118,9 +138,9 @@ describe('Professional NLE Upgraded Timeline Engine Unit Tests', () => {
 
     // Shift them together
     const shifted = NleGroupingService.shiftClipsTogether(['video_1'], 25, clips);
-    assert.strictEqual(shifted.find(c => c.id === 'video_1')?.startFrame, 75);
-    assert.strictEqual(shifted.find(c => c.id === 'audio_1')?.startFrame, 75);
-    assert.strictEqual(shifted.find(c => c.id === 'independent')?.startFrame, 300); // untouched
+    assert.strictEqual(shifted.find((c) => c.id === 'video_1')?.startFrame, 75);
+    assert.strictEqual(shifted.find((c) => c.id === 'audio_1')?.startFrame, 75);
+    assert.strictEqual(shifted.find((c) => c.id === 'independent')?.startFrame, 300); // untouched
   });
 
   test('J-K-L Playback Shuttle Short Shortcut keys', () => {

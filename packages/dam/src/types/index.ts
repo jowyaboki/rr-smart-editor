@@ -2,7 +2,13 @@ import { z } from 'zod';
 
 export type AssetApprovalStatus = 'draft' | 'in_review' | 'approved' | 'rejected' | 'archived';
 
-export const AssetApprovalStatusSchema = z.enum(['draft', 'in_review', 'approved', 'rejected', 'archived']);
+export const AssetApprovalStatusSchema = z.enum([
+  'draft',
+  'in_review',
+  'approved',
+  'rejected',
+  'archived',
+]);
 
 // ==========================================
 // CORE PLATFORM MODELS
@@ -75,12 +81,14 @@ export interface AssetApproval {
 export const AssetApprovalSchema = z.object({
   status: AssetApprovalStatusSchema,
   reviewerComments: z.array(z.string()).optional(),
-  history: z.array(z.object({
-    status: AssetApprovalStatusSchema,
-    reviewer: z.string(),
-    timestamp: z.number(),
-    comment: z.string().optional(),
-  })),
+  history: z.array(
+    z.object({
+      status: AssetApprovalStatusSchema,
+      reviewer: z.string(),
+      timestamp: z.number(),
+      comment: z.string().optional(),
+    }),
+  ),
 });
 
 export interface AssetUsage {

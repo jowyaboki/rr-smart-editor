@@ -11,21 +11,21 @@ export class RecommendationService {
   public async recommend(
     asset: Asset,
     library: Asset[],
-    embeddings: SemanticEmbedding[]
+    embeddings: SemanticEmbedding[],
   ): Promise<Recommendation[]> {
     const recommendations: Recommendation[] = [];
 
     // Filter library to exclude target asset itself
-    const candidates = library.filter(a => a.id !== asset.id);
+    const candidates = library.filter((a) => a.id !== asset.id);
 
     // Compute basic cosine-similarity recommendations
-    const targetEmb = embeddings.find(e => e.assetId === asset.id);
+    const targetEmb = embeddings.find((e) => e.assetId === asset.id);
 
     for (const cand of candidates) {
       let score = 0;
       let reason = '';
 
-      const candEmb = embeddings.find(e => e.assetId === cand.id);
+      const candEmb = embeddings.find((e) => e.assetId === cand.id);
       if (targetEmb && candEmb) {
         score = this.computeCosineSimilarity(targetEmb.vector, candEmb.vector);
       } else {
@@ -34,10 +34,13 @@ export class RecommendationService {
       }
 
       // Check if frequently used together
-      const usedTogether = asset.usage.projectsUsedIn.some(p => cand.usage.projectsUsedIn.includes(p));
-      const brandCompatible = asset.metadata.colorPalette && cand.metadata.colorPalette
-        ? asset.metadata.colorPalette.some(c => cand.metadata.colorPalette?.includes(c))
-        : false;
+      const usedTogether = asset.usage.projectsUsedIn.some((p) =>
+        cand.usage.projectsUsedIn.includes(p),
+      );
+      const brandCompatible =
+        asset.metadata.colorPalette && cand.metadata.colorPalette
+          ? asset.metadata.colorPalette.some((c) => cand.metadata.colorPalette?.includes(c))
+          : false;
 
       if (score >= 0.5) {
         recommendations.push({
@@ -96,7 +99,9 @@ export class RecommendationService {
 
   private computeCosineSimilarity(vecA: number[], vecB: number[]): number {
     if (vecA.length !== vecB.length || vecA.length === 0) return 0;
-    let dot = 0, normA = 0, normB = 0;
+    let dot = 0,
+      normA = 0,
+      normB = 0;
     for (let i = 0; i < vecA.length; i++) {
       dot += vecA[i] * vecB[i];
       normA += vecA[i] * vecA[i];
