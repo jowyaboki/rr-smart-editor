@@ -13,9 +13,7 @@ export class UpdateService implements IUpdateService {
     };
   }
 
-  public async checkForUpdates(
-    channel: 'stable' | 'beta' | 'nightly',
-  ): Promise<UpdateManifest | null> {
+  public async checkForUpdates(channel: 'stable' | 'beta' | 'nightly'): Promise<UpdateManifest | null> {
     if (channel === 'nightly') {
       return {
         ...this.updateManifest!,

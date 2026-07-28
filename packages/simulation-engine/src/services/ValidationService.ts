@@ -19,7 +19,7 @@ export class ValidationService {
     // 1. Check for missing assets
     clips.forEach((clip: any) => {
       if (clip.assetId) {
-        const found = assets.some((a) => a.id === clip.assetId);
+        const found = assets.some(a => a.id === clip.assetId);
         if (!found) {
           issues.push({
             id: `val_missing_asset_${clip.id}`,
@@ -49,7 +49,7 @@ export class ValidationService {
     });
 
     // 3. Circular workflows detection
-    workflows.forEach((wf) => {
+    workflows.forEach(wf => {
       const visited = new Set<string>();
       const recStack = new Set<string>();
       let hasCycle = false;
@@ -64,7 +64,7 @@ export class ValidationService {
         visited.add(stepId);
         recStack.add(stepId);
 
-        const step = wf.steps.find((s) => s.id === stepId);
+        const step = wf.steps.find(s => s.id === stepId);
         if (step && step.nextStepId) {
           checkCycle(step.nextStepId);
         }
@@ -90,13 +90,8 @@ export class ValidationService {
     // 4. Invalid expressions detection
     clips.forEach((clip: any) => {
       if (clip.expression) {
-        const isBalanced =
-          clip.expression.split('(').length - 1 === clip.expression.split(')').length - 1;
-        if (
-          !isBalanced ||
-          clip.expression.includes('__proto__') ||
-          clip.expression.includes('prototype')
-        ) {
+        const isBalanced = (clip.expression.split('(').length - 1) === (clip.expression.split(')').length - 1);
+        if (!isBalanced || clip.expression.includes('__proto__') || clip.expression.includes('prototype')) {
           issues.push({
             id: `val_expr_${clip.id}`,
             category: 'invalid_expression',
@@ -114,8 +109,7 @@ export class ValidationService {
         id: 'val_permission_render',
         category: 'permission_failure',
         severity: 'warning',
-        message:
-          'Current workspace role does not have authorization to trigger real cloud render tasks.',
+        message: 'Current workspace role does not have authorization to trigger real cloud render tasks.',
       });
     }
 

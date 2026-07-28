@@ -1,11 +1,7 @@
 import { AgentMemory } from '../types';
 
 export class MemoryService implements AgentMemory {
-  public conversation: {
-    role: 'user' | 'assistant' | 'system';
-    content: string;
-    timestamp: number;
-  }[] = [];
+  public conversation: { role: 'user' | 'assistant' | 'system'; content: string; timestamp: number }[] = [];
   public project: Record<string, any> = {};
   public workspace: Record<string, any> = {};
   public tasks: Record<string, any> = {};
@@ -26,7 +22,7 @@ export class MemoryService implements AgentMemory {
    * Gets conversation history formatted for model adapters
    */
   public getConversationHistory(): { role: 'user' | 'assistant' | 'system'; content: string }[] {
-    return this.conversation.map((msg) => ({
+    return this.conversation.map(msg => ({
       role: msg.role,
       content: msg.content,
     }));

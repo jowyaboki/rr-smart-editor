@@ -7,19 +7,13 @@ export class PlannerService {
    * Since we are provider-agnostic, we implement a highly structured rule-based decomposition system
    * that demonstrates multi-step planning perfectly.
    */
-  public generatePlan(
-    taskDescription: string,
-    strategy: AgentPlan['strategy'] = 'sequential',
-  ): AgentPlan {
+  public generatePlan(taskDescription: string, strategy: AgentPlan['strategy'] = 'sequential'): AgentPlan {
     const planId = `plan-${Math.random().toString(36).substr(2, 9)}`;
 
     // Simple deterministic planner parsing to represent real LLM decomposition
     const tasks: AgentTask[] = [];
 
-    if (
-      taskDescription.toLowerCase().includes('generate') ||
-      taskDescription.toLowerCase().includes('create')
-    ) {
+    if (taskDescription.toLowerCase().includes('generate') || taskDescription.toLowerCase().includes('create')) {
       // Create a multi-step creation plan: 1. Load project -> 2. Ingest assets -> 3. Add clips -> 4. Render
       tasks.push({
         id: 'task-1',
@@ -72,8 +66,8 @@ export class PlannerService {
 
     while (tasks.length > 0) {
       // Find all tasks whose dependencies are fully satisfied/resolved
-      const readyBatch = tasks.filter((t) => {
-        return t.dependencies.every((depId) => resolved.some((r) => r.id === depId));
+      const readyBatch = tasks.filter(t => {
+        return t.dependencies.every(depId => resolved.some(r => r.id === depId));
       });
 
       if (readyBatch.length === 0) {
@@ -87,7 +81,7 @@ export class PlannerService {
 
       // Remove ready batch from queue
       for (const t of readyBatch) {
-        const idx = tasks.findIndex((item) => item.id === t.id);
+        const idx = tasks.findIndex(item => item.id === t.id);
         if (idx !== -1) tasks.splice(idx, 1);
       }
     }

@@ -19,7 +19,7 @@ export class GeometryService {
    * Calculate top-Y position for a specific track.
    */
   public static getTrackY(trackId: string, tracks: VirtualTrack[]): number {
-    const track = tracks.find((t) => t.id === trackId);
+    const track = tracks.find(t => t.id === trackId);
     return track ? track.yOffset : 0;
   }
 
@@ -29,9 +29,9 @@ export class GeometryService {
   public static getClipRect(
     clip: VirtualClip,
     tracks: VirtualTrack[],
-    pxPerFrame: number,
+    pxPerFrame: number
   ): { x: number; y: number; width: number; height: number } {
-    const track = tracks.find((t) => t.id === clip.trackId);
+    const track = tracks.find(t => t.id === clip.trackId);
     const x = this.frameToX(clip.startFrame, pxPerFrame);
     const width = clip.duration * pxPerFrame;
     const y = track ? track.yOffset : 0;
@@ -46,7 +46,7 @@ export class GeometryService {
   public static getSnapFrame(
     targetFrame: number,
     allClips: VirtualClip[],
-    snapThresholdInFrames: number = 5,
+    snapThresholdInFrames: number = 5
   ): number {
     let bestSnap = targetFrame;
     let minDistance = snapThresholdInFrames + 1;

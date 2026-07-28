@@ -81,7 +81,7 @@ export class RecordingService {
         this.currentSession.durationSeconds += 1;
         // Mock bitrate kbps to MB conversion
         const megabitsPerSecond = this.config.bitrateKbps / 1020;
-        this.currentSession.fileSizeMb += megabitsPerSecond / 8;
+        this.currentSession.fileSizeMb += (megabitsPerSecond / 8);
       } else if (!this.currentSession || this.currentSession.status === 'idle') {
         clearInterval(interval);
       }

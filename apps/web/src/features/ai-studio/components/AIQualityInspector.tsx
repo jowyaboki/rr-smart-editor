@@ -6,27 +6,12 @@ interface AIQualityInspectorProps {
 
 export const AIQualityInspector: React.FC<AIQualityInspectorProps> = ({ warnings }) => {
   return (
-    <div
-      style={{
-        padding: '12px',
-        background: '#1a1a1a',
-        border: '1px solid #222',
-        borderRadius: '4px',
-      }}
-    >
+    <div style={{ padding: '12px', background: '#1a1a1a', border: '1px solid #222', borderRadius: '4px' }}>
       <span style={{ fontSize: '12px', fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>
         Automatic Quality Review Checklist
       </span>
       {warnings.length === 0 ? (
-        <div
-          style={{
-            fontSize: '11px',
-            color: '#4caf50',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '4px',
-          }}
-        >
+        <div style={{ fontSize: '11px', color: '#4caf50', display: 'flex', alignItems: 'center', gap: '4px' }}>
           ✓ Quality Audit Passed! All elements conform to standard brand kits and overlaps.
         </div>
       ) : (

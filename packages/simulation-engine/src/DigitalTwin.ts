@@ -25,7 +25,7 @@ export class DigitalTwin implements IDigitalTwin {
     variables: WorkflowVariable[] = [],
     assets: any[] = [],
     plugins: string[] = [],
-    permissions: string[] = [],
+    permissions: string[] = []
   ) {
     this.id = id;
     this.originalProjectId = project.id;
@@ -106,17 +106,8 @@ export class DigitalTwin implements IDigitalTwin {
           const clipIdx = timeline.clips?.findIndex((c: any) => c.id === clipId);
           if (clipIdx !== undefined && clipIdx !== -1) {
             const clip = timeline.clips[clipIdx];
-            const left = {
-              ...clip,
-              id: `${clipId}_split_L`,
-              duration: payload.splitFrame - clip.startFrame,
-            };
-            const right = {
-              ...clip,
-              id: `${clipId}_split_R`,
-              startFrame: payload.splitFrame,
-              duration: clip.duration - (payload.splitFrame - clip.startFrame),
-            };
+            const left = { ...clip, id: `${clipId}_split_L`, duration: payload.splitFrame - clip.startFrame };
+            const right = { ...clip, id: `${clipId}_split_R`, startFrame: payload.splitFrame, duration: clip.duration - (payload.splitFrame - clip.startFrame) };
             timeline.clips.splice(clipIdx, 1, left, right);
           }
         } else {
@@ -168,7 +159,7 @@ export class DigitalTwin implements IDigitalTwin {
       case 'workflow_execution': {
         const { workflowId, status, currentStepId } = payload;
         description = `Executed workflow '${workflowId}' step '${currentStepId}'`;
-        const wf = this.state.workflows.find((w) => w.id === workflowId);
+        const wf = this.state.workflows.find(w => w.id === workflowId);
         if (wf) {
           metadata.workflowName = wf.name;
         }
@@ -207,18 +198,13 @@ export class DigitalTwin implements IDigitalTwin {
       case 'variable_update': {
         const { name, value } = payload;
         description = `Updated workflow variable '${name}' to '${value}'`;
-        const variable = this.state.variables.find((v) => v.name === name);
+        const variable = this.state.variables.find(v => v.name === name);
         if (variable) {
           variable.value = value;
         } else {
           this.state.variables.push({
             name,
-            type:
-              typeof value === 'number'
-                ? 'number'
-                : typeof value === 'boolean'
-                  ? 'boolean'
-                  : 'string',
+            type: typeof value === 'number' ? 'number' : typeof value === 'boolean' ? 'boolean' : 'string',
             value,
             scope: 'project',
           });
@@ -314,7 +300,7 @@ export class DigitalTwin implements IDigitalTwin {
       this.state.variables,
       this.state.assets,
       this.state.plugins,
-      this.state.permissions,
+      this.state.permissions
     );
 
     twinClone.history = JSON.parse(JSON.stringify(this.history));

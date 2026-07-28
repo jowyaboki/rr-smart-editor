@@ -29,7 +29,7 @@ export class EventBridge {
     const set = this.listeners.get(event);
     if (set) {
       // Execute asynchronously to decouple call stacks
-      set.forEach((listener) => {
+      set.forEach(listener => {
         setTimeout(() => {
           try {
             listener(payload);

@@ -40,49 +40,42 @@ export const useDesignerStore = create<DesignerState>((set) => ({
 
   addNode: (node) => set((state) => ({ nodes: [...state.nodes, node] })),
 
-  removeNode: (id) =>
-    set((state) => ({
-      nodes: state.nodes.filter((n) => n.id !== id),
-      edges: state.edges.filter((e) => e.sourceNodeId !== id && e.targetNodeId !== id),
-    })),
+  removeNode: (id) => set((state) => ({
+    nodes: state.nodes.filter(n => n.id !== id),
+    edges: state.edges.filter(e => e.sourceNodeId !== id && e.targetNodeId !== id),
+  })),
 
-  updateNodePosition: (id, x, y) =>
-    set((state) => ({
-      nodes: state.nodes.map((n) => (n.id === id ? { ...n, position: { x, y } } : n)),
-    })),
+  updateNodePosition: (id, x, y) => set((state) => ({
+    nodes: state.nodes.map(n => n.id === id ? { ...n, position: { x, y } } : n),
+  })),
 
-  updateNodeConfig: (id, config) =>
-    set((state) => ({
-      nodes: state.nodes.map((n) =>
-        n.id === id ? { ...n, config: { ...n.config, ...config } } : n,
-      ),
-    })),
+  updateNodeConfig: (id, config) => set((state) => ({
+    nodes: state.nodes.map(n => n.id === id ? { ...n, config: { ...n.config, ...config } } : n),
+  })),
 
   addEdge: (edge) => set((state) => ({ edges: [...state.edges, edge] })),
 
-  removeEdge: (id) => set((state) => ({ edges: state.edges.filter((e) => e.id !== id) })),
+  removeEdge: (id) => set((state) => ({ edges: state.edges.filter(e => e.id !== id) })),
 
-  toggleBreakpoint: (nodeId) =>
-    set((state) => ({
-      breakpoints: state.breakpoints.includes(nodeId)
-        ? state.breakpoints.filter((id) => id !== nodeId)
-        : [...state.breakpoints, nodeId],
-    })),
+  toggleBreakpoint: (nodeId) => set((state) => ({
+    breakpoints: state.breakpoints.includes(nodeId)
+      ? state.breakpoints.filter(id => id !== nodeId)
+      : [...state.breakpoints, nodeId],
+  })),
 
   setDebugging: (isDebugging) => set({ isDebugging }),
 
   setActiveStepNodeId: (activeStepNodeId) => set({ activeStepNodeId }),
 
-  updateExecutionStep: (nodeId, updates) =>
-    set((state) => {
-      const existing = state.executionSteps[nodeId] || { nodeId, status: 'idle' };
-      return {
-        executionSteps: {
-          ...state.executionSteps,
-          [nodeId]: { ...existing, ...updates },
-        },
-      };
-    }),
+  updateExecutionStep: (nodeId, updates) => set((state) => {
+    const existing = state.executionSteps[nodeId] || { nodeId, status: 'idle' };
+    return {
+      executionSteps: {
+        ...state.executionSteps,
+        [nodeId]: { ...existing, ...updates },
+      },
+    };
+  }),
 
   clearDebuggerState: () => set({ executionSteps: {}, activeStepNodeId: null, isDebugging: false }),
 }));

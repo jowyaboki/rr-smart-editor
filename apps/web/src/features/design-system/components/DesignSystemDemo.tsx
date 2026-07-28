@@ -26,7 +26,7 @@ export const DesignSystemDemo: React.FC = () => {
 
   const handleAnimate = (presetId: string) => {
     setActivePreset(presetId);
-    setAnimateKey((prev) => prev + 1);
+    setAnimateKey(prev => prev + 1);
   };
 
   // Compile CSS animation from preset properties
@@ -39,8 +39,8 @@ export const DesignSystemDemo: React.FC = () => {
         preset.easing === 'bounce'
           ? 'cubic-bezier(0.175, 0.885, 0.32, 1.275)'
           : preset.easing === 'elastic'
-            ? 'cubic-bezier(0.68, -0.6, 0.32, 1.6)'
-            : preset.easing
+          ? 'cubic-bezier(0.68, -0.6, 0.32, 1.6)'
+          : preset.easing
       }`,
     };
 
@@ -108,17 +108,10 @@ export const DesignSystemDemo: React.FC = () => {
         margin: '20px auto',
       }}
     >
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: '24px',
-        }}
-      >
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
         <h2 style={{ margin: 0, fontSize: '24px' }}>Design System Engine</h2>
         <div style={{ display: 'flex', gap: '8px' }}>
-          {Object.keys(themes).map((id) => (
+          {Object.keys(themes).map(id => (
             <button
               key={id}
               onClick={() => setActiveTheme(id)}
@@ -138,64 +131,27 @@ export const DesignSystemDemo: React.FC = () => {
         </div>
       </div>
 
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: '20px',
-          marginBottom: '24px',
-        }}
-      >
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '24px' }}>
         {/* Color Palette section */}
-        <div
-          style={{
-            backgroundColor: surfaceColor || '#102031',
-            padding: '16px',
-            borderRadius: '8px',
-          }}
-        >
+        <div style={{ backgroundColor: surfaceColor || '#102031', padding: '16px', borderRadius: '8px' }}>
           <h3 style={{ margin: '0 0 12px 0' }}>Active Color Swatches</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <div
-                style={{
-                  width: '36px',
-                  height: '36px',
-                  backgroundColor: primaryColor,
-                  borderRadius: '4px',
-                  border: '1px solid #ffffff',
-                }}
-              />
+              <div style={{ width: '36px', height: '36px', backgroundColor: primaryColor, borderRadius: '4px', border: '1px solid #ffffff' }} />
               <div>
                 <div style={{ fontWeight: 'bold' }}>Primary Color</div>
                 <div style={{ fontSize: '12px', opacity: 0.7 }}>{primaryColor}</div>
               </div>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <div
-                style={{
-                  width: '36px',
-                  height: '36px',
-                  backgroundColor: secondaryColor,
-                  borderRadius: '4px',
-                  border: '1px solid #ffffff',
-                }}
-              />
+              <div style={{ width: '36px', height: '36px', backgroundColor: secondaryColor, borderRadius: '4px', border: '1px solid #ffffff' }} />
               <div>
                 <div style={{ fontWeight: 'bold' }}>Secondary Color</div>
                 <div style={{ fontSize: '12px', opacity: 0.7 }}>{secondaryColor}</div>
               </div>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <div
-                style={{
-                  width: '36px',
-                  height: '36px',
-                  backgroundColor: surfaceColor,
-                  borderRadius: '4px',
-                  border: '1px solid #ffffff',
-                }}
-              />
+              <div style={{ width: '36px', height: '36px', backgroundColor: surfaceColor, borderRadius: '4px', border: '1px solid #ffffff' }} />
               <div>
                 <div style={{ fontWeight: 'bold' }}>Surface Color</div>
                 <div style={{ fontSize: '12px', opacity: 0.7 }}>{surfaceColor}</div>
@@ -205,20 +161,12 @@ export const DesignSystemDemo: React.FC = () => {
         </div>
 
         {/* Viewport & Locale controls */}
-        <div
-          style={{
-            backgroundColor: surfaceColor || '#102031',
-            padding: '16px',
-            borderRadius: '8px',
-          }}
-        >
+        <div style={{ backgroundColor: surfaceColor || '#102031', padding: '16px', borderRadius: '8px' }}>
           <h3 style={{ margin: '0 0 12px 0' }}>Responsive & Localization</h3>
           <div style={{ marginBottom: '16px' }}>
-            <div style={{ fontSize: '14px', marginBottom: '6px' }}>
-              Viewport: <strong>{viewport}</strong>
-            </div>
+            <div style={{ fontSize: '14px', marginBottom: '6px' }}>Viewport: <strong>{viewport}</strong></div>
             <div style={{ display: 'flex', gap: '6px' }}>
-              {(['mobile', 'tablet', 'desktop'] as const).map((v) => (
+              {(['mobile', 'tablet', 'desktop'] as const).map(v => (
                 <button
                   key={v}
                   onClick={() => setViewport(v)}
@@ -238,11 +186,9 @@ export const DesignSystemDemo: React.FC = () => {
             </div>
           </div>
           <div>
-            <div style={{ fontSize: '14px', marginBottom: '6px' }}>
-              Locale: <strong>{locale}</strong>
-            </div>
+            <div style={{ fontSize: '14px', marginBottom: '6px' }}>Locale: <strong>{locale}</strong></div>
             <div style={{ display: 'flex', gap: '6px' }}>
-              {(['en', 'ja', 'es'] as const).map((l) => (
+              {(['en', 'ja', 'es'] as const).map(l => (
                 <button
                   key={l}
                   onClick={() => setLocale(l)}
@@ -265,17 +211,10 @@ export const DesignSystemDemo: React.FC = () => {
       </div>
 
       {/* Motion presets tester */}
-      <div
-        style={{
-          backgroundColor: surfaceColor || '#102031',
-          padding: '16px',
-          borderRadius: '8px',
-          marginBottom: '24px',
-        }}
-      >
+      <div style={{ backgroundColor: surfaceColor || '#102031', padding: '16px', borderRadius: '8px', marginBottom: '24px' }}>
         <h3 style={{ margin: '0 0 12px 0' }}>Motion Presets Playground</h3>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '16px' }}>
-          {Object.keys(motionPresets).map((id) => (
+          {Object.keys(motionPresets).map(id => (
             <button
               key={id}
               onClick={() => handleAnimate(id)}

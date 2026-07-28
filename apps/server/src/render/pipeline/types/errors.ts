@@ -1,8 +1,5 @@
 export class PipelineError extends Error {
-  constructor(
-    message: string,
-    public readonly stageId: string,
-  ) {
+  constructor(message: string, public readonly stageId: string) {
     super(message);
     this.name = 'PipelineError';
   }

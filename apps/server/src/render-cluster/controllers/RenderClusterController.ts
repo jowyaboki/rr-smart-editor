@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { globalRenderClusterEngine } from '@ai-video-editor/render-cluster';
 
 export class RenderClusterController {
+
   public async registerNode(req: Request, res: Response): Promise<void> {
     try {
       const node = req.body;
@@ -20,9 +21,7 @@ export class RenderClusterController {
     try {
       const hb = req.body;
       if (!hb.nodeId || !hb.timestamp) {
-        res
-          .status(400)
-          .json({ success: false, error: 'Heartbeat nodeId and timestamp are required.' });
+        res.status(400).json({ success: false, error: 'Heartbeat nodeId and timestamp are required.' });
         return;
       }
       const success = globalRenderClusterEngine.nodeRegistry.recordHeartbeat(hb);
@@ -40,16 +39,14 @@ export class RenderClusterController {
     try {
       const { jobId, startFrame, endFrame, shardsCount } = req.body;
       if (!jobId || startFrame === undefined || endFrame === undefined) {
-        res
-          .status(400)
-          .json({ success: false, error: 'jobId, startFrame, and endFrame are required.' });
+        res.status(400).json({ success: false, error: 'jobId, startFrame, and endFrame are required.' });
         return;
       }
       const shards = globalRenderClusterEngine.shardManager.generateShards(
         jobId,
         startFrame,
         endFrame,
-        shardsCount || 4,
+        shardsCount || 4
       );
       res.json({ success: true, shards });
     } catch (err: any) {
@@ -61,23 +58,19 @@ export class RenderClusterController {
     try {
       const { jobId, shardId, progress, checkpointFrame } = req.body;
       if (!jobId || !shardId || progress === undefined) {
-        res
-          .status(400)
-          .json({ success: false, error: 'jobId, shardId, and progress are required.' });
+        res.status(400).json({ success: false, error: 'jobId, shardId, and progress are required.' });
         return;
       }
       const success = globalRenderClusterEngine.shardManager.updateShardProgress(
         jobId,
         shardId,
         progress,
-        checkpointFrame,
+        checkpointFrame
       );
       if (success) {
         res.json({ success: true, message: 'Shard progress updated.' });
       } else {
-        res
-          .status(404)
-          .json({ success: false, error: `Shard '${shardId}' under job '${jobId}' not found.` });
+        res.status(404).json({ success: false, error: `Shard '${shardId}' under job '${jobId}' not found.` });
       }
     } catch (err: any) {
       res.status(500).json({ success: false, error: err.message });

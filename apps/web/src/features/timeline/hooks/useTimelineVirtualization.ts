@@ -11,7 +11,7 @@ export function useTimelineVirtualization(overscanFrames: number = 60, overscanT
       viewport,
       tracks,
       overscanFrames,
-      overscanTracks,
+      overscanTracks
     );
   }, [viewport, tracks, overscanFrames, overscanTracks]);
 

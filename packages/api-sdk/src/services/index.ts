@@ -14,10 +14,7 @@ export class ApiGateway {
   /**
    * Safe authenticate and authorize check
    */
-  public authenticateRequest(
-    key: string,
-    requiredScopes: string[],
-  ): { authorized: boolean; reason?: string; apiKey?: ApiKey } {
+  public authenticateRequest(key: string, requiredScopes: string[]): { authorized: boolean; reason?: string; apiKey?: ApiKey } {
     const apiKey = this.activeKeys.get(key);
     if (!apiKey) {
       return { authorized: false, reason: 'UNAUTHENTICATED' };
@@ -27,7 +24,7 @@ export class ApiGateway {
       return { authorized: false, reason: 'KEY_EXPIRED' };
     }
 
-    const hasScope = requiredScopes.every((s) => apiKey.scopes.includes(s));
+    const hasScope = requiredScopes.every(s => apiKey.scopes.includes(s));
     if (!hasScope) {
       return { authorized: false, reason: 'FORBIDDEN_SCOPE' };
     }
@@ -38,11 +35,7 @@ export class ApiGateway {
   /**
    * Enforces Per-Key rate limits with burst buffers
    */
-  public enforceRateLimit(
-    key: string,
-    limit = 100,
-    windowMs = 60000,
-  ): { allowed: boolean; remaining: number } {
+  public enforceRateLimit(key: string, limit = 100, windowMs = 60000): { allowed: boolean; remaining: number } {
     const now = Date.now();
     const tracker = this.requestCounts.get(key) || { count: 0, windowStart: now };
 
@@ -78,10 +71,7 @@ export class WebhookService {
     this.endpoints.set(event, list);
   }
 
-  public async triggerEvent(
-    event: WebhookDelivery['event'],
-    payload: any,
-  ): Promise<WebhookDelivery[]> {
+  public async triggerEvent(event: WebhookDelivery['event'], payload: any): Promise<WebhookDelivery[]> {
     const urls = this.endpoints.get(event) || [];
     const results: WebhookDelivery[] = [];
 
@@ -111,7 +101,7 @@ export class WebhookService {
 // ==========================================
 export class ApiVersionManager {
   public resolveRoute(urlPath: string): { version: string; route: string } {
-    const parts = urlPath.split('/').filter((p) => p.length > 0);
+    const parts = urlPath.split('/').filter(p => p.length > 0);
     const version = parts[0]?.startsWith('v') ? parts[0] : 'v1';
     const route = parts.slice(parts[0]?.startsWith('v') ? 1 : 0).join('/');
     return { version, route };
@@ -131,8 +121,7 @@ export class DocumentationService {
       info: {
         title: 'RR Smart Editor stable Public API',
         version: '1.0.0',
-        description:
-          'Exposes versioned stable endpoints for video automations, timelines edits, rendering, and AI storyboards.',
+        description: 'Exposes versioned stable endpoints for video automations, timelines edits, rendering, and AI storyboards.',
       },
       paths: {
         '/v1/projects': {
@@ -140,14 +129,14 @@ export class DocumentationService {
             summary: 'List projects',
             parameters: [
               { name: 'page', in: 'query', schema: { type: 'integer', default: 1 } },
-              { name: 'limit', in: 'query', schema: { type: 'integer', default: 10 } },
+              { name: 'limit', in: 'query', schema: { type: 'integer', default: 10 } }
             ],
             responses: {
-              '200': { description: 'Successful response' },
-            },
-          },
-        },
-      },
+              '200': { description: 'Successful response' }
+            }
+          }
+        }
+      }
     };
   }
 }

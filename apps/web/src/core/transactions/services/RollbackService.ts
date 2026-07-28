@@ -4,7 +4,7 @@ import { TransactionRollbackError } from '../types/errors';
 export class RollbackService {
   public static async rollback(
     transaction: EditorTransaction,
-    context: TransactionContext,
+    context: TransactionContext
   ): Promise<void> {
     try {
       // 1. Restore store snapshots if they exist
@@ -25,14 +25,14 @@ export class RollbackService {
       throw new TransactionRollbackError(
         `Rollback failed for transaction ${transaction.id}: ${err.message}`,
         transaction.id,
-        err,
+        err
       );
     }
   }
 
   public static async rollbackBatch(
     batch: TransactionBatch,
-    context: TransactionContext,
+    context: TransactionContext
   ): Promise<void> {
     // Rollback all transactions in the batch in reverse order
     const reversedTxs = [...batch.transactions].reverse();

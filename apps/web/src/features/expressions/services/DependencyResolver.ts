@@ -1,8 +1,4 @@
-import {
-  DependencyGraph,
-  extractReferences,
-  parseExpression,
-} from '@ai-video-editor/expression-engine';
+import { DependencyGraph, extractReferences, parseExpression } from '@ai-video-editor/expression-engine';
 
 export class DependencyResolver {
   private static graph = new DependencyGraph();

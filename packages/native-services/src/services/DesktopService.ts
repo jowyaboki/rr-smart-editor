@@ -1,10 +1,4 @@
-import {
-  IDesktopService,
-  NativeWindow,
-  RecentProject,
-  FileAssociation,
-  NotificationPayload,
-} from '@ai-video-editor/desktop-core';
+import { IDesktopService, NativeWindow, RecentProject, FileAssociation, NotificationPayload } from '@ai-video-editor/desktop-core';
 
 export class DesktopService implements IDesktopService {
   private windows: NativeWindow[] = [];
@@ -13,31 +7,12 @@ export class DesktopService implements IDesktopService {
 
   constructor() {
     this.windows = [
-      {
-        id: 'win_main',
-        title: 'RR Smart Editor Studio',
-        width: 1280,
-        height: 720,
-        isFocused: true,
-        isVisible: true,
-      },
-      {
-        id: 'win_inspector',
-        title: 'Asset Telemetry Inspector',
-        width: 400,
-        height: 600,
-        isFocused: false,
-        isVisible: false,
-      },
+      { id: 'win_main', title: 'RR Smart Editor Studio', width: 1280, height: 720, isFocused: true, isVisible: true },
+      { id: 'win_inspector', title: 'Asset Telemetry Inspector', width: 400, height: 600, isFocused: false, isVisible: false }
     ];
 
     this.recents = [
-      {
-        id: 'proj_sundance',
-        name: 'Sundance Smart Cut',
-        filepath: '/user/documents/sundance_cut.rrs',
-        lastOpenedAt: new Date().toISOString(),
-      },
+      { id: 'proj_sundance', name: 'Sundance Smart Cut', filepath: '/user/documents/sundance_cut.rrs', lastOpenedAt: new Date().toISOString() }
     ];
   }
 
@@ -46,7 +21,7 @@ export class DesktopService implements IDesktopService {
   }
 
   public async showWindow(id: string): Promise<void> {
-    const win = this.windows.find((w) => w.id === id);
+    const win = this.windows.find(w => w.id === id);
     if (win) {
       win.isVisible = true;
       win.isFocused = true;

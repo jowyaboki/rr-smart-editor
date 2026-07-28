@@ -1,17 +1,7 @@
 import { create } from 'zustand';
-import {
-  TimelineViewport,
-  VirtualTrack,
-  VirtualClip,
-  TimelineMarker,
-  VirtualKeyframe,
-} from '../types';
+import { TimelineViewport, VirtualTrack, VirtualClip, TimelineMarker, VirtualKeyframe } from '../types';
 import { EditToolMode, SnappingConfig, NleMarker, TrackStateOverrides } from '../tools/types';
-import {
-  TimelineIndexService,
-  GeometryService,
-  DirtyRegionRenderer,
-} from '@ai-video-editor/timeline-engine';
+import { TimelineIndexService, GeometryService, DirtyRegionRenderer } from '@ai-video-editor/timeline-engine';
 import { NleToolService, NleSnappingService, NleGroupingService } from '../tools/services';
 
 export const webTimelineIndex = new TimelineIndexService(500);
@@ -106,7 +96,7 @@ export const useTimelineStore = create<TimelineState>((set, get) => {
     dragOffsetFrame: 0,
 
     setViewport: (newViewport) => {
-      set((state) => ({ viewport: { ...state.viewport, ...newViewport } }));
+      set(state => ({ viewport: { ...state.viewport, ...newViewport } }));
     },
 
     setTracks: (tracks) => {
@@ -132,27 +122,22 @@ export const useTimelineStore = create<TimelineState>((set, get) => {
     setToolMode: (toolMode) => set({ toolMode }),
 
     setSnappingConfig: (config) => {
-      set((state) => ({ snappingConfig: { ...state.snappingConfig, ...config } }));
+      set(state => ({ snappingConfig: { ...state.snappingConfig, ...config } }));
     },
 
     addNleMarker: (marker) => {
-      set((state) => ({ nleMarkers: [...state.nleMarkers, marker] }));
+      set(state => ({ nleMarkers: [...state.nleMarkers, marker] }));
     },
 
     removeNleMarker: (id) => {
-      set((state) => ({ nleMarkers: state.nleMarkers.filter((m) => m.id !== id) }));
+      set(state => ({ nleMarkers: state.nleMarkers.filter(m => m.id !== id) }));
     },
 
     setPlaybackSpeed: (playbackSpeed) => set({ playbackSpeed }),
 
     setTrackState: (trackId, overrides) => {
-      set((state) => {
-        const current = state.trackStates[trackId] || {
-          isLocked: false,
-          isMuted: false,
-          isSolo: false,
-          isHidden: false,
-        };
+      set(state => {
+        const current = state.trackStates[trackId] || { isLocked: false, isMuted: false, isSolo: false, isHidden: false };
         return {
           trackStates: {
             ...state.trackStates,
@@ -169,22 +154,18 @@ export const useTimelineStore = create<TimelineState>((set, get) => {
     },
 
     moveClip: (clipId, newStartFrame, newTrackId) => {
-      set((state) => {
-        const target = state.clips.find((c) => c.id === clipId);
+      set(state => {
+        const target = state.clips.find(c => c.id === clipId);
         if (!target) return {};
 
         const delta = newStartFrame - target.startFrame;
 
         // Apply grouped selections movement together!
-        const clips = NleGroupingService.shiftClipsTogether(
-          state.selectedClipIds,
-          delta,
-          state.clips,
-        );
+        const clips = NleGroupingService.shiftClipsTogether(state.selectedClipIds, delta, state.clips);
 
         // Inform index and mark dirty
         webTimelineIndex.deindexClip(clipId);
-        const updatedClip = clips.find((c) => c.id === clipId);
+        const updatedClip = clips.find(c => c.id === clipId);
         if (updatedClip) {
           webTimelineIndex.indexClip(updatedClip);
           webTimelineRenderer.markClipDirty(clipId);
@@ -195,8 +176,8 @@ export const useTimelineStore = create<TimelineState>((set, get) => {
     },
 
     resizeClip: (clipId, newDuration) => {
-      set((state) => {
-        const clips = state.clips.map((clip) => {
+      set(state => {
+        const clips = state.clips.map(clip => {
           if (clip.id === clipId) {
             return {
               ...clip,
@@ -207,7 +188,7 @@ export const useTimelineStore = create<TimelineState>((set, get) => {
         });
 
         webTimelineIndex.deindexClip(clipId);
-        const updatedClip = clips.find((c) => c.id === clipId);
+        const updatedClip = clips.find(c => c.id === clipId);
         if (updatedClip) {
           webTimelineIndex.indexClip(updatedClip);
           webTimelineRenderer.markClipDirty(clipId);
@@ -218,13 +199,13 @@ export const useTimelineStore = create<TimelineState>((set, get) => {
     },
 
     razorSplitClip: (clipId, splitFrame) => {
-      set((state) => {
-        const target = state.clips.find((c) => c.id === clipId);
+      set(state => {
+        const target = state.clips.find(c => c.id === clipId);
         if (!target) return {};
 
         try {
           const { left, right } = NleToolService.splitClip(target, splitFrame);
-          const filtered = state.clips.filter((c) => c.id !== clipId);
+          const filtered = state.clips.filter(c => c.id !== clipId);
           const clips = [...filtered, left, right];
 
           webTimelineIndex.deindexClip(clipId);
@@ -240,11 +221,11 @@ export const useTimelineStore = create<TimelineState>((set, get) => {
     },
 
     rippleEditClip: (clipId, deltaFrames, edge) => {
-      set((state) => {
+      set(state => {
         const clips = NleToolService.applyRippleEdit(clipId, deltaFrames, edge, state.clips);
 
         webTimelineIndex.deindexClip(clipId);
-        const updated = clips.find((c) => c.id === clipId);
+        const updated = clips.find(c => c.id === clipId);
         if (updated) {
           webTimelineIndex.indexClip(updated);
           webTimelineRenderer.markClipDirty(clipId);
@@ -255,28 +236,22 @@ export const useTimelineStore = create<TimelineState>((set, get) => {
     },
 
     rollEditClips: (clipAId, clipBId, deltaFrames) => {
-      set((state) => {
+      set(state => {
         const clips = NleToolService.applyRollEdit(clipAId, clipBId, deltaFrames, state.clips);
         return { clips };
       });
     },
 
     slipEditClip: (clipId, deltaFrames) => {
-      set((state) => {
+      set(state => {
         const clips = NleToolService.applySlipEdit(clipId, deltaFrames, state.clips);
         return { clips };
       });
     },
 
     slideEditClip: (clipId, deltaFrames, clipAId, clipBId) => {
-      set((state) => {
-        const clips = NleToolService.applySlideEdit(
-          clipId,
-          deltaFrames,
-          clipAId,
-          clipBId,
-          state.clips,
-        );
+      set(state => {
+        const clips = NleToolService.applySlideEdit(clipId, deltaFrames, clipAId, clipBId, state.clips);
         return { clips };
       });
     },
@@ -294,7 +269,7 @@ export const useTimelineStore = create<TimelineState>((set, get) => {
       const { draggedClipId, dragOffsetFrame, clips, snappingConfig, markers, keyframes } = get();
       if (!draggedClipId) return;
 
-      const clip = clips.find((c) => c.id === draggedClipId);
+      const clip = clips.find(c => c.id === draggedClipId);
       if (!clip) return;
 
       let targetFrame = Math.max(0, currentFrame - dragOffsetFrame);
@@ -303,9 +278,9 @@ export const useTimelineStore = create<TimelineState>((set, get) => {
       targetFrame = NleSnappingService.calculateSnapFrame(
         targetFrame,
         snappingConfig,
-        clips.filter((c) => c.id !== draggedClipId),
+        clips.filter(c => c.id !== draggedClipId),
         markers,
-        keyframes,
+        keyframes
       );
 
       get().moveClip(draggedClipId, targetFrame, newTrackId);

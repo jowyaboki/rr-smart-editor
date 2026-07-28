@@ -43,7 +43,7 @@ export const useDAMStore = create<DAMState>((set) => ({
       status: 'approved',
       url: 'https://cdn.example.com/assets/studio-logo.png',
       isPinned: false,
-    },
+    }
   ],
   selectedFolderId: null,
   searchQuery: '',
@@ -58,15 +58,15 @@ export const useDAMStore = create<DAMState>((set) => ({
 
   setCategoryFilter: (categoryFilter) => set({ categoryFilter }),
 
-  togglePin: (id) =>
-    set((state) => ({
-      assets: state.assets.map((a) => (a.id === id ? { ...a, isPinned: !a.isPinned } : a)),
-    })),
+  togglePin: (id) => set((state) => ({
+    assets: state.assets.map((a) =>
+      a.id === id ? { ...a, isPinned: !a.isPinned } : a
+    ),
+  })),
 
-  updateAssetStatus: (id, status) =>
-    set((state) => ({
-      assets: state.assets.map((a) => (a.id === id ? { ...a, status } : a)),
-    })),
+  updateAssetStatus: (id, status) => set((state) => ({
+    assets: state.assets.map((a) => (a.id === id ? { ...a, status } : a)),
+  })),
 
   setLoading: (loading) => set({ loading }),
 }));

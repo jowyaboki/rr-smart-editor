@@ -11,7 +11,7 @@ export class AITransactionService {
       name: string;
       scope?: TransactionScope;
       execute: () => void | Promise<void>;
-    }>,
+    }>
   ): Promise<TransactionResult> {
     return TransactionEngine.batch(batchName, async () => {
       for (const op of operations) {

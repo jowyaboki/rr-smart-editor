@@ -3,6 +3,7 @@ import assert from 'node:assert';
 import { RenderClusterEngine, CloudProviderAdapter, Node, Heartbeat } from '../src/index';
 
 describe('Distributed Rendering Cluster Core Unit Tests', () => {
+
   // Setup sample mock nodes
   const mockNodeA: Node = {
     id: 'node_alpha',
@@ -45,7 +46,7 @@ describe('Distributed Rendering Cluster Core Unit Tests', () => {
       networkRxMb: 5,
       networkTxMb: 2,
     },
-    costPerHour: 0.2,
+    costPerHour: 0.20,
     provider: 'local',
     lastHeartbeat: new Date().toISOString(),
   };
@@ -209,13 +210,7 @@ describe('Distributed Rendering Cluster Core Unit Tests', () => {
         name: 'GCP e2-standard-4',
         status: 'idle',
         capabilities: { gpuEnabled: false, coresCount: 4, memoryGb: 16, supportedFormats: ['mp4'] },
-        telemetry: {
-          cpuUsagePercent: 0,
-          memoryUsageMb: 0,
-          storageUsageGb: 20,
-          networkRxMb: 0,
-          networkTxMb: 0,
-        },
+        telemetry: { cpuUsagePercent: 0, memoryUsageMb: 0, storageUsageGb: 20, networkRxMb: 0, networkTxMb: 0 },
         costPerHour: 0.16,
         provider: 'gcp',
         lastHeartbeat: new Date().toISOString(),

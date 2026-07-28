@@ -4,20 +4,8 @@ export class FileSystemService implements IFileSystemService {
   private watchedFolders: Map<string, WatchFolder> = new Map();
   private cache: Map<string, string> = new Map();
   private mockAssets: LocalAsset[] = [
-    {
-      filepath: '/user/movies/sunset.mp4',
-      filename: 'sunset.mp4',
-      size: 1042000,
-      mimeType: 'video/mp4',
-      indexedAt: new Date().toISOString(),
-    },
-    {
-      filepath: '/user/audio/vocals.wav',
-      filename: 'vocals.wav',
-      size: 45000,
-      mimeType: 'audio/wav',
-      indexedAt: new Date().toISOString(),
-    },
+    { filepath: '/user/movies/sunset.mp4', filename: 'sunset.mp4', size: 1042000, mimeType: 'video/mp4', indexedAt: new Date().toISOString() },
+    { filepath: '/user/audio/vocals.wav', filename: 'vocals.wav', size: 45000, mimeType: 'audio/wav', indexedAt: new Date().toISOString() }
   ];
 
   public async watchFolder(path: string, recursive: boolean): Promise<boolean> {
@@ -38,8 +26,8 @@ export class FileSystemService implements IFileSystemService {
   }
 
   public async searchLocalAssets(query: string): Promise<LocalAsset[]> {
-    return this.mockAssets.filter((asset) =>
-      asset.filename.toLowerCase().includes(query.toLowerCase()),
+    return this.mockAssets.filter(asset =>
+      asset.filename.toLowerCase().includes(query.toLowerCase())
     );
   }
 

@@ -11,18 +11,10 @@ export class RenderInstructionBuilder implements IRenderInstructionBuilder {
     const activeSet = activeSetId ? (studio.virtualSets[activeSetId] as any) : undefined;
 
     // 1. Resolve Active Camera
-    const activeCamId = activeSet
-      ? activeSet.activeCameraId
-      : studio.activeVirtualSetId || Object.keys(studio.cameras)[0];
+    const activeCamId = activeSet ? activeSet.activeCameraId : studio.activeVirtualSetId || Object.keys(studio.cameras)[0];
     const camera = (studio.cameras[activeCamId] as any) || {
       type: 'perspective',
-      transform: {
-        position: [0, 1.6, 5],
-        rotation: [0, 0, 0],
-        scale: [1, 1, 1],
-        anchorPoint: [0, 0],
-        opacity: 1.0,
-      },
+      transform: { position: [0, 1.6, 5], rotation: [0, 0, 0], scale: [1, 1, 1], anchorPoint: [0, 0], opacity: 1.0 },
       projection: 'perspective',
       fov: 60,
       focalLength: 50,
@@ -30,9 +22,7 @@ export class RenderInstructionBuilder implements IRenderInstructionBuilder {
     };
 
     // 2. Resolve Active Environment
-    const activeEnvId = activeSet
-      ? activeSet.activeEnvironmentId
-      : Object.keys(studio.environments)[0];
+    const activeEnvId = activeSet ? activeSet.activeEnvironmentId : Object.keys(studio.environments)[0];
     const environment = (studio.environments[activeEnvId] as any) || {
       type: 'hdri',
       sourceUrl: '',
@@ -57,18 +47,17 @@ export class RenderInstructionBuilder implements IRenderInstructionBuilder {
     }));
 
     // 4. Resolve Active Compositing Layers
-    const layers =
-      activeSet && activeSet.layers
-        ? (activeSet.layers as any[]).map((layer: any) => ({
-            id: layer.id,
-            sourceId: layer.sourceId,
-            order: layer.order,
-            opacity: layer.opacity,
-            blendMode: layer.blendMode,
-            keying: layer.keying,
-            transform3d: layer.transform3d,
-          }))
-        : [];
+    const layers = activeSet && activeSet.layers
+      ? (activeSet.layers as any[]).map((layer: any) => ({
+          id: layer.id,
+          sourceId: layer.sourceId,
+          order: layer.order,
+          opacity: layer.opacity,
+          blendMode: layer.blendMode,
+          keying: layer.keying,
+          transform3d: layer.transform3d,
+        }))
+      : [];
 
     return {
       studioId: studio.id,

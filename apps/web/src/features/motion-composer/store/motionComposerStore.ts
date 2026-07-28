@@ -20,13 +20,7 @@ const initialComp: Composition = {
       id: 'layer_logo_reveal',
       name: 'Primary Brand Logo Layer',
       type: 'media',
-      transform: {
-        position: [960, 540, 0],
-        rotation: [0, 0, 0],
-        scale: [1, 1, 1],
-        anchorPoint: [60, 60],
-        opacity: 1,
-      },
+      transform: { position: [960, 540, 0], rotation: [0, 0, 0], scale: [1, 1, 1], anchorPoint: [60, 60], opacity: 1 },
       startFrame: 0,
       duration: 150,
       isLocked: false,
@@ -36,27 +30,15 @@ const initialComp: Composition = {
       id: 'layer_arrow_tracker',
       name: 'Look-At Arrow Tracker Icon',
       type: 'shape',
-      transform: {
-        position: [400, 300, 0],
-        rotation: [0, 0, 0],
-        scale: [1.5, 1.5, 1.5],
-        anchorPoint: [0, 0],
-        opacity: 0.8,
-      },
+      transform: { position: [400, 300, 0], rotation: [0, 0, 0], scale: [1.5, 1.5, 1.5], anchorPoint: [0, 0], opacity: 0.8 },
       startFrame: 0,
       duration: 150,
       isLocked: false,
       isShy: false,
-    },
+    }
   ],
   constraints: [
-    {
-      id: 'const_web_1',
-      type: 'look_at',
-      sourceLayerId: 'layer_arrow_tracker',
-      targetId: 'layer_logo_reveal',
-      weight: 1.0,
-    },
+    { id: 'const_web_1', type: 'look_at', sourceLayerId: 'layer_arrow_tracker', targetId: 'layer_logo_reveal', weight: 1.0 }
   ],
   markers: [],
   version: '1.0.0',
@@ -89,9 +71,7 @@ export const useMotionComposerStore = create<MotionComposerState>((set, get) => 
 
     initComposerStore: () => {
       localComposerEngine.composerService.createComposition(initialComp.id, initialComp.name);
-      initialComp.layers.forEach((l) =>
-        localComposerEngine.composerService.addLayer(initialComp.id, l),
-      );
+      initialComp.layers.forEach(l => localComposerEngine.composerService.addLayer(initialComp.id, l));
 
       const comp = localComposerEngine.composerService.getComposition(initialComp.id)!;
       comp.constraints = [...initialComp.constraints];
@@ -149,12 +129,8 @@ export const useMotionComposerStore = create<MotionComposerState>((set, get) => 
       const { activeComp } = get();
       if (!activeComp) return;
 
-      activeComp.layers.forEach((layer) => {
-        localComposerEngine.rigService.resolveConstraints(
-          layer,
-          activeComp.constraints,
-          activeComp.layers,
-        );
+      activeComp.layers.forEach(layer => {
+        localComposerEngine.rigService.resolveConstraints(layer, activeComp.constraints, activeComp.layers);
       });
 
       set({ activeComp: { ...activeComp, layers: [...activeComp.layers] } });

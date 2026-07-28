@@ -7,8 +7,8 @@ export const PlaybackStateSchema = z.enum(['playing', 'paused', 'stopped', 'buff
 export interface PlaybackSettings {
   loop: boolean;
   reverse: boolean;
-  playbackRate: number; // e.g. 1.0, 2.0, -1.0
-  quality: 'low' | 'high'; // dynamic preview quality resolution
+  playbackRate: number;      // e.g. 1.0, 2.0, -1.0
+  quality: 'low' | 'high';   // dynamic preview quality resolution
   latencyCompensationMs: number;
 }
 
@@ -22,10 +22,10 @@ export const PlaybackSettingsSchema = z.object({
 
 export interface PlaybackClock {
   id: string;
-  startTime: number; // system timestamp on start
+  startTime: number;         // system timestamp on start
   currentFrame: number;
   totalFrames: number;
-  fps: number; // standard target fps, e.g. 30 or 60
+  fps: number;               // standard target fps, e.g. 30 or 60
 }
 
 export const PlaybackClockSchema = z.object({

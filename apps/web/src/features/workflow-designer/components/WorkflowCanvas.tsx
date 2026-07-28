@@ -7,20 +7,8 @@ export const WorkflowCanvas: React.FC = () => {
   const { activeStepNodeId, breakpoints, executionSteps } = useWorkflowDebugger();
 
   return (
-    <div
-      style={{
-        position: 'relative',
-        width: '100%',
-        height: '220px',
-        background: '#000',
-        border: '1px solid #222',
-        borderRadius: '4px',
-        overflow: 'hidden',
-      }}
-    >
-      <div
-        style={{ position: 'absolute', top: '10px', left: '10px', fontSize: '11px', color: '#444' }}
-      >
+    <div style={{ position: 'relative', width: '100%', height: '220px', background: '#000', border: '1px solid #222', borderRadius: '4px', overflow: 'hidden' }}>
+      <div style={{ position: 'absolute', top: '10px', left: '10px', fontSize: '11px', color: '#444' }}>
         Visual Diagrams Automation Canvas
       </div>
 
@@ -32,10 +20,10 @@ export const WorkflowCanvas: React.FC = () => {
         const nodeColor = isActive
           ? '#f57c00'
           : step?.status === 'completed'
-            ? '#2e7d32'
-            : step?.status === 'failed'
-              ? '#c62828'
-              : '#333';
+          ? '#2e7d32'
+          : step?.status === 'failed'
+          ? '#c62828'
+          : '#333';
 
         return (
           <div
@@ -53,17 +41,7 @@ export const WorkflowCanvas: React.FC = () => {
             }}
           >
             <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
-              {hasBp && (
-                <span
-                  style={{
-                    width: '6px',
-                    height: '6px',
-                    borderRadius: '50%',
-                    background: '#f44336',
-                  }}
-                  title="Breakpoint"
-                />
-              )}
+              {hasBp && <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#f44336' }} title="Breakpoint" />}
               <span style={{ fontWeight: 'bold' }}>{node.name}</span>
             </div>
             <div style={{ fontSize: '9px', color: '#666', marginTop: '2px' }}>
@@ -74,14 +52,10 @@ export const WorkflowCanvas: React.FC = () => {
       })}
 
       {/* Basic svg edges vector line */}
-      <svg
-        width="100%"
-        height="100%"
-        style={{ position: 'absolute', top: 0, left: 0, pointerEvents: 'none' }}
-      >
+      <svg width="100%" height="100%" style={{ position: 'absolute', top: 0, left: 0, pointerEvents: 'none' }}>
         {edges.map((edge) => {
-          const source = nodes.find((n) => n.id === edge.sourceNodeId);
-          const target = nodes.find((n) => n.id === edge.targetNodeId);
+          const source = nodes.find(n => n.id === edge.sourceNodeId);
+          const target = nodes.find(n => n.id === edge.targetNodeId);
           if (!source || !target) return null;
 
           return (

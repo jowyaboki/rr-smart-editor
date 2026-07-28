@@ -12,6 +12,7 @@ import {
 } from '../src/index';
 
 describe('Media Ingest and Proxy Pipeline Core Unit Tests', () => {
+
   test('Fingerprint Generation & Duplicate Detection', () => {
     MediaImportService.clear();
 
@@ -43,11 +44,7 @@ describe('Media Ingest and Proxy Pipeline Core Unit Tests', () => {
       type: 'video',
       size,
       fingerprint: fingerprint1,
-      metadata: {
-        checksum: fingerprint1,
-        resolution: { width: 1920, height: 1080 },
-        duration: 15.0,
-      },
+      metadata: { checksum: fingerprint1, resolution: { width: 1920, height: 1080 }, duration: 15.0 },
     };
 
     MediaImportService.registerAsset(asset);
@@ -70,12 +67,7 @@ describe('Media Ingest and Proxy Pipeline Core Unit Tests', () => {
     assert.strictEqual(videoMeta.audioChannels, 2);
 
     // Audio extraction profile
-    const audioMeta = AnalysisService.analyzeMedia(
-      '/music/voiceover.mp3',
-      'voiceover.mp3',
-      1024,
-      hash,
-    );
+    const audioMeta = AnalysisService.analyzeMedia('/music/voiceover.mp3', 'voiceover.mp3', 1024, hash);
     assert.strictEqual(audioMeta.duration, 180.0);
     assert.strictEqual(audioMeta.codec, 'mp3');
     assert.strictEqual(audioMeta.audioChannels, 2);

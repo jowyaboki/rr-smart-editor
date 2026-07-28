@@ -86,8 +86,7 @@ export class ValidationService {
     if (hasCycle) {
       errors.push({
         severity: 'error',
-        message:
-          'Infinite connection loop detected in step flow. Workflow would crash or loop endlessly.',
+        message: 'Infinite connection loop detected in step flow. Workflow would crash or loop endlessly.',
       });
     }
 
@@ -116,30 +115,21 @@ export class ValidationService {
 
     // 5. Check Step Configuration Syntaxes
     workflow.steps.forEach((step) => {
-      if (
-        step.type === 'delay' &&
-        (!step.config.durationMs || isNaN(Number(step.config.durationMs)))
-      ) {
+      if (step.type === 'delay' && (!step.config.durationMs || isNaN(Number(step.config.durationMs)))) {
         errors.push({
           severity: 'error',
           message: 'Delay step requires a numeric "durationMs" in its configuration.',
           stepId: step.id,
         });
       }
-      if (
-        step.type === 'script' &&
-        (!step.config.scriptCode || step.config.scriptCode.trim() === '')
-      ) {
+      if (step.type === 'script' && (!step.config.scriptCode || step.config.scriptCode.trim() === '')) {
         errors.push({
           severity: 'error',
           message: 'Script step requires non-empty "scriptCode" in its configuration.',
           stepId: step.id,
         });
       }
-      if (
-        step.type === 'command' &&
-        (!step.config.actionId || step.config.actionId.trim() === '')
-      ) {
+      if (step.type === 'command' && (!step.config.actionId || step.config.actionId.trim() === '')) {
         errors.push({
           severity: 'error',
           message: 'Command step requires an "actionId" in its configuration.',

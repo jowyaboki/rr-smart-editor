@@ -44,11 +44,7 @@ export class RenderClusterEngine {
     this.leaseManager = new LeaseManager();
     this.scheduler = new ClusterScheduler(this.nodeRegistry);
     this.scalingService = new ScalingService(this.nodeRegistry);
-    this.recoveryService = new RecoveryService(
-      this.nodeRegistry,
-      this.shardManager,
-      this.scheduler,
-    );
+    this.recoveryService = new RecoveryService(this.nodeRegistry, this.shardManager, this.scheduler);
   }
 }
 

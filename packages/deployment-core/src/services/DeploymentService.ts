@@ -9,12 +9,7 @@ export class DeploymentService {
     bootstrappedServices: string[];
   }> {
     this.activeMode = mode;
-    const services = [
-      'ConfigurationService',
-      'SecretsService',
-      'MigrationService',
-      'HealthService',
-    ];
+    const services = ['ConfigurationService', 'SecretsService', 'MigrationService', 'HealthService'];
 
     if (mode === 'production' || mode === 'cloud') {
       services.push('BackupService', 'LicenseService');

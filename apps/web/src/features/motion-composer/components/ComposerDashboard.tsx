@@ -27,18 +27,7 @@ export const ComposerDashboard: React.FC = () => {
 
   if (!activeComp) {
     return (
-      <div
-        style={{
-          padding: '24px',
-          fontFamily: 'sans-serif',
-          color: '#fff',
-          background: '#121214',
-          height: '100vh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
+      <div style={{ padding: '24px', fontFamily: 'sans-serif', color: '#fff', background: '#121214', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ textAlign: 'center' }}>
           <h3>Loading Motion Composer Workspace...</h3>
           <p style={{ color: '#888' }}>Initializing high-performance motion graphics canvas</p>
@@ -47,7 +36,7 @@ export const ComposerDashboard: React.FC = () => {
     );
   }
 
-  const selectedLayer = activeComp.layers.find((l) => l.id === selectedLayerId);
+  const selectedLayer = activeComp.layers.find(l => l.id === selectedLayerId);
 
   const handleAddNewShapeLayer = () => {
     const newId = `shape_${Date.now()}`;
@@ -106,50 +95,29 @@ export const ComposerDashboard: React.FC = () => {
   };
 
   return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateRows: '60px 1fr 240px',
-        height: '100vh',
-        backgroundColor: '#0f0f11',
-        color: '#e2e8f0',
-        fontFamily: 'Inter, system-ui, sans-serif',
-        boxSizing: 'border-box',
-      }}
-    >
+    <div style={{
+      display: 'grid',
+      gridTemplateRows: '60px 1fr 240px',
+      height: '100vh',
+      backgroundColor: '#0f0f11',
+      color: '#e2e8f0',
+      fontFamily: 'Inter, system-ui, sans-serif',
+      boxSizing: 'border-box',
+    }}>
       {/* HEADER SECTION */}
-      <header
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: '0 24px',
-          borderBottom: '1px solid #1e1e24',
-          backgroundColor: '#141417',
-        }}
-      >
+      <header style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '0 24px',
+        borderBottom: '1px solid #1e1e24',
+        backgroundColor: '#141417',
+      }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <h2
-            style={{
-              fontSize: '18px',
-              margin: 0,
-              fontWeight: 600,
-              color: '#f8fafc',
-              letterSpacing: '0.5px',
-            }}
-          >
+          <h2 style={{ fontSize: '18px', margin: 0, fontWeight: 600, color: '#f8fafc', letterSpacing: '0.5px' }}>
             🔮 Motion Graphics Composer
           </h2>
-          <span
-            style={{
-              fontSize: '12px',
-              background: '#22c55e20',
-              color: '#22c55e',
-              padding: '4px 8px',
-              borderRadius: '4px',
-              fontWeight: 500,
-            }}
-          >
+          <span style={{ fontSize: '12px', background: '#22c55e20', color: '#22c55e', padding: '4px 8px', borderRadius: '4px', fontWeight: 500 }}>
             Live Composition: {activeComp.name}
           </span>
         </div>
@@ -190,39 +158,33 @@ export const ComposerDashboard: React.FC = () => {
       </header>
 
       {/* MIDDLE SECTION - CANVAS & INSPECTOR PANELS */}
-      <main
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 380px',
-          overflow: 'hidden',
-        }}
-      >
+      <main style={{
+        display: 'grid',
+        gridTemplateColumns: '1fr 380px',
+        overflow: 'hidden',
+      }}>
         {/* VIEWPORT & GRAPHICS STAGE */}
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: '#09090b',
-            borderRight: '1px solid #1e1e24',
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: '#09090b',
+          borderRight: '1px solid #1e1e24',
+          position: 'relative',
+          padding: '24px',
+        }}>
+          <div style={{
+            width: '100%',
+            maxWidth: '800px',
+            aspectRatio: '16/9',
+            backgroundColor: '#000000',
+            borderRadius: '12px',
+            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
             position: 'relative',
-            padding: '24px',
-          }}
-        >
-          <div
-            style={{
-              width: '100%',
-              maxWidth: '800px',
-              aspectRatio: '16/9',
-              backgroundColor: '#000000',
-              borderRadius: '12px',
-              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
-              position: 'relative',
-              overflow: 'hidden',
-              border: '2px solid #27272a',
-            }}
-          >
+            overflow: 'hidden',
+            border: '2px solid #27272a',
+          }}>
             {/* Visual preview of layers on canvas */}
             {activeComp.layers.map((layer) => {
               const [x, y] = layer.transform.position;
@@ -243,14 +205,10 @@ export const ComposerDashboard: React.FC = () => {
                     transform: `translate(-50%, -50%) rotate(${rot}deg) scale(${sx}, ${sy})`,
                     cursor: 'pointer',
                     userSelect: 'none',
-                    border:
-                      selectedLayerId === layer.id ? '2px solid #3b82f6' : '1px dashed #52525b',
+                    border: selectedLayerId === layer.id ? '2px solid #3b82f6' : '1px dashed #52525b',
                     padding: '8px',
                     borderRadius: '4px',
-                    backgroundColor:
-                      layer.type === 'shape'
-                        ? layer.shapeProperties?.fillColor || '#10b981'
-                        : '#4b5563',
+                    backgroundColor: layer.type === 'shape' ? (layer.shapeProperties?.fillColor || '#10b981') : '#4b5563',
                     color: '#fff',
                     fontSize: '11px',
                     fontWeight: 'bold',
@@ -265,41 +223,25 @@ export const ComposerDashboard: React.FC = () => {
             })}
           </div>
 
-          <div
-            style={{
-              marginTop: '16px',
-              color: '#71717a',
-              fontSize: '12px',
-              display: 'flex',
-              gap: '24px',
-            }}
-          >
-            <span>
-              📺 Canvas: {activeComp.width}x{activeComp.height} @ {activeComp.fps} FPS
-            </span>
-            <span>
-              ⏱️ Playhead: Frame {currentTime} / {activeComp.durationFrames}
-            </span>
+          <div style={{ marginTop: '16px', color: '#71717a', fontSize: '12px', display: 'flex', gap: '24px' }}>
+            <span>📺 Canvas: {activeComp.width}x{activeComp.height} @ {activeComp.fps} FPS</span>
+            <span>⏱️ Playhead: Frame {currentTime} / {activeComp.durationFrames}</span>
           </div>
         </div>
 
         {/* CONTROLS INSPECTOR PANEL */}
-        <aside
-          style={{
-            backgroundColor: '#141417',
-            display: 'grid',
-            gridTemplateRows: '48px 1fr',
-            overflow: 'hidden',
-          }}
-        >
+        <aside style={{
+          backgroundColor: '#141417',
+          display: 'grid',
+          gridTemplateRows: '48px 1fr',
+          overflow: 'hidden',
+        }}>
           {/* Tabs header */}
-          <div
-            style={{
-              display: 'flex',
-              borderBottom: '1px solid #1e1e24',
-              backgroundColor: '#121214',
-            }}
-          >
+          <div style={{
+            display: 'flex',
+            borderBottom: '1px solid #1e1e24',
+            backgroundColor: '#121214',
+          }}>
             {(['shape', 'camera', 'rigging'] as const).map((tab) => (
               <button
                 key={tab}
@@ -326,21 +268,25 @@ export const ComposerDashboard: React.FC = () => {
 
           {/* Tab Content body */}
           <div style={{ padding: '20px', overflowY: 'auto' }}>
-            {activeTab === 'shape' && <ShapeControls />}
-            {activeTab === 'camera' && <CameraControls />}
-            {activeTab === 'rigging' && <RiggingControls />}
+            {activeTab === 'shape' && (
+              <ShapeControls />
+            )}
+            {activeTab === 'camera' && (
+              <CameraControls />
+            )}
+            {activeTab === 'rigging' && (
+              <RiggingControls />
+            )}
           </div>
         </aside>
       </main>
 
       {/* FOOTER TIMELINE TRACK EDITOR */}
-      <footer
-        style={{
-          borderTop: '1px solid #1e1e24',
-          backgroundColor: '#121214',
-          overflow: 'hidden',
-        }}
-      >
+      <footer style={{
+        borderTop: '1px solid #1e1e24',
+        backgroundColor: '#121214',
+        overflow: 'hidden',
+      }}>
         <LayerTimeline />
       </footer>
     </div>

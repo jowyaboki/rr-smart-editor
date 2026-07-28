@@ -115,17 +115,7 @@ export interface Heartbeat {
 export interface ClusterEvent {
   id: string;
   timestamp: string;
-  type:
-    | 'node_registered'
-    | 'node_removed'
-    | 'node_drained'
-    | 'shard_assigned'
-    | 'shard_reassigned'
-    | 'shard_failed'
-    | 'scale_up'
-    | 'scale_down'
-    | 'heartbeat_lost'
-    | 'checkpoint_restored';
+  type: 'node_registered' | 'node_removed' | 'node_drained' | 'shard_assigned' | 'shard_reassigned' | 'shard_failed' | 'scale_up' | 'scale_down' | 'heartbeat_lost' | 'checkpoint_restored';
   severity: 'info' | 'warning' | 'error';
   message: string;
   metadata?: Record<string, any>;

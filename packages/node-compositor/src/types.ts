@@ -154,9 +154,5 @@ export interface PortRendererPlugin {
 
 export interface CustomNodeExecutorPlugin {
   nodeType: string;
-  execute: (
-    node: Node,
-    resolvedInputs: Record<string, any>,
-    context: ExecutionContext,
-  ) => Promise<Record<string, any>>;
+  execute: (node: Node, resolvedInputs: Record<string, any>, context: ExecutionContext) => Promise<Record<string, any>>;
 }

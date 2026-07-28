@@ -1,66 +1,21 @@
 import { Token } from '../types';
 
 export const defaultColors: Record<string, Token> = {
-  primary: {
-    key: 'colors.primary',
-    value: '#90caf9',
-    type: 'color',
-    description: 'Primary brand color',
-  },
-  secondary: {
-    key: 'colors.secondary',
-    value: '#f48fb1',
-    type: 'color',
-    description: 'Secondary brand color',
-  },
-  background: {
-    key: 'colors.background',
-    value: '#0a1929',
-    type: 'color',
-    description: 'Primary background',
-  },
-  surface: {
-    key: 'colors.surface',
-    value: '#102031',
-    type: 'color',
-    description: 'Surface/card background',
-  },
+  primary: { key: 'colors.primary', value: '#90caf9', type: 'color', description: 'Primary brand color' },
+  secondary: { key: 'colors.secondary', value: '#f48fb1', type: 'color', description: 'Secondary brand color' },
+  background: { key: 'colors.background', value: '#0a1929', type: 'color', description: 'Primary background' },
+  surface: { key: 'colors.surface', value: '#102031', type: 'color', description: 'Surface/card background' },
   text: { key: 'colors.text', value: '#ffffff', type: 'color', description: 'Primary text color' },
-  textMuted: {
-    key: 'colors.textMuted',
-    value: '#b2bac2',
-    type: 'color',
-    description: 'Secondary/muted text color',
-  },
-  border: {
-    key: 'colors.border',
-    value: '#1e293b',
-    type: 'color',
-    description: 'Divider/border color',
-  },
-  success: {
-    key: 'colors.success',
-    value: '#4caf50',
-    type: 'color',
-    description: 'Success status color',
-  },
-  error: {
-    key: 'colors.error',
-    value: '#f44336',
-    type: 'color',
-    description: 'Error status color',
-  },
+  textMuted: { key: 'colors.textMuted', value: '#b2bac2', type: 'color', description: 'Secondary/muted text color' },
+  border: { key: 'colors.border', value: '#1e293b', type: 'color', description: 'Divider/border color' },
+  success: { key: 'colors.success', value: '#4caf50', type: 'color', description: 'Success status color' },
+  error: { key: 'colors.error', value: '#f44336', type: 'color', description: 'Error status color' },
 };
 
 export const defaultSpacing: Record<string, Token> = {
   xs: { key: 'spacing.xs', value: '4px', type: 'spacing', description: 'Extra small spacing' },
   sm: { key: 'spacing.sm', value: '8px', type: 'spacing', description: 'Small spacing' },
-  md: {
-    key: 'spacing.md',
-    value: '16px',
-    type: 'spacing',
-    description: 'Medium spacing (default)',
-  },
+  md: { key: 'spacing.md', value: '16px', type: 'spacing', description: 'Medium spacing (default)' },
   lg: { key: 'spacing.lg', value: '24px', type: 'spacing', description: 'Large spacing' },
   xl: { key: 'spacing.xl', value: '32px', type: 'spacing', description: 'Extra large spacing' },
 };
@@ -71,52 +26,20 @@ export const defaultRadius: Record<string, Token> = {
   sm: { key: 'radius.sm', value: '4px', type: 'radius', description: 'Small border radius' },
   md: { key: 'radius.md', value: '8px', type: 'radius', description: 'Medium border radius' },
   lg: { key: 'radius.lg', value: '12px', type: 'radius', description: 'Large border radius' },
-  full: {
-    key: 'radius.full',
-    value: '9999px',
-    type: 'radius',
-    description: 'Pill/circle border radius',
-  },
+  full: { key: 'radius.full', value: '9999px', type: 'radius', description: 'Pill/circle border radius' },
 };
 
 export const defaultBorders: Record<string, Token> = {
-  thin: {
-    key: 'borders.thin',
-    value: '1px solid {colors.border}',
-    type: 'border',
-    description: 'Thin border using color reference',
-  },
-  thick: {
-    key: 'borders.thick',
-    value: '2px solid {colors.border}',
-    type: 'border',
-    description: 'Thick border',
-  },
-  primary: {
-    key: 'borders.primary',
-    value: '2px solid {colors.primary}',
-    type: 'border',
-    description: 'Primary focused border',
-  },
+  thin: { key: 'borders.thin', value: '1px solid {colors.border}', type: 'border', description: 'Thin border using color reference' },
+  thick: { key: 'borders.thick', value: '2px solid {colors.border}', type: 'border', description: 'Thick border' },
+  primary: { key: 'borders.primary', value: '2px solid {colors.primary}', type: 'border', description: 'Primary focused border' },
 };
 
 export const defaultElevation: Record<string, Token> = {
   none: { key: 'shadows.none', value: 'none', type: 'elevation' },
-  low: {
-    key: 'shadows.low',
-    value: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
-    type: 'elevation',
-  },
-  medium: {
-    key: 'shadows.medium',
-    value: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
-    type: 'elevation',
-  },
-  high: {
-    key: 'shadows.high',
-    value: '0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)',
-    type: 'elevation',
-  },
+  low: { key: 'shadows.low', value: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)', type: 'elevation' },
+  medium: { key: 'shadows.medium', value: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)', type: 'elevation' },
+  high: { key: 'shadows.high', value: '0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)', type: 'elevation' },
 };
 
 export const defaultOpacity: Record<string, Token> = {

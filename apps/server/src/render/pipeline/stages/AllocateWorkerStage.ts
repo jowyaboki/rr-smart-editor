@@ -23,9 +23,7 @@ export class AllocateWorkerStage implements PipelineStage {
     freshJob.status = 'rendering';
     freshJob.startedAt = freshJob.startedAt || new Date().toISOString();
     freshJob.workerId = workerId;
-    freshJob.logs.push(
-      `[${new Date().toISOString()}] [Stage: ALLOCATE_WORKER] Allocating worker ${workerId}...`,
-    );
+    freshJob.logs.push(`[${new Date().toISOString()}] [Stage: ALLOCATE_WORKER] Allocating worker ${workerId}...`);
     await jobStorage.saveJob(freshJob);
     context.job = freshJob;
 

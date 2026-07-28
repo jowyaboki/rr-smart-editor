@@ -1,7 +1,11 @@
 import { CalibrationProfile } from '../types';
 
 export interface CalibrationResult {
-  lensMatrix: [[number, number, number], [number, number, number], [number, number, number]];
+  lensMatrix: [
+    [number, number, number],
+    [number, number, number],
+    [number, number, number]
+  ];
   distortionModel: {
     k1: number;
     k2: number;
@@ -28,10 +32,10 @@ export class CalibrationService {
   public solveCalibration(
     observations: Array<{
       gridPoint: [number, number, number]; // Chessboard space (X, Y, Z=0)
-      observedPixels: [number, number]; // Pixel space (u, v)
+      observedPixels: [number, number];   // Pixel space (u, v)
     }>,
     imageWidth: number,
-    imageHeight: number,
+    imageHeight: number
   ): CalibrationResult {
     // Default focal lengths and centers
     const fx = imageWidth * 0.8;
@@ -62,26 +66,14 @@ export class CalibrationService {
         p2: -0.002,
       },
       projectionMatrix: [
-        (2 * fx) / imageWidth,
-        0,
-        0,
-        0,
-        0,
-        (2 * fy) / imageHeight,
-        0,
-        0,
-        1 - (2 * cx) / imageWidth,
-        (2 * cy) / imageHeight - 1,
-        -1,
-        -1,
-        0,
-        0,
-        -0.2,
-        0, // simple depth limits
+        (2 * fx) / imageWidth, 0, 0, 0,
+        0, (2 * fy) / imageHeight, 0, 0,
+        1 - (2 * cx) / imageWidth, (2 * cy) / imageHeight - 1, -1, -1,
+        0, 0, -0.2, 0, // simple depth limits
       ],
       alignmentTransform: {
         position: [0.05, -0.12, 0.02], // offset between lens sensor and hardware tracker anchor (meters)
-        rotation: [0.2, -0.5, 0.1], // tilt adjustment (degrees)
+        rotation: [0.2, -0.5, 0.1],   // tilt adjustment (degrees)
       },
       errorMetrics: {
         meanReprojectionError: meanError,

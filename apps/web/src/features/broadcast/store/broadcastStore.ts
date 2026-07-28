@@ -25,77 +25,31 @@ const sampleProject: BroadcastProject = {
         {
           id: 'scene_caster_cam',
           name: 'Main Caster desk (Cam 1)',
-          inputs: [
-            {
-              id: 'in_caster_fx6',
-              name: 'Sony FX6 Caster Desk',
-              type: 'camera',
-              status: 'connected',
-              volume: 1.0,
-              isMuted: false,
-              properties: {},
-            },
-          ],
+          inputs: [{ id: 'in_caster_fx6', name: 'Sony FX6 Caster Desk', type: 'camera', status: 'connected', volume: 1.0, isMuted: false, properties: {} }],
           overlays: [],
           audioMixPercent: 100,
         },
         {
           id: 'scene_game_feed',
           name: 'Spectator In-Game Feed',
-          inputs: [
-            {
-              id: 'in_game_pc',
-              name: 'OBS Game Feed Capture',
-              type: 'screen_capture',
-              status: 'connected',
-              volume: 0.9,
-              isMuted: false,
-              properties: {},
-            },
-          ],
+          inputs: [{ id: 'in_game_pc', name: 'OBS Game Feed Capture', type: 'screen_capture', status: 'connected', volume: 0.9, isMuted: false, properties: {} }],
           overlays: [],
           audioMixPercent: 90,
         },
         {
           id: 'scene_analyst_desk',
           name: 'Post-Game Analyst Desk',
-          inputs: [
-            {
-              id: 'in_analyst_cam',
-              name: 'Studio Analyst Desk Cam',
-              type: 'camera',
-              status: 'connected',
-              volume: 1.0,
-              isMuted: false,
-              properties: {},
-            },
-          ],
+          inputs: [{ id: 'in_analyst_cam', name: 'Studio Analyst Desk Cam', type: 'camera', status: 'connected', volume: 1.0, isMuted: false, properties: {} }],
           overlays: [],
           audioMixPercent: 100,
-        },
+        }
       ],
-    },
+    }
   ],
   activeSceneCollectionId: 'coll_championship_1',
   streamingDestinations: [
-    {
-      id: 'dest_twitch',
-      name: 'Twitch Esports Channel',
-      protocol: 'rtmp',
-      streamUrl: 'rtmp://live.twitch.tv/app',
-      streamKey: 'live_esports_key',
-      isEnabled: true,
-      status: 'idle',
-    },
-    {
-      id: 'dest_rtmp_facebook',
-      name: 'Facebook Gaming Hub',
-      protocol: 'rtmp',
-      streamUrl: 'rtmp://live-api-s.facebook.com:80',
-      streamKey: 'fb_key_stream_xx',
-      isEnabled: false,
-      status: 'idle',
-    },
+    { id: 'dest_twitch', name: 'Twitch Esports Channel', protocol: 'rtmp', streamUrl: 'rtmp://live.twitch.tv/app', streamKey: 'live_esports_key', isEnabled: true, status: 'idle' },
+    { id: 'dest_rtmp_facebook', name: 'Facebook Gaming Hub', protocol: 'rtmp', streamUrl: 'rtmp://live-api-s.facebook.com:80', streamKey: 'fb_key_stream_xx', isEnabled: false, status: 'idle' }
   ],
   recordingConfig: {
     id: 'web_rec_conf_1',
@@ -118,7 +72,7 @@ const sampleProject: BroadcastProject = {
 const liveSession = engine.createBroadcastSession(
   sampleProject,
   sampleProject.recordingConfig,
-  sampleProject.replayConfig,
+  sampleProject.replayConfig
 );
 
 interface BroadcastState {
@@ -147,12 +101,7 @@ interface BroadcastState {
   stopReplayBuffer: () => void;
   captureReplay: (durationSeconds: number, notes?: string) => void;
   triggerBreakingNews: (headline: string, details?: string) => void;
-  triggerScoreboard: (
-    homeTeam: string,
-    awayTeam: string,
-    homeScore: number,
-    awayScore: number,
-  ) => void;
+  triggerScoreboard: (homeTeam: string, awayTeam: string, homeScore: number, awayScore: number) => void;
   removeOverlay: (id: string) => void;
   toggleOverlayVisibility: (id: string) => void;
   updateMetrics: (metrics: Partial<PerformanceMetrics>) => void;
@@ -182,10 +131,7 @@ export const useBroadcastStore = create<BroadcastState>((set, get) => {
     initBroadcastStore: () => {
       // Setup initial live overlays
       liveSession.overlays.triggerScoreboard('WARRIORS', 'CELTICS', 92, 88);
-      liveSession.overlays.triggerBreakingNews(
-        'MATCH POINT OVERTIME',
-        'Tensions rise in the live arena',
-      );
+      liveSession.overlays.triggerBreakingNews('MATCH POINT OVERTIME', 'Tensions rise in the live arena');
 
       set({
         activeScenes: liveSession.getActiveScenes(),
@@ -288,7 +234,7 @@ export const useBroadcastStore = create<BroadcastState>((set, get) => {
     },
 
     updateMetrics: (metrics) => {
-      set((state) => ({
+      set(state => ({
         performanceMetrics: { ...state.performanceMetrics, ...metrics },
       }));
     },

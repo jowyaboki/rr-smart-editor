@@ -2,15 +2,13 @@ import React, { useState } from 'react';
 
 export function TrackingMonitor() {
   const [latency, setLatency] = useState(12); // ms
-  const [jitter, setJitter] = useState(1.2); // mm
+  const [jitter, setJitter] = useState(1.2);   // mm
 
   return (
     <div className="space-y-3 p-3 bg-[#131317] rounded border border-[#2d2d35]">
       <div className="flex justify-between items-center">
         <span className="text-xs text-gray-300 font-semibold">Sensor Alignment</span>
-        <span className="text-[10px] text-green-400 font-semibold uppercase animate-pulse">
-          Connected
-        </span>
+        <span className="text-[10px] text-green-400 font-semibold uppercase animate-pulse">Connected</span>
       </div>
 
       <div className="grid grid-cols-2 gap-2 text-center">

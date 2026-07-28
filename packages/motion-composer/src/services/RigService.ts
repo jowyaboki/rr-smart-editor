@@ -7,13 +7,13 @@ export class RigService {
   public resolveConstraints(
     layer: CompositionLayer,
     constraints: RiggingConstraint[],
-    allLayers: CompositionLayer[],
+    allLayers: CompositionLayer[]
   ): void {
-    const layerConstraints = constraints.filter((c) => c.sourceLayerId === layer.id);
+    const layerConstraints = constraints.filter(c => c.sourceLayerId === layer.id);
 
-    layerConstraints.forEach((constraint) => {
+    layerConstraints.forEach(constraint => {
       if (constraint.type === 'look_at') {
-        const target = allLayers.find((l) => l.id === constraint.targetId);
+        const target = allLayers.find(l => l.id === constraint.targetId);
         if (target) {
           // Compute look-at angle (2D planar rotation)
           const dx = target.transform.position[0] - layer.transform.position[0];

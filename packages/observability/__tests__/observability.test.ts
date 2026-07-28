@@ -11,6 +11,7 @@ import {
 } from '../src/index';
 
 describe('Production Monitoring & Observability Platform Core Unit Tests', () => {
+
   test('Structured Contextual Logging and Subscriber Syncs', () => {
     const logger = new LoggerService();
     let triggered = false;
@@ -55,23 +56,12 @@ describe('Production Monitoring & Observability Platform Core Unit Tests', () =>
     const tracer = new TraceService();
 
     // Start distributed trace
-    const root = tracer.startTrace(
-      'trace-456',
-      'timeline_render',
-      'Render Engine',
-      'ExportPipeline',
-    );
+    const root = tracer.startTrace('trace-456', 'timeline_render', 'Render Engine', 'ExportPipeline');
     assert.strictEqual(root.traceId, 'trace-456');
     assert.strictEqual(root.name, 'timeline_render');
 
     // Nest async child span
-    const span = tracer.startSpan(
-      'trace-456',
-      'gpu_blur_filter',
-      'Effects Engine',
-      'Compositor',
-      root.id,
-    );
+    const span = tracer.startSpan('trace-456', 'gpu_blur_filter', 'Effects Engine', 'Compositor', root.id);
     assert.strictEqual(span.traceId, 'trace-456');
     assert.strictEqual(span.parentId, root.id);
 
@@ -108,12 +98,7 @@ describe('Production Monitoring & Observability Platform Core Unit Tests', () =>
       assert.strictEqual(alert.type, 'memory_leak');
     });
 
-    alerts.triggerAlert(
-      'critical',
-      'Plugin Runtime',
-      'memory_leak',
-      'Memory leak detected in plugin "CustomGlitch": growth rate 50MB/min',
-    );
+    alerts.triggerAlert('critical', 'Plugin Runtime', 'memory_leak', 'Memory leak detected in plugin "CustomGlitch": growth rate 50MB/min');
 
     assert.strictEqual(alertTriggered, true);
     assert.strictEqual(alerts.getAlerts(false).length, 1);

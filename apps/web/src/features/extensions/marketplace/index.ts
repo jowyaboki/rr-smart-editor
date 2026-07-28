@@ -28,6 +28,6 @@ export const queryMarketplace = async (query: OnlineMarketplaceQuery) => {
       enabled: false,
       downloads: 8900,
       rating: 4.9,
-    },
+    }
   ];
 };

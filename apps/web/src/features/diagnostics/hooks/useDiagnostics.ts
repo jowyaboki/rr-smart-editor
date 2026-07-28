@@ -26,20 +26,11 @@ export function useDiagnostics() {
     webMetrics.record(name, value, engine);
     // Auto alert on long tasks/latency anomalies
     if (name === 'playback_latency' && value > 300) {
-      webAlerts.triggerAlert(
-        'warning',
-        engine,
-        'dropped_frames',
-        `Playback latency exceeded 300ms: ${value}ms`,
-      );
+      webAlerts.triggerAlert('warning', engine, 'dropped_frames', `Playback latency exceeded 300ms: ${value}ms`);
     }
   };
 
-  const captureProfileSnapshot = (
-    cpuSamples: number[],
-    memoryBytes: number,
-    durationMs: number,
-  ) => {
+  const captureProfileSnapshot = (cpuSamples: number[], memoryBytes: number, durationMs: number) => {
     const snapshot = webProfiler.captureSnapshot(cpuSamples, memoryBytes, durationMs);
     store.appendSnapshot(snapshot);
     return snapshot;

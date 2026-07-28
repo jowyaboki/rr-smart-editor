@@ -7,7 +7,7 @@ export class AIStudioOrchestrator {
    */
   public async orchestrate(
     prompt: string,
-    brandConfig?: { palette: string[]; fontFamily: string },
+    brandConfig?: { palette: string[]; fontFamily: string }
   ): Promise<AIProjectOutput> {
     // 1. INTENT ANALYSIS & CREATIVE BRIEF
     const brief = this.analyzeIntent(prompt);
@@ -50,8 +50,7 @@ export class AIStudioOrchestrator {
   }
 
   private analyzeIntent(prompt: string) {
-    const isPromo =
-      prompt.toLowerCase().includes('promo') || prompt.toLowerCase().includes('brand');
+    const isPromo = prompt.toLowerCase().includes('promo') || prompt.toLowerCase().includes('brand');
     return {
       title: isPromo ? 'Brand Showcase Promo' : 'Educational explainer video',
       targetAudience: isPromo ? 'General consumers' : 'Students & Lifelong learners',
@@ -118,7 +117,7 @@ export class AIStudioOrchestrator {
     const warnings: string[] = [];
 
     // Check missing assets
-    storyboard.forEach((s) => {
+    storyboard.forEach(s => {
       if (!s.visualUrl) warnings.push(`Storyboard scene ${s.id} is missing generated visual url.`);
     });
 

@@ -34,8 +34,8 @@ describe('Node-Based Visual Compositing Engine Tests', () => {
     expect(topOrder.length).toBe(6);
 
     // Terminal render node must be evaluated AFTER the blending node
-    const renderNodeIndex = topOrder.findIndex((n) => n.type === 'video_writer');
-    const mergeNodeIndex = topOrder.findIndex((n) => n.type === 'blend_merge');
+    const renderNodeIndex = topOrder.findIndex(n => n.type === 'video_writer');
+    const mergeNodeIndex = topOrder.findIndex(n => n.type === 'blend_merge');
 
     expect(renderNodeIndex).toBeGreaterThan(mergeNodeIndex);
   });
@@ -63,7 +63,7 @@ describe('Node-Based Visual Compositing Engine Tests', () => {
     await executionEngine.executeGraph(graph, context);
 
     // Mark single node dirty (simulate sliding green spill slider)
-    const keyer = graph.nodes.find((n) => n.type === 'chroma_key');
+    const keyer = graph.nodes.find(n => n.type === 'chroma_key');
     if (keyer) {
       keyer.isDirty = true;
     }
@@ -98,7 +98,7 @@ describe('Node-Based Visual Compositing Engine Tests', () => {
     // Optimize
     const eliminated = optimizer.eliminateDeadNodes(graph);
     expect(eliminated).toBe(1);
-    expect(graph.nodes.some((n) => n.id === 'node_floating_garbage')).toBe(false);
+    expect(graph.nodes.some(n => n.id === 'node_floating_garbage')).toBe(false);
   });
 
   test('Should execute constant folding optimizations on pure algebraic sub-sections', () => {
@@ -114,11 +114,13 @@ describe('Node-Based Visual Compositing Engine Tests', () => {
           position: { x: 0, y: 0 },
           inputs: [
             { id: 'port_a', name: 'a', direction: 'input', type: 'number', value: 15 },
-            { id: 'port_b', name: 'b', direction: 'input', type: 'number', value: 25 },
+            { id: 'port_b', name: 'b', direction: 'input', type: 'number', value: 25 }
           ],
-          outputs: [{ id: 'port_out', name: 'value', direction: 'output', type: 'number' }],
+          outputs: [
+            { id: 'port_out', name: 'value', direction: 'output', type: 'number' }
+          ],
           properties: {},
-        },
+        }
       ],
       connections: [],
       groups: [],

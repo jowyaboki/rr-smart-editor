@@ -9,6 +9,6 @@ export const composeScript = (brief: any): Script => ({
       dialogue: 'Video starting now.',
       durationSeconds: 3.0,
       visualPrompt: 'Abstract graphics',
-    },
+    }
   ],
 });

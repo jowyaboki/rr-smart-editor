@@ -29,9 +29,7 @@ export class MediaImportService {
     // Check if asset already exists in our index (Duplicate Detection)
     const existing = this.registeredAssets.get(fingerprint);
     if (existing) {
-      throw new Error(
-        `Duplicate asset detected. Asset "${filename}" already imported with ID "${existing.id}".`,
-      );
+      throw new Error(`Duplicate asset detected. Asset "${filename}" already imported with ID "${existing.id}".`);
     }
 
     const id = `job_${Date.now()}_${Math.floor(Math.random() * 100)}`;
@@ -53,12 +51,7 @@ export class MediaImportService {
   /**
    * Control action: Update job status and progress ratios.
    */
-  public static updateJob(
-    jobId: string,
-    status: JobStatus,
-    progress: number,
-    error?: string,
-  ): ImportJob {
+  public static updateJob(jobId: string, status: JobStatus, progress: number, error?: string): ImportJob {
     const job = this.jobs[jobId];
     if (!job) throw new Error(`Job "${jobId}" not found.`);
 

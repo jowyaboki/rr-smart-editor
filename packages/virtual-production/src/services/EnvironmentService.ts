@@ -8,7 +8,7 @@ export class EnvironmentService {
     id: string,
     name: string,
     type: 'hdri' | 'skybox_360' | 'image_backplate' | 'video_feed' | 'procedural',
-    url?: string,
+    url?: string
   ): Environment {
     return {
       id,
@@ -25,7 +25,10 @@ export class EnvironmentService {
   /**
    * Applies procedural parameters to shader variables
    */
-  public updateProceduralParams(env: Environment, params: Record<string, any>): Environment {
+  public updateProceduralParams(
+    env: Environment,
+    params: Record<string, any>
+  ): Environment {
     if (env.type !== 'procedural') return env;
     return {
       ...env,

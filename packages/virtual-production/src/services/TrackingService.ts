@@ -49,7 +49,7 @@ export class TrackingSolver {
   public smooth(
     current: TrackingFrameData,
     previous: TrackingFrameData | null,
-    cutoff: number,
+    cutoff: number
   ): TrackingFrameData {
     if (!previous) return current;
 
@@ -85,7 +85,7 @@ export class TrackingService {
   public processTracking(
     source: TrackingSource,
     rawFrame: TrackingFrameData,
-    camera: VirtualCamera,
+    camera: VirtualCamera
   ): VirtualCamera {
     const prevSolved = this.history.get(source.id) || null;
 

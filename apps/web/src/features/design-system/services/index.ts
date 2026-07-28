@@ -5,4 +5,9 @@ import {
   TokenResolver,
 } from '@ai-video-editor/design-system';
 
-export { ThemeService, MigrationService, SerializationService, TokenResolver };
+export {
+  ThemeService,
+  MigrationService,
+  SerializationService,
+  TokenResolver,
+};

@@ -18,9 +18,7 @@ export class FIFOSchedulingStrategy implements SchedulingStrategy {
 
     for (const job of sortedJobs) {
       const format = job.settings.format;
-      const worker = activeIdleWorkers.find((w) =>
-        w.capabilities.supportedFormats.includes(format),
-      );
+      const worker = activeIdleWorkers.find((w) => w.capabilities.supportedFormats.includes(format));
       if (worker) {
         return { job, workerId: worker.id };
       }
@@ -57,9 +55,7 @@ export class PrioritySchedulingStrategy implements SchedulingStrategy {
 
     for (const job of sortedJobs) {
       const format = job.settings.format;
-      const worker = activeIdleWorkers.find((w) =>
-        w.capabilities.supportedFormats.includes(format),
-      );
+      const worker = activeIdleWorkers.find((w) => w.capabilities.supportedFormats.includes(format));
       if (worker) {
         return { job, workerId: worker.id };
       }

@@ -13,24 +13,8 @@ export const ProactiveSuggestionsPanel: React.FC = () => {
   if (suggestions.length === 0) return null;
 
   return (
-    <div
-      style={{
-        marginTop: '12px',
-        padding: '10px',
-        background: '#1a1a1a',
-        border: '1px solid #333',
-        borderRadius: '4px',
-      }}
-    >
-      <span
-        style={{
-          fontSize: '11px',
-          fontWeight: 'bold',
-          display: 'block',
-          marginBottom: '6px',
-          color: '#ff9800',
-        }}
-      >
+    <div style={{ marginTop: '12px', padding: '10px', background: '#1a1a1a', border: '1px solid #333', borderRadius: '4px' }}>
+      <span style={{ fontSize: '11px', fontWeight: 'bold', display: 'block', marginBottom: '6px', color: '#ff9800' }}>
         Proactive Optimizations
       </span>
 
@@ -56,15 +40,7 @@ export const ProactiveSuggestionsPanel: React.FC = () => {
             </div>
             <button
               onClick={() => removeSuggestion(sug.id)}
-              style={{
-                padding: '2px 8px',
-                fontSize: '9px',
-                background: '#333',
-                color: '#fff',
-                border: 'none',
-                borderRadius: '2px',
-                cursor: 'pointer',
-              }}
+              style={{ padding: '2px 8px', fontSize: '9px', background: '#333', color: '#fff', border: 'none', borderRadius: '2px', cursor: 'pointer' }}
             >
               Ignore
             </button>

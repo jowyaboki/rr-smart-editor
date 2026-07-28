@@ -1,11 +1,4 @@
-import {
-  TimelineViewport,
-  VisibleRegion,
-  VirtualTrack,
-  VirtualClip,
-  VirtualKeyframe,
-  TimelineMarker,
-} from '../types';
+import { TimelineViewport, VisibleRegion, VirtualTrack, VirtualClip, VirtualKeyframe, TimelineMarker } from '../types';
 import { TimelineIndexService } from '../indexing/TimelineIndexService';
 
 export class TimelineVirtualizer {
@@ -17,7 +10,7 @@ export class TimelineVirtualizer {
     viewport: TimelineViewport,
     totalTracks: VirtualTrack[],
     overscanFrames: number = 60, // overscan margin in frames (e.g. 2 seconds at 30 FPS)
-    overscanTracks: number = 1, // overscan margin in track count
+    overscanTracks: number = 1   // overscan margin in track count
   ): VisibleRegion {
     const { scrollLeft, scrollTop, width, height, pxPerFrame } = viewport;
 
@@ -67,7 +60,7 @@ export class TimelineVirtualizer {
   public static cullClips(
     visibleRegion: VisibleRegion,
     totalTracks: VirtualTrack[],
-    indexService: TimelineIndexService,
+    indexService: TimelineIndexService
   ): VirtualClip[] {
     const rawClips = indexService.queryClips(visibleRegion.startFrame, visibleRegion.endFrame);
 
@@ -79,7 +72,7 @@ export class TimelineVirtualizer {
       }
     }
 
-    return rawClips.filter((clip) => visibleTrackIds.has(clip.trackId));
+    return rawClips.filter(clip => visibleTrackIds.has(clip.trackId));
   }
 
   /**
@@ -88,7 +81,7 @@ export class TimelineVirtualizer {
    */
   public static cullKeyframes(
     visibleRegion: VisibleRegion,
-    indexService: TimelineIndexService,
+    indexService: TimelineIndexService
   ): VirtualKeyframe[] {
     return indexService.queryKeyframes(visibleRegion.startFrame, visibleRegion.endFrame);
   }
@@ -98,7 +91,7 @@ export class TimelineVirtualizer {
    */
   public static cullMarkers(
     visibleRegion: VisibleRegion,
-    indexService: TimelineIndexService,
+    indexService: TimelineIndexService
   ): TimelineMarker[] {
     return indexService.queryMarkers(visibleRegion.startFrame, visibleRegion.endFrame);
   }

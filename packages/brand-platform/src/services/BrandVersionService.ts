@@ -3,12 +3,7 @@ import { BrandVersion, BrandKit } from '../types';
 export class BrandVersionService {
   private versions: BrandVersion[] = [];
 
-  public createVersion(
-    version: string,
-    kit: BrandKit,
-    author: string,
-    changelog?: string,
-  ): BrandVersion {
+  public createVersion(version: string, kit: BrandKit, author: string, changelog?: string): BrandVersion {
     const brandVersion: BrandVersion = {
       version,
       brandKit: JSON.parse(JSON.stringify(kit)),
@@ -21,7 +16,7 @@ export class BrandVersionService {
   }
 
   public getVersion(version: string): BrandVersion | undefined {
-    return this.versions.find((v) => v.version === version);
+    return this.versions.find(v => v.version === version);
   }
 
   public listVersions(): BrandVersion[] {

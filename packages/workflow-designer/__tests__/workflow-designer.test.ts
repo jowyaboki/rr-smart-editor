@@ -10,6 +10,7 @@ import {
 } from '../src/index';
 
 describe('Enterprise Workflow Designer Core Unit Tests', () => {
+
   test('Draggable Node Type registrations', () => {
     const designer = new WorkflowDesigner();
 
@@ -33,24 +34,12 @@ describe('Enterprise Workflow Designer Core Unit Tests', () => {
       description: 'Generates exp video',
       version: '1.0.0',
       nodes: [
-        {
-          id: 'n-1',
-          name: 'Start',
-          category: 'trigger' as const,
-          type: 'manual',
-          position: { x: 0, y: 0 },
-          config: {},
-        },
-        {
-          id: 'n-2',
-          name: 'Prompt AI',
-          category: 'ai' as const,
-          type: 'prompt',
-          position: { x: 100, y: 0 },
-          config: {},
-        },
+        { id: 'n-1', name: 'Start', category: 'trigger' as const, type: 'manual', position: { x: 0, y: 0 }, config: {} },
+        { id: 'n-2', name: 'Prompt AI', category: 'ai' as const, type: 'prompt', position: { x: 100, y: 0 }, config: {} },
       ],
-      edges: [{ id: 'e-1', sourceNodeId: 'n-1', targetNodeId: 'n-2' }],
+      edges: [
+        { id: 'e-1', sourceNodeId: 'n-1', targetNodeId: 'n-2' }
+      ],
     };
 
     const audit1 = validation.validateWorkflow(goodWorkflow);
@@ -98,14 +87,7 @@ describe('Enterprise Workflow Designer Core Unit Tests', () => {
       description: 'Test compilation',
       version: '1.0.0',
       nodes: [
-        {
-          id: 'n-1',
-          name: 'Trigger',
-          category: 'trigger' as const,
-          type: 'manual',
-          position: { x: 0, y: 0 },
-          config: { autoStart: true },
-        },
+        { id: 'n-1', name: 'Trigger', category: 'trigger' as const, type: 'manual', position: { x: 0, y: 0 }, config: { autoStart: true } }
       ],
       edges: [],
     };

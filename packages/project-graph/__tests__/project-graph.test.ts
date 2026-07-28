@@ -12,6 +12,7 @@ import {
 } from '../src/index';
 
 describe('Project Graph Engine Core Unit Tests', () => {
+
   test('Core Operations - Insert, Update, Remove Nodes and Ed edges', () => {
     const engine = new GraphEngine();
 
@@ -20,11 +21,7 @@ describe('Project Graph Engine Core Unit Tests', () => {
       type: 'clip',
       name: 'Clip A',
       state: { value: 'clip_a_data', isDirty: false, version: 1 },
-      metadata: {
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        version: '1.0.0',
-      },
+      metadata: { createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), version: '1.0.0' },
     };
 
     const node2: GraphNode = {
@@ -32,11 +29,7 @@ describe('Project Graph Engine Core Unit Tests', () => {
       type: 'expression',
       name: 'Expression A',
       state: { value: 'time * 2', isDirty: false, version: 1 },
-      metadata: {
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        version: '1.0.0',
-      },
+      metadata: { createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), version: '1.0.0' },
     };
 
     // 1. Test insertion
@@ -73,27 +66,9 @@ describe('Project Graph Engine Core Unit Tests', () => {
   test('Dependency Resolution and Cycle Detection', () => {
     const engine = new GraphEngine();
 
-    const n1 = {
-      id: 'A',
-      type: 'variable',
-      name: 'Var A',
-      state: { value: 10, isDirty: false, version: 1 },
-      metadata: { createdAt: '', updatedAt: '', version: '1' },
-    } as GraphNode;
-    const n2 = {
-      id: 'B',
-      type: 'variable',
-      name: 'Var B',
-      state: { value: '{A} * 2', isDirty: false, version: 1 },
-      metadata: { createdAt: '', updatedAt: '', version: '1' },
-    } as GraphNode;
-    const n3 = {
-      id: 'C',
-      type: 'expression',
-      name: 'Expr C',
-      state: { value: '{B} + 5', isDirty: false, version: 1 },
-      metadata: { createdAt: '', updatedAt: '', version: '1' },
-    } as GraphNode;
+    const n1 = { id: 'A', type: 'variable', name: 'Var A', state: { value: 10, isDirty: false, version: 1 }, metadata: { createdAt: '', updatedAt: '', version: '1' } } as GraphNode;
+    const n2 = { id: 'B', type: 'variable', name: 'Var B', state: { value: '{A} * 2', isDirty: false, version: 1 }, metadata: { createdAt: '', updatedAt: '', version: '1' } } as GraphNode;
+    const n3 = { id: 'C', type: 'expression', name: 'Expr C', state: { value: '{B} + 5', isDirty: false, version: 1 }, metadata: { createdAt: '', updatedAt: '', version: '1' } } as GraphNode;
 
     engine.insertNode(n1);
     engine.insertNode(n2);
@@ -113,14 +88,14 @@ describe('Project Graph Engine Core Unit Tests', () => {
     // Transitive dependencies of C should be [B, A]
     const transDepsC = DependencyResolver.getTransitiveDependencies('C', graph);
     assert.strictEqual(transDepsC.length, 2);
-    assert.ok(transDepsC.some((n) => n.id === 'B'));
-    assert.ok(transDepsC.some((n) => n.id === 'A'));
+    assert.ok(transDepsC.some(n => n.id === 'B'));
+    assert.ok(transDepsC.some(n => n.id === 'A'));
 
     // Transitive dependents of A should be [B, C]
     const transDepsA = DependencyResolver.getTransitiveDependents('A', graph);
     assert.strictEqual(transDepsA.length, 2);
-    assert.ok(transDepsA.some((n) => n.id === 'B'));
-    assert.ok(transDepsA.some((n) => n.id === 'C'));
+    assert.ok(transDepsA.some(n => n.id === 'B'));
+    assert.ok(transDepsA.some(n => n.id === 'C'));
 
     // Verify evaluation/topological order: A must evaluate before B, B must evaluate before C
     const order = engine.getTopologicalOrder();
@@ -147,27 +122,9 @@ describe('Project Graph Engine Core Unit Tests', () => {
   test('Incremental Invalidation & Lazy Evaluations', () => {
     const engine = new GraphEngine();
 
-    const n1 = {
-      id: 'A',
-      type: 'variable',
-      name: 'Var A',
-      state: { value: 10, isDirty: false, version: 1 },
-      metadata: { createdAt: '', updatedAt: '', version: '1' },
-    } as GraphNode;
-    const n2 = {
-      id: 'B',
-      type: 'variable',
-      name: 'Var B',
-      state: { value: '{A} * 2', isDirty: false, version: 1 },
-      metadata: { createdAt: '', updatedAt: '', version: '1' },
-    } as GraphNode;
-    const n3 = {
-      id: 'C',
-      type: 'expression',
-      name: 'Expr C',
-      state: { value: '{B} + 5', isDirty: false, version: 1 },
-      metadata: { createdAt: '', updatedAt: '', version: '1' },
-    } as GraphNode;
+    const n1 = { id: 'A', type: 'variable', name: 'Var A', state: { value: 10, isDirty: false, version: 1 }, metadata: { createdAt: '', updatedAt: '', version: '1' } } as GraphNode;
+    const n2 = { id: 'B', type: 'variable', name: 'Var B', state: { value: '{A} * 2', isDirty: false, version: 1 }, metadata: { createdAt: '', updatedAt: '', version: '1' } } as GraphNode;
+    const n3 = { id: 'C', type: 'expression', name: 'Expr C', state: { value: '{B} + 5', isDirty: false, version: 1 }, metadata: { createdAt: '', updatedAt: '', version: '1' } } as GraphNode;
 
     engine.insertNode(n1);
     engine.insertNode(n2);
@@ -214,13 +171,7 @@ describe('Project Graph Engine Core Unit Tests', () => {
 
   test('Snapshot logs, Diffing, and Serialization', () => {
     const engine = new GraphEngine();
-    const n1 = {
-      id: 'A',
-      type: 'variable',
-      name: 'Var A',
-      state: { value: 10, isDirty: false, version: 1 },
-      metadata: { createdAt: '', updatedAt: '', version: '1' },
-    } as GraphNode;
+    const n1 = { id: 'A', type: 'variable', name: 'Var A', state: { value: 10, isDirty: false, version: 1 }, metadata: { createdAt: '', updatedAt: '', version: '1' } } as GraphNode;
     engine.insertNode(n1);
 
     const graphBefore = JSON.parse(JSON.stringify(engine.getGraph()));
@@ -231,13 +182,7 @@ describe('Project Graph Engine Core Unit Tests', () => {
 
     // Modify graph
     engine.updateNodeValue('A', 50);
-    const n2 = {
-      id: 'B',
-      type: 'clip',
-      name: 'Clip B',
-      state: { value: 'clip', isDirty: false, version: 1 },
-      metadata: { createdAt: '', updatedAt: '', version: '1' },
-    } as GraphNode;
+    const n2 = { id: 'B', type: 'clip', name: 'Clip B', state: { value: 'clip', isDirty: false, version: 1 }, metadata: { createdAt: '', updatedAt: '', version: '1' } } as GraphNode;
     engine.insertNode(n2);
 
     const graphAfter = engine.getGraph();
@@ -257,9 +202,7 @@ describe('Project Graph Engine Core Unit Tests', () => {
     // Serialization
     const serialized = GraphSerializer.serializeGraph(graphAfter);
     assert.ok(typeof serialized === 'string');
-    assert.ok(
-      serialized.includes('Smart Editor Main Graph') || serialized.includes('Master Project Graph'),
-    );
+    assert.ok(serialized.includes('Smart Editor Main Graph') || serialized.includes('Master Project Graph'));
 
     const deserialized = GraphSerializer.deserializeGraph(serialized);
     assert.strictEqual(deserialized.id, graphAfter.id);

@@ -18,9 +18,7 @@ export class GeneratePreviewStage implements PipelineStage {
     freshJob.stage = 'generate_thumbnail';
     freshJob.progress = 97;
     context.progress = 97;
-    freshJob.logs.push(
-      `[${new Date().toISOString()}] [Stage: GENERATE_PREVIEW] Generating streamable low-res preview...`,
-    );
+    freshJob.logs.push(`[${new Date().toISOString()}] [Stage: GENERATE_PREVIEW] Generating streamable low-res preview...`);
     await jobStorage.saveJob(freshJob);
     context.job = freshJob;
 

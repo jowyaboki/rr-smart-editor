@@ -1,4 +1,9 @@
-import { CameraAdapter, TrackingAdapter, EnvironmentAdapter, MocapAdapter } from '../types';
+import {
+  CameraAdapter,
+  TrackingAdapter,
+  EnvironmentAdapter,
+  MocapAdapter,
+} from '../types';
 
 export class PluginRegistry {
   private cameraAdapters = new Map<string, CameraAdapter>();

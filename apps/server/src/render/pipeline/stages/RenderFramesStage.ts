@@ -17,9 +17,7 @@ export class RenderFramesStage implements PipelineStage {
     }
 
     freshJob.stage = 'render';
-    freshJob.logs.push(
-      `[${new Date().toISOString()}] Entering Render stage: Evaluation and rasterization`,
-    );
+    freshJob.logs.push(`[${new Date().toISOString()}] Entering Render stage: Evaluation and rasterization`);
     await jobStorage.saveJob(freshJob);
     context.job = freshJob;
 

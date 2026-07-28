@@ -11,6 +11,7 @@ import {
 } from '../src/index';
 
 describe('AI Agent Framework & Tool Calling Runtime Core Unit Tests', () => {
+
   test('Tool Registration and Allowed Permissions Enforcements', () => {
     const registry = new BuiltInToolsRegistry();
 
@@ -58,7 +59,7 @@ describe('AI Agent Framework & Tool Calling Runtime Core Unit Tests', () => {
 
     // First batch must have no dependencies
     const firstBatch = batches[0];
-    firstBatch.forEach((t) => {
+    firstBatch.forEach(t => {
       assert.strictEqual(t.dependencies.length, 0);
     });
   });
@@ -80,7 +81,7 @@ describe('AI Agent Framework & Tool Calling Runtime Core Unit Tests', () => {
     const result = await executionService.executeToolCall(
       { id: 'c-1', toolName: 'Project', arguments: { action: 'create', name: 'Agent Promo' } },
       context,
-      { permissions: ['read_project', 'write_project'] },
+      { permissions: ['read_project', 'write_project'] }
     );
     assert.strictEqual(result.success, true);
     assert.strictEqual(result.result.name, 'Agent Promo');
@@ -89,7 +90,7 @@ describe('AI Agent Framework & Tool Calling Runtime Core Unit Tests', () => {
     const badResult = await executionService.executeToolCall(
       { id: 'c-2', toolName: 'Project', arguments: { action: 'create' } },
       context,
-      { allowedTools: ['Timeline'] }, // Only timeline allowed
+      { allowedTools: ['Timeline'] } // Only timeline allowed
     );
     assert.strictEqual(badResult.success, false);
     assert.strictEqual(badResult.error?.code, 'SECURITY_VIOLATION');
@@ -98,7 +99,7 @@ describe('AI Agent Framework & Tool Calling Runtime Core Unit Tests', () => {
     const cancelledContext = { ...context, isCancelled: true };
     const cancelledResult = await executionService.executeToolCall(
       { id: 'c-3', toolName: 'Project', arguments: { action: 'create' } },
-      cancelledContext,
+      cancelledContext
     );
     assert.strictEqual(cancelledResult.success, false);
     assert.strictEqual(cancelledResult.error?.code, 'CANCELLED');

@@ -18,9 +18,7 @@ export class CleanupStage implements PipelineStage {
 
     freshJob.stage = 'cleanup';
     freshJob.progress = 99;
-    freshJob.logs.push(
-      `[${new Date().toISOString()}] [Stage: CLEANUP] Cleaning temporary render frames and caches...`,
-    );
+    freshJob.logs.push(`[${new Date().toISOString()}] [Stage: CLEANUP] Cleaning temporary render frames and caches...`);
     await jobStorage.saveJob(freshJob);
     context.job = freshJob;
 

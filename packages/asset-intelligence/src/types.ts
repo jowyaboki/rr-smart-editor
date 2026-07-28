@@ -38,8 +38,7 @@ export interface SearchResult {
   reasoning?: string;
 }
 
-export type ClusterCriteria =
-  'topic' | 'visual_style' | 'people' | 'location' | 'brand' | 'color_palette' | 'project_usage';
+export type ClusterCriteria = 'topic' | 'visual_style' | 'people' | 'location' | 'brand' | 'color_palette' | 'project_usage';
 
 export interface AssetCluster {
   id: string;
@@ -51,7 +50,11 @@ export interface AssetCluster {
 }
 
 export type RecommendationType =
-  'similar' | 'frequently_used_together' | 'brand_compatible' | 'unused' | 'replacement';
+  | 'similar'
+  | 'frequently_used_together'
+  | 'brand_compatible'
+  | 'unused'
+  | 'replacement';
 
 export interface Recommendation {
   id: string;
@@ -80,9 +83,7 @@ export interface AnalysisProfile {
 export interface ModerationResult {
   assetId: string;
   isFlagged: boolean;
-  flagReasons: Array<
-    'duplicate' | 'low_quality' | 'corrupt_media' | 'inappropriate_content' | 'missing_metadata'
-  >;
+  flagReasons: Array<'duplicate' | 'low_quality' | 'corrupt_media' | 'inappropriate_content' | 'missing_metadata'>;
   confidenceScore: number;
   details: string;
   moderatedAt: string;
@@ -127,11 +128,7 @@ export interface SpeechAnalyzer {
 export interface RecommendationStrategy {
   id: string;
   name: string;
-  recommend: (
-    asset: Asset,
-    library: Asset[],
-    embeddings: SemanticEmbedding[],
-  ) => Promise<Recommendation[]>;
+  recommend: (asset: Asset, library: Asset[], embeddings: SemanticEmbedding[]) => Promise<Recommendation[]>;
 }
 
 export interface SearchRankingStrategy {

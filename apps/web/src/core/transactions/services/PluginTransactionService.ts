@@ -8,7 +8,7 @@ export class PluginTransactionService {
   public static createTransaction(
     name: string,
     scope: TransactionScope = 'timeline',
-    metadata?: Partial<TransactionMetadata>,
+    metadata?: Partial<TransactionMetadata>
   ): EditorTransaction {
     return TransactionEngine.begin(name, scope, {
       ...metadata,
@@ -18,12 +18,7 @@ export class PluginTransactionService {
 
   public static observe(
     event: 'started' | 'committed' | 'rolled_back' | 'failed' | 'cancelled',
-    callback: (data: {
-      transactionId: string;
-      name?: string;
-      error?: string;
-      warnings?: string[];
-    }) => void,
+    callback: (data: { transactionId: string; name?: string; error?: string; warnings?: string[] }) => void
   ): () => void {
     const eventNameMap = {
       started: 'TransactionStarted',
@@ -38,7 +33,7 @@ export class PluginTransactionService {
   public static registerHandler(
     type: string,
     execute: (params: any) => any,
-    rollback?: (params: any, beforeState?: any) => any,
+    rollback?: (params: any, beforeState?: any) => any
   ): void {
     useTransactionStore.getState().registerHandler(type, execute, rollback);
   }

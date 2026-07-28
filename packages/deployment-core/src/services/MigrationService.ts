@@ -17,7 +17,7 @@ export class MigrationService implements IMigrationService {
     const newlyApplied: DatabaseMigration[] = [];
 
     for (const m of this.availableMigrations) {
-      if (!this.appliedMigrations.some((am) => am.id === m.id)) {
+      if (!this.appliedMigrations.some(am => am.id === m.id)) {
         const applied: DatabaseMigration = {
           id: m.id,
           name: m.name,
@@ -36,14 +36,14 @@ export class MigrationService implements IMigrationService {
     const currentBatch = this.getCurrentBatchNumber();
     if (currentBatch === 0) return [];
 
-    const rolledBack = this.appliedMigrations.filter((am) => am.batch === currentBatch);
-    this.appliedMigrations = this.appliedMigrations.filter((am) => am.batch !== currentBatch);
+    const rolledBack = this.appliedMigrations.filter(am => am.batch === currentBatch);
+    this.appliedMigrations = this.appliedMigrations.filter(am => am.batch !== currentBatch);
 
     return rolledBack;
   }
 
   private getCurrentBatchNumber(): number {
     if (this.appliedMigrations.length === 0) return 0;
-    return Math.max(...this.appliedMigrations.map((m) => m.batch));
+    return Math.max(...this.appliedMigrations.map(m => m.batch));
   }
 }

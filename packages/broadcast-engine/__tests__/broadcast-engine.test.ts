@@ -1,10 +1,4 @@
-import {
-  LiveProductionEngine,
-  BroadcastProject,
-  RecordingConfig,
-  ReplayConfig,
-  LiveScene,
-} from '../src';
+import { LiveProductionEngine, BroadcastProject, RecordingConfig, ReplayConfig, LiveScene } from '../src';
 
 describe('Broadcast Studio & Live Production Engine Tests', () => {
   let engine: LiveProductionEngine;
@@ -19,15 +13,7 @@ describe('Broadcast Studio & Live Production Engine Tests', () => {
       id: 'scene_cam_1',
       name: 'Main Studio Camera',
       inputs: [
-        {
-          id: 'input_cam_1',
-          name: 'Sony FX3 Feed',
-          type: 'camera',
-          status: 'connected',
-          volume: 1.0,
-          isMuted: false,
-          properties: {},
-        },
+        { id: 'input_cam_1', name: 'Sony FX3 Feed', type: 'camera', status: 'connected', volume: 1.0, isMuted: false, properties: {} }
       ],
       overlays: [],
       audioMixPercent: 100,
@@ -37,24 +23,8 @@ describe('Broadcast Studio & Live Production Engine Tests', () => {
       id: 'scene_screen_share',
       name: 'Screen Share + Presenter PIP',
       inputs: [
-        {
-          id: 'input_screen_1',
-          name: 'Desktop Capture',
-          type: 'screen_capture',
-          status: 'connected',
-          volume: 0.8,
-          isMuted: false,
-          properties: {},
-        },
-        {
-          id: 'input_cam_1_pip',
-          name: 'Sony FX3 PIP',
-          type: 'camera',
-          status: 'connected',
-          volume: 0.2,
-          isMuted: true,
-          properties: {},
-        },
+        { id: 'input_screen_1', name: 'Desktop Capture', type: 'screen_capture', status: 'connected', volume: 0.8, isMuted: false, properties: {} },
+        { id: 'input_cam_1_pip', name: 'Sony FX3 PIP', type: 'camera', status: 'connected', volume: 0.2, isMuted: true, properties: {} }
       ],
       overlays: [],
       audioMixPercent: 80,
@@ -68,27 +38,12 @@ describe('Broadcast Studio & Live Production Engine Tests', () => {
           id: 'coll_tech_1',
           name: 'Tech Show Setup',
           scenes: [scene1, scene2],
-        },
+        }
       ],
       activeSceneCollectionId: 'coll_tech_1',
       streamingDestinations: [
-        {
-          id: 'dest_rtmp_youtube',
-          name: 'YouTube Live Studio',
-          protocol: 'rtmp',
-          streamUrl: 'rtmp://a.rtmp.youtube.com/live2',
-          streamKey: 'xxxx-yyyy',
-          isEnabled: true,
-          status: 'idle',
-        },
-        {
-          id: 'dest_srt_twitch',
-          name: 'Twitch TV',
-          protocol: 'srt',
-          streamUrl: 'srt://live.twitch.tv:443',
-          isEnabled: false,
-          status: 'idle',
-        },
+        { id: 'dest_rtmp_youtube', name: 'YouTube Live Studio', protocol: 'rtmp', streamUrl: 'rtmp://a.rtmp.youtube.com/live2', streamKey: 'xxxx-yyyy', isEnabled: true, status: 'idle' },
+        { id: 'dest_srt_twitch', name: 'Twitch TV', protocol: 'srt', streamUrl: 'srt://live.twitch.tv:443', isEnabled: false, status: 'idle' }
       ],
       recordingConfig: {
         id: 'rec_conf_1',
@@ -169,7 +124,7 @@ describe('Broadcast Studio & Live Production Engine Tests', () => {
     expect(recordingSession.activeFilePath).toContain('stream_program_');
 
     // Simulate wait for rotation to fire
-    await new Promise((resolve) => setTimeout(resolve, 800));
+    await new Promise(resolve => setTimeout(resolve, 800));
 
     expect(recordingSession.rotatedFilePaths.length).toBeGreaterThanOrEqual(1);
     expect(recordingSession.activeFilePath).toContain('stream_program_rotated_');

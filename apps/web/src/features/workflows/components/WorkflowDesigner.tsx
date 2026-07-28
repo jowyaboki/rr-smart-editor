@@ -45,9 +45,7 @@ export const WorkflowDesigner: React.FC = () => {
   if (!activeWf) {
     return (
       <Paper sx={{ p: 4, textAlign: 'center', backgroundColor: 'background.default' }}>
-        <Typography color="text.secondary">
-          Please select or create a workflow to begin designing.
-        </Typography>
+        <Typography color="text.secondary">Please select or create a workflow to begin designing.</Typography>
       </Paper>
     );
   }
@@ -55,38 +53,14 @@ export const WorkflowDesigner: React.FC = () => {
   const handleAddStep = () => {
     let defaultConfig: any = {};
     if (activeStepTypeToAdd === 'delay') defaultConfig = { durationMs: 1000 };
-    if (activeStepTypeToAdd === 'script')
-      defaultConfig = {
-        scriptCode: '// Custom code here\ncontext.variables.myVal = "hello";\nreturn 42;',
-        outputVariable: 'scriptResult',
-      };
-    if (activeStepTypeToAdd === 'ai_task')
-      defaultConfig = {
-        prompt: 'Write a caption intro',
-        taskType: 'script',
-        outputVariable: 'aiOutput',
-      };
-    if (activeStepTypeToAdd === 'command')
-      defaultConfig = { actionId: 'insert_clip', arguments: { type: 'video', name: 'Intro Clip' } };
-    if (activeStepTypeToAdd === 'condition')
-      defaultConfig = {
-        field: 'loopIndex',
-        operator: '==',
-        value: '1',
-        ifTrueStepId: '',
-        ifFalseStepId: '',
-      };
-    if (activeStepTypeToAdd === 'transform')
-      defaultConfig = {
-        input: '${generatedScript}',
-        outputVariable: 'transformedText',
-        expression: 'uppercase',
-      };
+    if (activeStepTypeToAdd === 'script') defaultConfig = { scriptCode: '// Custom code here\ncontext.variables.myVal = "hello";\nreturn 42;', outputVariable: 'scriptResult' };
+    if (activeStepTypeToAdd === 'ai_task') defaultConfig = { prompt: 'Write a caption intro', taskType: 'script', outputVariable: 'aiOutput' };
+    if (activeStepTypeToAdd === 'command') defaultConfig = { actionId: 'insert_clip', arguments: { type: 'video', name: 'Intro Clip' } };
+    if (activeStepTypeToAdd === 'condition') defaultConfig = { field: 'loopIndex', operator: '==', value: '1', ifTrueStepId: '', ifFalseStepId: '' };
+    if (activeStepTypeToAdd === 'transform') defaultConfig = { input: '${generatedScript}', outputVariable: 'transformedText', expression: 'uppercase' };
     if (activeStepTypeToAdd === 'render') defaultConfig = { outputVariable: 'renderResult' };
-    if (activeStepTypeToAdd === 'notification')
-      defaultConfig = { title: 'Pipeline Alert', message: 'Hello World', level: 'info' };
-    if (activeStepTypeToAdd === 'loop')
-      defaultConfig = { iterations: 3, steps: [], outputVariable: 'loopResult' };
+    if (activeStepTypeToAdd === 'notification') defaultConfig = { title: 'Pipeline Alert', message: 'Hello World', level: 'info' };
+    if (activeStepTypeToAdd === 'loop') defaultConfig = { iterations: 3, steps: [], outputVariable: 'loopResult' };
 
     engine.addStep(activeWf.id, {
       name: newStepName || `Run ${activeStepTypeToAdd}`,
@@ -106,10 +80,7 @@ export const WorkflowDesigner: React.FC = () => {
     const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(jsonStr);
     const downloadAnchor = document.createElement('a');
     downloadAnchor.setAttribute('href', dataStr);
-    downloadAnchor.setAttribute(
-      'download',
-      `${activeWf.name.toLowerCase().replace(/\s+/g, '_')}_workflow.json`,
-    );
+    downloadAnchor.setAttribute('download', `${activeWf.name.toLowerCase().replace(/\s+/g, '_')}_workflow.json`);
     document.body.appendChild(downloadAnchor);
     downloadAnchor.click();
     downloadAnchor.remove();
@@ -125,21 +96,13 @@ export const WorkflowDesigner: React.FC = () => {
 
   return (
     <Box>
-      <Paper
-        sx={{ p: 2, mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
-      >
+      <Paper sx={{ p: 2, mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Box>
           <Typography variant="h5" fontWeight="bold">
             {activeWf.name}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Trigger:{' '}
-            <Chip
-              label={activeWf.trigger.type.toUpperCase()}
-              size="small"
-              color="primary"
-              sx={{ ml: 1 }}
-            />
+            Trigger: <Chip label={activeWf.trigger.type.toUpperCase()} size="small" color="primary" sx={{ ml: 1 }} />
           </Typography>
         </Box>
         <Box sx={{ display: 'flex', gap: 1.5 }}>
@@ -171,9 +134,7 @@ export const WorkflowDesigner: React.FC = () => {
       {validationRun && (
         <Box sx={{ mb: 3 }}>
           {engine.validationErrors.length === 0 ? (
-            <Alert severity="success">
-              Workflow contains no cycle or configuration errors! Ready for execution.
-            </Alert>
+            <Alert severity="success">Workflow contains no cycle or configuration errors! Ready for execution.</Alert>
           ) : (
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
               {engine.validationErrors.map((err, i) => (
@@ -193,16 +154,7 @@ export const WorkflowDesigner: React.FC = () => {
             <Typography variant="h6" gutterBottom fontWeight="bold">
               Canvas Sequence
             </Typography>
-            <Box
-              sx={{
-                display: 'flex',
-                gap: 2,
-                mb: 3,
-                p: 2,
-                border: '1px dashed grey',
-                borderRadius: 1,
-              }}
-            >
+            <Box sx={{ display: 'flex', gap: 2, mb: 3, p: 2, border: '1px dashed grey', borderRadius: 1 }}>
               <FormControl size="small" sx={{ minWidth: 150 }}>
                 <InputLabel>Step Type</InputLabel>
                 <Select
@@ -254,20 +206,9 @@ export const WorkflowDesigner: React.FC = () => {
                         onClick={() => engine.setSelectedStepId(step.id)}
                       >
                         <CardContent sx={{ p: '16px !important' }}>
-                          <Box
-                            sx={{
-                              display: 'flex',
-                              justifyContent: 'space-between',
-                              alignItems: 'center',
-                            }}
-                          >
+                          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                              <Chip
-                                label={step.type.toUpperCase()}
-                                size="small"
-                                color="primary"
-                                variant="outlined"
-                              />
+                              <Chip label={step.type.toUpperCase()} size="small" color="primary" variant="outlined" />
                               <Typography variant="subtitle1" fontWeight="bold">
                                 {step.name}
                               </Typography>
@@ -289,16 +230,10 @@ export const WorkflowDesigner: React.FC = () => {
                                 size="small"
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  engine.updateStep(activeWf.id, step.id, {
-                                    collapsed: !step.collapsed,
-                                  });
+                                  engine.updateStep(activeWf.id, step.id, { collapsed: !step.collapsed });
                                 }}
                               >
-                                {isCollapsed ? (
-                                  <ExpandMoreIcon fontSize="small" />
-                                ) : (
-                                  <ExpandLessIcon fontSize="small" />
-                                )}
+                                {isCollapsed ? <ExpandMoreIcon fontSize="small" /> : <ExpandLessIcon fontSize="small" />}
                               </IconButton>
                               <IconButton
                                 size="small"
@@ -318,23 +253,16 @@ export const WorkflowDesigner: React.FC = () => {
                               <Typography variant="caption" color="text.secondary" display="block">
                                 Configuration Payload:
                               </Typography>
-                              <Paper
-                                variant="outlined"
-                                sx={{ p: 1, backgroundColor: 'action.hover', mt: 0.5 }}
-                              >
+                              <Paper variant="outlined" sx={{ p: 1, backgroundColor: 'action.hover', mt: 0.5 }}>
                                 <pre style={{ margin: 0, fontSize: '0.8rem', overflowX: 'auto' }}>
                                   {JSON.stringify(step.config, null, 2)}
                                 </pre>
                               </Paper>
                               {step.nextStepId && (
-                                <Box
-                                  sx={{ mt: 1.5, display: 'flex', alignItems: 'center', gap: 1 }}
-                                >
+                                <Box sx={{ mt: 1.5, display: 'flex', alignItems: 'center', gap: 1 }}>
                                   <ConnectorIcon fontSize="small" color="action" />
                                   <Typography variant="caption" color="text.secondary">
-                                    Next:{' '}
-                                    {activeWf.steps.find((s) => s.id === step.nextStepId)?.name ||
-                                      step.nextStepId}
+                                    Next: {activeWf.steps.find((s) => s.id === step.nextStepId)?.name || step.nextStepId}
                                   </Typography>
                                 </Box>
                               )}
@@ -356,22 +284,13 @@ export const WorkflowDesigner: React.FC = () => {
 
         <Grid item xs={12} md={4}>
           <Paper sx={{ p: 2 }}>
-            <Typography
-              variant="h6"
-              gutterBottom
-              fontWeight="bold"
-              sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
-            >
+            <Typography variant="h6" gutterBottom fontWeight="bold" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <ConfigIcon /> Property Inspector
             </Typography>
             <Divider sx={{ mb: 2 }} />
 
             {!selectedStep ? (
-              <Typography
-                color="text.secondary"
-                variant="body2"
-                sx={{ py: 4, textAlign: 'center' }}
-              >
+              <Typography color="text.secondary" variant="body2" sx={{ py: 4, textAlign: 'center' }}>
                 Select a step on the canvas to configure properties or change flow routing.
               </Typography>
             ) : (
@@ -381,9 +300,7 @@ export const WorkflowDesigner: React.FC = () => {
                   size="small"
                   label="Step Name"
                   value={selectedStep.name}
-                  onChange={(e) =>
-                    engine.updateStep(activeWf.id, selectedStep.id, { name: e.target.value })
-                  }
+                  onChange={(e) => engine.updateStep(activeWf.id, selectedStep.id, { name: e.target.value })}
                 />
 
                 <FormControl fullWidth size="small">
@@ -391,9 +308,7 @@ export const WorkflowDesigner: React.FC = () => {
                   <Select
                     value={selectedStep.nextStepId || ''}
                     label="Route to Next Step"
-                    onChange={(e) =>
-                      engine.connectSteps(activeWf.id, selectedStep.id, e.target.value)
-                    }
+                    onChange={(e) => engine.connectSteps(activeWf.id, selectedStep.id, e.target.value)}
                   >
                     <MenuItem value="">-- End Flow Sequence --</MenuItem>
                     {activeWf.steps
@@ -498,11 +413,7 @@ export const WorkflowDesigner: React.FC = () => {
                       multiline
                       rows={3}
                       label="Arguments JSON Payload"
-                      value={
-                        typeof selectedStep.config.arguments === 'object'
-                          ? JSON.stringify(selectedStep.config.arguments, null, 2)
-                          : selectedStep.config.arguments || '{}'
-                      }
+                      value={typeof selectedStep.config.arguments === 'object' ? JSON.stringify(selectedStep.config.arguments, null, 2) : selectedStep.config.arguments || '{}'}
                       onChange={(e) => {
                         try {
                           const parsed = JSON.parse(e.target.value);

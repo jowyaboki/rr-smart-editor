@@ -2,54 +2,34 @@ import React from 'react';
 import { useBroadcastStore } from '../store/broadcastStore';
 
 export const ReplayPanel: React.FC = () => {
-  const { savedReplays, isReplayBufferActive, startReplayBuffer, stopReplayBuffer, captureReplay } =
-    useBroadcastStore();
+  const {
+    savedReplays,
+    isReplayBufferActive,
+    startReplayBuffer,
+    stopReplayBuffer,
+    captureReplay,
+  } = useBroadcastStore();
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '16px',
-        backgroundColor: '#16161a',
-        padding: '20px',
-        borderRadius: '8px',
-        border: '1px solid #27272a',
-        fontFamily: 'Inter, system-ui, sans-serif',
-      }}
-    >
-      <h3
-        style={{
-          fontSize: '15px',
-          fontWeight: 600,
-          color: '#f8fafc',
-          margin: 0,
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-        }}
-      >
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '16px',
+      backgroundColor: '#16161a',
+      padding: '20px',
+      borderRadius: '8px',
+      border: '1px solid #27272a',
+      fontFamily: 'Inter, system-ui, sans-serif',
+    }}>
+      <h3 style={{ fontSize: '15px', fontWeight: 600, color: '#f8fafc', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
         🔄 Slow-Motion Replay Center
       </h3>
 
       {/* REPLAY BUFFER POWER CONTROL */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          backgroundColor: '#1e1e24',
-          padding: '12px',
-          borderRadius: '6px',
-        }}
-      >
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', backgroundColor: '#1e1e24', padding: '12px', borderRadius: '6px' }}>
         <div>
-          <span style={{ fontSize: '12px', fontWeight: 'bold', color: '#fff', display: 'block' }}>
-            Replay Ring Buffer
-          </span>
-          <span style={{ fontSize: '10px', color: '#71717a' }}>
-            Buffers active video frame inputs in memory
-          </span>
+          <span style={{ fontSize: '12px', fontWeight: 'bold', color: '#fff', display: 'block' }}>Replay Ring Buffer</span>
+          <span style={{ fontSize: '10px', color: '#71717a' }}>Buffers active video frame inputs in memory</span>
         </div>
         <button
           onClick={() => {
@@ -112,27 +92,10 @@ export const ReplayPanel: React.FC = () => {
 
       {/* REPLAYS REPERTOIRE */}
       <div>
-        <span
-          style={{
-            fontSize: '11px',
-            color: '#a1a1aa',
-            fontWeight: 600,
-            textTransform: 'uppercase',
-            display: 'block',
-            marginBottom: '8px',
-          }}
-        >
+        <span style={{ fontSize: '11px', color: '#a1a1aa', fontWeight: 600, textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>
           Captured Replays ({savedReplays.length}):
         </span>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '8px',
-            maxHeight: '180px',
-            overflowY: 'auto',
-          }}
-        >
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxHeight: '180px', overflowY: 'auto' }}>
           {savedReplays.map((rep) => (
             <div
               key={rep.id}
@@ -152,18 +115,13 @@ export const ReplayPanel: React.FC = () => {
                 <span style={{ color: '#71717a' }}>
                   Duration: {rep.durationMs / 1000}s @ {rep.playbackSpeed * 100}% speed
                 </span>
-                <span
-                  style={{
-                    color: '#a1a1aa',
-                    display: 'block',
-                    marginTop: '2px',
-                    fontStyle: 'italic',
-                  }}
-                >
+                <span style={{ color: '#a1a1aa', display: 'block', marginTop: '2px', fontStyle: 'italic' }}>
                   Note: {rep.markerNotes}
                 </span>
               </div>
-              <span style={{ fontSize: '14px' }}>{'★'.repeat(rep.rating || 5)}</span>
+              <span style={{ fontSize: '14px' }}>
+                {'★'.repeat(rep.rating || 5)}
+              </span>
             </div>
           ))}
         </div>

@@ -15,50 +15,28 @@ export class ValidationService {
 
     // 1. Basic manifest schema fields check
     if (!manifest.id || !manifest.name || !manifest.version) {
-      errors.push({
-        field: 'id/name/version',
-        message: 'Core identity fields cannot be empty.',
-        severity: 'error',
-      });
+      errors.push({ field: 'id/name/version', message: 'Core identity fields cannot be empty.', severity: 'error' });
     }
 
     // 2. Strict permission verification
-    const allowedPermissions = [
-      'filesystem_read',
-      'filesystem_write',
-      'ai_assistant',
-      'distributed_render',
-      'clipboard',
-    ];
-    manifest.permissions.forEach((perm) => {
+    const allowedPermissions = ['filesystem_read', 'filesystem_write', 'ai_assistant', 'distributed_render', 'clipboard'];
+    manifest.permissions.forEach(perm => {
       if (!allowedPermissions.includes(perm)) {
-        errors.push({
-          field: 'permissions',
-          message: `Requested unauthorized/unsafe permission scope: '${perm}'`,
-          severity: 'error',
-        });
+        errors.push({ field: 'permissions', message: `Requested unauthorized/unsafe permission scope: '${perm}'`, severity: 'error' });
       }
     });
 
     // 3. Dependency structure matches check
-    Object.keys(manifest.dependencies).forEach((dep) => {
+    Object.keys(manifest.dependencies).forEach(dep => {
       const ver = manifest.dependencies[dep];
       if (!ver || ver === '') {
-        errors.push({
-          field: `dependencies.${dep}`,
-          message: 'Dependency version cannot be blank.',
-          severity: 'error',
-        });
+        errors.push({ field: `dependencies.${dep}`, message: 'Dependency version cannot be blank.', severity: 'error' });
       }
     });
 
     // 4. Backward compatibility check
     if (parseFloat(manifest.compatibility.minEditorVersion) > 1.0) {
-      errors.push({
-        field: 'compatibility',
-        message: 'Plugin requires a newer editor version than current release.',
-        severity: 'warning',
-      });
+      errors.push({ field: 'compatibility', message: 'Plugin requires a newer editor version than current release.', severity: 'warning' });
     }
 
     // Run pluggable custom validators
@@ -68,7 +46,7 @@ export class ValidationService {
     }
 
     return {
-      isValid: errors.filter((e) => e.severity === 'error').length === 0,
+      isValid: errors.filter(e => e.severity === 'error').length === 0,
       errors,
     };
   }
