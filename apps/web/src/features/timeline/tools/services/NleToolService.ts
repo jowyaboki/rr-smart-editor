@@ -7,7 +7,7 @@ export class NleToolService {
    */
   public static splitClip(
     clip: VirtualClip,
-    splitFrame: number
+    splitFrame: number,
   ): { left: VirtualClip; right: VirtualClip } {
     if (splitFrame <= clip.startFrame || splitFrame >= clip.startFrame + clip.duration) {
       throw new Error('Split frame must fall strictly inside the clip boundaries.');
@@ -47,12 +47,12 @@ export class NleToolService {
     clipId: string,
     deltaFrames: number, // positive (extending) or negative (shrinking)
     edge: 'start' | 'end',
-    clips: VirtualClip[]
+    clips: VirtualClip[],
   ): VirtualClip[] {
-    const targetClip = clips.find(c => c.id === clipId);
+    const targetClip = clips.find((c) => c.id === clipId);
     if (!targetClip) return clips;
 
-    return clips.map(clip => {
+    return clips.map((clip) => {
       // 1. If it's the target clip, adjust startFrame or duration
       if (clip.id === clipId) {
         if (edge === 'start') {
@@ -94,9 +94,9 @@ export class NleToolService {
     clipAId: string,
     clipBId: string,
     deltaFrames: number, // positive shifts edit point right, negative shifts left
-    clips: VirtualClip[]
+    clips: VirtualClip[],
   ): VirtualClip[] {
-    return clips.map(clip => {
+    return clips.map((clip) => {
       if (clip.id === clipAId) {
         // Clip A is on the left: adjust duration
         return {
@@ -125,9 +125,9 @@ export class NleToolService {
   public static applySlipEdit(
     clipId: string,
     slipFrames: number, // positive (slips forward), negative (slips backward)
-    clips: VirtualClip[]
+    clips: VirtualClip[],
   ): VirtualClip[] {
-    return clips.map(clip => {
+    return clips.map((clip) => {
       if (clip.id === clipId) {
         const metadata = clip.metadata ? { ...clip.metadata } : {};
         const currentSourceStart = metadata.sourceStartFrame || 0;
@@ -151,9 +151,9 @@ export class NleToolService {
     slideDelta: number,
     clipAId: string, // Preceding clip
     clipBId: string, // Succeeding clip
-    clips: VirtualClip[]
+    clips: VirtualClip[],
   ): VirtualClip[] {
-    return clips.map(clip => {
+    return clips.map((clip) => {
       if (clip.id === clipId) {
         // Slide target clip: just shifts horizontally
         return {
@@ -185,27 +185,21 @@ export class NleToolService {
   /**
    * Lift Operation - Deletes a clip, leaving a clean gap on the timeline.
    */
-  public static liftClip(
-    clipId: string,
-    clips: VirtualClip[]
-  ): VirtualClip[] {
-    return clips.filter(c => c.id !== clipId);
+  public static liftClip(clipId: string, clips: VirtualClip[]): VirtualClip[] {
+    return clips.filter((c) => c.id !== clipId);
   }
 
   /**
    * Extract Operation - Deletes a clip and closes the gap (ripple delete).
    */
-  public static extractClip(
-    clipId: string,
-    clips: VirtualClip[]
-  ): VirtualClip[] {
-    const targetClip = clips.find(c => c.id === clipId);
+  public static extractClip(clipId: string, clips: VirtualClip[]): VirtualClip[] {
+    const targetClip = clips.find((c) => c.id === clipId);
     if (!targetClip) return clips;
 
-    const remaining = clips.filter(c => c.id !== clipId);
+    const remaining = clips.filter((c) => c.id !== clipId);
     const duration = targetClip.duration;
 
-    return remaining.map(clip => {
+    return remaining.map((clip) => {
       if (clip.trackId === targetClip.trackId && clip.startFrame > targetClip.startFrame) {
         return {
           ...clip,

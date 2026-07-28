@@ -1,9 +1,13 @@
 import { describe, test } from 'node:test';
 import assert from 'node:assert';
-import { MotionGraphicsComposerEngine, CompositionLayer, PreCompositionLayer, CameraLayer } from '../src/index';
+import {
+  MotionGraphicsComposerEngine,
+  CompositionLayer,
+  PreCompositionLayer,
+  CameraLayer,
+} from '../src/index';
 
 describe('Motion Graphics Composer SDK Core Unit Tests', () => {
-
   test('Hierarchical Parenting & Transform3D compounds', () => {
     const engine = new MotionGraphicsComposerEngine();
 
@@ -62,7 +66,13 @@ describe('Motion Graphics Composer SDK Core Unit Tests', () => {
       id: 'pre_l1',
       name: 'Nested Sub Comp A',
       type: 'pre_composition',
-      transform: { position: [0,0,0], rotation: [0,0,0], scale: [1,1,1], anchorPoint: [0,0], opacity: 1 },
+      transform: {
+        position: [0, 0, 0],
+        rotation: [0, 0, 0],
+        scale: [1, 1, 1],
+        anchorPoint: [0, 0],
+        opacity: 1,
+      },
       startFrame: 0,
       duration: 100,
       isLocked: false,
@@ -76,7 +86,13 @@ describe('Motion Graphics Composer SDK Core Unit Tests', () => {
       id: 'pre_l2',
       name: 'Nested Sub Comp B',
       type: 'pre_composition',
-      transform: { position: [0,0,0], rotation: [0,0,0], scale: [1,1,1], anchorPoint: [0,0], opacity: 1 },
+      transform: {
+        position: [0, 0, 0],
+        rotation: [0, 0, 0],
+        scale: [1, 1, 1],
+        anchorPoint: [0, 0],
+        opacity: 1,
+      },
       startFrame: 0,
       duration: 100,
       isLocked: false,
@@ -109,7 +125,13 @@ describe('Motion Graphics Composer SDK Core Unit Tests', () => {
       id: 'tracker',
       name: 'Tracker Arrow',
       type: 'null',
-      transform: { position: [0, 0, 0], rotation: [0, 0, 0], scale: [1,1,1], anchorPoint: [0,0], opacity: 1 },
+      transform: {
+        position: [0, 0, 0],
+        rotation: [0, 0, 0],
+        scale: [1, 1, 1],
+        anchorPoint: [0, 0],
+        opacity: 1,
+      },
       startFrame: 0,
       duration: 100,
       isLocked: false,
@@ -120,7 +142,13 @@ describe('Motion Graphics Composer SDK Core Unit Tests', () => {
       id: 'target',
       name: 'Target Spot',
       type: 'null',
-      transform: { position: [100, 100, 0], rotation: [0, 0, 0], scale: [1,1,1], anchorPoint: [0,0], opacity: 1 },
+      transform: {
+        position: [100, 100, 0],
+        rotation: [0, 0, 0],
+        scale: [1, 1, 1],
+        anchorPoint: [0, 0],
+        opacity: 1,
+      },
       startFrame: 0,
       duration: 100,
       isLocked: false,
@@ -128,7 +156,13 @@ describe('Motion Graphics Composer SDK Core Unit Tests', () => {
     };
 
     const constraints = [
-      { id: 'const_1', type: 'look_at' as const, sourceLayerId: 'tracker', targetId: 'target', weight: 1.0 }
+      {
+        id: 'const_1',
+        type: 'look_at' as const,
+        sourceLayerId: 'tracker',
+        targetId: 'target',
+        weight: 1.0,
+      },
     ];
 
     engine.rigService.resolveConstraints(layerA, constraints, [layerA, layerB]);
@@ -144,7 +178,13 @@ describe('Motion Graphics Composer SDK Core Unit Tests', () => {
       id: 'cam_1',
       name: 'Perspective Camera',
       type: 'camera',
-      transform: { position: [0, 0, -50], rotation: [0,0,0], scale: [1,1,1], anchorPoint: [0,0], opacity: 1 },
+      transform: {
+        position: [0, 0, -50],
+        rotation: [0, 0, 0],
+        scale: [1, 1, 1],
+        anchorPoint: [0, 0],
+        opacity: 1,
+      },
       startFrame: 0,
       duration: 100,
       isLocked: false,
@@ -158,7 +198,13 @@ describe('Motion Graphics Composer SDK Core Unit Tests', () => {
       id: 'clip_1',
       name: '3D Panel',
       type: 'media',
-      transform: { position: [10, 20, 50], rotation: [0,0,0], scale: [1,1,1], anchorPoint: [0,0], opacity: 1 },
+      transform: {
+        position: [10, 20, 50],
+        rotation: [0, 0, 0],
+        scale: [1, 1, 1],
+        anchorPoint: [0, 0],
+        opacity: 1,
+      },
       startFrame: 0,
       duration: 100,
       isLocked: false,
@@ -180,8 +226,17 @@ describe('Motion Graphics Composer SDK Core Unit Tests', () => {
       id: 'text_1',
       name: 'Main Title text',
       type: 'text',
-      transform: { position: [0,0,0], rotation: [0,0,0], scale: [1,1,1], anchorPoint: [0,0], opacity: 1 },
-      startFrame: 0, duration: 100, isLocked: false, isShy: false,
+      transform: {
+        position: [0, 0, 0],
+        rotation: [0, 0, 0],
+        scale: [1, 1, 1],
+        anchorPoint: [0, 0],
+        opacity: 1,
+      },
+      startFrame: 0,
+      duration: 100,
+      isLocked: false,
+      isShy: false,
       text: 'Original Title',
       fontFamily: 'Arial',
       fontSize: 24,
@@ -197,8 +252,17 @@ describe('Motion Graphics Composer SDK Core Unit Tests', () => {
       id: 'pre_l1',
       name: 'Nested Template Comp',
       type: 'pre_composition',
-      transform: { position: [0,0,0], rotation: [0,0,0], scale: [1,1,1], anchorPoint: [0,0], opacity: 1 },
-      startFrame: 0, duration: 100, isLocked: false, isShy: false,
+      transform: {
+        position: [0, 0, 0],
+        rotation: [0, 0, 0],
+        scale: [1, 1, 1],
+        anchorPoint: [0, 0],
+        opacity: 1,
+      },
+      startFrame: 0,
+      duration: 100,
+      isLocked: false,
+      isShy: false,
       nestedCompositionId: 'comp_template',
       timeStretch: 1,
     };

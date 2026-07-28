@@ -18,7 +18,7 @@ export class PackageManager {
    */
   public async installPackage(
     manifestPayload: any,
-    onConfirmPermission?: (extId: string, perm: any) => Promise<boolean>
+    onConfirmPermission?: (extId: string, perm: any) => Promise<boolean>,
   ): Promise<LocalPackage> {
     // 1. Manifest static structure and signature validation
     const validation = this.validator.validateManifest(manifestPayload);
@@ -32,10 +32,12 @@ export class PackageManager {
     const authorized = await this.permissions.requestPermissions(
       manifest.id,
       manifest.permissions,
-      onConfirmPermission
+      onConfirmPermission,
     );
     if (!authorized) {
-      throw new Error(`Installation aborted: permissions declined for extension "${manifest.displayName}"`);
+      throw new Error(
+        `Installation aborted: permissions declined for extension "${manifest.displayName}"`,
+      );
     }
 
     // 3. Register as installed package
@@ -59,22 +61,36 @@ export class PackageManager {
     }
 
     // Solve dependencies
-    const nodes: DependencyNode[] = Array.from(this.installedPackages.values()).map(p => ({
+    const nodes: DependencyNode[] = Array.from(this.installedPackages.values()).map((p) => ({
       id: p.manifest.id,
       version: p.manifest.version,
       dependencies: p.manifest.dependencies || {},
     }));
 
-    const allRecords = nodes.reduce((acc, curr) => {
-      acc[acc.length] = curr;
-      return acc;
-    }, [] as DependencyNode[]).reduce((acc, n) => {
-      acc[n.id] = n;
-      return acc;
-    }, {} as Record<string, DependencyNode>);
+    const allRecords = nodes
+      .reduce((acc, curr) => {
+        acc[acc.length] = curr;
+        return acc;
+      }, [] as DependencyNode[])
+      .reduce(
+        (acc, n) => {
+          acc[n.id] = n;
+          return acc;
+        },
+        {} as Record<string, DependencyNode>,
+      );
 
     // Resolve topological execution
-    this.resolver.resolve([{ id: pkg.manifest.id, version: pkg.manifest.version, dependencies: pkg.manifest.dependencies || {} }], allRecords);
+    this.resolver.resolve(
+      [
+        {
+          id: pkg.manifest.id,
+          version: pkg.manifest.version,
+          dependencies: pkg.manifest.dependencies || {},
+        },
+      ],
+      allRecords,
+    );
 
     pkg.status = 'active';
 
@@ -108,7 +124,7 @@ export class PackageManager {
    */
   public async updatePackage(
     newManifestPayload: any,
-    onConfirmPermission?: (extId: string, perm: any) => Promise<boolean>
+    onConfirmPermission?: (extId: string, perm: any) => Promise<boolean>,
   ): Promise<LocalPackage> {
     const manifest = newManifestPayload as ExtensionManifest;
     const oldPkg = this.installedPackages.get(manifest.id);
@@ -181,7 +197,7 @@ export class PackageManager {
    * Exports installed packages collection metadata to JSON
    */
   public exportCollection(): string {
-    const manifests = Array.from(this.installedPackages.values()).map(p => p.manifest);
+    const manifests = Array.from(this.installedPackages.values()).map((p) => p.manifest);
     return JSON.stringify(manifests);
   }
 
@@ -190,7 +206,7 @@ export class PackageManager {
    */
   public async importCollection(
     json: string,
-    onConfirmPermission?: (extId: string, perm: any) => Promise<boolean>
+    onConfirmPermission?: (extId: string, perm: any) => Promise<boolean>,
   ): Promise<LocalPackage[]> {
     const manifests = JSON.parse(json) as ExtensionManifest[];
     const imported: LocalPackage[] = [];
@@ -212,9 +228,7 @@ export class PackageManager {
       id,
       downloads: 15300,
       rating: 4.8,
-      reviews: [
-        { author: 'Jules', stars: 5, comment: 'Phenomenal NLE timelines extension!' }
-      ],
+      reviews: [{ author: 'Jules', stars: 5, comment: 'Phenomenal NLE timelines extension!' }],
       verifiedPublisher: true,
       publisherName: 'RR Smart Studio',
       autoUpdateEnabled: true,

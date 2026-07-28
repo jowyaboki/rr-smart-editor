@@ -55,13 +55,13 @@ export class ReplayService {
   }
 
   public setPlaybackSpeed(clipId: string, speed: number): void {
-    const clip = this.savedClips.find(c => c.id === clipId);
+    const clip = this.savedClips.find((c) => c.id === clipId);
     if (!clip) throw new Error(`Replay clip ${clipId} not found.`);
     clip.playbackSpeed = speed;
   }
 
   public addMarkerToClip(clipId: string, notes: string): void {
-    const clip = this.savedClips.find(c => c.id === clipId);
+    const clip = this.savedClips.find((c) => c.id === clipId);
     if (!clip) throw new Error(`Replay clip ${clipId} not found.`);
     clip.markerNotes = notes;
   }

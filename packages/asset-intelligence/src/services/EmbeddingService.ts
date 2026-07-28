@@ -57,6 +57,6 @@ export class EmbeddingService {
     }
     // L2 Normalize
     const magnitude = Math.sqrt(vector.reduce((sum, val) => sum + val * val, 0)) || 1;
-    return vector.map(val => val / magnitude);
+    return vector.map((val) => val / magnitude);
   }
 }

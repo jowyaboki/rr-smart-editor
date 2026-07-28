@@ -58,7 +58,9 @@ export class ${config.name}Engine {
 
     return {
       success: true,
-      manifestFiles: files.map(f => `${config.outputDirectory}/${config.name.toLowerCase()}/${f}`),
+      manifestFiles: files.map(
+        (f) => `${config.outputDirectory}/${config.name.toLowerCase()}/${f}`,
+      ),
       boilerplateCode,
     };
   }

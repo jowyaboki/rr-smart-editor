@@ -3,7 +3,6 @@ import assert from 'node:assert';
 import { DeploymentPlatformEngine } from '../src/index';
 
 describe('Enterprise Deployment Platform Core Unit Tests', () => {
-
   test('Fresh installation & Bootstrapping across modes', async () => {
     const engine = new DeploymentPlatformEngine();
 

@@ -6,15 +6,41 @@ export const ToolExecutorPanel: React.FC = () => {
 
   if (toolResults.length === 0) {
     return (
-      <div style={{ padding: '16px', background: '#111', color: '#666', border: '1px solid #333', borderRadius: '4px', textAlign: 'center', fontSize: '11px' }}>
+      <div
+        style={{
+          padding: '16px',
+          background: '#111',
+          color: '#666',
+          border: '1px solid #333',
+          borderRadius: '4px',
+          textAlign: 'center',
+          fontSize: '11px',
+        }}
+      >
         No tools executed in this session.
       </div>
     );
   }
 
   return (
-    <div style={{ padding: '12px', background: '#111', color: '#fff', border: '1px solid #333', borderRadius: '4px' }}>
-      <div style={{ fontSize: '12px', fontWeight: 'bold', marginBottom: '8px', borderBottom: '1px solid #333', paddingBottom: '4px' }}>
+    <div
+      style={{
+        padding: '12px',
+        background: '#111',
+        color: '#fff',
+        border: '1px solid #333',
+        borderRadius: '4px',
+      }}
+    >
+      <div
+        style={{
+          fontSize: '12px',
+          fontWeight: 'bold',
+          marginBottom: '8px',
+          borderBottom: '1px solid #333',
+          paddingBottom: '4px',
+        }}
+      >
         Tool Calling Telemetry Metrics
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
@@ -42,7 +68,9 @@ export const ToolExecutorPanel: React.FC = () => {
               {res.success ? (
                 <span style={{ color: '#4caf50', fontWeight: 'bold' }}>✓ Done</span>
               ) : (
-                <span style={{ color: '#f44336', fontWeight: 'bold' }}>✗ Error: {res.error?.code}</span>
+                <span style={{ color: '#f44336', fontWeight: 'bold' }}>
+                  ✗ Error: {res.error?.code}
+                </span>
               )}
             </div>
           </div>

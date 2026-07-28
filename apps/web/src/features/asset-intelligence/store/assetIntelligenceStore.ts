@@ -30,7 +30,13 @@ const clientLibrary: Asset[] = [
     },
     license: { licenseType: 'commercial', attributionRequired: false, commercialUse: true },
     approval: { status: 'approved', history: [] },
-    usage: { projectsUsedIn: ['proj_web_1'], scenesCount: 1, timelineClipsCount: 2, templatesUsedIn: [], publishedVideos: [] },
+    usage: {
+      projectsUsedIn: ['proj_web_1'],
+      scenesCount: 1,
+      timelineClipsCount: 2,
+      templatesUsedIn: [],
+      publishedVideos: [],
+    },
     versions: [],
     collections: [],
   },
@@ -49,7 +55,13 @@ const clientLibrary: Asset[] = [
     },
     license: { licenseType: 'royalty_free', attributionRequired: false, commercialUse: true },
     approval: { status: 'approved', history: [] },
-    usage: { projectsUsedIn: [], scenesCount: 0, timelineClipsCount: 0, templatesUsedIn: [], publishedVideos: [] },
+    usage: {
+      projectsUsedIn: [],
+      scenesCount: 0,
+      timelineClipsCount: 0,
+      templatesUsedIn: [],
+      publishedVideos: [],
+    },
     versions: [],
     collections: [],
   },
@@ -69,16 +81,40 @@ const clientLibrary: Asset[] = [
     },
     license: { licenseType: 'commercial', attributionRequired: true, commercialUse: true },
     approval: { status: 'approved', history: [] },
-    usage: { projectsUsedIn: [], scenesCount: 0, timelineClipsCount: 0, templatesUsedIn: [], publishedVideos: [] },
+    usage: {
+      projectsUsedIn: [],
+      scenesCount: 0,
+      timelineClipsCount: 0,
+      templatesUsedIn: [],
+      publishedVideos: [],
+    },
     versions: [],
     collections: [],
-  }
+  },
 ];
 
 const clientEmbeddings = [
-  { assetId: 'as_web_promo', vector: [0.85, 0.15, 0.0], provider: 'mock', dimensions: 3, createdAt: '' },
-  { assetId: 'as_web_audio', vector: [0.05, 0.05, 0.9], provider: 'mock', dimensions: 3, createdAt: '' },
-  { assetId: 'as_web_broll_sunset', vector: [0.75, 0.1, 0.15], provider: 'mock', dimensions: 3, createdAt: '' },
+  {
+    assetId: 'as_web_promo',
+    vector: [0.85, 0.15, 0.0],
+    provider: 'mock',
+    dimensions: 3,
+    createdAt: '',
+  },
+  {
+    assetId: 'as_web_audio',
+    vector: [0.05, 0.05, 0.9],
+    provider: 'mock',
+    dimensions: 3,
+    createdAt: '',
+  },
+  {
+    assetId: 'as_web_broll_sunset',
+    vector: [0.75, 0.1, 0.15],
+    provider: 'mock',
+    dimensions: 3,
+    createdAt: '',
+  },
 ];
 
 interface AssetIntelligenceState {
@@ -115,14 +151,18 @@ export const useAssetIntelligenceStore = create<AssetIntelligenceState>((set, ge
     isLoading: false,
 
     setSearchQuery: (query) => {
-      set(state => ({ searchQuery: { ...state.searchQuery, ...query } }));
+      set((state) => ({ searchQuery: { ...state.searchQuery, ...query } }));
     },
 
     performSearch: async () => {
       const { searchQuery, library } = get();
       set({ isLoading: true });
       try {
-        const results = await localEngine.searchService.search(searchQuery, library, clientEmbeddings);
+        const results = await localEngine.searchService.search(
+          searchQuery,
+          library,
+          clientEmbeddings,
+        );
         set({ searchResults: results });
       } catch (err) {
         console.error('Semantic search failed:', err);
@@ -133,12 +173,16 @@ export const useAssetIntelligenceStore = create<AssetIntelligenceState>((set, ge
 
     inspectAsset: async (assetId) => {
       const { library } = get();
-      const asset = library.find(a => a.id === assetId);
+      const asset = library.find((a) => a.id === assetId);
       if (!asset) return;
 
       set({ activeAsset: asset, isLoading: true, recommendations: [], moderationResult: null });
       try {
-        const recs = await localEngine.recommendationService.recommend(asset, library, clientEmbeddings);
+        const recs = await localEngine.recommendationService.recommend(
+          asset,
+          library,
+          clientEmbeddings,
+        );
         const mod = await localEngine.moderationService.moderate(asset, library);
         set({ recommendations: recs, moderationResult: mod });
       } catch (err) {
@@ -152,7 +196,11 @@ export const useAssetIntelligenceStore = create<AssetIntelligenceState>((set, ge
       const { library } = get();
       set({ isLoading: true });
       try {
-        const clus = await localEngine.clusteringService.cluster(library, clientEmbeddings, criteria);
+        const clus = await localEngine.clusteringService.cluster(
+          library,
+          clientEmbeddings,
+          criteria,
+        );
         set({ clusters: clus });
       } catch (err) {
         console.error('Semantic clustering failed:', err);
@@ -163,7 +211,7 @@ export const useAssetIntelligenceStore = create<AssetIntelligenceState>((set, ge
 
     analyzeAsset: async (assetId) => {
       const { library } = get();
-      const asset = library.find(a => a.id === assetId);
+      const asset = library.find((a) => a.id === assetId);
       if (!asset) return;
 
       set({ isLoading: true });
@@ -182,7 +230,12 @@ export const useAssetIntelligenceStore = create<AssetIntelligenceState>((set, ge
           extractEmotionTags: false,
           extractLanguage: false,
         };
-        const analysis = await localEngine.analyzeAndIndexAsset(asset, 'client_index', profile, library);
+        const analysis = await localEngine.analyzeAndIndexAsset(
+          asset,
+          'client_index',
+          profile,
+          library,
+        );
 
         // Update active asset details on success
         set({

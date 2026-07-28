@@ -5,7 +5,6 @@ import { globalCLIService } from '@ai-video-editor/cli';
 import { PluginTestHarness } from '@ai-video-editor/testing-sdk';
 
 describe('Developer Platform SDK Core Unit Tests', () => {
-
   test('Template Project Generation - Boilerplates', async () => {
     const engine = globalDevKitPlatformEngine;
 
@@ -44,7 +43,7 @@ describe('Developer Platform SDK Core Unit Tests', () => {
       entrypoint: 'src/index.ts',
       permissions: ['filesystem_read', 'ai_assistant'],
       dependencies: {
-        'typescript': '^5.0.0',
+        typescript: '^5.0.0',
       },
       compatibility: {
         minEditorVersion: '1.0.0',
@@ -64,7 +63,7 @@ describe('Developer Platform SDK Core Unit Tests', () => {
 
     const resBad = await engine.validationService.validateManifest(badManifest);
     assert.strictEqual(resBad.isValid, false);
-    assert.ok(resBad.errors.some(e => e.message.includes('dangerous_raw_eval_execution')));
+    assert.ok(resBad.errors.some((e) => e.message.includes('dangerous_raw_eval_execution')));
 
     // 3. Register a custom plugin validator
     const customValidator: DevKitValidator = {
@@ -72,7 +71,10 @@ describe('Developer Platform SDK Core Unit Tests', () => {
       name: 'Custom Check',
       validate: async (man) => {
         if (man.id === 'smart_effect_pro') {
-          return { isValid: false, errors: [{ field: 'id', message: 'Test custom block', severity: 'error' }] };
+          return {
+            isValid: false,
+            errors: [{ field: 'id', message: 'Test custom block', severity: 'error' }],
+          };
         }
         return { isValid: true, errors: [] };
       },
@@ -88,7 +90,7 @@ describe('Developer Platform SDK Core Unit Tests', () => {
     const docs = await engine.documentationService.generateDocs(
       'Plugin SDK Reference',
       'sdk_docs',
-      ['Plugin registration lifecycle', 'Zustand stores binding', 'Timeline IPC handlers']
+      ['Plugin registration lifecycle', 'Zustand stores binding', 'Timeline IPC handlers'],
     );
 
     assert.strictEqual(docs.title, 'Plugin SDK Reference');
@@ -122,7 +124,10 @@ describe('Developer Platform SDK Core Unit Tests', () => {
     assert.ok(docRes.output.includes('doctor diagnostics'));
 
     // Check project creation via CLI
-    const createRes = await globalCLIService.executeCommand('create', ['VoiceSynthesizer', 'ai_agent']);
+    const createRes = await globalCLIService.executeCommand('create', [
+      'VoiceSynthesizer',
+      'ai_agent',
+    ]);
     assert.strictEqual(createRes.success, true);
     assert.ok(createRes.output.includes('created successfully'));
     assert.ok(createRes.metadata.boilerplateCode.includes('VoiceSynthesizerAgent'));

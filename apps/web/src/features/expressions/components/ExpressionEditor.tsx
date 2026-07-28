@@ -26,9 +26,32 @@ export const ExpressionEditor: React.FC<ExpressionEditorProps> = ({ bindingId })
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const autocompleteWords = [
-    'time', 'frame', 'fps', 'duration', 'layer', 'project', 'scene', 'composition', 'mouse',
-    'clamp', 'lerp', 'ease', 'linear', 'random', 'noise', 'wiggle', 'smooth',
-    'sin', 'cos', 'tan', 'min', 'max', 'abs', 'floor', 'ceil', 'round'
+    'time',
+    'frame',
+    'fps',
+    'duration',
+    'layer',
+    'project',
+    'scene',
+    'composition',
+    'mouse',
+    'clamp',
+    'lerp',
+    'ease',
+    'linear',
+    'random',
+    'noise',
+    'wiggle',
+    'smooth',
+    'sin',
+    'cos',
+    'tan',
+    'min',
+    'max',
+    'abs',
+    'floor',
+    'ceil',
+    'round',
   ];
 
   useEffect(() => {
@@ -57,8 +80,10 @@ export const ExpressionEditor: React.FC<ExpressionEditorProps> = ({ bindingId })
     const lastWord = words[words.length - 1];
 
     if (lastWord && lastWord.length >= 1) {
-      const matches = autocompleteWords.filter((w) =>
-        w.toLowerCase().startsWith(lastWord.toLowerCase()) && w.toLowerCase() !== lastWord.toLowerCase()
+      const matches = autocompleteWords.filter(
+        (w) =>
+          w.toLowerCase().startsWith(lastWord.toLowerCase()) &&
+          w.toLowerCase() !== lastWord.toLowerCase(),
       );
       setSuggestions(matches);
       setSelectedIndex(0);
@@ -180,7 +205,10 @@ export const ExpressionEditor: React.FC<ExpressionEditorProps> = ({ bindingId })
             </span>
           </h2>
           <div style={{ fontSize: '11px', color: '#666', marginTop: '4px' }}>
-            Current Value: <span style={{ color: '#8bc34a', fontFamily: 'monospace' }}>{JSON.stringify(binding.lastValue)}</span>
+            Current Value:{' '}
+            <span style={{ color: '#8bc34a', fontFamily: 'monospace' }}>
+              {JSON.stringify(binding.lastValue)}
+            </span>
           </div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -199,7 +227,9 @@ export const ExpressionEditor: React.FC<ExpressionEditorProps> = ({ bindingId })
       {/* Workspace split */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 280px', gap: '20px' }}>
         {/* Editor text area */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', position: 'relative' }}>
+        <div
+          style={{ display: 'flex', flexDirection: 'column', gap: '10px', position: 'relative' }}
+        >
           <div style={{ fontSize: '12px', color: '#888' }}>Expression Code:</div>
           <div style={{ position: 'relative' }}>
             <textarea

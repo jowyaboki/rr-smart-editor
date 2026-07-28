@@ -11,10 +11,7 @@ export class CompositionService {
   /**
    * Performs recursive nesting validation to prevent cyclic precomposition structures
    */
-  public hasCyclicNesting(
-    targetCompId: string,
-    nestedCompId: string
-  ): boolean {
+  public hasCyclicNesting(targetCompId: string, nestedCompId: string): boolean {
     if (targetCompId === nestedCompId) {
       return true;
     }
@@ -25,7 +22,9 @@ export class CompositionService {
     }
 
     // Scan nested comp's layers for PreComposition layers
-    const preCompLayers = nestedComp.layers.filter(l => l.type === 'pre_composition') as PreCompositionLayer[];
+    const preCompLayers = nestedComp.layers.filter(
+      (l) => l.type === 'pre_composition',
+    ) as PreCompositionLayer[];
     for (const layer of preCompLayers) {
       if (this.hasCyclicNesting(targetCompId, layer.nestedCompositionId)) {
         return true;

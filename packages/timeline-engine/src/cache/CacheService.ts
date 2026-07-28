@@ -1,14 +1,20 @@
 export class CacheService {
-  private geometryCache: Record<string, { x: number; y: number; width: number; height: number }> = {};
+  private geometryCache: Record<string, { x: number; y: number; width: number; height: number }> =
+    {};
   private measurementCache: Record<string, number> = {};
   private thumbnailCache: Record<string, string> = {}; // Maps clipId -> pre-fetched thumbnail URL or keyframe marker
   private visibleRegionCache: any = null;
 
-  public getGeometry(id: string): { x: number; y: number; width: number; height: number } | undefined {
+  public getGeometry(
+    id: string,
+  ): { x: number; y: number; width: number; height: number } | undefined {
     return this.geometryCache[id];
   }
 
-  public setGeometry(id: string, geom: { x: number; y: number; width: number; height: number }): void {
+  public setGeometry(
+    id: string,
+    geom: { x: number; y: number; width: number; height: number },
+  ): void {
     this.geometryCache[id] = geom;
   }
 

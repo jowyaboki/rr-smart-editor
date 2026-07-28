@@ -77,7 +77,11 @@ function getMemberPath(node: ASTNode): string | null {
     if (!node.computed && node.property.type === 'Identifier') {
       return `${objPath}.${node.property.name}`;
     }
-    if (node.computed && node.property.type === 'Literal' && typeof node.property.value === 'string') {
+    if (
+      node.computed &&
+      node.property.type === 'Literal' &&
+      typeof node.property.value === 'string'
+    ) {
       return `${objPath}.${node.property.value}`;
     }
   }

@@ -13,7 +13,6 @@ import {
 } from '../src/index';
 
 describe('Effects & Compositing Engine Core Unit Tests', () => {
-
   test('Effect Factory and Parameter Serialization', () => {
     // 1. Create a Blur effect
     const blur = EffectFactory.createBlur(12);
@@ -50,7 +49,7 @@ describe('Effects & Compositing Engine Core Unit Tests', () => {
 
     // Safe mock pixel blending calculations (Normal / Multiply / Screen)
     const backdrop = new Uint8ClampedArray([100, 100, 100, 255]); // grey
-    const source = new Uint8ClampedArray([200, 200, 200, 255]);   // light grey
+    const source = new Uint8ClampedArray([200, 200, 200, 255]); // light grey
     const out = new Uint8ClampedArray(4);
 
     // Normal blending
@@ -110,7 +109,7 @@ describe('Effects & Compositing Engine Core Unit Tests', () => {
     cache.set('key4', 'val4');
     assert.strictEqual(cache.getCount(), 3);
     assert.strictEqual(cache.get('key2'), undefined); // Evicted!
-    assert.strictEqual(cache.get('key1'), 'val1');    // Still there!
+    assert.strictEqual(cache.get('key1'), 'val1'); // Still there!
     assert.strictEqual(cache.get('key4'), 'val4');
   });
 
@@ -138,12 +137,18 @@ describe('Effects & Compositing Engine Core Unit Tests', () => {
         type: 'glitch',
         enabled: true,
         parameters: {
-          frequency: { id: 'frequency', name: 'Frequency', type: 'number', value: 0.5, default: 0.5 },
+          frequency: {
+            id: 'frequency',
+            name: 'Frequency',
+            type: 'number',
+            value: 0.5,
+            default: 0.5,
+          },
         },
       }),
       (ctx, w, h, effect) => {
         // custom execution code
-      }
+      },
     );
 
     const created = engine.effectRegistry.createEffect('glitch');

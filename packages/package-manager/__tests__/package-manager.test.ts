@@ -9,7 +9,6 @@ import {
 } from '../src/index';
 
 describe('Package Manager & Extension SDK Core Unit Tests', () => {
-
   test('Manifest Schemas Validation and Signature Verification', () => {
     const valService = new ValidationService();
 

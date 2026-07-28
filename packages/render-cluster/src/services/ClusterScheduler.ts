@@ -14,34 +14,49 @@ export class ClusterScheduler {
   /**
    * Dispatches a shard to the most eligible active node based on the policy
    */
-  public scheduleShard(shard: RenderShard, policy: LoadBalancingPolicy = 'least_loaded'): ShardAssignment | null {
-    const nodes = this.registry.listNodes().filter(n => n.status === 'idle');
+  public scheduleShard(
+    shard: RenderShard,
+    policy: LoadBalancingPolicy = 'least_loaded',
+  ): ShardAssignment | null {
+    const nodes = this.registry.listNodes().filter((n) => n.status === 'idle');
     if (nodes.length === 0) return null;
 
     let targetNode: Node | null = null;
 
     if (policy === 'least_loaded') {
       // Find node with minimum CPU utilization
-      targetNode = nodes.reduce((min, node) =>
-        node.telemetry.cpuUsagePercent < min.telemetry.cpuUsagePercent ? node : min, nodes[0]);
+      targetNode = nodes.reduce(
+        (min, node) =>
+          node.telemetry.cpuUsagePercent < min.telemetry.cpuUsagePercent ? node : min,
+        nodes[0],
+      );
     } else if (policy === 'gpu_aware') {
       // Prioritize GPU enabled nodes with lowest GPU utilization
-      const gpuNodes = nodes.filter(n => n.capabilities.gpuEnabled);
+      const gpuNodes = nodes.filter((n) => n.capabilities.gpuEnabled);
       if (gpuNodes.length > 0) {
-        targetNode = gpuNodes.reduce((min, node) =>
-          (node.telemetry.gpuUsagePercent || 0) < (min.telemetry.gpuUsagePercent || 0) ? node : min, gpuNodes[0]);
+        targetNode = gpuNodes.reduce(
+          (min, node) =>
+            (node.telemetry.gpuUsagePercent || 0) < (min.telemetry.gpuUsagePercent || 0)
+              ? node
+              : min,
+          gpuNodes[0],
+        );
       } else {
         // Fallback
         targetNode = nodes[0];
       }
     } else if (policy === 'memory_aware') {
       // Find node with largest available memory
-      targetNode = nodes.reduce((max, node) =>
-        node.capabilities.memoryGb > max.capabilities.memoryGb ? node : max, nodes[0]);
+      targetNode = nodes.reduce(
+        (max, node) => (node.capabilities.memoryGb > max.capabilities.memoryGb ? node : max),
+        nodes[0],
+      );
     } else if (policy === 'cost_aware') {
       // Find node with lowest cost
-      targetNode = nodes.reduce((min, node) =>
-        node.costPerHour < min.costPerHour ? node : min, nodes[0]);
+      targetNode = nodes.reduce(
+        (min, node) => (node.costPerHour < min.costPerHour ? node : min),
+        nodes[0],
+      );
     }
 
     if (!targetNode) return null;
@@ -62,7 +77,7 @@ export class ClusterScheduler {
   }
 
   public getAssignmentForShard(shardId: string): ShardAssignment | undefined {
-    return this.assignments.find(a => a.shardId === shardId && a.status === 'active');
+    return this.assignments.find((a) => a.shardId === shardId && a.status === 'active');
   }
 
   public completeAssignment(shardId: string): void {

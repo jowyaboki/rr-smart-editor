@@ -1,6 +1,9 @@
 import { FrameContext, PreviewFrame } from '../types';
 
-export type PluginFrameEvaluator = (context: FrameContext, currentRenderData: Record<string, any>) => Record<string, any>;
+export type PluginFrameEvaluator = (
+  context: FrameContext,
+  currentRenderData: Record<string, any>,
+) => Record<string, any>;
 
 export class FrameEvaluator {
   private static pluginEvaluators: Record<string, PluginFrameEvaluator> = {};
@@ -23,7 +26,7 @@ export class FrameEvaluator {
   public static evaluateFrame(
     frameIndex: number,
     context: FrameContext,
-    quality: 'low' | 'high' = 'high'
+    quality: 'low' | 'high' = 'high',
   ): PreviewFrame {
     const startTime = performance.now();
 

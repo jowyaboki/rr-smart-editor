@@ -1,4 +1,16 @@
-import { LogEntry, LogLevel, Metric, Trace, Span, DiagnosticEvent, PerformanceSample, EngineHealth, Alert, ProfilerSnapshot, HealthStatus } from '../types';
+import {
+  LogEntry,
+  LogLevel,
+  Metric,
+  Trace,
+  Span,
+  DiagnosticEvent,
+  PerformanceSample,
+  EngineHealth,
+  Alert,
+  ProfilerSnapshot,
+  HealthStatus,
+} from '../types';
 
 // ==========================================
 // 1. LOGGER SERVICE
@@ -12,7 +24,7 @@ export class LoggerService {
     engine: string,
     component: string,
     message: string,
-    meta?: Partial<Pick<LogEntry, 'correlationId' | 'projectId' | 'sessionId' | 'duration'>>
+    meta?: Partial<Pick<LogEntry, 'correlationId' | 'projectId' | 'sessionId' | 'duration'>>,
   ): LogEntry {
     const entry: LogEntry = {
       id: `log-${Math.random().toString(36).substr(2, 9)}`,
@@ -25,7 +37,7 @@ export class LoggerService {
     };
 
     this.logs.push(entry);
-    this.onLogListeners.forEach(listener => listener(entry));
+    this.onLogListeners.forEach((listener) => listener(entry));
     return entry;
   }
 
@@ -53,7 +65,7 @@ export class MetricsService {
     name: string,
     value: number,
     engine: string,
-    labels?: Record<string, string>
+    labels?: Record<string, string>,
   ): Metric {
     const item: Metric = {
       name,
@@ -68,7 +80,7 @@ export class MetricsService {
 
   public getMetrics(name?: string): Metric[] {
     if (name) {
-      return this.metrics.filter(m => m.name === name);
+      return this.metrics.filter((m) => m.name === name);
     }
     return [...this.metrics];
   }
@@ -80,7 +92,7 @@ export class MetricsService {
     const matches = this.getMetrics(name);
     if (matches.length === 0) return 0;
 
-    const values = matches.map(m => m.value);
+    const values = matches.map((m) => m.value);
     if (method === 'max') return Math.max(...values);
     if (method === 'min') return Math.min(...values);
 
@@ -96,7 +108,12 @@ export class TraceService {
   private traces = new Map<string, Trace>();
   private activeSpans = new Map<string, Span>();
 
-  public startTrace(traceId: string, rootSpanName: string, engine: string, component: string): Span {
+  public startTrace(
+    traceId: string,
+    rootSpanName: string,
+    engine: string,
+    component: string,
+  ): Span {
     const rootSpan: Span = {
       id: `span-${Math.random().toString(36).substr(2, 9)}`,
       traceId,
@@ -118,7 +135,13 @@ export class TraceService {
     return rootSpan;
   }
 
-  public startSpan(traceId: string, name: string, engine: string, component: string, parentId?: string): Span {
+  public startSpan(
+    traceId: string,
+    name: string,
+    engine: string,
+    component: string,
+    parentId?: string,
+  ): Span {
     const span: Span = {
       id: `span-${Math.random().toString(36).substr(2, 9)}`,
       traceId,
@@ -139,7 +162,11 @@ export class TraceService {
     return span;
   }
 
-  public endSpan(spanId: string, status: Span['status'] = 'success', tags?: Record<string, string>): void {
+  public endSpan(
+    spanId: string,
+    status: Span['status'] = 'success',
+    tags?: Record<string, string>,
+  ): void {
     const span = this.activeSpans.get(spanId);
     if (span) {
       span.endTime = Date.now();
@@ -166,9 +193,13 @@ export class TraceService {
 export class ProfilerService {
   private snapshots: ProfilerSnapshot[] = [];
 
-  public captureSnapshot(cpuSamples: number[], memoryBytes: number, durationMs: number): ProfilerSnapshot {
+  public captureSnapshot(
+    cpuSamples: number[],
+    memoryBytes: number,
+    durationMs: number,
+  ): ProfilerSnapshot {
     // Basic long task detector (> 50ms)
-    const longTasks = cpuSamples.filter(s => s > 50).length;
+    const longTasks = cpuSamples.filter((s) => s > 50).length;
 
     const snap: ProfilerSnapshot = {
       id: `snap-${Math.random().toString(36).substr(2, 9)}`,
@@ -192,11 +223,14 @@ export class ProfilerService {
 // 5. HEALTH SERVICE
 // ==========================================
 export class HealthService {
-  private healthChecks = new Map<string, () => Promise<Omit<EngineHealth, 'engineName' | 'lastChecked'>>>();
+  private healthChecks = new Map<
+    string,
+    () => Promise<Omit<EngineHealth, 'engineName' | 'lastChecked'>>
+  >();
 
   public registerCheck(
     engineName: string,
-    checkFn: () => Promise<Omit<EngineHealth, 'engineName' | 'lastChecked'>>
+    checkFn: () => Promise<Omit<EngineHealth, 'engineName' | 'lastChecked'>>,
   ): void {
     this.healthChecks.set(engineName, checkFn);
   }
@@ -233,7 +267,7 @@ export class HealthService {
   }
 
   public async evaluateAll(): Promise<EngineHealth[]> {
-    const promises = Array.from(this.healthChecks.keys()).map(name => this.evaluateHealth(name));
+    const promises = Array.from(this.healthChecks.keys()).map((name) => this.evaluateHealth(name));
     return Promise.all(promises);
   }
 }
@@ -249,7 +283,7 @@ export class AlertService {
     severity: Alert['severity'],
     engine: string,
     type: Alert['type'],
-    message: string
+    message: string,
   ): Alert {
     const alert: Alert = {
       id: `alert-${Math.random().toString(36).substr(2, 9)}`,
@@ -262,16 +296,16 @@ export class AlertService {
     };
 
     this.alerts.push(alert);
-    this.onAlertListeners.forEach(listener => listener(alert));
+    this.onAlertListeners.forEach((listener) => listener(alert));
     return alert;
   }
 
   public getAlerts(resolved: boolean = false): Alert[] {
-    return this.alerts.filter(a => a.resolved === resolved);
+    return this.alerts.filter((a) => a.resolved === resolved);
   }
 
   public resolveAlert(id: string): void {
-    const alert = this.alerts.find(a => a.id === id);
+    const alert = this.alerts.find((a) => a.id === id);
     if (alert) {
       alert.resolved = true;
     }

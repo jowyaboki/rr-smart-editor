@@ -10,7 +10,10 @@ import {
 import { WorkflowRegistry } from '../services/WorkflowRegistry';
 
 export class WorkflowEngineError extends Error {
-  constructor(public stepId: string, message: string) {
+  constructor(
+    public stepId: string,
+    message: string,
+  ) {
     super(message);
     this.name = 'WorkflowEngineError';
   }
@@ -31,7 +34,10 @@ export class WorkflowPauseError extends Error {
 }
 
 export class WorkflowEngine {
-  private static activeDelayResolvers = new Map<string, { resolve: () => void; timeout: NodeJS.Timeout }>();
+  private static activeDelayResolvers = new Map<
+    string,
+    { resolve: () => void; timeout: NodeJS.Timeout }
+  >();
 
   /**
    * Evaluates and substitutes variables in any string value.
@@ -99,10 +105,7 @@ export class WorkflowEngine {
   /**
    * Executes a specific step inside a workflow execution.
    */
-  public static async executeStep(
-    step: WorkflowStep,
-    execution: WorkflowExecution,
-  ): Promise<any> {
+  public static async executeStep(step: WorkflowStep, execution: WorkflowExecution): Promise<any> {
     this.checkStatus(execution);
     const context = execution.context;
 
@@ -247,7 +250,10 @@ export class WorkflowEngine {
         const { actionId, arguments: actionArgs } = resolvedConfig;
         const actionDef = WorkflowRegistry.getAction(actionId);
         if (!actionDef) {
-          throw new WorkflowEngineError(step.id, `Action command ${actionId} not found in WorkflowRegistry`);
+          throw new WorkflowEngineError(
+            step.id,
+            `Action command ${actionId} not found in WorkflowRegistry`,
+          );
         }
         const output = await actionDef.handler(actionArgs || {}, context);
         return { success: true, output };
@@ -256,13 +262,16 @@ export class WorkflowEngine {
       case 'script': {
         const { scriptCode, outputVariable } = resolvedConfig;
         try {
-          const fn = new Function('context', `
+          const fn = new Function(
+            'context',
+            `
             try {
               ${scriptCode}
             } catch (err) {
               throw err;
             }
-          `);
+          `,
+          );
           const result = fn(context);
           if (outputVariable && result !== undefined) {
             context.variables[outputVariable] = result;

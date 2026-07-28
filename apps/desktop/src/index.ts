@@ -33,9 +33,27 @@ export class DesktopShellBootstrapper {
         type: 'submenu',
         enabled: true,
         submenu: [
-          { id: 'item_new', label: 'New Project', type: 'normal', enabled: true, shortcut: 'CmdOrCtrl+N' },
-          { id: 'item_open', label: 'Open Project...', type: 'normal', enabled: true, shortcut: 'CmdOrCtrl+O' },
-          { id: 'item_save', label: 'Save Project', type: 'normal', enabled: true, shortcut: 'CmdOrCtrl+S' },
+          {
+            id: 'item_new',
+            label: 'New Project',
+            type: 'normal',
+            enabled: true,
+            shortcut: 'CmdOrCtrl+N',
+          },
+          {
+            id: 'item_open',
+            label: 'Open Project...',
+            type: 'normal',
+            enabled: true,
+            shortcut: 'CmdOrCtrl+O',
+          },
+          {
+            id: 'item_save',
+            label: 'Save Project',
+            type: 'normal',
+            enabled: true,
+            shortcut: 'CmdOrCtrl+S',
+          },
         ],
       },
       {
@@ -44,8 +62,20 @@ export class DesktopShellBootstrapper {
         type: 'submenu',
         enabled: true,
         submenu: [
-          { id: 'item_undo', label: 'Undo Action', type: 'normal', enabled: true, shortcut: 'CmdOrCtrl+Z' },
-          { id: 'item_redo', label: 'Redo Action', type: 'normal', enabled: true, shortcut: 'CmdOrCtrl+Y' },
+          {
+            id: 'item_undo',
+            label: 'Undo Action',
+            type: 'normal',
+            enabled: true,
+            shortcut: 'CmdOrCtrl+Z',
+          },
+          {
+            id: 'item_redo',
+            label: 'Redo Action',
+            type: 'normal',
+            enabled: true,
+            shortcut: 'CmdOrCtrl+Y',
+          },
         ],
       },
     ]);

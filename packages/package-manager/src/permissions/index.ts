@@ -9,7 +9,7 @@ export class PermissionManager {
   public async requestPermissions(
     extensionId: string,
     requested: PermissionType[],
-    onConfirm?: (extId: string, permission: PermissionType) => Promise<boolean>
+    onConfirm?: (extId: string, permission: PermissionType) => Promise<boolean>,
   ): Promise<boolean> {
     const granted = this.grantedPermissions.get(extensionId) || new Set<PermissionType>();
 

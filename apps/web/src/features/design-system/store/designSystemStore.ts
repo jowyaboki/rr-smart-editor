@@ -27,7 +27,10 @@ export const useDesignSystemStore = create<DesignSystemState>((set, get) => {
   // Initial sync from the engine
   const engineState = webDesignSystemEngine.getState();
   const activeTheme = webDesignSystemEngine.getActiveTheme();
-  const allResolved = webDesignSystemEngine.resolveAllActiveTokens({ viewport: 'desktop', locale: 'en' });
+  const allResolved = webDesignSystemEngine.resolveAllActiveTokens({
+    viewport: 'desktop',
+    locale: 'en',
+  });
 
   return {
     activeThemeId: engineState.activeThemeId,

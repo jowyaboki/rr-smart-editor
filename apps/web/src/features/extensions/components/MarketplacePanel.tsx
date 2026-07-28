@@ -23,38 +23,88 @@ export const MarketplacePanel: React.FC = () => {
   };
 
   return (
-    <div style={{ padding: '12px', background: '#111', color: '#fff', border: '1px solid #333', borderRadius: '4px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+    <div
+      style={{
+        padding: '12px',
+        background: '#111',
+        color: '#fff',
+        border: '1px solid #333',
+        borderRadius: '4px',
+      }}
+    >
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '12px',
+        }}
+      >
         <h4 style={{ margin: 0, fontSize: '13px' }}>Extension Marketplace</h4>
         <input
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search extensions..."
-          style={{ padding: '4px 8px', fontSize: '11px', background: '#222', color: '#fff', border: '1px solid #444', borderRadius: '2px', width: '150px' }}
+          style={{
+            padding: '4px 8px',
+            fontSize: '11px',
+            background: '#222',
+            color: '#fff',
+            border: '1px solid #444',
+            borderRadius: '2px',
+            width: '150px',
+          }}
         />
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-        {extensions.filter(e => !e.installed).map((ext) => (
-          <div key={ext.id} style={{ padding: '8px', background: '#1a1a1a', border: '1px solid #333', borderRadius: '3px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-              <span style={{ fontSize: '12px', fontWeight: 'bold' }}>{ext.displayName}</span>
-              <button
-                onClick={() => handleInstallMock(ext)}
-                style={{ padding: '2px 8px', fontSize: '10px', background: '#1976d2', color: '#fff', border: 'none', borderRadius: '2px', cursor: 'pointer' }}
+        {extensions
+          .filter((e) => !e.installed)
+          .map((ext) => (
+            <div
+              key={ext.id}
+              style={{
+                padding: '8px',
+                background: '#1a1a1a',
+                border: '1px solid #333',
+                borderRadius: '3px',
+              }}
+            >
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginBottom: '4px',
+                }}
               >
-                Install
-              </button>
+                <span style={{ fontSize: '12px', fontWeight: 'bold' }}>{ext.displayName}</span>
+                <button
+                  onClick={() => handleInstallMock(ext)}
+                  style={{
+                    padding: '2px 8px',
+                    fontSize: '10px',
+                    background: '#1976d2',
+                    color: '#fff',
+                    border: 'none',
+                    borderRadius: '2px',
+                    cursor: 'pointer',
+                  }}
+                >
+                  Install
+                </button>
+              </div>
+              <p style={{ margin: '0 0 6px 0', fontSize: '10px', color: '#aaa' }}>
+                {ext.description}
+              </p>
+              <div style={{ display: 'flex', gap: '8px', fontSize: '9px', color: '#666' }}>
+                <span>Version: {ext.version}</span>
+                <span>Downloads: {ext.downloads}</span>
+                <span>★ {ext.rating}</span>
+              </div>
             </div>
-            <p style={{ margin: '0 0 6px 0', fontSize: '10px', color: '#aaa' }}>{ext.description}</p>
-            <div style={{ display: 'flex', gap: '8px', fontSize: '9px', color: '#666' }}>
-              <span>Version: {ext.version}</span>
-              <span>Downloads: {ext.downloads}</span>
-              <span>★ {ext.rating}</span>
-            </div>
-          </div>
-        ))}
+          ))}
       </div>
     </div>
   );

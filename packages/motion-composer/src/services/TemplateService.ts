@@ -11,7 +11,7 @@ export class TemplateService {
   } {
     const overrideableFields: Array<any> = [];
 
-    comp.layers.forEach(layer => {
+    comp.layers.forEach((layer) => {
       if (layer.type === 'text') {
         overrideableFields.push({
           layerId: layer.id,

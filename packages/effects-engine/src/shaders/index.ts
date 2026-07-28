@@ -5,13 +5,15 @@ export class AbstractShader implements Shader {
     public id: string,
     public name: string,
     public type: ShaderType,
-    public source: ShaderSource
+    public source: ShaderSource,
   ) {}
 
   public compile(context: EffectContext): any {
     if (this.type === 'canvas') {
       if (!this.source.canvas) {
-        throw new Error(`Shader ${this.id} is registered as canvas type but missing canvas render function.`);
+        throw new Error(
+          `Shader ${this.id} is registered as canvas type but missing canvas render function.`,
+        );
       }
       return this.source.canvas;
     }
@@ -31,7 +33,9 @@ export class AbstractShader implements Shader {
       const vertexSource = this.source.webgl?.vertex;
       const fragmentSource = this.source.webgl?.fragment;
       if (!vertexSource || !fragmentSource) {
-        throw new Error(`Shader ${this.id} is registered as webgl but missing vertex or fragment sources.`);
+        throw new Error(
+          `Shader ${this.id} is registered as webgl but missing vertex or fragment sources.`,
+        );
       }
 
       const vs = gl.createShader(gl.VERTEX_SHADER);
@@ -113,7 +117,7 @@ export class AbstractShader implements Shader {
     width: number,
     height: number,
     params: Record<string, any>,
-    context: EffectContext
+    context: EffectContext,
   ): void {
     if (this.type === 'canvas') {
       if (this.source.canvas) {
@@ -132,7 +136,13 @@ export class CanvasShader extends AbstractShader {
   constructor(
     id: string,
     name: string,
-    canvasFn: (ctx: CanvasRenderingContext2D, width: number, height: number, params: Record<string, any>, context: EffectContext) => void
+    canvasFn: (
+      ctx: CanvasRenderingContext2D,
+      width: number,
+      height: number,
+      params: Record<string, any>,
+      context: EffectContext,
+    ) => void,
   ) {
     super(id, name, 'canvas', { canvas: canvasFn });
   }
@@ -144,7 +154,7 @@ export class WebGLShader extends AbstractShader {
     name: string,
     vertex: string,
     fragment: string,
-    uniforms: Record<string, string> = {}
+    uniforms: Record<string, string> = {},
   ) {
     super(id, name, 'webgl', {
       webgl: { vertex, fragment, uniforms },
@@ -153,12 +163,7 @@ export class WebGLShader extends AbstractShader {
 }
 
 export class WebGPUShader extends AbstractShader {
-  constructor(
-    id: string,
-    name: string,
-    code: string,
-    entryPoint: string = 'main'
-  ) {
+  constructor(id: string, name: string, code: string, entryPoint: string = 'main') {
     super(id, name, 'webgpu', {
       webgpu: { code, entryPoint },
     });

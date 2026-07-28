@@ -9,7 +9,11 @@ export class NativeMenuService implements INativeMenuService {
     this.activeMenu = menu;
   }
 
-  public async setTrayIcon(iconPath: string, tooltip: string, menu?: SystemMenuItem[]): Promise<void> {
+  public async setTrayIcon(
+    iconPath: string,
+    tooltip: string,
+    menu?: SystemMenuItem[],
+  ): Promise<void> {
     this.trayIcon = iconPath;
     this.trayTooltip = tooltip;
   }

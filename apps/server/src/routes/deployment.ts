@@ -10,7 +10,9 @@ router.post('/bootstrap', async (req, res) => {
       res.status(400).json({ success: false, error: 'mode parameter is required.' });
       return;
     }
-    const bootResult = await globalDeploymentPlatformEngine.deploymentService.bootstrap(mode as DeploymentMode);
+    const bootResult = await globalDeploymentPlatformEngine.deploymentService.bootstrap(
+      mode as DeploymentMode,
+    );
     res.json({ success: true, bootResult });
   } catch (err: any) {
     res.status(500).json({ success: false, error: err.message });
@@ -38,7 +40,9 @@ router.get('/health/readiness', async (req, res) => {
 router.post('/backup/create', async (req, res) => {
   try {
     const { type } = req.body;
-    const backup = await globalDeploymentPlatformEngine.backupService.createBackup(type || 'workspace');
+    const backup = await globalDeploymentPlatformEngine.backupService.createBackup(
+      type || 'workspace',
+    );
     res.json({ success: true, backup });
   } catch (err: any) {
     res.status(500).json({ success: false, error: err.message });

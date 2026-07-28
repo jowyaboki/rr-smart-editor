@@ -41,7 +41,9 @@ export class ApiClient {
   /**
    * Render Jobs CRUD triggers
    */
-  public async triggerRenderJob(timelineId: string): Promise<ApiResponse<{ jobId: string; status: string }>> {
+  public async triggerRenderJob(
+    timelineId: string,
+  ): Promise<ApiResponse<{ jobId: string; status: string }>> {
     return {
       success: true,
       data: { jobId: 'job-789', status: 'queued' },

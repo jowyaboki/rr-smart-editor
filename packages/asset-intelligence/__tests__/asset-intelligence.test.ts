@@ -9,7 +9,6 @@ import {
 } from '../src/index';
 
 describe('Asset Intelligence Platform Core Unit Tests', () => {
-
   // Setup sample mock Assets compatible with DAM Asset schemas
   const mockLibrary: Asset[] = [
     {
@@ -28,7 +27,13 @@ describe('Asset Intelligence Platform Core Unit Tests', () => {
       },
       license: { licenseType: 'commercial', attributionRequired: false, commercialUse: true },
       approval: { status: 'approved', history: [] },
-      usage: { projectsUsedIn: ['proj_1'], scenesCount: 2, timelineClipsCount: 4, templatesUsedIn: [], publishedVideos: [] },
+      usage: {
+        projectsUsedIn: ['proj_1'],
+        scenesCount: 2,
+        timelineClipsCount: 4,
+        templatesUsedIn: [],
+        publishedVideos: [],
+      },
       versions: [],
       collections: [],
     },
@@ -47,7 +52,13 @@ describe('Asset Intelligence Platform Core Unit Tests', () => {
       },
       license: { licenseType: 'royalty_free', attributionRequired: true, commercialUse: true },
       approval: { status: 'approved', history: [] },
-      usage: { projectsUsedIn: [], scenesCount: 0, timelineClipsCount: 0, templatesUsedIn: [], publishedVideos: [] },
+      usage: {
+        projectsUsedIn: [],
+        scenesCount: 0,
+        timelineClipsCount: 0,
+        templatesUsedIn: [],
+        publishedVideos: [],
+      },
       versions: [],
       collections: [],
     },
@@ -143,18 +154,38 @@ describe('Asset Intelligence Platform Core Unit Tests', () => {
     const acousticEmb = [0.0, 0.0, 0.8, 0.6];
 
     const embeddings = [
-      { assetId: 'ast_vector_promo', vector: promoEmb, provider: 'mock', dimensions: 4, createdAt: '' },
-      { assetId: 'ast_acoustic_bg', vector: acousticEmb, provider: 'mock', dimensions: 4, createdAt: '' },
+      {
+        assetId: 'ast_vector_promo',
+        vector: promoEmb,
+        provider: 'mock',
+        dimensions: 4,
+        createdAt: '',
+      },
+      {
+        assetId: 'ast_acoustic_bg',
+        vector: acousticEmb,
+        provider: 'mock',
+        dimensions: 4,
+        createdAt: '',
+      },
     ];
 
     engine.semanticIndexService.rebuildIndex(indexId, embeddings);
 
     // 1. Traditional textual metadata query matching 'acoustic' with higher threshold
-    const results1 = await engine.searchService.search({ text: 'acoustic', threshold: 0.1 }, mockLibrary, embeddings);
+    const results1 = await engine.searchService.search(
+      { text: 'acoustic', threshold: 0.1 },
+      mockLibrary,
+      embeddings,
+    );
     assert.strictEqual(results1[0].asset.id, 'ast_acoustic_bg');
 
     // 2. Semantic vector query matching acousticEmb
-    const resultsSemantic = await engine.searchService.search({ embedding: [0.0, 0.0, 1.0, 0.0], threshold: 0.5 }, mockLibrary, embeddings);
+    const resultsSemantic = await engine.searchService.search(
+      { embedding: [0.0, 0.0, 1.0, 0.0], threshold: 0.5 },
+      mockLibrary,
+      embeddings,
+    );
     assert.strictEqual(resultsSemantic.length, 1);
     assert.strictEqual(resultsSemantic[0].asset.id, 'ast_acoustic_bg');
     assert.ok(resultsSemantic[0].score > 0.7);
@@ -164,16 +195,35 @@ describe('Asset Intelligence Platform Core Unit Tests', () => {
     const engine = new AssetIntelligenceEngine();
 
     const embeddings = [
-      { assetId: 'ast_vector_promo', vector: [0.9, 0.1], provider: 'mock', dimensions: 2, createdAt: '' },
-      { assetId: 'ast_acoustic_bg', vector: [0.1, 0.9], provider: 'mock', dimensions: 2, createdAt: '' },
+      {
+        assetId: 'ast_vector_promo',
+        vector: [0.9, 0.1],
+        provider: 'mock',
+        dimensions: 2,
+        createdAt: '',
+      },
+      {
+        assetId: 'ast_acoustic_bg',
+        vector: [0.1, 0.9],
+        provider: 'mock',
+        dimensions: 2,
+        createdAt: '',
+      },
     ];
 
     // Get recommendations for 'Dynamic Vector Explainer'
-    const recs = await engine.recommendationService.recommend(mockLibrary[0], mockLibrary, embeddings);
+    const recs = await engine.recommendationService.recommend(
+      mockLibrary[0],
+      mockLibrary,
+      embeddings,
+    );
 
     // Should recommend ast_acoustic_bg as 'unused' since its usage count is 0
-    assert.ok(recs.some(r => r.type === 'unused'));
-    assert.strictEqual(recs.find(r => r.type === 'unused')?.recommendedAsset.id, 'ast_acoustic_bg');
+    assert.ok(recs.some((r) => r.type === 'unused'));
+    assert.strictEqual(
+      recs.find((r) => r.type === 'unused')?.recommendedAsset.id,
+      'ast_acoustic_bg',
+    );
   });
 
   test('Clustering & Moderation controls', async () => {
@@ -182,7 +232,7 @@ describe('Asset Intelligence Platform Core Unit Tests', () => {
     // 1. Clustering by topic category
     const clusters = await engine.clusteringService.cluster(mockLibrary, [], 'topic');
     assert.ok(clusters.length > 0);
-    assert.ok(clusters.some(c => c.name.toLowerCase().includes('marketing')));
+    assert.ok(clusters.some((c) => c.name.toLowerCase().includes('marketing')));
 
     // 2. Moderation check
     const modResult = await engine.moderationService.moderate(mockLibrary[0], mockLibrary);
@@ -242,7 +292,13 @@ describe('Asset Intelligence Platform Core Unit Tests', () => {
       },
       license: { licenseType: 'commercial', attributionRequired: false, commercialUse: true },
       approval: { status: 'approved', history: [] },
-      usage: { projectsUsedIn: [], scenesCount: 0, timelineClipsCount: 0, templatesUsedIn: [], publishedVideos: [] },
+      usage: {
+        projectsUsedIn: [],
+        scenesCount: 0,
+        timelineClipsCount: 0,
+        templatesUsedIn: [],
+        publishedVideos: [],
+      },
       versions: [],
       collections: [],
     }));
@@ -256,7 +312,11 @@ describe('Asset Intelligence Platform Core Unit Tests', () => {
     }));
 
     const start = Date.now();
-    const results = await engine.searchService.search({ embedding: [0.5, 0.5], threshold: 0.1 }, largeLibrary, embeddings);
+    const results = await engine.searchService.search(
+      { embedding: [0.5, 0.5], threshold: 0.1 },
+      largeLibrary,
+      embeddings,
+    );
     const duration = Date.now() - start;
 
     assert.ok(duration < 200); // Must score and search 100 high-dimensional vectors in less than 200ms

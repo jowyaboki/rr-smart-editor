@@ -34,7 +34,7 @@ export class ToolRegistry {
     if (!tool.permissions || tool.permissions.length === 0) return true;
 
     // Check that all required tool permissions are in the allowedPermissions array
-    return tool.permissions.every(p => allowedPermissions.includes(p));
+    return tool.permissions.every((p) => allowedPermissions.includes(p));
   }
 }
 
@@ -63,7 +63,11 @@ export class BuiltInToolsRegistry extends ToolRegistry {
         return {
           callId: 'project-call',
           success: true,
-          result: { id: args.projectId || 'proj-1', name: args.name || 'Untitled Project', status: 'loaded' },
+          result: {
+            id: args.projectId || 'proj-1',
+            name: args.name || 'Untitled Project',
+            status: 'loaded',
+          },
         };
       },
     });
@@ -71,7 +75,8 @@ export class BuiltInToolsRegistry extends ToolRegistry {
     // 2. Scene Tool
     this.registerTool({
       name: 'Scene',
-      description: 'Create, reorder, delete, or inspect narrative scenes in the active project storyboard.',
+      description:
+        'Create, reorder, delete, or inspect narrative scenes in the active project storyboard.',
       version: '1.0.0',
       permissions: ['write_storyboard'],
       parameters: z.object({
@@ -80,14 +85,19 @@ export class BuiltInToolsRegistry extends ToolRegistry {
         order: z.number().optional(),
       }),
       executor: async (args, ctx) => {
-        return { callId: 'scene-call', success: true, result: { sceneId: args.sceneId || 'scene-1', success: true } };
+        return {
+          callId: 'scene-call',
+          success: true,
+          result: { sceneId: args.sceneId || 'scene-1', success: true },
+        };
       },
     });
 
     // 3. Timeline Tool
     this.registerTool({
       name: 'Timeline',
-      description: 'Perform timeline NLE operations like inserting clips, splitting, rippling, slipping, and sliding.',
+      description:
+        'Perform timeline NLE operations like inserting clips, splitting, rippling, slipping, and sliding.',
       version: '1.0.0',
       permissions: ['write_timeline'],
       parameters: z.object({
@@ -96,7 +106,11 @@ export class BuiltInToolsRegistry extends ToolRegistry {
         timeSeconds: z.number().optional(),
       }),
       executor: async (args, ctx) => {
-        return { callId: 'timeline-call', success: true, result: { timelineUpdated: true, frameCount: 900 } };
+        return {
+          callId: 'timeline-call',
+          success: true,
+          result: { timelineUpdated: true, frameCount: 900 },
+        };
       },
     });
 
@@ -112,7 +126,11 @@ export class BuiltInToolsRegistry extends ToolRegistry {
         tags: z.array(z.string()).optional(),
       }),
       executor: async (args, ctx) => {
-        return { callId: 'assets-call', success: true, result: { assetId: args.assetId || 'asset-1', status: 'indexed' } };
+        return {
+          callId: 'assets-call',
+          success: true,
+          result: { assetId: args.assetId || 'asset-1', status: 'indexed' },
+        };
       },
     });
 
@@ -128,7 +146,11 @@ export class BuiltInToolsRegistry extends ToolRegistry {
         value: z.any().optional(),
       }),
       executor: async (args, ctx) => {
-        return { callId: 'variables-call', success: true, result: { key: args.key, value: args.value, ok: true } };
+        return {
+          callId: 'variables-call',
+          success: true,
+          result: { key: args.key, value: args.value, ok: true },
+        };
       },
     });
 
@@ -143,14 +165,19 @@ export class BuiltInToolsRegistry extends ToolRegistry {
         templateId: z.string(),
       }),
       executor: async (args, ctx) => {
-        return { callId: 'templates-call', success: true, result: { compiledId: args.templateId, url: 'https://cdn.example.com/compiled-template' } };
+        return {
+          callId: 'templates-call',
+          success: true,
+          result: { compiledId: args.templateId, url: 'https://cdn.example.com/compiled-template' },
+        };
       },
     });
 
     // 7. Node Graph Tool
     this.registerTool({
       name: 'Node Graph',
-      description: 'Manipulate project compositing and processing nodes, link parameters, or insert custom expressions.',
+      description:
+        'Manipulate project compositing and processing nodes, link parameters, or insert custom expressions.',
       version: '1.0.0',
       permissions: ['write_project'],
       parameters: z.object({
@@ -159,14 +186,19 @@ export class BuiltInToolsRegistry extends ToolRegistry {
         expression: z.string().optional(),
       }),
       executor: async (args, ctx) => {
-        return { callId: 'nodegraph-call', success: true, result: { nodeId: args.nodeId || 'node-1', state: 'active' } };
+        return {
+          callId: 'nodegraph-call',
+          success: true,
+          result: { nodeId: args.nodeId || 'node-1', state: 'active' },
+        };
       },
     });
 
     // 8. Workflow Tool
     this.registerTool({
       name: 'Workflow',
-      description: 'List workflow automation rules, execute scripts, and evaluate conditionals or loops.',
+      description:
+        'List workflow automation rules, execute scripts, and evaluate conditionals or loops.',
       version: '1.0.0',
       permissions: ['execute_script'],
       parameters: z.object({
@@ -174,14 +206,19 @@ export class BuiltInToolsRegistry extends ToolRegistry {
         trigger: z.string(),
       }),
       executor: async (args, ctx) => {
-        return { callId: 'workflow-call', success: true, result: { runId: 'run-123', status: 'completed' } };
+        return {
+          callId: 'workflow-call',
+          success: true,
+          result: { runId: 'run-123', status: 'completed' },
+        };
       },
     });
 
     // 9. Render Queue Tool
     this.registerTool({
       name: 'Render Queue',
-      description: 'Enqueue asynchronous rendering jobs, monitor job telemetry, and cancel active transcodes.',
+      description:
+        'Enqueue asynchronous rendering jobs, monitor job telemetry, and cancel active transcodes.',
       version: '1.0.0',
       permissions: ['render'],
       parameters: z.object({
@@ -189,14 +226,19 @@ export class BuiltInToolsRegistry extends ToolRegistry {
         jobId: z.string().optional(),
       }),
       executor: async (args, ctx) => {
-        return { callId: 'render-call', success: true, result: { jobId: args.jobId || 'job-456', status: 'queued', position: 1 } };
+        return {
+          callId: 'render-call',
+          success: true,
+          result: { jobId: args.jobId || 'job-456', status: 'queued', position: 1 },
+        };
       },
     });
 
     // 10. Playback Tool
     this.registerTool({
       name: 'Playback',
-      description: 'Control timeline preview playback, seek to time, seek to markers, change shuttle speed, or sync previews.',
+      description:
+        'Control timeline preview playback, seek to time, seek to markers, change shuttle speed, or sync previews.',
       version: '1.0.0',
       permissions: ['playback_control'],
       parameters: z.object({
@@ -205,14 +247,19 @@ export class BuiltInToolsRegistry extends ToolRegistry {
         speed: z.number().optional(),
       }),
       executor: async (args, ctx) => {
-        return { callId: 'playback-call', success: true, result: { playhead: args.timeSeconds ?? 0, playing: args.action === 'play' } };
+        return {
+          callId: 'playback-call',
+          success: true,
+          result: { playhead: args.timeSeconds ?? 0, playing: args.action === 'play' },
+        };
       },
     });
 
     // 11. Media Browser Tool
     this.registerTool({
       name: 'Media Browser',
-      description: 'Search, filter, and inspect proxied media files, and query audio peak waveforms.',
+      description:
+        'Search, filter, and inspect proxied media files, and query audio peak waveforms.',
       version: '1.0.0',
       permissions: ['read_assets'],
       parameters: z.object({
@@ -220,14 +267,19 @@ export class BuiltInToolsRegistry extends ToolRegistry {
         type: z.enum(['video', 'audio', 'image', 'all']).optional(),
       }),
       executor: async (args, ctx) => {
-        return { callId: 'mediabrowser-call', success: true, result: { matches: [{ id: 'video-1', name: 'Intro.mp4' }] } };
+        return {
+          callId: 'mediabrowser-call',
+          success: true,
+          result: { matches: [{ id: 'video-1', name: 'Intro.mp4' }] },
+        };
       },
     });
 
     // 12. Effects Tool
     this.registerTool({
       name: 'Effects',
-      description: 'Query available filters, apply non-destructive visual effects to clips, and modify opacity/blending.',
+      description:
+        'Query available filters, apply non-destructive visual effects to clips, and modify opacity/blending.',
       version: '1.0.0',
       permissions: ['write_timeline'],
       parameters: z.object({
@@ -236,14 +288,19 @@ export class BuiltInToolsRegistry extends ToolRegistry {
         effectType: z.string().optional(),
       }),
       executor: async (args, ctx) => {
-        return { callId: 'effects-call', success: true, result: { applied: args.effectType || 'blur', clipId: args.clipId } };
+        return {
+          callId: 'effects-call',
+          success: true,
+          result: { applied: args.effectType || 'blur', clipId: args.clipId },
+        };
       },
     });
 
     // 13. Publishing Tool
     this.registerTool({
       name: 'Publishing',
-      description: 'Export finalized renderings, select destination platform presets (YouTube, TikTok), and publish videos.',
+      description:
+        'Export finalized renderings, select destination platform presets (YouTube, TikTok), and publish videos.',
       version: '1.0.0',
       permissions: ['publish'],
       parameters: z.object({
@@ -251,7 +308,11 @@ export class BuiltInToolsRegistry extends ToolRegistry {
         destination: z.string(),
       }),
       executor: async (args, ctx) => {
-        return { callId: 'publish-call', success: true, result: { uploadUrl: 'https://youtube.com/watch?v=final', published: true } };
+        return {
+          callId: 'publish-call',
+          success: true,
+          result: { uploadUrl: 'https://youtube.com/watch?v=final', published: true },
+        };
       },
     });
   }

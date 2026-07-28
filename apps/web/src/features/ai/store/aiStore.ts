@@ -24,17 +24,18 @@ export const useAiStore = create<AiState>((set) => ({
   isRunning: false,
   isCancelled: false,
 
-  addMessage: (role, content) => set((state) => ({
-    messages: [
-      ...state.messages,
-      {
-        id: `msg-${Math.random().toString(36).substr(2, 9)}`,
-        role,
-        content,
-        timestamp: Date.now(),
-      },
-    ],
-  })),
+  addMessage: (role, content) =>
+    set((state) => ({
+      messages: [
+        ...state.messages,
+        {
+          id: `msg-${Math.random().toString(36).substr(2, 9)}`,
+          role,
+          content,
+          timestamp: Date.now(),
+        },
+      ],
+    })),
 
   setCurrentPlan: (plan) => set({ currentPlan: plan }),
 
@@ -44,5 +45,6 @@ export const useAiStore = create<AiState>((set) => ({
 
   cancelRun: () => set({ isCancelled: true, isRunning: false }),
 
-  clearHistory: () => set({ messages: [], currentPlan: null, toolResults: [], isRunning: false, isCancelled: false }),
+  clearHistory: () =>
+    set({ messages: [], currentPlan: null, toolResults: [], isRunning: false, isCancelled: false }),
 }));

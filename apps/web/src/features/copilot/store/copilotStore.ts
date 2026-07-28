@@ -32,17 +32,18 @@ export const useCopilotStore = create<CopilotState>((set) => ({
 
   startSession: (sessionId, projectId) => set({ sessionId, projectId }),
 
-  appendMessage: (role, content) => set((state) => ({
-    messages: [
-      ...state.messages,
-      {
-        id: `msg-${Math.random().toString(36).substr(2, 9)}`,
-        role,
-        content,
-        timestamp: Date.now(),
-      },
-    ],
-  })),
+  appendMessage: (role, content) =>
+    set((state) => ({
+      messages: [
+        ...state.messages,
+        {
+          id: `msg-${Math.random().toString(36).substr(2, 9)}`,
+          role,
+          content,
+          timestamp: Date.now(),
+        },
+      ],
+    })),
 
   setActivePlan: (activePlan) => set({ activePlan }),
 
@@ -50,11 +51,21 @@ export const useCopilotStore = create<CopilotState>((set) => ({
 
   setSuggestions: (suggestions) => set({ suggestions }),
 
-  removeSuggestion: (id) => set((state) => ({
-    suggestions: state.suggestions.filter((s) => s.id !== id),
-  })),
+  removeSuggestion: (id) =>
+    set((state) => ({
+      suggestions: state.suggestions.filter((s) => s.id !== id),
+    })),
 
   setLoading: (loading) => set({ loading }),
 
-  clear: () => set({ sessionId: null, projectId: null, messages: [], activePlan: null, approvalRequest: null, suggestions: [], loading: false }),
+  clear: () =>
+    set({
+      sessionId: null,
+      projectId: null,
+      messages: [],
+      activePlan: null,
+      approvalRequest: null,
+      suggestions: [],
+      loading: false,
+    }),
 }));

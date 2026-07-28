@@ -1,8 +1,4 @@
-import {
-  TriggerType,
-  WorkflowStepType,
-  WorkflowContext,
-} from '@ai-video-editor/shared';
+import { TriggerType, WorkflowStepType, WorkflowContext } from '@ai-video-editor/shared';
 
 export interface TriggerDefinition {
   type: string;
@@ -45,25 +41,81 @@ export class WorkflowRegistry {
       { type: 'manual', name: 'Manual Trigger', description: 'Triggered manually by the user.' },
       { type: 'project_open', name: 'Project Open', description: 'Runs when a project is opened.' },
       { type: 'project_save', name: 'Project Save', description: 'Runs when a project is saved.' },
-      { type: 'render_complete', name: 'Render Complete', description: 'Runs when a video render completes successfully.' },
-      { type: 'asset_imported', name: 'Asset Imported', description: 'Runs when new assets are added to the library.' },
-      { type: 'timeline_changed', name: 'Timeline Changed', description: 'Runs when clips or tracks are updated.' },
-      { type: 'template_applied', name: 'Template Applied', description: 'Runs when a template is applied to the project.' },
-      { type: 'webhook', name: 'Webhook (Future)', description: 'Runs when a webhook payload is received (Future Cloud Execution).' },
+      {
+        type: 'render_complete',
+        name: 'Render Complete',
+        description: 'Runs when a video render completes successfully.',
+      },
+      {
+        type: 'asset_imported',
+        name: 'Asset Imported',
+        description: 'Runs when new assets are added to the library.',
+      },
+      {
+        type: 'timeline_changed',
+        name: 'Timeline Changed',
+        description: 'Runs when clips or tracks are updated.',
+      },
+      {
+        type: 'template_applied',
+        name: 'Template Applied',
+        description: 'Runs when a template is applied to the project.',
+      },
+      {
+        type: 'webhook',
+        name: 'Webhook (Future)',
+        description: 'Runs when a webhook payload is received (Future Cloud Execution).',
+      },
     ];
     standardTriggers.forEach((t) => this.triggers.set(t.type, t));
 
     // 2. Register Standard Step Types
     const standardSteps: Omit<StepTypeDefinition, 'executor'>[] = [
-      { type: 'condition', name: 'Condition Branch', description: 'Evaluate a boolean expression to branch.' },
-      { type: 'loop', name: 'Loop Block', description: 'Loop over collection items or run multiple times.' },
-      { type: 'delay', name: 'Delay Timeout', description: 'Pause the execution for a given time duration.' },
-      { type: 'transform', name: 'Transform Data', description: 'Map or format variables and outputs.' },
-      { type: 'command', name: 'Execute Editor Command', description: 'Perform an editor operation.' },
-      { type: 'script', name: 'Custom JavaScript Script', description: 'Safely execute custom JavaScript code.' },
-      { type: 'ai_task', name: 'AI Creative Task', description: 'Interact with AI models to generate scripts, scenes, or assets.' },
-      { type: 'render', name: 'Trigger Video Render', description: 'Render the active project compositions.' },
-      { type: 'notification', name: 'Dispatch Notification', description: 'Display a banner, notification log, or alert.' },
+      {
+        type: 'condition',
+        name: 'Condition Branch',
+        description: 'Evaluate a boolean expression to branch.',
+      },
+      {
+        type: 'loop',
+        name: 'Loop Block',
+        description: 'Loop over collection items or run multiple times.',
+      },
+      {
+        type: 'delay',
+        name: 'Delay Timeout',
+        description: 'Pause the execution for a given time duration.',
+      },
+      {
+        type: 'transform',
+        name: 'Transform Data',
+        description: 'Map or format variables and outputs.',
+      },
+      {
+        type: 'command',
+        name: 'Execute Editor Command',
+        description: 'Perform an editor operation.',
+      },
+      {
+        type: 'script',
+        name: 'Custom JavaScript Script',
+        description: 'Safely execute custom JavaScript code.',
+      },
+      {
+        type: 'ai_task',
+        name: 'AI Creative Task',
+        description: 'Interact with AI models to generate scripts, scenes, or assets.',
+      },
+      {
+        type: 'render',
+        name: 'Trigger Video Render',
+        description: 'Render the active project compositions.',
+      },
+      {
+        type: 'notification',
+        name: 'Dispatch Notification',
+        description: 'Display a banner, notification log, or alert.',
+      },
     ];
     standardSteps.forEach((s) => {
       this.stepTypes.set(s.type, {
@@ -106,7 +158,10 @@ export class WorkflowRegistry {
         name: 'Create Scene',
         description: 'Creates a new storyboard scene container.',
         handler: async (args, context) => {
-          return { sceneId: 'scene_' + Math.random().toString(36).substr(2, 9), title: args.title || 'Scene' };
+          return {
+            sceneId: 'scene_' + Math.random().toString(36).substr(2, 9),
+            title: args.title || 'Scene',
+          };
         },
       },
       {
@@ -181,7 +236,10 @@ export class WorkflowRegistry {
   }
 
   // --- TRIGGER REGISTRY API ---
-  public static registerTrigger(pluginId: string, trigger: Omit<TriggerDefinition, 'pluginId'>): void {
+  public static registerTrigger(
+    pluginId: string,
+    trigger: Omit<TriggerDefinition, 'pluginId'>,
+  ): void {
     this.triggers.set(trigger.type, { ...trigger, pluginId });
   }
 
@@ -194,7 +252,10 @@ export class WorkflowRegistry {
   }
 
   // --- STEP TYPE REGISTRY API ---
-  public static registerStepType(pluginId: string, stepType: Omit<StepTypeDefinition, 'pluginId'>): void {
+  public static registerStepType(
+    pluginId: string,
+    stepType: Omit<StepTypeDefinition, 'pluginId'>,
+  ): void {
     this.stepTypes.set(stepType.type, { ...stepType, pluginId });
   }
 

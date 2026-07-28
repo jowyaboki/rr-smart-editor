@@ -1,7 +1,7 @@
 import { useDesignSystemStore } from '../store/designSystemStore';
 
 export function useThemeToken(path: string): any {
-  const resolvedTokens = useDesignSystemStore(state => state.resolvedTokens);
+  const resolvedTokens = useDesignSystemStore((state) => state.resolvedTokens);
 
   const parts = path.split('.');
   let current: any = resolvedTokens;

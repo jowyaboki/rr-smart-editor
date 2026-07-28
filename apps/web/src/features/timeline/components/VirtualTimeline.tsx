@@ -33,14 +33,8 @@ export class TimelinePluginRegistry {
 export const VirtualTimeline: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const {
-    viewport,
-    visibleRegion,
-    visibleClips,
-    visibleMarkers,
-    tracks,
-    totalTracksCount,
-  } = useTimelineVirtualization(100, 1);
+  const { viewport, visibleRegion, visibleClips, visibleMarkers, tracks, totalTracksCount } =
+    useTimelineVirtualization(100, 1);
 
   const {
     clips,
@@ -111,7 +105,10 @@ export const VirtualTimeline: React.FC = () => {
         alert(`Mark In-point set at frame ${currentFrame}`);
       }
       if (e.key.toLowerCase() === 'o') {
-        const currentFrame = GeometryService.xToFrame(viewport.scrollLeft + viewport.width, scaleFactor);
+        const currentFrame = GeometryService.xToFrame(
+          viewport.scrollLeft + viewport.width,
+          scaleFactor,
+        );
         NleShortcutService.setOutPoint(currentFrame);
         alert(`Mark Out-point set at frame ${currentFrame}`);
       }
@@ -148,7 +145,7 @@ export const VirtualTimeline: React.FC = () => {
 
   const handleMouseDown = (e: React.MouseEvent, clipId: string) => {
     e.stopPropagation();
-    const clip = clips.find(c => c.id === clipId);
+    const clip = clips.find((c) => c.id === clipId);
     if (!clip) return;
 
     const rect = e.currentTarget.getBoundingClientRect();
@@ -194,7 +191,7 @@ export const VirtualTimeline: React.FC = () => {
       rippleEditClip(activeDragId, delta, 'end');
     } else if (toolMode === 'roll') {
       // Roll edit expects an adjacent clip, mock with A & B
-      const idx = clips.findIndex(c => c.id === activeDragId);
+      const idx = clips.findIndex((c) => c.id === activeDragId);
       const clipA = clips[idx];
       const clipB = clips[idx + 1];
       if (clipA && clipB) {
@@ -207,7 +204,7 @@ export const VirtualTimeline: React.FC = () => {
       slipEditClip(activeDragId, delta);
     } else if (toolMode === 'slide') {
       // Slide shifts target clip, trimming clip A & extending B
-      const idx = clips.findIndex(c => c.id === activeDragId);
+      const idx = clips.findIndex((c) => c.id === activeDragId);
       const clipA = clips[idx - 1];
       const clipB = clips[idx + 1];
       if (clipA && clipB) {
@@ -254,9 +251,24 @@ export const VirtualTimeline: React.FC = () => {
       onMouseLeave={handleMouseUp}
     >
       {/* NLE Toolbar */}
-      <div style={{ display: 'flex', gap: '8px', backgroundColor: '#102031', padding: '8px', borderRadius: '4px', marginBottom: '16px', flexWrap: 'wrap', alignItems: 'center' }}>
-        <span style={{ fontSize: '11px', fontWeight: 'bold', color: '#b2bac2', marginRight: '4px' }}>NLE Tools:</span>
-        {(['select', 'razor', 'ripple', 'roll', 'slip', 'slide'] as EditToolMode[]).map(mode => (
+      <div
+        style={{
+          display: 'flex',
+          gap: '8px',
+          backgroundColor: '#102031',
+          padding: '8px',
+          borderRadius: '4px',
+          marginBottom: '16px',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+        }}
+      >
+        <span
+          style={{ fontSize: '11px', fontWeight: 'bold', color: '#b2bac2', marginRight: '4px' }}
+        >
+          NLE Tools:
+        </span>
+        {(['select', 'razor', 'ripple', 'roll', 'slip', 'slide'] as EditToolMode[]).map((mode) => (
           <button
             key={mode}
             onClick={() => setToolMode(mode)}
@@ -275,7 +287,19 @@ export const VirtualTimeline: React.FC = () => {
           </button>
         ))}
 
-        <button onClick={handleAddMarker} style={{ padding: '4px 8px', fontSize: '11px', backgroundColor: '#ef5350', border: 'none', borderRadius: '3px', color: '#fff', cursor: 'pointer', marginLeft: 'auto' }}>
+        <button
+          onClick={handleAddMarker}
+          style={{
+            padding: '4px 8px',
+            fontSize: '11px',
+            backgroundColor: '#ef5350',
+            border: 'none',
+            borderRadius: '3px',
+            color: '#fff',
+            cursor: 'pointer',
+            marginLeft: 'auto',
+          }}
+        >
           Add Marker
         </button>
 
@@ -285,7 +309,14 @@ export const VirtualTimeline: React.FC = () => {
       </div>
 
       {/* Top dashboard metadata */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '16px',
+        }}
+      >
         <div>
           <h2 style={{ margin: 0, fontSize: '20px' }}>Upgraded Virtual NLE Timeline</h2>
           <div style={{ fontSize: '11px', color: '#b2bac2', marginTop: '4px' }}>
@@ -293,13 +324,28 @@ export const VirtualTimeline: React.FC = () => {
           </div>
         </div>
         <div style={{ display: 'flex', gap: '16px', fontSize: '12px' }}>
-          <div>Visible Clips: <strong>{visibleClips.length}</strong> / {clips.length}</div>
-          <div>Markers: <strong>{nleMarkers.length}</strong></div>
+          <div>
+            Visible Clips: <strong>{visibleClips.length}</strong> / {clips.length}
+          </div>
+          <div>
+            Markers: <strong>{nleMarkers.length}</strong>
+          </div>
         </div>
       </div>
 
       {/* Control sliders */}
-      <div style={{ display: 'flex', gap: '20px', backgroundColor: '#102031', padding: '12px', borderRadius: '6px', marginBottom: '16px', fontSize: '12px', alignItems: 'center' }}>
+      <div
+        style={{
+          display: 'flex',
+          gap: '20px',
+          backgroundColor: '#102031',
+          padding: '12px',
+          borderRadius: '6px',
+          marginBottom: '16px',
+          fontSize: '12px',
+          alignItems: 'center',
+        }}
+      >
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <span>Zoom:</span>
           <input
@@ -308,7 +354,7 @@ export const VirtualTimeline: React.FC = () => {
             max="3"
             step="0.1"
             value={scaleFactor}
-            onChange={e => handleZoom(parseFloat(e.target.value))}
+            onChange={(e) => handleZoom(parseFloat(e.target.value))}
             style={{ width: '120px' }}
           />
           <span>{Math.round(scaleFactor * 100)}%</span>
@@ -318,7 +364,7 @@ export const VirtualTimeline: React.FC = () => {
           <input
             type="checkbox"
             checked={snappingConfig.enabled}
-            onChange={e => setSnappingConfig({ enabled: e.target.checked })}
+            onChange={(e) => setSnappingConfig({ enabled: e.target.checked })}
           />
           <span>Snapping</span>
         </div>
@@ -356,7 +402,15 @@ export const VirtualTimeline: React.FC = () => {
               useTimelineStore.getState().setClips(bulkClips);
               alert('Successfully bootstrapped 10,000 clips across 100 tracks!');
             }}
-            style={{ padding: '4px 10px', fontSize: '11px', backgroundColor: '#3b82f6', border: 'none', borderRadius: '3px', color: '#fff', cursor: 'pointer' }}
+            style={{
+              padding: '4px 10px',
+              fontSize: '11px',
+              backgroundColor: '#3b82f6',
+              border: 'none',
+              borderRadius: '3px',
+              color: '#fff',
+              cursor: 'pointer',
+            }}
           >
             Bootstrap 10,000 Clips
           </button>
@@ -377,7 +431,7 @@ export const VirtualTimeline: React.FC = () => {
         }}
       >
         {/* Draw Markers Overlays */}
-        {nleMarkers.map(marker => {
+        {nleMarkers.map((marker) => {
           const x = GeometryService.frameToX(marker.frame, scaleFactor);
           return (
             <div
@@ -406,25 +460,72 @@ export const VirtualTimeline: React.FC = () => {
           }}
         >
           {/* Render Tracks (only visible ones culling vertical tracks) */}
-          {tracks.map(track => {
-            const state = trackStates[track.id] || { isLocked: false, isMuted: false, isSolo: false, isHidden: false };
+          {tracks.map((track) => {
+            const state = trackStates[track.id] || {
+              isLocked: false,
+              isMuted: false,
+              isSolo: false,
+              isHidden: false,
+            };
             if (state.isHidden) return null;
 
             const children = (
               <>
                 {/* Track label */}
-                <div style={{ position: 'sticky', left: 0, width: '120px', height: '100%', backgroundColor: '#102031', borderRight: '1px solid #1e293b', zIndex: 10, fontSize: '11px', fontWeight: 'bold', display: 'flex', alignItems: 'center', padding: '0 8px', justifyContent: 'space-between', boxSizing: 'border-box', pointerEvents: 'auto' }}>
+                <div
+                  style={{
+                    position: 'sticky',
+                    left: 0,
+                    width: '120px',
+                    height: '100%',
+                    backgroundColor: '#102031',
+                    borderRight: '1px solid #1e293b',
+                    zIndex: 10,
+                    fontSize: '11px',
+                    fontWeight: 'bold',
+                    display: 'flex',
+                    alignItems: 'center',
+                    padding: '0 8px',
+                    justifyContent: 'space-between',
+                    boxSizing: 'border-box',
+                    pointerEvents: 'auto',
+                  }}
+                >
                   <span>{track.name}</span>
                   <div style={{ display: 'flex', gap: '3px' }}>
-                    <button onClick={() => setTrackState(track.id, { isMuted: !state.isMuted })} style={{ fontSize: '9px', padding: '1px 3px', backgroundColor: state.isMuted ? '#ef5350' : '#1e293b', border: 'none', color: '#fff', cursor: 'pointer' }}>M</button>
-                    <button onClick={() => setTrackState(track.id, { isSolo: !state.isSolo })} style={{ fontSize: '9px', padding: '1px 3px', backgroundColor: state.isSolo ? '#fbbf24' : '#1e293b', border: 'none', color: '#fff', cursor: 'pointer' }}>S</button>
+                    <button
+                      onClick={() => setTrackState(track.id, { isMuted: !state.isMuted })}
+                      style={{
+                        fontSize: '9px',
+                        padding: '1px 3px',
+                        backgroundColor: state.isMuted ? '#ef5350' : '#1e293b',
+                        border: 'none',
+                        color: '#fff',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      M
+                    </button>
+                    <button
+                      onClick={() => setTrackState(track.id, { isSolo: !state.isSolo })}
+                      style={{
+                        fontSize: '9px',
+                        padding: '1px 3px',
+                        backgroundColor: state.isSolo ? '#fbbf24' : '#1e293b',
+                        border: 'none',
+                        color: '#fff',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      S
+                    </button>
                   </div>
                 </div>
 
                 {/* Visible Clips inside this track */}
                 {visibleClips
-                  .filter(clip => clip.trackId === track.id)
-                  .map(clip => {
+                  .filter((clip) => clip.trackId === track.id)
+                  .map((clip) => {
                     const rect = GeometryService.getClipRect(clip, [track], scaleFactor);
                     const isSelected = selectedClipIds.includes(clip.id);
 
@@ -433,7 +534,7 @@ export const VirtualTimeline: React.FC = () => {
                     return (
                       <div
                         key={clip.id}
-                        onMouseDown={e => handleMouseDown(e, clip.id)}
+                        onMouseDown={(e) => handleMouseDown(e, clip.id)}
                         style={{
                           position: 'absolute',
                           left: `${rect.x}px`,

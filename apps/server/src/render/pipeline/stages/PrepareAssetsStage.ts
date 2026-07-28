@@ -17,7 +17,9 @@ export class PrepareAssetsStage implements PipelineStage {
 
     freshJob.stage = 'prepare';
     freshJob.progress = 20;
-    freshJob.logs.push(`[${new Date().toISOString()}] [Stage: PREPARE] Preparing assets and scratch disk space...`);
+    freshJob.logs.push(
+      `[${new Date().toISOString()}] [Stage: PREPARE] Preparing assets and scratch disk space...`,
+    );
     await jobStorage.saveJob(freshJob);
     context.job = freshJob;
 

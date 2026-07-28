@@ -93,9 +93,5 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
     );
   }
 
-  return (
-    <NestedThemeContext.Provider value={undefined}>
-      {children}
-    </NestedThemeContext.Provider>
-  );
+  return <NestedThemeContext.Provider value={undefined}>{children}</NestedThemeContext.Provider>;
 };

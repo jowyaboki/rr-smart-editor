@@ -1,6 +1,20 @@
 import { create } from 'zustand';
-import { ProjectGraph, GraphNode, GraphEdge, GraphSnapshot, GraphDiff, NodeType, DependencyType } from '../types';
-import { webGraphEngine, DependencyResolver, InvalidationService, SnapshotService, GraphSerializer } from '../services';
+import {
+  ProjectGraph,
+  GraphNode,
+  GraphEdge,
+  GraphSnapshot,
+  GraphDiff,
+  NodeType,
+  DependencyType,
+} from '../types';
+import {
+  webGraphEngine,
+  DependencyResolver,
+  InvalidationService,
+  SnapshotService,
+  GraphSerializer,
+} from '../services';
 import { GraphValidationRegistry, GraphValidationError } from '../validation';
 
 interface ProjectGraphState {
@@ -115,7 +129,10 @@ export const useProjectGraphStore = create<ProjectGraphState>((set, get) => {
     propagateUpdates: (startNodeId: string) => {
       set({ isExecuting: true });
       try {
-        const recomputed = InvalidationService.propagateUpdates(startNodeId, webGraphEngine.getGraph());
+        const recomputed = InvalidationService.propagateUpdates(
+          startNodeId,
+          webGraphEngine.getGraph(),
+        );
         set({ graph: { ...webGraphEngine.getGraph() } });
         return recomputed;
       } finally {
@@ -136,7 +153,7 @@ export const useProjectGraphStore = create<ProjectGraphState>((set, get) => {
 
     restoreSnapshot: (snapshotId: string) => {
       const snaps = SnapshotService.getSnapshots(webGraphEngine.getGraph().id);
-      const target = snaps.find(s => s.id === snapshotId);
+      const target = snaps.find((s) => s.id === snapshotId);
       if (target) {
         const restored = SnapshotService.restoreSnapshot(target);
         webGraphEngine.setGraph(restored);

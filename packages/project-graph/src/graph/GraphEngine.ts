@@ -130,7 +130,10 @@ export class GraphEngine {
   /**
    * Clone a sub-graph of nodes and their internal edges.
    */
-  public cloneSubGraph(nodeIds: string[], idPrefix: string = 'cloned_'): { nodes: GraphNode[]; edges: GraphEdge[] } {
+  public cloneSubGraph(
+    nodeIds: string[],
+    idPrefix: string = 'cloned_',
+  ): { nodes: GraphNode[]; edges: GraphEdge[] } {
     const clonedNodes: GraphNode[] = [];
     const clonedEdges: GraphEdge[] = [];
 

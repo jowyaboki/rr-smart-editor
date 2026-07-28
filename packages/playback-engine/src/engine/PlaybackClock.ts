@@ -18,11 +18,7 @@ export class PlaybackClockManager {
   private intervalId: any = null;
   private listeners: Record<string, Set<(data?: any) => void>> = {};
 
-  constructor(
-    totalFrames: number = 300,
-    fps: number = 30,
-    settings?: Partial<PlaybackSettings>
-  ) {
+  constructor(totalFrames: number = 300, fps: number = 30, settings?: Partial<PlaybackSettings>) {
     this.clock = {
       id: `clock_${Date.now()}`,
       startTime: 0,

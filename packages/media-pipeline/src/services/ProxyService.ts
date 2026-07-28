@@ -7,7 +7,7 @@ export class ProxyService {
   public static async generateProxy(
     assetId: string,
     quality: 'low' | 'medium',
-    inputPath: string
+    inputPath: string,
   ): Promise<ProxyAsset> {
     // Mimic background transcode latency
     await new Promise((resolve) => setTimeout(resolve, 100));

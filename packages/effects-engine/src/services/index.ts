@@ -1,4 +1,12 @@
-import { Shader, Effect, EffectChain, EffectContext, CompositingLayer, BlendMode, Mask } from '../types';
+import {
+  Shader,
+  Effect,
+  EffectChain,
+  EffectContext,
+  CompositingLayer,
+  BlendMode,
+  Mask,
+} from '../types';
 import { executeEffect } from '../effects';
 import { BlendService } from '../blending';
 import { MaskService } from '../masking';
@@ -34,18 +42,33 @@ export class ShaderRegistry {
  * Registry managing standard and plugin-contributed visual Effects
  */
 export class EffectRegistry {
-  private effectDefinitions = new Map<string, {
-    type: string;
-    name: string;
-    createDefault: () => Effect;
-    execute?: (ctx: CanvasRenderingContext2D, width: number, height: number, effect: Effect, context: EffectContext) => void;
-  }>();
+  private effectDefinitions = new Map<
+    string,
+    {
+      type: string;
+      name: string;
+      createDefault: () => Effect;
+      execute?: (
+        ctx: CanvasRenderingContext2D,
+        width: number,
+        height: number,
+        effect: Effect,
+        context: EffectContext,
+      ) => void;
+    }
+  >();
 
   public registerEffect(
     type: string,
     name: string,
     createDefault: () => Effect,
-    execute?: (ctx: CanvasRenderingContext2D, width: number, height: number, effect: Effect, context: EffectContext) => void
+    execute?: (
+      ctx: CanvasRenderingContext2D,
+      width: number,
+      height: number,
+      effect: Effect,
+      context: EffectContext,
+    ) => void,
   ): void {
     if (this.effectDefinitions.has(type)) {
       throw new Error(`Effect definition for type "${type}" is already registered.`);
@@ -76,7 +99,7 @@ export class EffectRegistry {
 export class Compositor {
   constructor(
     private readonly shaderRegistry: ShaderRegistry,
-    private readonly effectRegistry: EffectRegistry
+    private readonly effectRegistry: EffectRegistry,
   ) {}
 
   /**
@@ -88,7 +111,7 @@ export class Compositor {
     width: number,
     height: number,
     layers: CompositingLayer[],
-    context: EffectContext
+    context: EffectContext,
   ): void {
     destCtx.clearRect(0, 0, width, height);
 
@@ -144,7 +167,7 @@ export class Compositor {
     width: number,
     height: number,
     layer: CompositingLayer,
-    context: EffectContext
+    context: EffectContext,
   ): void {
     const src = layer.source;
     if (!src) return;
@@ -166,7 +189,7 @@ export class Compositor {
     width: number,
     height: number,
     chain: EffectChain,
-    context: EffectContext
+    context: EffectContext,
   ): void {
     if (!chain || !chain.effects) return;
 
@@ -182,10 +205,13 @@ export class Compositor {
       if (effect.shaderId) {
         const shader = this.shaderRegistry.getShader(effect.shaderId);
         if (shader) {
-          const params = Object.entries(effect.parameters).reduce((acc, [k, p]) => {
-            acc[k] = p.value;
-            return acc;
-          }, {} as Record<string, any>);
+          const params = Object.entries(effect.parameters).reduce(
+            (acc, [k, p]) => {
+              acc[k] = p.value;
+              return acc;
+            },
+            {} as Record<string, any>,
+          );
           shader.execute(ctx, width, height, params, context);
           continue;
         }
@@ -214,9 +240,9 @@ export class EffectsEngine {
     width: number,
     height: number,
     layers: CompositingLayer[],
-    context: EffectContext
+    context: EffectContext,
   ): void {
-    const cacheKey = `frame-${context.frame}-${layers.map(l => l.id).join('-')}`;
+    const cacheKey = `frame-${context.frame}-${layers.map((l) => l.id).join('-')}`;
     const cached = this.cacheManager.frameCache.get(cacheKey);
 
     if (cached) {

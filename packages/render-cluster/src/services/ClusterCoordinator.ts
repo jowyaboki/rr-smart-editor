@@ -23,8 +23,8 @@ export class ClusterCoordinator {
   public getClusterMetrics(queueDepth: number = 0): ClusterMetrics {
     const nodes = this.registry.listNodes();
     const totalNodes = nodes.length;
-    const activeNodes = nodes.filter(n => n.status === 'busy').length;
-    const idleNodes = nodes.filter(n => n.status === 'idle').length;
+    const activeNodes = nodes.filter((n) => n.status === 'busy').length;
+    const idleNodes = nodes.filter((n) => n.status === 'idle').length;
 
     let totalCpu = 0;
     let totalGpu = 0;
@@ -35,7 +35,7 @@ export class ClusterCoordinator {
     let totalTx = 0;
     let totalCost = 0;
 
-    nodes.forEach(node => {
+    nodes.forEach((node) => {
       totalCpu += node.telemetry.cpuUsagePercent;
       if (node.capabilities.gpuEnabled) {
         totalGpu += node.telemetry.gpuUsagePercent || 0;

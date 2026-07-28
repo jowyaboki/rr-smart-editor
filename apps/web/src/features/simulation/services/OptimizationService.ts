@@ -1,4 +1,8 @@
-import { SimulationEngine, IDigitalTwin, OptimizationProposal } from '@ai-video-editor/simulation-engine';
+import {
+  SimulationEngine,
+  IDigitalTwin,
+  OptimizationProposal,
+} from '@ai-video-editor/simulation-engine';
 
 export class OptimizationService {
   private engine: SimulationEngine;

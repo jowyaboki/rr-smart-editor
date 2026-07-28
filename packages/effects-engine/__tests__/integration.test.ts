@@ -10,7 +10,6 @@ import {
 } from '../../apps/web/src/core/integration';
 
 describe('RR Smart Editor Core Integration Layer Unit Tests', () => {
-
   test('Registered Engines & Topological Order Resolver', () => {
     const service = new IntegrationService();
     const engines = service.registry.listEngines();
@@ -25,8 +24,8 @@ describe('RR Smart Editor Core Integration Layer Unit Tests', () => {
     assert.strictEqual(sorted.length, 15);
 
     // Variable Engine must be sorted before Expression Engine (which depends on it)
-    const varIdx = sorted.findIndex(e => e.name === 'Variable Engine');
-    const expIdx = sorted.findIndex(e => e.name === 'Expression Engine');
+    const varIdx = sorted.findIndex((e) => e.name === 'Variable Engine');
+    const expIdx = sorted.findIndex((e) => e.name === 'Expression Engine');
     assert.ok(varIdx < expIdx);
   });
 
@@ -62,8 +61,12 @@ describe('RR Smart Editor Core Integration Layer Unit Tests', () => {
       dependencies: [],
       status: 'idle',
       health: 'healthy',
-      initialize: async () => { initCalled = true; },
-      dispose: async () => { disposeCalled = true; },
+      initialize: async () => {
+        initCalled = true;
+      },
+      dispose: async () => {
+        disposeCalled = true;
+      },
     });
 
     // Verify state transition: idle -> initialized

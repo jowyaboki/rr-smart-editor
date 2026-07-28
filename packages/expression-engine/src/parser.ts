@@ -1,4 +1,11 @@
-import { ASTNode, LiteralNode, IdentifierNode, MemberExpressionNode, CallExpressionNode, ConditionalExpressionNode } from './types';
+import {
+  ASTNode,
+  LiteralNode,
+  IdentifierNode,
+  MemberExpressionNode,
+  CallExpressionNode,
+  ConditionalExpressionNode,
+} from './types';
 
 export interface Token {
   type: 'Number' | 'String' | 'Boolean' | 'Identifier' | 'Operator' | 'Punctuator' | 'EOF';
@@ -35,7 +42,10 @@ export function tokenize(source: string): Token[] {
     const column = index - lineStart + 1;
 
     // Numbers
-    if (/\d/.test(char) || (char === '.' && index + 1 < source.length && /\d/.test(source[index + 1]))) {
+    if (
+      /\d/.test(char) ||
+      (char === '.' && index + 1 < source.length && /\d/.test(source[index + 1]))
+    ) {
       let numStr = '';
       let hasDot = false;
       while (index < source.length) {
@@ -89,7 +99,14 @@ export function tokenize(source: string): Token[] {
 
     // Check Multi-character Operators and Booleans
     const twoChars = source.slice(index, index + 2);
-    if (twoChars === '&&' || twoChars === '||' || twoChars === '==' || twoChars === '!=' || twoChars === '<=' || twoChars === '>=') {
+    if (
+      twoChars === '&&' ||
+      twoChars === '||' ||
+      twoChars === '==' ||
+      twoChars === '!=' ||
+      twoChars === '<=' ||
+      twoChars === '>='
+    ) {
       tokens.push({ type: 'Operator', value: twoChars, line, column });
       index += 2;
       continue;
@@ -179,14 +196,18 @@ export class Parser {
   private consume(type: Token['type'], message: string, value?: string): Token {
     if (this.check(type, value)) return this.advance();
     const tok = this.peek();
-    throw new Error(`${message} (Found ${tok.type} "${tok.value}" at line ${tok.line}, col ${tok.column})`);
+    throw new Error(
+      `${message} (Found ${tok.type} "${tok.value}" at line ${tok.line}, col ${tok.column})`,
+    );
   }
 
   public parse(): ASTNode {
     const expr = this.expression();
     if (!this.isAtEnd()) {
       const tok = this.peek();
-      throw new Error(`Unexpected token "${tok.value}" after expression at line ${tok.line}, col ${tok.column}`);
+      throw new Error(
+        `Unexpected token "${tok.value}" after expression at line ${tok.line}, col ${tok.column}`,
+      );
     }
     return expr;
   }
@@ -453,10 +474,14 @@ export class Parser {
             key = this.previous().value;
           } else {
             const tok = this.peek();
-            throw new Error(`Expect property name or string literal at line ${tok.line}, col ${tok.column}`);
+            throw new Error(
+              `Expect property name or string literal at line ${tok.line}, col ${tok.column}`,
+            );
           }
           if (FORBIDDEN_PROPERTIES.has(key)) {
-            throw new Error(`Security Exception: Forbidden property name "${key}" in object literal`);
+            throw new Error(
+              `Security Exception: Forbidden property name "${key}" in object literal`,
+            );
           }
           this.consume('Operator', "Expect ':' after property key", ':');
           properties[key] = this.expression();
@@ -470,7 +495,9 @@ export class Parser {
     }
 
     const tok = this.peek();
-    throw new Error(`Expect expression but found ${tok.type} "${tok.value}" at line ${tok.line}, col ${tok.column}`);
+    throw new Error(
+      `Expect expression but found ${tok.type} "${tok.value}" at line ${tok.line}, col ${tok.column}`,
+    );
   }
 }
 

@@ -1,4 +1,14 @@
-import { Asset, AssetVersion, AssetMetadata, AssetCollection, AssetFolder, AssetApprovalStatus, AssetApproval, AssetLicense, AssetUsage } from '../types';
+import {
+  Asset,
+  AssetVersion,
+  AssetMetadata,
+  AssetCollection,
+  AssetFolder,
+  AssetApprovalStatus,
+  AssetApproval,
+  AssetLicense,
+  AssetUsage,
+} from '../types';
 
 // ==========================================
 // 1. METADATA SERVICE
@@ -16,7 +26,7 @@ export class MetadataService {
     return text
       .toLowerCase()
       .split(/\W+/)
-      .filter(w => w.length > 3 && !common.includes(w));
+      .filter((w) => w.length > 3 && !common.includes(w));
   }
 }
 
@@ -37,7 +47,7 @@ export class VersionService {
   }
 
   public restoreVersion(asset: Asset, targetVersion: string): void {
-    const match = asset.versions.find(v => v.version === targetVersion);
+    const match = asset.versions.find((v) => v.version === targetVersion);
     if (!match) {
       throw new Error(`Restoration failed: Version "${targetVersion}" does not exist.`);
     }
@@ -55,7 +65,7 @@ export class ApprovalService {
     asset: Asset,
     status: AssetApprovalStatus,
     reviewer: string,
-    comment?: string
+    comment?: string,
   ): void {
     const approval = asset.approval;
     approval.status = status;
@@ -82,18 +92,19 @@ export class SearchService {
   public search(
     assets: Asset[],
     query: string,
-    filters?: { fileType?: string; codec?: string; resolution?: string }
+    filters?: { fileType?: string; codec?: string; resolution?: string },
   ): Asset[] {
     const q = query.toLowerCase();
 
-    return assets.filter(asset => {
+    return assets.filter((asset) => {
       // 1. Check textual queries
       const matchesText =
         asset.name.toLowerCase().includes(q) ||
         asset.metadata.title.toLowerCase().includes(q) ||
         asset.metadata.description.toLowerCase().includes(q) ||
-        asset.metadata.keywords.some(k => k.toLowerCase().includes(q)) ||
-        (asset.metadata.aiGeneratedTags && asset.metadata.aiGeneratedTags.some(t => t.toLowerCase().includes(q)));
+        asset.metadata.keywords.some((k) => k.toLowerCase().includes(q)) ||
+        (asset.metadata.aiGeneratedTags &&
+          asset.metadata.aiGeneratedTags.some((t) => t.toLowerCase().includes(q)));
 
       if (query && !matchesText) return false;
 
@@ -113,12 +124,20 @@ export class RightsService {
   /**
    * Checks license expiration status and territorial restrictions
    */
-  public isAuthorized(license: AssetLicense, territory?: string): { authorized: boolean; reason?: string } {
+  public isAuthorized(
+    license: AssetLicense,
+    territory?: string,
+  ): { authorized: boolean; reason?: string } {
     if (license.expirationDate && license.expirationDate < Date.now()) {
       return { authorized: false, reason: 'LICENSE_EXPIRED' };
     }
 
-    if (territory && license.territory && license.territory !== 'global' && license.territory !== territory) {
+    if (
+      territory &&
+      license.territory &&
+      license.territory !== 'global' &&
+      license.territory !== territory
+    ) {
       return { authorized: false, reason: 'TERRITORIAL_RESTRICTION' };
     }
 

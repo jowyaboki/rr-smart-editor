@@ -54,7 +54,7 @@ export class AssetIntelligenceEngine {
     asset: Asset,
     indexId: string,
     profile: AnalysisProfile,
-    library: Asset[] = []
+    library: Asset[] = [],
   ): Promise<{
     embedding: SemanticEmbedding;
     concepts: string[];

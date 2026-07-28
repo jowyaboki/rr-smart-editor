@@ -38,12 +38,7 @@ export const NodeTypeSchema = z.enum([
 ]);
 
 export type DependencyType =
-  | 'uses'
-  | 'produces'
-  | 'depends_on'
-  | 'references'
-  | 'generates'
-  | 'overrides';
+  'uses' | 'produces' | 'depends_on' | 'references' | 'generates' | 'overrides';
 
 export const DependencyTypeSchema = z.enum([
   'uses',
@@ -77,13 +72,15 @@ export interface NodeMetadata {
   [key: string]: any;
 }
 
-export const NodeMetadataSchema = z.object({
-  createdAt: z.string(),
-  updatedAt: z.string(),
-  version: z.string().default('1.0.0'),
-  tags: z.array(z.string()).optional(),
-  pluginId: z.string().optional(),
-}).catchall(z.any());
+export const NodeMetadataSchema = z
+  .object({
+    createdAt: z.string(),
+    updatedAt: z.string(),
+    version: z.string().default('1.0.0'),
+    tags: z.array(z.string()).optional(),
+    pluginId: z.string().optional(),
+  })
+  .catchall(z.any());
 
 export interface GraphNode {
   id: string;

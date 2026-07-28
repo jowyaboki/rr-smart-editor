@@ -1,7 +1,11 @@
 import { describe, test, beforeEach } from 'node:test';
 import assert from 'node:assert';
 import { RenderJob, RenderArtifact } from '@ai-video-editor/shared';
-import { renderPluginRegistry, PipelineStage, CancellationTokenImpl } from '@ai-video-editor/render-core';
+import {
+  renderPluginRegistry,
+  PipelineStage,
+  CancellationTokenImpl,
+} from '@ai-video-editor/render-core';
 import { RenderPipeline } from '../pipeline/RenderPipeline';
 import { PipelineContext } from '../pipeline/PipelineContext';
 import { FileJobStorage } from '../storage/JobStorage';
@@ -86,7 +90,12 @@ describe('Render Pipeline Architecture Tests', () => {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       preset: 'mp4-1080p',
-      settings: { format: 'mp4', codec: 'h264', resolution: { width: 1920, height: 1080 }, fps: 30 },
+      settings: {
+        format: 'mp4',
+        codec: 'h264',
+        resolution: { width: 1920, height: 1080 },
+        fps: 30,
+      },
       dependencies: [],
       logs: [],
       warnings: [],
@@ -134,7 +143,12 @@ describe('Render Pipeline Architecture Tests', () => {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       preset: 'mp4-1080p',
-      settings: { format: 'mp4', codec: 'h264', resolution: { width: 1920, height: 1080 }, fps: 30 },
+      settings: {
+        format: 'mp4',
+        codec: 'h264',
+        resolution: { width: 1920, height: 1080 },
+        fps: 30,
+      },
       dependencies: [],
       logs: [],
       warnings: [],
@@ -184,7 +198,12 @@ describe('Render Pipeline Architecture Tests', () => {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       preset: 'mp4-1080p',
-      settings: { format: 'mp4', codec: 'h264', resolution: { width: 1920, height: 1080 }, fps: 30 },
+      settings: {
+        format: 'mp4',
+        codec: 'h264',
+        resolution: { width: 1920, height: 1080 },
+        fps: 30,
+      },
       dependencies: [],
       logs: [],
       warnings: [],

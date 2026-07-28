@@ -11,7 +11,6 @@ import {
 } from '../src/index';
 
 describe('Playback Engine Core Unit Tests', () => {
-
   test('Playback Clock - play, pause, step and looping bounds', () => {
     // Clock for 100 frames total, 30 fps
     const clock = new PlaybackClockManager(100, 30, { loop: true });

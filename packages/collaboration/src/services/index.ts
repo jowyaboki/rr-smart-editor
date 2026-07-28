@@ -1,4 +1,13 @@
-import { CollaborativeSession, Participant, Presence, Operation, Comment, Lock, UserRole, Annotation } from '../types';
+import {
+  CollaborativeSession,
+  Participant,
+  Presence,
+  Operation,
+  Comment,
+  Lock,
+  UserRole,
+  Annotation,
+} from '../types';
 
 // ==========================================
 // 1. PRESENCE SERVICE
@@ -6,7 +15,10 @@ import { CollaborativeSession, Participant, Presence, Operation, Comment, Lock, 
 export class PresenceService {
   private presences = new Map<string, Presence>();
 
-  public updatePresence(participantId: string, updates: Partial<Omit<Presence, 'participantId' | 'lastActive'>>): Presence {
+  public updatePresence(
+    participantId: string,
+    updates: Partial<Omit<Presence, 'participantId' | 'lastActive'>>,
+  ): Presence {
     const existing = this.presences.get(participantId) || {
       participantId,
       currentSelection: [],
@@ -97,7 +109,7 @@ export class CommentService {
     authorId: string,
     authorName: string,
     text: string,
-    meta?: Partial<Pick<Comment, 'frame' | 'timelinePosition' | 'assetId' | 'componentId'>>
+    meta?: Partial<Pick<Comment, 'frame' | 'timelinePosition' | 'assetId' | 'componentId'>>,
   ): Comment {
     // Basic mention extractor
     const mentionRegex = /@(\w+)/g;
@@ -123,7 +135,7 @@ export class CommentService {
   }
 
   public resolveComment(id: string): void {
-    const comment = this.comments.find(c => c.id === id);
+    const comment = this.comments.find((c) => c.id === id);
     if (comment) {
       comment.resolved = true;
     }
@@ -205,7 +217,11 @@ export class CollaborationService {
   private session: CollaborativeSession | null = null;
   private locks = new Map<string, Lock>(); // targetId -> Lock
 
-  public startSession(sessionId: string, projectId: string, initialParticipants: Participant[]): CollaborativeSession {
+  public startSession(
+    sessionId: string,
+    projectId: string,
+    initialParticipants: Participant[],
+  ): CollaborativeSession {
     this.session = {
       id: sessionId,
       projectId,
@@ -222,7 +238,12 @@ export class CollaborationService {
   /**
    * Safe non-destructive Lock management (Soft, advisory, temporary locking)
    */
-  public acquireLock(targetId: string, holderId: string, type: Lock['type'] = 'advisory', durationSeconds = 60): Lock | null {
+  public acquireLock(
+    targetId: string,
+    holderId: string,
+    type: Lock['type'] = 'advisory',
+    durationSeconds = 60,
+  ): Lock | null {
     const active = this.locks.get(targetId);
     if (active && active.holderId !== holderId && active.expiresAt > Date.now()) {
       return null; // Locked by someone else!

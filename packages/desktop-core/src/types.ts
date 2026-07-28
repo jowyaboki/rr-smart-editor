@@ -82,7 +82,8 @@ export interface GPUDiagnostics {
 }
 
 // Local AI Adapters
-export type LocalAIProviderType = 'ollama' | 'llamacpp' | 'lmstudio' | 'local_whisper' | 'local_embeddings';
+export type LocalAIProviderType =
+  'ollama' | 'llamacpp' | 'lmstudio' | 'local_whisper' | 'local_embeddings';
 
 export interface LocalAIConfig {
   provider: LocalAIProviderType;

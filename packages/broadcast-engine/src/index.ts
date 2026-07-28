@@ -13,7 +13,7 @@ export class LiveProductionEngine {
   public createBroadcastSession(
     project: BroadcastProject,
     defaultRecordingConfig: RecordingConfig,
-    defaultReplayConfig: ReplayConfig
+    defaultReplayConfig: ReplayConfig,
   ): BroadcastService {
     return new BroadcastService(project, defaultRecordingConfig, defaultReplayConfig);
   }

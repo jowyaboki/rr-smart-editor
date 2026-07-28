@@ -24,7 +24,10 @@ export class StageRunner {
         break; // Success!
       } catch (err: any) {
         attempt++;
-        logger.error(`[StageRunner] Error in stage ${stage.id} (Attempt ${attempt}/${maxRetries + 1}):`, err);
+        logger.error(
+          `[StageRunner] Error in stage ${stage.id} (Attempt ${attempt}/${maxRetries + 1}):`,
+          err,
+        );
 
         if (attempt > maxRetries || context.cancellationToken.isCancellationRequested) {
           // All retries failed or cancelled

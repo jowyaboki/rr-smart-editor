@@ -17,18 +17,18 @@ export class OverlayService {
   }
 
   public removeOverlay(id: string): void {
-    this.activeOverlays = this.activeOverlays.filter(o => o.id !== id);
+    this.activeOverlays = this.activeOverlays.filter((o) => o.id !== id);
   }
 
   public toggleVisibility(id: string): void {
-    const overlay = this.activeOverlays.find(o => o.id === id);
+    const overlay = this.activeOverlays.find((o) => o.id === id);
     if (overlay) {
       overlay.isVisible = !overlay.isVisible;
     }
   }
 
   public updateOverlayProperties(id: string, properties: Record<string, any>): void {
-    const overlay = this.activeOverlays.find(o => o.id === id);
+    const overlay = this.activeOverlays.find((o) => o.id === id);
     if (overlay) {
       overlay.properties = { ...overlay.properties, ...properties };
     }
@@ -55,7 +55,12 @@ export class OverlayService {
     return breakingNewsOverlay;
   }
 
-  public triggerScoreboard(homeTeam: string, awayTeam: string, homeScore: number = 0, awayScore: number = 0): Overlay {
+  public triggerScoreboard(
+    homeTeam: string,
+    awayTeam: string,
+    homeScore: number = 0,
+    awayScore: number = 0,
+  ): Overlay {
     const scoreboardOverlay: Overlay = {
       id: `overlay_score_${Date.now()}`,
       name: 'Sports Broadcast Scoreboard',

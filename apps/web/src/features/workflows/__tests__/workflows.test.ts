@@ -9,7 +9,6 @@ import { TemplateService } from '../services/TemplateService';
 import { Workflow, WorkflowStep, WorkflowVariable } from '@ai-video-editor/shared';
 
 describe('Workflow Automation Engine Foundation Tests', () => {
-
   beforeEach(() => {
     WorkflowRegistry.initialize();
     ExecutionService.clear();

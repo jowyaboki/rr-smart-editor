@@ -27,20 +27,20 @@ export class NodeGraphService {
 
   public removeNode(nodeId: string): void {
     // Remove the node itself
-    this.activeGraph.nodes = this.activeGraph.nodes.filter(n => n.id !== nodeId);
+    this.activeGraph.nodes = this.activeGraph.nodes.filter((n) => n.id !== nodeId);
 
     // Remove any associated connections to prevent dead sockets
     this.activeGraph.connections = this.activeGraph.connections.filter(
-      c => c.fromNodeId !== nodeId && c.toNodeId !== nodeId
+      (c) => c.fromNodeId !== nodeId && c.toNodeId !== nodeId,
     );
 
     // Clean up groups containing this node
-    this.activeGraph.groups.forEach(g => {
-      g.nodeIds = g.nodeIds.filter(id => id !== nodeId);
+    this.activeGraph.groups.forEach((g) => {
+      g.nodeIds = g.nodeIds.filter((id) => id !== nodeId);
     });
 
     // Clean bookmarks
-    this.activeGraph.bookmarks = this.activeGraph.bookmarks.filter(b => b.nodeId !== nodeId);
+    this.activeGraph.bookmarks = this.activeGraph.bookmarks.filter((b) => b.nodeId !== nodeId);
 
     this.activeGraph.version = `1.0.${Date.now()}`;
   }
@@ -48,7 +48,7 @@ export class NodeGraphService {
   public connect(fromNodeId: string, fromPortId: string, toNodeId: string, toPortId: string): void {
     // Prevent duplicate connection to the same input port
     this.activeGraph.connections = this.activeGraph.connections.filter(
-      c => !(c.toNodeId === toNodeId && c.toPortId === toPortId)
+      (c) => !(c.toNodeId === toNodeId && c.toPortId === toPortId),
     );
 
     const connection: NodeConnection = {
@@ -62,7 +62,7 @@ export class NodeGraphService {
     this.activeGraph.connections.push(connection);
 
     // Mark target node as dirty
-    const targetNode = this.activeGraph.nodes.find(n => n.id === toNodeId);
+    const targetNode = this.activeGraph.nodes.find((n) => n.id === toNodeId);
     if (targetNode) {
       targetNode.isDirty = true;
     }
@@ -71,12 +71,14 @@ export class NodeGraphService {
   }
 
   public disconnect(connectionId: string): void {
-    const conn = this.activeGraph.connections.find(c => c.id === connectionId);
+    const conn = this.activeGraph.connections.find((c) => c.id === connectionId);
     if (conn) {
-      const targetNode = this.activeGraph.nodes.find(n => n.id === conn.toNodeId);
+      const targetNode = this.activeGraph.nodes.find((n) => n.id === conn.toNodeId);
       if (targetNode) targetNode.isDirty = true;
     }
-    this.activeGraph.connections = this.activeGraph.connections.filter(c => c.id !== connectionId);
+    this.activeGraph.connections = this.activeGraph.connections.filter(
+      (c) => c.id !== connectionId,
+    );
     this.activeGraph.version = `1.0.${Date.now()}`;
   }
 
@@ -112,7 +114,7 @@ export class NodeGraphService {
   }
 
   public restoreSnapshot(snapshotId: string): void {
-    const found = this.snapshots.find(s => s.id === snapshotId);
+    const found = this.snapshots.find((s) => s.id === snapshotId);
     if (found) {
       this.activeGraph = JSON.parse(JSON.stringify(found.graph));
     }
@@ -125,14 +127,16 @@ export class NodeGraphService {
       if (visited.has(currId)) return;
       visited.add(currId);
 
-      const node = this.activeGraph.nodes.find(n => n.id === currId);
+      const node = this.activeGraph.nodes.find((n) => n.id === currId);
       if (node) {
         node.isDirty = true;
       }
 
       // Find children connected to outputs of current node
-      const forwardConnections = this.activeGraph.connections.filter(c => c.fromNodeId === currId);
-      forwardConnections.forEach(c => {
+      const forwardConnections = this.activeGraph.connections.filter(
+        (c) => c.fromNodeId === currId,
+      );
+      forwardConnections.forEach((c) => {
         dfs(c.toNodeId);
       });
     };

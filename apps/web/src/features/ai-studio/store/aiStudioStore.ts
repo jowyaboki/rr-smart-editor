@@ -31,5 +31,12 @@ export const useAIStudioStore = create<AIStudioState>((set) => ({
 
   setWarnings: (warnings) => set({ warnings }),
 
-  clear: () => set({ currentProject: null, pipelineProgress: 0, pipelineStage: 'idle', isGenerating: false, warnings: [] }),
+  clear: () =>
+    set({
+      currentProject: null,
+      pipelineProgress: 0,
+      pipelineStage: 'idle',
+      isGenerating: false,
+      warnings: [],
+    }),
 }));

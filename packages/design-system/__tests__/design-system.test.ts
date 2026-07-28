@@ -12,7 +12,6 @@ import {
 } from '../src/index';
 
 describe('Design System Engine Core Unit Tests', () => {
-
   test('Token Resolution - Basic values and recursive references', () => {
     const theme: Theme = {
       id: 'test-theme',
@@ -82,11 +81,15 @@ describe('Design System Engine Core Unit Tests', () => {
     assert.strictEqual(resolvedDefault.fontSize, '32px');
 
     // 2. Resolve for mobile viewport
-    const resolvedMobile = TokenResolver.resolveToken('typography.h1', theme, { viewport: 'mobile' });
+    const resolvedMobile = TokenResolver.resolveToken('typography.h1', theme, {
+      viewport: 'mobile',
+    });
     assert.strictEqual(resolvedMobile.fontSize, '18px');
 
     // 3. Resolve for tablet viewport
-    const resolvedTablet = TokenResolver.resolveToken('typography.h1', theme, { viewport: 'tablet' });
+    const resolvedTablet = TokenResolver.resolveToken('typography.h1', theme, {
+      viewport: 'tablet',
+    });
     assert.strictEqual(resolvedTablet.fontSize, '24px');
 
     // 4. Resolve with Japanese locale override
@@ -95,7 +98,10 @@ describe('Design System Engine Core Unit Tests', () => {
     assert.strictEqual(resolvedJa.fontSize, '28px'); // English desktop override to Noto Sans JP but resolved with default viewport
 
     // 5. Resolve with Japanese locale AND mobile viewport
-    const resolvedJaMobile = TokenResolver.resolveToken('typography.h1', theme, { locale: 'ja', viewport: 'mobile' });
+    const resolvedJaMobile = TokenResolver.resolveToken('typography.h1', theme, {
+      locale: 'ja',
+      viewport: 'mobile',
+    });
     assert.strictEqual(resolvedJaMobile.fontFamily, 'Noto Sans JP');
     assert.strictEqual(resolvedJaMobile.fontSize, '16px');
   });
@@ -202,16 +208,16 @@ describe('Design System Engine Core Unit Tests', () => {
     const errors = ValidationService.validateTheme(brokenTheme);
 
     // Assert missing token detected
-    const missing = errors.find(e => e.type === 'missing_token');
+    const missing = errors.find((e) => e.type === 'missing_token');
     assert.ok(missing);
     assert.strictEqual(missing.path, 'colors.bad1');
 
     // Assert circular reference detected
-    const circle = errors.find(e => e.type === 'circular_reference');
+    const circle = errors.find((e) => e.type === 'circular_reference');
     assert.ok(circle);
 
     // Assert unused token warning detected (note: custom key "colors.unusedCustom" will be flagged)
-    const unused = errors.find(e => e.type === 'unused_token');
+    const unused = errors.find((e) => e.type === 'unused_token');
     assert.ok(unused);
     assert.strictEqual(unused.path, 'colors.unusedCustom');
     assert.strictEqual(unused.severity, 'warning');
@@ -269,7 +275,9 @@ describe('Design System Engine Core Unit Tests', () => {
     assert.strictEqual(imported.tokens.colors.primary, '#111');
 
     // Verify exporting other packages
-    const brandJson = SerializationService.exportBrandPackage('PurpleBrand', { primaryColor: '#8b5cf6' });
+    const brandJson = SerializationService.exportBrandPackage('PurpleBrand', {
+      primaryColor: '#8b5cf6',
+    });
     const importedBrand = SerializationService.importBrandPackage(brandJson);
     assert.strictEqual(importedBrand.name, 'PurpleBrand');
     assert.strictEqual((importedBrand.tokens as any).primaryColor, '#8b5cf6');
@@ -278,8 +286,18 @@ describe('Design System Engine Core Unit Tests', () => {
   test('DesignSystemService - Master registry and Plugin Support', () => {
     const ds = new DesignSystemService();
 
-    const themeA: Theme = { id: 'theme-a', name: 'Theme A', version: '1.0.0', tokens: { colors: { main: '#aaa' } } };
-    const themeB: Theme = { id: 'theme-b', name: 'Theme B', version: '1.0.0', tokens: { colors: { main: '#bbb' } } };
+    const themeA: Theme = {
+      id: 'theme-a',
+      name: 'Theme A',
+      version: '1.0.0',
+      tokens: { colors: { main: '#aaa' } },
+    };
+    const themeB: Theme = {
+      id: 'theme-b',
+      name: 'Theme B',
+      version: '1.0.0',
+      tokens: { colors: { main: '#bbb' } },
+    };
 
     ds.registerTheme(themeA);
     ds.registerTheme(themeB);

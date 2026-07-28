@@ -26,7 +26,7 @@ export class SynchronizationService {
     if (!track) return true;
 
     // Solo rule: if any other track is solo, and this track is not solo, it is muted
-    const anySolo = Object.values(this.trackOverrides).some(t => t.isSolo);
+    const anySolo = Object.values(this.trackOverrides).some((t) => t.isSolo);
     if (anySolo && !track.isSolo) {
       return false;
     }

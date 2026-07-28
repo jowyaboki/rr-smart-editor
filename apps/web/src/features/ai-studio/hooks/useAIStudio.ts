@@ -24,7 +24,7 @@ export function useAIStudio() {
       const audit = aiStudioService.runQualityReview(
         project.storyboard,
         project.timeline.tracks[0].clips,
-        project.brandConfig
+        project.brandConfig,
       );
 
       setTimeout(() => {
@@ -33,7 +33,6 @@ export function useAIStudio() {
         store.setProgress(100, 'Review Completed');
         store.setGenerating(false);
       }, 2000);
-
     } catch (e: any) {
       console.error(e);
       store.setProgress(0, 'Failed');

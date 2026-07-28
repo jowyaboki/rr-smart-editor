@@ -34,7 +34,10 @@ interface WorkflowState {
   connectSteps: (workflowId: string, sourceStepId: string, targetStepId: string) => void;
   validateWorkflowState: (workflowId: string) => ValidationError[];
 
-  startWorkflow: (workflowId: string, initialContext?: Partial<WorkflowContext>) => Promise<WorkflowExecution>;
+  startWorkflow: (
+    workflowId: string,
+    initialContext?: Partial<WorkflowContext>,
+  ) => Promise<WorkflowExecution>;
   pauseWorkflow: (executionId: string) => Promise<void>;
   resumeWorkflow: (workflowId: string, executionId: string) => Promise<void>;
   cancelWorkflow: (executionId: string) => Promise<void>;
@@ -110,9 +113,7 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
   updateWorkflow: (workflowId, updates) => {
     set((state) => ({
       workflows: state.workflows.map((w) =>
-        w.id === workflowId
-          ? { ...w, ...updates, updatedAt: new Date().toISOString() }
-          : w
+        w.id === workflowId ? { ...w, ...updates, updatedAt: new Date().toISOString() } : w,
       ),
     }));
     get().validateWorkflowState(workflowId);
@@ -347,7 +348,12 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
 
       activeExecs.forEach((ex) => {
         const existing = updated[ex.id];
-        if (!existing || existing.status !== ex.status || existing.progress !== ex.progress || existing.history.length !== ex.history.length) {
+        if (
+          !existing ||
+          existing.status !== ex.status ||
+          existing.progress !== ex.progress ||
+          existing.history.length !== ex.history.length
+        ) {
           updated[ex.id] = { ...ex, history: [...ex.history] };
           changed = true;
         }

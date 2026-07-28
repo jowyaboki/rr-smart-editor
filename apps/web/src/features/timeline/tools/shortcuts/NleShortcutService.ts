@@ -71,16 +71,26 @@ export class NleShortcutService {
   public static getModeFromKey(key: string): EditToolMode | null {
     const k = key.toLowerCase();
     switch (k) {
-      case 'v': return 'select';
-      case 'c': return 'razor';
-      case 'b': return 'ripple';
-      case 'n': return 'roll';
-      case 'y': return 'slip';
-      case 'u': return 'slide';
-      case 's': return 'stretch';
-      case 'h': return 'hand';
-      case 'z': return 'zoom';
-      default: return null;
+      case 'v':
+        return 'select';
+      case 'c':
+        return 'razor';
+      case 'b':
+        return 'ripple';
+      case 'n':
+        return 'roll';
+      case 'y':
+        return 'slip';
+      case 'u':
+        return 'slide';
+      case 's':
+        return 'stretch';
+      case 'h':
+        return 'hand';
+      case 'z':
+        return 'zoom';
+      default:
+        return null;
     }
   }
 }

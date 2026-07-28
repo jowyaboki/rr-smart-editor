@@ -7,11 +7,33 @@ export const CollaborativeSessionHeader: React.FC = () => {
   if (!sessionId) return null;
 
   return (
-    <div style={{ padding: '8px 12px', background: '#111', color: '#fff', border: '1px solid #333', borderRadius: '4px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+    <div
+      style={{
+        padding: '8px 12px',
+        background: '#111',
+        color: '#fff',
+        border: '1px solid #333',
+        borderRadius: '4px',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      }}
+    >
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-        <span style={{ fontSize: '12px', fontWeight: 'bold' }}>Session: {sessionId.toUpperCase()}</span>
-        <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: isConnected ? '#4caf50' : '#f44336' }} />
-        <span style={{ fontSize: '10px', color: '#888' }}>{isConnected ? 'Online' : 'Offline Mode'}</span>
+        <span style={{ fontSize: '12px', fontWeight: 'bold' }}>
+          Session: {sessionId.toUpperCase()}
+        </span>
+        <span
+          style={{
+            width: '8px',
+            height: '8px',
+            borderRadius: '50%',
+            background: isConnected ? '#4caf50' : '#f44336',
+          }}
+        />
+        <span style={{ fontSize: '10px', color: '#888' }}>
+          {isConnected ? 'Online' : 'Offline Mode'}
+        </span>
       </div>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -42,7 +64,15 @@ export const CollaborativeSessionHeader: React.FC = () => {
 
         <button
           onClick={() => toggleConnectionState(!isConnected)}
-          style={{ padding: '4px 8px', fontSize: '10px', background: '#333', color: '#fff', border: '1px solid #444', borderRadius: '2px', cursor: 'pointer' }}
+          style={{
+            padding: '4px 8px',
+            fontSize: '10px',
+            background: '#333',
+            color: '#fff',
+            border: '1px solid #444',
+            borderRadius: '2px',
+            cursor: 'pointer',
+          }}
         >
           {isConnected ? 'Disconnect' : 'Connect'}
         </button>

@@ -17,7 +17,7 @@ export class ExecutionService {
   public async executeToolCall(
     call: ToolCall,
     context: ExecutionContext,
-    options?: ExecutionOptions
+    options?: ExecutionOptions,
   ): Promise<ToolResult> {
     if (context.isCancelled) {
       return {
@@ -32,7 +32,10 @@ export class ExecutionService {
       return {
         callId: call.id,
         success: false,
-        error: { code: 'TOOL_NOT_FOUND', message: `Tool with name "${call.toolName}" was not found in the registry.` },
+        error: {
+          code: 'TOOL_NOT_FOUND',
+          message: `Tool with name "${call.toolName}" was not found in the registry.`,
+        },
       };
     }
 
@@ -48,7 +51,10 @@ export class ExecutionService {
         return {
           callId: call.id,
           success: false,
-          error: { code: 'SECURITY_VIOLATION', message: `Execution of tool "${call.toolName}" is not permitted under the current security profile.` },
+          error: {
+            code: 'SECURITY_VIOLATION',
+            message: `Execution of tool "${call.toolName}" is not permitted under the current security profile.`,
+          },
         };
       }
 
@@ -57,7 +63,10 @@ export class ExecutionService {
         return {
           callId: call.id,
           success: false,
-          error: { code: 'PERMISSION_DENIED', message: `Insufficient privileges to execute tool "${call.toolName}".` },
+          error: {
+            code: 'PERMISSION_DENIED',
+            message: `Insufficient privileges to execute tool "${call.toolName}".`,
+          },
         };
       }
 
@@ -68,7 +77,10 @@ export class ExecutionService {
           return {
             callId: call.id,
             success: false,
-            error: { code: 'USER_REJECTED', message: `User declined execution of tool "${call.toolName}".` },
+            error: {
+              code: 'USER_REJECTED',
+              message: `User declined execution of tool "${call.toolName}".`,
+            },
           };
         }
       }
@@ -81,13 +93,15 @@ export class ExecutionService {
         ...result,
         callId: call.id,
       };
-
     } catch (err: any) {
       if (err.message === 'TIMEOUT') {
         return {
           callId: call.id,
           success: false,
-          error: { code: 'TIMEOUT', message: `Tool execution exceeded the allowed duration of ${timeoutMs}ms.` },
+          error: {
+            code: 'TIMEOUT',
+            message: `Tool execution exceeded the allowed duration of ${timeoutMs}ms.`,
+          },
         };
       }
 
@@ -109,17 +123,17 @@ export class ExecutionService {
   public async executeParallel(
     calls: ToolCall[],
     context: ExecutionContext,
-    options?: ExecutionOptions
+    options?: ExecutionOptions,
   ): Promise<ToolResult[]> {
     if (context.isCancelled) {
-      return calls.map(c => ({
+      return calls.map((c) => ({
         callId: c.id,
         success: false,
         error: { code: 'CANCELLED', message: 'Execution was cancelled.' },
       }));
     }
 
-    const promises = calls.map(call => this.executeToolCall(call, context, options));
+    const promises = calls.map((call) => this.executeToolCall(call, context, options));
     return Promise.all(promises);
   }
 
