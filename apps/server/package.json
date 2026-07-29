@@ -12,6 +12,8 @@
     "@ai-video-editor/shared": "*",
     "@ai-video-editor/render-core": "file:../../packages/render-core",
     "@ai-video-editor/delivery-platform": "*",
+    "@ai-video-editor/media-management": "*",
+    "@ai-video-editor/security-platform": "*",
     "@remotion/bundler": "^4.0.486",
     "@remotion/cli": "^4.0.486",
     "@remotion/renderer": "^4.0.486",
