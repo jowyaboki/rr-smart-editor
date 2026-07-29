@@ -14,6 +14,7 @@ import brandRoutes from './routes/brand';
 import deliveryRoutes from './routes/delivery';
 import mediaManagementRoutes from './routes/media-management';
 import securityRoutes from './routes/security';
+import apiGatewayRoutes from './routes/api-gateway';
 
 import { localWorker } from './render/workers/LocalWorker';
 import { renderScheduler } from './render/scheduler/RenderScheduler';
@@ -43,6 +44,7 @@ app.use('/brand', brandRoutes);
 app.use('/delivery', deliveryRoutes);
 app.use('/media-management', mediaManagementRoutes);
 app.use('/security', securityRoutes);
+app.use('/api', apiGatewayRoutes);
 
 // Boot up local distributed render worker and scheduler
 localWorker.start().catch((err) => {
