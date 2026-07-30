@@ -156,8 +156,8 @@ export const ProjectGraphSchema = z.object({
   id: z.string().min(1),
   name: z.string(),
   version: z.number().default(1),
-  nodes: z.record(GraphNodeSchema),
-  edges: z.record(GraphEdgeSchema),
+  nodes: z.record(z.string(), GraphNodeSchema),
+  edges: z.record(z.string(), GraphEdgeSchema),
   metadata: z.record(z.any()).optional(),
 });
 

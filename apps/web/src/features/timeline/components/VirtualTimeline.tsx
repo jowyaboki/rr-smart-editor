@@ -42,33 +42,32 @@ export const VirtualTimeline: React.FC = () => {
     totalTracksCount,
   } = useTimelineVirtualization(100, 1);
 
-  const {
-    clips,
-    selectedClipIds,
-    toolMode,
-    snappingConfig,
-    nleMarkers,
-    playbackSpeed,
-    trackStates,
-    setViewport,
-    selectClips,
-    setToolMode,
-    setSnappingConfig,
-    addNleMarker,
-    removeNleMarker,
-    setPlaybackSpeed,
-    setTrackState,
-    startDrag,
-    updateDrag,
-    endDrag,
-    moveClip,
-    resizeClip,
-    razorSplitClip,
-    rippleEditClip,
-    rollEditClips,
-    slipEditClip,
-    slideEditClip,
-  } = useTimelineStore();
+  const clips = useTimelineStore(s => s.clips);
+  const selectedClipIds = useTimelineStore(s => s.selectedClipIds);
+  const toolMode = useTimelineStore(s => s.toolMode);
+  const snappingConfig = useTimelineStore(s => s.snappingConfig);
+  const nleMarkers = useTimelineStore(s => s.nleMarkers);
+  const playbackSpeed = useTimelineStore(s => s.playbackSpeed);
+  const trackStates = useTimelineStore(s => s.trackStates);
+
+  const setViewport = useTimelineStore(s => s.setViewport);
+  const selectClips = useTimelineStore(s => s.selectClips);
+  const setToolMode = useTimelineStore(s => s.setToolMode);
+  const setSnappingConfig = useTimelineStore(s => s.setSnappingConfig);
+  const addNleMarker = useTimelineStore(s => s.addNleMarker);
+  const removeNleMarker = useTimelineStore(s => s.removeNleMarker);
+  const setPlaybackSpeed = useTimelineStore(s => s.setPlaybackSpeed);
+  const setTrackState = useTimelineStore(s => s.setTrackState);
+  const startDrag = useTimelineStore(s => s.startDrag);
+  const updateDrag = useTimelineStore(s => s.updateDrag);
+  const endDrag = useTimelineStore(s => s.endDrag);
+  const moveClip = useTimelineStore(s => s.moveClip);
+  const resizeClip = useTimelineStore(s => s.resizeClip);
+  const razorSplitClip = useTimelineStore(s => s.razorSplitClip);
+  const rippleEditClip = useTimelineStore(s => s.rippleEditClip);
+  const rollEditClips = useTimelineStore(s => s.rollEditClips);
+  const slipEditClip = useTimelineStore(s => s.slipEditClip);
+  const slideEditClip = useTimelineStore(s => s.slideEditClip);
 
   const [fps, setFps] = useState(60);
   const [scaleFactor, setScaleFactor] = useState(0.5); // pxPerFrame
