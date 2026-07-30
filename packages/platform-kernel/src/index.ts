@@ -7,6 +7,8 @@ import { CapabilityRegistry, globalCapabilityRegistry } from './services/Capabil
 import { ConfigurationManager, globalConfigurationManager } from './services/ConfigurationManager';
 import { HealthManager, globalHealthManager } from './services/HealthManager';
 import { DiagnosticsManager, globalDiagnosticsManager } from './services/DiagnosticsManager';
+import { registerAllSubsystemsAsModules } from './bootstrap_registry';
+import { PlatformEventSystem, globalPlatformEventSystem, PlatformEvent, PlatformEventType } from './services/EventSystem';
 
 export * from './types';
 export { ModuleRegistry, globalModuleRegistry };
@@ -18,6 +20,8 @@ export { CapabilityRegistry, globalCapabilityRegistry };
 export { ConfigurationManager, globalConfigurationManager };
 export { HealthManager, globalHealthManager };
 export { DiagnosticsManager, globalDiagnosticsManager };
+export { registerAllSubsystemsAsModules };
+export { PlatformEventSystem, globalPlatformEventSystem, PlatformEvent, PlatformEventType };
 
 export class PlatformKernel {
   public moduleRegistry: ModuleRegistry;
@@ -29,6 +33,7 @@ export class PlatformKernel {
   public configurationManager: ConfigurationManager;
   public healthManager: HealthManager;
   public diagnosticsManager: DiagnosticsManager;
+  public eventSystem: PlatformEventSystem;
 
   constructor() {
     this.moduleRegistry = globalModuleRegistry;
@@ -40,6 +45,7 @@ export class PlatformKernel {
     this.configurationManager = globalConfigurationManager;
     this.healthManager = globalHealthManager;
     this.diagnosticsManager = globalDiagnosticsManager;
+    this.eventSystem = globalPlatformEventSystem;
   }
 }
 
