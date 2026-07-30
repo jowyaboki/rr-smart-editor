@@ -23,12 +23,15 @@ export const LifecycleStateSchema = z.enum([
 ]);
 
 // Module Manifest & Descriptors
+export type StartupPhase = "CORE" | "USER_VISIBLE" | "BACKGROUND" | "OPTIONAL" | "ON_DEMAND";
+
 export interface ModuleManifest {
   id: string;
   name: string;
   version: string;
   dependencies: string[]; // List of other module IDs
   capabilities: string[]; // List of provided capabilities
+  priority?: StartupPhase;
 }
 
 export const ModuleManifestSchema = z.object({

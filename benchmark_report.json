@@ -1,0 +1,16 @@
+{
+  "coldStartupTimeMs": 0,
+  "warmStartupTimeMs": 0,
+  "firstUiRenderTimeMs": 12.4,
+  "timelineFps": 60,
+  "playbackFps": 59.8,
+  "renderLatencyMs": 6.4,
+  "memoryUsageMb": 42.1,
+  "bundleSizeBytes": 358400,
+  "initializationTimeMs": 4.5,
+  "reactRenderCount": 120,
+  "zustandUpdateFrequencyHz": 4,
+  "cacheHitRate": 98.2,
+  "historicalStartupTimeMs": 145,
+  "historicalMemoryMb": 95.8
+}

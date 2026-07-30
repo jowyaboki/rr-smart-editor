@@ -96,6 +96,10 @@ export const useTimelineStore = create<TimelineState>((set, get) => {
     dragOffsetFrame: 0,
 
     setViewport: (newViewport) => {
+      const current = get().viewport;
+      const hasChanged = Object.entries(newViewport).some(([k, v]) => (current as any)[k] !== v);
+      if (!hasChanged) return; // EARLY EXIT GUARD
+
       set(state => ({ viewport: { ...state.viewport, ...newViewport } }));
     },
 
@@ -119,7 +123,10 @@ export const useTimelineStore = create<TimelineState>((set, get) => {
       webTimelineIndex.rebuildIndex(get().tracks, get().clips, get().markers, keyframes);
     },
 
-    setToolMode: (toolMode) => set({ toolMode }),
+    setToolMode: (toolMode) => {
+      if (get().toolMode === toolMode) return; // EARLY EXIT GUARD
+      set({ toolMode });
+    },
 
     setSnappingConfig: (config) => {
       set(state => ({ snappingConfig: { ...state.snappingConfig, ...config } }));
@@ -133,7 +140,10 @@ export const useTimelineStore = create<TimelineState>((set, get) => {
       set(state => ({ nleMarkers: state.nleMarkers.filter(m => m.id !== id) }));
     },
 
-    setPlaybackSpeed: (playbackSpeed) => set({ playbackSpeed }),
+    setPlaybackSpeed: (playbackSpeed) => {
+      if (get().playbackSpeed === playbackSpeed) return; // EARLY EXIT GUARD
+      set({ playbackSpeed });
+    },
 
     setTrackState: (trackId, overrides) => {
       set(state => {
@@ -154,11 +164,20 @@ export const useTimelineStore = create<TimelineState>((set, get) => {
     },
 
     moveClip: (clipId, newStartFrame, newTrackId) => {
-      set(state => {
-        const target = state.clips.find(c => c.id === clipId);
-        if (!target) return {};
+      const currentClips = get().clips;
+      const target = currentClips.find(c => c.id === clipId);
+      if (!target) return;
 
-        const delta = newStartFrame - target.startFrame;
+      // EARLY EXIT GUARD: Avoid redundant updates if clip hasn't crossed a frame/track boundary!
+      if (target.startFrame === newStartFrame && (!newTrackId || target.trackId === newTrackId)) {
+        return;
+      }
+
+      set(state => {
+        const targetInner = state.clips.find(c => c.id === clipId);
+        if (!targetInner) return {};
+
+        const delta = newStartFrame - targetInner.startFrame;
 
         // Apply grouped selections movement together!
         const clips = NleGroupingService.shiftClipsTogether(state.selectedClipIds, delta, state.clips);
@@ -167,6 +186,9 @@ export const useTimelineStore = create<TimelineState>((set, get) => {
         webTimelineIndex.deindexClip(clipId);
         const updatedClip = clips.find(c => c.id === clipId);
         if (updatedClip) {
+          if (newTrackId) {
+            updatedClip.trackId = newTrackId;
+          }
           webTimelineIndex.indexClip(updatedClip);
           webTimelineRenderer.markClipDirty(clipId);
         }
@@ -176,6 +198,10 @@ export const useTimelineStore = create<TimelineState>((set, get) => {
     },
 
     resizeClip: (clipId, newDuration) => {
+      const currentClips = get().clips;
+      const target = currentClips.find(c => c.id === clipId);
+      if (target && target.duration === newDuration) return; // EARLY EXIT GUARD
+
       set(state => {
         const clips = state.clips.map(clip => {
           if (clip.id === clipId) {
