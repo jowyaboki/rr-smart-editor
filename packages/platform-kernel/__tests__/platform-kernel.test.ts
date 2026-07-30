@@ -74,6 +74,7 @@ describe('Unified Platform Kernel Core Unit & Integration Tests', () => {
         version: '1.0.0',
         dependencies: [],
         capabilities: ['media-proxy-generation'],
+        priority: 'CORE',
       },
       state: 'Created',
       services: [],
@@ -89,6 +90,7 @@ describe('Unified Platform Kernel Core Unit & Integration Tests', () => {
         version: '1.0.0',
         dependencies: ['engine_media'],
         capabilities: ['composition-frame-splitting'],
+        priority: 'BACKGROUND',
       },
       state: 'Created',
       services: [],
@@ -113,6 +115,79 @@ describe('Unified Platform Kernel Core Unit & Integration Tests', () => {
     const status = engine.healthManager.getHealthStatus();
     assert.strictEqual(status.status, 'healthy');
     assert.strictEqual(status.moduleStatuses['engine_media'], 'Running');
+  });
+
+  test('Strict 5-Phase Sequential Startup Priority Boot Sequence', async () => {
+    const engine = globalPlatformKernel;
+    const bootSequence: string[] = [];
+
+    const coreModule: PlatformModule = {
+      manifest: {
+        id: 'boot_core',
+        name: 'Core System',
+        version: '1.0.0',
+        dependencies: [],
+        capabilities: [],
+        priority: 'CORE',
+      },
+      state: 'Created',
+      services: [],
+      async initialize(ctx) {},
+      async start(ctx) {
+        bootSequence.push('CORE_START');
+      },
+      async stop(ctx) {},
+    };
+
+    const bgModule: PlatformModule = {
+      manifest: {
+        id: 'boot_bg',
+        name: 'Background System',
+        version: '1.0.0',
+        dependencies: [],
+        capabilities: [],
+        priority: 'BACKGROUND',
+      },
+      state: 'Created',
+      services: [],
+      async initialize(ctx) {},
+      async start(ctx) {
+        bootSequence.push('BACKGROUND_START');
+      },
+      async stop(ctx) {},
+    };
+
+    const optModule: PlatformModule = {
+      manifest: {
+        id: 'boot_opt',
+        name: 'Optional Copilot',
+        version: '1.0.0',
+        dependencies: [],
+        capabilities: [],
+        priority: 'OPTIONAL',
+      },
+      state: 'Created',
+      services: [],
+      async initialize(ctx) {},
+      async start(ctx) {
+        bootSequence.push('OPTIONAL_START');
+      },
+      async stop(ctx) {},
+    };
+
+    engine.moduleRegistry.registerModule(coreModule);
+    engine.moduleRegistry.registerModule(bgModule);
+    engine.moduleRegistry.registerModule(optModule);
+
+    await engine.bootstrapManager.bootstrap(mockContext);
+
+    // Assert strict ordering of startup phases: CORE -> BACKGROUND -> OPTIONAL
+    assert.deepStrictEqual(bootSequence, ['CORE_START', 'BACKGROUND_START', 'OPTIONAL_START']);
+
+    const timeline = engine.diagnosticsManager.getDiagnosticsTimeline();
+    assert.ok(timeline.some((e) => e.task.includes('Complete Phase CORE Bootstrap')));
+    assert.ok(timeline.some((e) => e.task.includes('Complete Phase BACKGROUND Bootstrap')));
+    assert.ok(timeline.some((e) => e.task.includes('Complete Phase OPTIONAL Bootstrap')));
   });
 
   test('Hot restart and clean shutdowns lifecycle cycles', async () => {
