@@ -12,51 +12,148 @@
     "composite": true,
     "baseUrl": ".",
     "paths": {
-      "@ai-video-editor/shared/*": ["packages/shared/src/*"],
-      "@ai-video-editor/ui/*": ["packages/ui/src/*"],
-      "@ai-video-editor/render-core": ["packages/render-core/src/index.ts"],
-      "@ai-video-editor/render-core/*": ["packages/render-core/src/*"],
-      "@ai-video-editor/project-graph": ["packages/project-graph/src/index.ts"],
-      "@ai-video-editor/project-graph/*": ["packages/project-graph/src/*"],
-      "@ai-video-editor/timeline-engine": ["packages/timeline-engine/src/index.ts"],
-      "@ai-video-editor/timeline-engine/*": ["packages/timeline-engine/src/*"],
-      "@ai-video-editor/playback-engine": ["packages/playback-engine/src/index.ts"],
-      "@ai-video-editor/playback-engine/*": ["packages/playback-engine/src/*"],
-      "@ai-video-editor/media-pipeline": ["packages/media-pipeline/src/index.ts"],
-      "@ai-video-editor/media-pipeline/*": ["packages/media-pipeline/src/*"],
-      "@ai-video-editor/effects-engine": ["packages/effects-engine/src/index.ts"],
-      "@ai-video-editor/effects-engine/*": ["packages/effects-engine/src/*"],
-      "@ai-video-editor/agent-runtime": ["packages/agent-runtime/src/index.ts"],
-      "@ai-video-editor/agent-runtime/*": ["packages/agent-runtime/src/*"],
-      "@ai-video-editor/extension-sdk": ["packages/extension-sdk/src/index.ts"],
-      "@ai-video-editor/extension-sdk/*": ["packages/extension-sdk/src/*"],
-      "@ai-video-editor/package-manager": ["packages/package-manager/src/index.ts"],
-      "@ai-video-editor/package-manager/*": ["packages/package-manager/src/*"],
-      "@ai-video-editor/observability": ["packages/observability/src/index.ts"],
-      "@ai-video-editor/observability/*": ["packages/observability/src/*"],
-      "@ai-video-editor/collaboration": ["packages/collaboration/src/index.ts"],
-      "@ai-video-editor/collaboration/*": ["packages/collaboration/src/*"],
-      "@ai-video-editor/template-engine": ["packages/template-engine/src/index.ts"],
-      "@ai-video-editor/template-engine/*": ["packages/template-engine/src/*"],
-      "@ai-video-editor/dam": ["packages/dam/src/index.ts"],
-      "@ai-video-editor/dam/*": ["packages/dam/src/*"],
-      "@ai-video-editor/workflow-designer": ["packages/workflow-designer/src/index.ts"],
-      "@ai-video-editor/workflow-designer/*": ["packages/workflow-designer/src/*"],
-      "@ai-video-editor/api-sdk": ["packages/api-sdk/src/index.ts"],
-      "@ai-video-editor/api-sdk/*": ["packages/api-sdk/src/*"],
-      "@ai-video-editor/api-client": ["packages/api-client/src/index.ts"],
-      "@ai-video-editor/api-client/*": ["packages/api-client/src/*"],
-      "@ai-video-editor/workspace-core": ["packages/workspace-core/src/index.ts"],
-      "@ai-video-editor/workspace-core/*": ["packages/workspace-core/src/*"],
-      "@ai-video-editor/ai-copilot": ["packages/ai-copilot/src/index.ts"],
-      "@ai-video-editor/ai-copilot/*": ["packages/ai-copilot/src/*"],
-      "@ai-video-editor/virtual-production": ["packages/virtual-production/src/index.ts"],
-      "@ai-video-editor/virtual-production/*": ["packages/virtual-production/src/*"],
-      "@ai-video-editor/color-science": ["packages/color-science/src/index.ts"],
-      "@ai-video-editor/color-science/*": ["packages/color-science/src/*"],
-      "@ai-video-editor/audio-engine": ["packages/audio-engine/src/index.ts"],
-      "@ai-video-editor/audio-engine/*": ["packages/audio-engine/src/*"]
+      "@ai-video-editor/shared/*": [
+        "packages/shared/src/*"
+      ],
+      "@ai-video-editor/ui/*": [
+        "packages/ui/src/*"
+      ],
+      "@ai-video-editor/render-core": [
+        "packages/render-core/src/index.ts"
+      ],
+      "@ai-video-editor/render-core/*": [
+        "packages/render-core/src/*"
+      ],
+      "@ai-video-editor/project-graph": [
+        "packages/project-graph/src/index.ts"
+      ],
+      "@ai-video-editor/project-graph/*": [
+        "packages/project-graph/src/*"
+      ],
+      "@ai-video-editor/timeline-engine": [
+        "packages/timeline-engine/src/index.ts"
+      ],
+      "@ai-video-editor/timeline-engine/*": [
+        "packages/timeline-engine/src/*"
+      ],
+      "@ai-video-editor/playback-engine": [
+        "packages/playback-engine/src/index.ts"
+      ],
+      "@ai-video-editor/playback-engine/*": [
+        "packages/playback-engine/src/*"
+      ],
+      "@ai-video-editor/media-pipeline": [
+        "packages/media-pipeline/src/index.ts"
+      ],
+      "@ai-video-editor/media-pipeline/*": [
+        "packages/media-pipeline/src/*"
+      ],
+      "@ai-video-editor/effects-engine": [
+        "packages/effects-engine/src/index.ts"
+      ],
+      "@ai-video-editor/effects-engine/*": [
+        "packages/effects-engine/src/*"
+      ],
+      "@ai-video-editor/agent-runtime": [
+        "packages/agent-runtime/src/index.ts"
+      ],
+      "@ai-video-editor/agent-runtime/*": [
+        "packages/agent-runtime/src/*"
+      ],
+      "@ai-video-editor/extension-sdk": [
+        "packages/extension-sdk/src/index.ts"
+      ],
+      "@ai-video-editor/extension-sdk/*": [
+        "packages/extension-sdk/src/*"
+      ],
+      "@ai-video-editor/package-manager": [
+        "packages/package-manager/src/index.ts"
+      ],
+      "@ai-video-editor/package-manager/*": [
+        "packages/package-manager/src/*"
+      ],
+      "@ai-video-editor/observability": [
+        "packages/observability/src/index.ts"
+      ],
+      "@ai-video-editor/observability/*": [
+        "packages/observability/src/*"
+      ],
+      "@ai-video-editor/collaboration": [
+        "packages/collaboration/src/index.ts"
+      ],
+      "@ai-video-editor/collaboration/*": [
+        "packages/collaboration/src/*"
+      ],
+      "@ai-video-editor/template-engine": [
+        "packages/template-engine/src/index.ts"
+      ],
+      "@ai-video-editor/template-engine/*": [
+        "packages/template-engine/src/*"
+      ],
+      "@ai-video-editor/dam": [
+        "packages/dam/src/index.ts"
+      ],
+      "@ai-video-editor/dam/*": [
+        "packages/dam/src/*"
+      ],
+      "@ai-video-editor/workflow-designer": [
+        "packages/workflow-designer/src/index.ts"
+      ],
+      "@ai-video-editor/workflow-designer/*": [
+        "packages/workflow-designer/src/*"
+      ],
+      "@ai-video-editor/api-sdk": [
+        "packages/api-sdk/src/index.ts"
+      ],
+      "@ai-video-editor/api-sdk/*": [
+        "packages/api-sdk/src/*"
+      ],
+      "@ai-video-editor/api-client": [
+        "packages/api-client/src/index.ts"
+      ],
+      "@ai-video-editor/api-client/*": [
+        "packages/api-client/src/*"
+      ],
+      "@ai-video-editor/workspace-core": [
+        "packages/workspace-core/src/index.ts"
+      ],
+      "@ai-video-editor/workspace-core/*": [
+        "packages/workspace-core/src/*"
+      ],
+      "@ai-video-editor/ai-copilot": [
+        "packages/ai-copilot/src/index.ts"
+      ],
+      "@ai-video-editor/ai-copilot/*": [
+        "packages/ai-copilot/src/*"
+      ],
+      "@ai-video-editor/virtual-production": [
+        "packages/virtual-production/src/index.ts"
+      ],
+      "@ai-video-editor/virtual-production/*": [
+        "packages/virtual-production/src/*"
+      ],
+      "@ai-video-editor/color-science": [
+        "packages/color-science/src/index.ts"
+      ],
+      "@ai-video-editor/color-science/*": [
+        "packages/color-science/src/*"
+      ],
+      "@ai-video-editor/audio-engine": [
+        "packages/audio-engine/src/index.ts"
+      ],
+      "@ai-video-editor/audio-engine/*": [
+        "packages/audio-engine/src/*"
+      ],
+      "@ai-video-editor/asset-intelligence": [
+        "packages/asset-intelligence/src/index.ts"
+      ],
+      "@ai-video-editor/asset-intelligence/*": [
+        "packages/asset-intelligence/src/*"
+      ],
     }
   },
-  "exclude": ["node_modules", "dist"]
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }
