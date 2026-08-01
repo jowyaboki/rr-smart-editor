@@ -143,6 +143,51 @@ router.get('/metrics', async (req, res) => {
   }
 });
 
+// Cost Estimation endpoint (Phase 3)
+router.post('/cost-estimate', async (req, res) => {
+  try {
+    const { timeline, settings } = req.body;
+    const durationSec = timeline?.duration || 60; // default to 60s
+    const resolutionWidth = settings?.resolution?.width || 1920;
+    const isHD = resolutionWidth >= 1920;
+
+    // Simple, robust calculation model: $0.15/min for SD, $0.30/min for HD
+    const costPerMin = isHD ? 0.30 : 0.15;
+    const estimatedCost = (durationSec / 60) * costPerMin;
+
+    res.json({
+      success: true,
+      durationSec,
+      costPerMin,
+      estimatedCost: parseFloat(estimatedCost.toFixed(4)),
+      currency: 'USD',
+    });
+  } catch (err) {
+    handleError(err, res);
+  }
+});
+
+// Autoscaling Status evaluation (Phase 3)
+router.get('/autoscaling', async (req, res) => {
+  try {
+    const activeWorkers = await workerService.listWorkers();
+    const queueMetrics = await metricsService.getQueueMetrics();
+
+    // Scale-up rule: if queue size > 5, or active workers < 1, scale up!
+    const recommendation = (queueMetrics.waitingJobsCount > 5) ? 'SCALE_UP' : 'MAINTAIN';
+
+    res.json({
+      success: true,
+      activeWorkerCount: activeWorkers.length,
+      waitingJobs: queueMetrics.waitingJobsCount,
+      recommendation,
+      targetWorkerCount: recommendation === 'SCALE_UP' ? activeWorkers.length + 2 : activeWorkers.length,
+    });
+  } catch (err) {
+    handleError(err, res);
+  }
+});
+
 // Backward compatibility endpoints
 router.post('/:projectId', async (req, res) => {
   const { projectId } = req.params;

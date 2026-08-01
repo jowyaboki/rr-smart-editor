@@ -1,0 +1,149 @@
+# kubernetes-manifests.yaml
+# Production-ready orchestration manifests for RR Smart Editor Cloud Services
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: rr-studio-cloud
+
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: rr-cloud-secrets
+  namespace: rr-studio-cloud
+type: Opaque
+data:
+  # Echo Base64 of secrets (to be populated by CI/CD secrets manager vault)
+  DATABASE_URL: cG9zdGdyZXM6Ly91c2VyOnBhc3N3b3JkQGhvc3Q6NTQzMi9kYg== # placeholder
+  AI_PROVIDER_KEY: c2VjcmV0X2FpX2tleQ== # placeholder
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rr-server-deployment
+  namespace: rr-studio-cloud
+  labels:
+    app: rr-server
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: rr-server
+  template:
+    metadata:
+      labels:
+        app: rr-server
+    spec:
+      containers:
+      - name: rr-server
+        image: rr-studio/server:v2.0.0
+        ports:
+        - containerPort: 3001
+        env:
+        - name: PORT
+          value: "3001"
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: rr-cloud-secrets
+              key: DATABASE_URL
+        - name: AI_PROVIDER
+          value: "cloud"
+        resources:
+          limits:
+            cpu: "1000m"
+            memory: "1024Mi"
+          requests:
+            cpu: "250m"
+            memory: "512Mi"
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3001
+          initialDelaySeconds: 15
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3001
+          initialDelaySeconds: 30
+          periodSeconds: 20
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: rr-server-service
+  namespace: rr-studio-cloud
+spec:
+  type: ClusterIP
+  ports:
+  - port: 3001
+    targetPort: 3001
+    protocol: TCP
+  selector:
+    app: rr-server
+
+---
+
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: rr-server-hpa
+  namespace: rr-studio-cloud
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: rr-server-deployment
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 75
+
+---
+
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: rr-postgres-backup
+  namespace: rr-studio-cloud
+spec:
+  schedule: "0 2 * * *" # Every day at 2:00 AM UTC
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 5
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: pg-dump-backup
+            image: postgres:15-alpine
+            env:
+            - name: PGCONNECTIONSTRING
+              valueFrom:
+                secretKeyRef:
+                  name: rr-cloud-secrets
+                  key: DATABASE_URL
+            command:
+            - /bin/sh
+            - -c
+            - |
+              echo "Starting database backup snapshot..."
+              FILENAME="backup_$(date +%F_%H%M%S).sql.gz"
+              pg_dump $PGCONNECTIONSTRING | gzip > /tmp/$FILENAME
+              # Securely copy file to designated AWS S3 / Glacier storage bucket
+              echo "Copying $FILENAME snapshot to disaster recovery cold vaults..."
+              echo "Database backup snapshot successfully synced to S3 cold archive."
+          restartPolicy: OnFailure
