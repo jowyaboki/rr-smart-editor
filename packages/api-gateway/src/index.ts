@@ -38,3 +38,5 @@ export class ApiGatewayPlatformEngine {
 
 export const globalApiGatewayPlatformEngine = new ApiGatewayPlatformEngine();
 export default globalApiGatewayPlatformEngine;
+
+export { RRClient } from '@ai-video-editor/public-sdk';
