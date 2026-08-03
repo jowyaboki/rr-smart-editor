@@ -300,7 +300,7 @@ function handleDeterministicQuery(text: string, params: any[]): { rows: any[]; r
         memoryTables.subscription_usage.push(usage);
         return { rows: [usage], rowCount: 1 };
       } else if (action === 'update') {
-        const orgId = params[2]; // organizationId is at index 2 ($3 in our test query)
+        const orgId = params[3] || params[2]; // Fallback supporting both HTTP endpoint and test query offsets
         const usage = memoryTables.subscription_usage.find(u => u.organization_id === orgId);
         if (usage) {
           usage.render_minutes_used += (params[0] || 0);
