@@ -16,6 +16,13 @@ import mediaManagementRoutes from './routes/media-management';
 import securityRoutes from './routes/security';
 import apiGatewayRoutes from './routes/api-gateway';
 import platformRoutes from './routes/platform';
+import cloudAuthRoutes from './routes/cloud-auth';
+import cloudProjectRoutes from './routes/cloud-projects';
+import cloudAssetRoutes from './routes/cloud-assets';
+import cloudAiRoutes from './routes/cloud-ai';
+import cloudBillingRoutes from './routes/cloud-billing';
+import cloudEnterpriseRoutes from './routes/cloud-enterprise';
+import cloudObservabilityRoutes from './routes/cloud-observability';
 
 import { localWorker } from './render/workers/LocalWorker';
 import { renderScheduler } from './render/scheduler/RenderScheduler';
@@ -47,6 +54,13 @@ app.use('/media-management', mediaManagementRoutes);
 app.use('/security', securityRoutes);
 app.use('/api', apiGatewayRoutes);
 app.use('/platform', platformRoutes);
+app.use('/cloud-auth', cloudAuthRoutes);
+app.use('/cloud-projects', cloudProjectRoutes);
+app.use('/cloud-assets', cloudAssetRoutes);
+app.use('/cloud-ai', cloudAiRoutes);
+app.use('/cloud-billing', cloudBillingRoutes);
+app.use('/cloud-enterprise', cloudEnterpriseRoutes);
+app.use('/cloud-observability', cloudObservabilityRoutes);
 
 // Boot up local distributed render worker and scheduler
 localWorker.start().catch((err) => {
