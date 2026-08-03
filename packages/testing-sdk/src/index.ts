@@ -52,3 +52,5 @@ export class PluginTestHarness {
     return this.isActivated;
   }
 }
+
+export * from './studio';
