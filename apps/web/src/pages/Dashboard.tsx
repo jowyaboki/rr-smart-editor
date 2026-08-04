@@ -2,16 +2,9 @@ import React, { useState } from 'react';
 import {
   Typography,
   Grid,
-  Paper,
   Box,
   Button,
-  CircularProgress,
-  Alert,
   IconButton,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
   TextField,
   List,
   ListItem,
@@ -26,7 +19,6 @@ import {
   Edit as EditIcon,
   OpenInNew as OpenIcon,
   ContentCopy as DuplicateIcon,
-  FileUpload as ImportIcon,
   FileDownload as ExportIcon,
   AutoAwesome as TemplateIcon,
 } from '@mui/icons-material';
@@ -38,6 +30,16 @@ import {
   useDeleteProject,
 } from '../hooks/useProjects';
 
+import {
+  Panel,
+  SearchBar,
+  EmptyState,
+  SkeletonLoader,
+  Modal,
+  StatusBadge,
+  PropertyGrid,
+} from '@ai-video-editor/ui';
+
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const { data: projects, isLoading, error } = useProjects();
@@ -48,6 +50,7 @@ const Dashboard: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [editingProject, setEditingProject] = useState<{ id: string; name: string } | null>(null);
   const [projectName, setProjectName] = useState('');
+  const [search, setSearch] = useState('');
 
   const handleOpen = () => {
     setProjectName('');
@@ -75,7 +78,7 @@ const Dashboard: React.FC = () => {
   const handleDuplicate = async (id: string) => {
     const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
     await fetch(`${API_URL}/projects/${id}/duplicate`, { method: 'POST' });
-    window.location.reload(); // Simple refresh for now
+    window.location.reload();
   };
 
   const handleExport = (project: any) => {
@@ -88,81 +91,165 @@ const Dashboard: React.FC = () => {
     downloadAnchorNode.remove();
   };
 
-  if (isLoading)
+  if (isLoading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-        <CircularProgress />
+      <Box sx={{ p: 4 }}>
+        <Typography variant="h5" sx={{ mb: 3, fontWeight: 'bold', color: '#ffffff' }}>
+          Dashboard Loading...
+        </Typography>
+        <SkeletonLoader rows={4} />
       </Box>
     );
-  if (error) return <Alert severity="error">Error loading projects</Alert>;
+  }
+
+  if (error) {
+    return (
+      <Box sx={{ p: 4 }}>
+        <EmptyState
+          title="Error Loading Projects"
+          description="We encountered an issue communicating with the database. Please verify your connection."
+          action={
+            <Button variant="contained" onClick={() => window.location.reload()}>
+              Retry
+            </Button>
+          }
+        />
+      </Box>
+    );
+  }
+
+  const filteredProjects = projects?.filter((p) =>
+    p.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const stats = [
+    { label: 'Active Projects', value: <StatusBadge status="info" label={String(projects?.length || 0)} /> },
+    { label: 'Storage Usage', value: <StatusBadge status="success" label="0% (Offline mode)" /> },
+    { label: 'Cluster Workers', value: <StatusBadge status="warning" label="Active" /> },
+  ];
 
   return (
-    <Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-        <Typography variant="h4">Dashboard</Typography>
-        <Box sx={{ display: 'flex', gap: 2 }}>
+    <Box sx={{ color: '#ffffff' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4, flexWrap: 'wrap', gap: 2 }}>
+        <Box>
+          <Typography variant="h4" sx={{ fontWeight: 'bold', letterSpacing: '0.5px' }}>
+            Dashboard
+          </Typography>
+          <Typography variant="body2" sx={{ color: '#b2bac2', mt: 0.5 }}>
+            Manage sequences, trigger distributed renders, and build automation workflows.
+          </Typography>
+        </Box>
+        <Box sx={{ display: 'flex', gap: 1.5 }}>
           <Button
             variant="outlined"
             startIcon={<TemplateIcon />}
             onClick={() => navigate('/templates')}
+            sx={{
+              textTransform: 'none',
+              borderColor: '#1e293b',
+              color: '#ffffff',
+              '&:hover': { borderColor: '#90caf9' },
+            }}
           >
-            Templates
+            Browse Templates
           </Button>
-          <Button variant="contained" startIcon={<AddIcon />} onClick={handleOpen}>
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={handleOpen}
+            sx={{
+              textTransform: 'none',
+              bgcolor: '#90caf9',
+              color: '#0a1929',
+              fontWeight: 'bold',
+              '&:hover': { bgcolor: '#64b5f6' },
+            }}
+          >
             Create Project
           </Button>
         </Box>
       </Box>
 
       <Grid container spacing={3}>
+        {/* Left main pane */}
         <Grid item xs={12} md={8}>
-          <Paper sx={{ p: 2 }}>
-            <Typography variant="h6" gutterBottom>
-              Projects
-            </Typography>
-            {projects?.length === 0 ? (
-              <Typography color="text.secondary">No projects yet. Create one!</Typography>
+          <Panel title="All Compositions">
+            <Box sx={{ mb: 3 }}>
+              <SearchBar value={search} onChange={setSearch} placeholder="Filter projects by title..." />
+            </Box>
+
+            {filteredProjects?.length === 0 ? (
+              <EmptyState
+                title="No Compositions Found"
+                description={search ? "Try refining your search text." : "Create your very first project to begin timeline editing!"}
+                action={
+                  !search && (
+                    <Button variant="contained" size="small" onClick={handleOpen}>
+                      Create Project
+                    </Button>
+                  )
+                }
+              />
             ) : (
-              <List>
-                {projects?.map((project) => (
-                  <ListItem key={project.id} divider>
+              <List sx={{ p: 0 }}>
+                {filteredProjects?.map((project) => (
+                  <ListItem
+                    key={project.id}
+                    sx={{
+                      bgcolor: 'rgba(255,255,255,0.02)',
+                      mb: 1.5,
+                      borderRadius: '6px',
+                      border: '1px solid #1e293b',
+                      '&:hover': { bgcolor: 'rgba(255,255,255,0.04)', borderColor: '#90caf9' },
+                    }}
+                  >
                     <ListItemText
                       primary={
                         <Link
                           component="button"
                           variant="body1"
                           onClick={() => navigate(`/editor/${project.id}`)}
-                          sx={{ textAlign: 'left', fontWeight: 'bold' }}
+                          sx={{
+                            textAlign: 'left',
+                            fontWeight: 'bold',
+                            color: '#ffffff',
+                            textDecoration: 'none',
+                            '&:hover': { color: '#90caf9' },
+                          }}
                         >
                           {project.name}
                         </Link>
                       }
-                      secondary={`Last updated: ${new Date(project.updatedAt).toLocaleString()}`}
+                      secondary={
+                        <Typography variant="caption" sx={{ color: '#b2bac2' }}>
+                          Last synchronized: {new Date(project.updatedAt).toLocaleString()}
+                        </Typography>
+                      }
                     />
-                    <ListItemSecondaryAction>
-                      <Tooltip title="Open">
-                        <IconButton onClick={() => navigate(`/editor/${project.id}`)}>
-                          <OpenIcon />
+                    <ListItemSecondaryAction sx={{ display: 'flex', gap: 0.5 }}>
+                      <Tooltip title="Open Workspace">
+                        <IconButton onClick={() => navigate(`/editor/${project.id}`)} sx={{ color: '#ffffff' }}>
+                          <OpenIcon fontSize="small" />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title="Duplicate">
-                        <IconButton onClick={() => handleDuplicate(project.id)}>
-                          <DuplicateIcon />
+                      <Tooltip title="Duplicate Project">
+                        <IconButton onClick={() => handleDuplicate(project.id)} sx={{ color: '#b2bac2' }}>
+                          <DuplicateIcon fontSize="small" />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title="Export">
-                        <IconButton onClick={() => handleExport(project)}>
-                          <ExportIcon />
+                      <Tooltip title="Export Composition (JSON)">
+                        <IconButton onClick={() => handleExport(project)} sx={{ color: '#b2bac2' }}>
+                          <ExportIcon fontSize="small" />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title="Edit">
-                        <IconButton onClick={() => handleEdit(project)}>
-                          <EditIcon />
+                      <Tooltip title="Rename">
+                        <IconButton onClick={() => handleEdit(project)} sx={{ color: '#b2bac2' }}>
+                          <EditIcon fontSize="small" />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title="Delete">
-                        <IconButton onClick={() => deleteProject.mutate(project.id)}>
-                          <DeleteIcon />
+                      <Tooltip title="Delete Permanently">
+                        <IconButton onClick={() => deleteProject.mutate(project.id)} sx={{ color: '#f44336' }}>
+                          <DeleteIcon fontSize="small" />
                         </IconButton>
                       </Tooltip>
                     </ListItemSecondaryAction>
@@ -170,40 +257,58 @@ const Dashboard: React.FC = () => {
                 ))}
               </List>
             )}
-          </Paper>
+          </Panel>
         </Grid>
+
+        {/* Right Info sidebar */}
         <Grid item xs={12} md={4}>
-          <Paper sx={{ p: 2 }}>
-            <Typography variant="h6" gutterBottom>
-              Quick Stats
+          <Panel title="System Analytics & Storage">
+            <Typography variant="body2" sx={{ color: '#b2bac2', mb: 3 }}>
+              Live metrics for self-hosted SQL in-memory router engine.
             </Typography>
-            <Typography variant="body2">Total Videos: {projects?.length || 0}</Typography>
-            <Typography variant="body2">Storage Used: 0%</Typography>
-          </Paper>
+            <PropertyGrid properties={stats} />
+          </Panel>
         </Grid>
       </Grid>
 
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>{editingProject ? 'Rename Project' : 'Create New Project'}</DialogTitle>
-        <DialogContent>
+      {/* Creation/Rename dialog modal */}
+      <Modal
+        open={open}
+        onClose={handleClose}
+        title={editingProject ? 'Rename Workspace Project' : 'Create New Composition'}
+        actions={
+          <>
+            <Button onClick={handleClose} sx={{ color: '#b2bac2', textTransform: 'none' }}>
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              onClick={handleSubmit}
+              disabled={!projectName}
+              sx={{ bgcolor: '#90caf9', color: '#0a1929', fontWeight: 'bold', textTransform: 'none' }}
+            >
+              {editingProject ? 'Save Changes' : 'Create Project'}
+            </Button>
+          </>
+        }
+      >
+        <Box sx={{ pt: 1 }}>
+          <Typography variant="caption" sx={{ color: '#b2bac2', display: 'block', mb: 1 }}>
+            Provide a descriptive name for your timeline sequence.
+          </Typography>
           <TextField
             autoFocus
-            margin="dense"
-            label="Project Name"
-            type="text"
             fullWidth
-            variant="standard"
+            size="small"
+            placeholder="e.g. Premium Brand Promo V2"
             value={projectName}
             onChange={(e) => setProjectName(e.target.value)}
+            InputProps={{
+              sx: { color: '#ffffff', bgcolor: '#0a1929' },
+            }}
           />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleSubmit} disabled={!projectName}>
-            {editingProject ? 'Save' : 'Create'}
-          </Button>
-        </DialogActions>
-      </Dialog>
+        </Box>
+      </Modal>
     </Box>
   );
 };
