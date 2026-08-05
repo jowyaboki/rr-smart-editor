@@ -33,7 +33,7 @@ import {
   FitScreen as FitIcon,
 } from '@mui/icons-material';
 
-// 1. Panel component
+// 1. Panel Component with minimum/maximum boundaries and smooth hover animations
 interface PanelProps {
   title?: string;
   actions?: React.ReactNode;
@@ -54,15 +54,25 @@ export const Panel: React.FC<PanelProps> = ({
       <Box
         sx={{
           width: '40px',
+          minWidth: '40px',
+          height: '100%',
           bgcolor: '#102031',
           borderRight: '1px solid #1e293b',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           py: 2,
+          transition: 'all 0.15s ease-in-out',
         }}
       >
-        <IconButton onClick={onToggleCollapse} size="small" sx={{ color: '#b2bac2' }}>
+        <IconButton
+          onClick={onToggleCollapse}
+          size="small"
+          sx={{
+            color: '#b2bac2',
+            '&:hover': { color: '#90caf9', bgcolor: 'rgba(144,202,249,0.08)' },
+          }}
+        >
           ➕
         </IconButton>
       </Box>
@@ -75,10 +85,14 @@ export const Panel: React.FC<PanelProps> = ({
         display: 'flex',
         flexDirection: 'column',
         height: '100%',
+        minWidth: '150px',
+        maxWidth: '100%',
         bgcolor: '#102031',
         border: '1px solid #1e293b',
         borderRadius: '6px',
         overflow: 'hidden',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+        transition: 'all 0.15s ease-in-out',
       }}
     >
       {(title || actions || onToggleCollapse) && (
@@ -94,26 +108,38 @@ export const Panel: React.FC<PanelProps> = ({
           }}
         >
           {title && (
-            <Typography variant="subtitle2" sx={{ fontWeight: 'bold', color: '#ffffff' }}>
+            <Typography
+              variant="subtitle2"
+              sx={{ fontWeight: 'bold', color: '#ffffff', letterSpacing: '0.2px', fontSize: '0.8rem' }}
+            >
               {title}
             </Typography>
           )}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             {actions}
             {onToggleCollapse && (
-              <IconButton onClick={onToggleCollapse} size="small" sx={{ color: '#b2bac2', p: 0.5 }}>
+              <IconButton
+                onClick={onToggleCollapse}
+                size="small"
+                sx={{
+                  color: '#b2bac2',
+                  p: 0.5,
+                  transition: 'transform 0.15s ease',
+                  '&:hover': { color: '#ff9800', transform: 'scale(1.1)' },
+                }}
+              >
                 ➖
               </IconButton>
             )}
           </Box>
         </Box>
       )}
-      <Box sx={{ flexGrow: 1, overflow: 'auto', p: 2 }}>{children}</Box>
+      <Box sx={{ flexGrow: 1, overflow: 'auto', p: 2, bgcolor: '#102031' }}>{children}</Box>
     </Box>
   );
 };
 
-// 2. Inspector component
+// 2. Inspector Component with premium visual separation
 interface InspectorProps {
   title: string;
   children: React.ReactNode;
@@ -121,9 +147,22 @@ interface InspectorProps {
 
 export const Inspector: React.FC<InspectorProps> = ({ title, children }) => {
   return (
-    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#102031' }}>
-      <Box sx={{ p: 2, borderBottom: '1px solid #1e293b' }}>
-        <Typography variant="subtitle1" sx={{ fontWeight: 'bold', color: '#ffffff' }}>
+    <Box
+      sx={{
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        bgcolor: '#102031',
+        border: '1px solid #1e293b',
+        borderRadius: '6px',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+      }}
+    >
+      <Box sx={{ p: 2, borderBottom: '1px solid #1e293b', bgcolor: '#0a1929' }}>
+        <Typography
+          variant="subtitle2"
+          sx={{ fontWeight: 'bold', color: '#ffffff', letterSpacing: '0.5px', textTransform: 'uppercase', fontSize: '0.75rem' }}
+        >
           {title}
         </Typography>
       </Box>
@@ -132,7 +171,7 @@ export const Inspector: React.FC<InspectorProps> = ({ title, children }) => {
   );
 };
 
-// 3. PropertyGrid component
+// 3. PropertyGrid Component with standard creative alignment
 interface PropertyGridProps {
   properties: Array<{ label: string; value: React.ReactNode }>;
 }
@@ -143,24 +182,44 @@ export const PropertyGrid: React.FC<PropertyGridProps> = ({ properties }) => {
       sx={{
         display: 'grid',
         gridTemplateColumns: '120px 1fr',
-        gap: '12px 16px',
+        gap: '8px 16px',
         alignItems: 'center',
-        py: 1,
+        py: 0.5,
       }}
     >
       {properties.map((prop, idx) => (
         <React.Fragment key={idx}>
-          <Typography variant="caption" sx={{ color: '#b2bac2', fontWeight: 'medium' }}>
+          <Typography
+            variant="caption"
+            sx={{
+              color: '#b2bac2',
+              fontWeight: 'medium',
+              fontSize: '0.72rem',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}
+          >
             {prop.label}
           </Typography>
-          <Box sx={{ color: '#ffffff' }}>{prop.value}</Box>
+          <Box
+            sx={{
+              color: '#ffffff',
+              fontSize: '0.75rem',
+              fontWeight: 'bold',
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            {prop.value}
+          </Box>
         </React.Fragment>
       ))}
     </Box>
   );
 };
 
-// 4. Toolbar component
+// 4. Toolbar Component with aligned gap controls
 interface ToolbarProps {
   children: React.ReactNode;
 }
@@ -171,9 +230,9 @@ export const Toolbar: React.FC<ToolbarProps> = ({ children }) => {
       sx={{
         display: 'flex',
         alignItems: 'center',
-        gap: 2,
+        gap: 1.5,
         px: 2,
-        py: 1,
+        py: 0.75,
         bgcolor: '#0a1929',
         borderBottom: '1px solid #1e293b',
       }}
@@ -183,7 +242,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({ children }) => {
   );
 };
 
-// 5. Sidebar component
+// 5. Sidebar Component with modern spacing limits
 interface SidebarProps {
   children: React.ReactNode;
 }
@@ -192,10 +251,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ children }) => {
   return (
     <Box
       sx={{
-        width: '240px',
+        width: '100%',
         height: '100%',
         bgcolor: '#102031',
-        borderRight: '1px solid #1e293b',
         display: 'flex',
         flexDirection: 'column',
       }}
@@ -205,7 +263,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ children }) => {
   );
 };
 
-// 6. ContextMenu component
+// 6. ContextMenu component with smooth hover highlights and standard dark-theme styles
 interface ContextMenuProps {
   trigger: (onOpen: (e: React.MouseEvent) => void) => React.ReactNode;
   items: Array<{ label: string; onClick: () => void; icon?: React.ReactNode }>;
@@ -234,7 +292,10 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({ trigger, items }) => {
           '& .MuiPaper-root': {
             bgcolor: '#102031',
             border: '1px solid #1e293b',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
             color: '#ffffff',
+            borderRadius: '6px',
+            minWidth: '160px',
           },
         }}
       >
@@ -245,7 +306,16 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({ trigger, items }) => {
               item.onClick();
               handleClose();
             }}
-            sx={{ gap: 1.5, fontSize: '0.85rem' }}
+            sx={{
+              gap: 1.5,
+              fontSize: '0.78rem',
+              py: 1,
+              transition: 'all 0.1s ease',
+              '&:hover': {
+                bgcolor: 'rgba(144, 202, 249, 0.08)',
+                color: '#90caf9',
+              },
+            }}
           >
             {item.icon}
             {item.label}
@@ -256,7 +326,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({ trigger, items }) => {
   );
 };
 
-// 7. Modal component
+// 7. Modal component with optimized dialog padding
 interface ModalProps {
   open: boolean;
   onClose: () => void;
@@ -276,23 +346,32 @@ export const Modal: React.FC<ModalProps> = ({ open, onClose, title, children, ac
         sx: {
           bgcolor: '#102031',
           border: '1px solid #1e293b',
+          borderRadius: '8px',
+          boxShadow: '0 12px 36px rgba(0,0,0,0.5)',
           color: '#ffffff',
         },
       }}
     >
-      <DialogTitle sx={{ m: 0, p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
+      <DialogTitle sx={{ m: 0, p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #1e293b' }}>
+        <Typography variant="subtitle1" component="div" sx={{ fontWeight: 'bold', letterSpacing: '0.2px' }}>
           {title}
         </Typography>
-        <IconButton onClick={onClose} size="small" sx={{ color: '#b2bac2' }}>
-          <CloseIcon />
+        <IconButton
+          onClick={onClose}
+          size="small"
+          sx={{
+            color: '#b2bac2',
+            '&:hover': { color: '#ffffff', bgcolor: 'rgba(255,255,255,0.05)' },
+          }}
+        >
+          <CloseIcon fontSize="small" />
         </IconButton>
       </DialogTitle>
-      <DialogContent dividers sx={{ borderColor: '#1e293b', py: 2 }}>
+      <DialogContent sx={{ py: 3, bgcolor: '#102031' }}>
         {children}
       </DialogContent>
       {actions && (
-        <DialogActions sx={{ p: 2, borderTop: '1px solid #1e293b' }}>
+        <DialogActions sx={{ p: 2, borderTop: '1px solid #1e293b', bgcolor: '#0a1929' }}>
           {actions}
         </DialogActions>
       )}
@@ -300,7 +379,7 @@ export const Modal: React.FC<ModalProps> = ({ open, onClose, title, children, ac
   );
 };
 
-// 8. SearchBar component
+// 8. SearchBar Component with clean focused outlines
 interface SearchBarProps {
   value: string;
   onChange: (val: string) => void;
@@ -316,16 +395,23 @@ export const SearchBar: React.FC<SearchBarProps> = ({ value, onChange, placehold
       size="small"
       fullWidth
       InputProps={{
-        startAdornment: <SearchIcon sx={{ color: '#b2bac2', mr: 1, fontSize: 18 }} />,
+        startAdornment: <SearchIcon sx={{ color: '#b2bac2', mr: 1, fontSize: 16 }} />,
         sx: {
-          height: '36px',
+          height: '32px',
+          fontSize: '0.78rem',
           bgcolor: '#0a1929',
           color: '#ffffff',
+          borderRadius: '4px',
+          transition: 'all 0.1s ease-in-out',
           '& .MuiOutlinedInput-notchedOutline': {
             borderColor: '#1e293b',
           },
           '&:hover .MuiOutlinedInput-notchedOutline': {
+            borderColor: '#b2bac2',
+          },
+          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
             borderColor: '#90caf9',
+            borderWidth: '1.5px',
           },
         },
       }}
@@ -333,7 +419,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ value, onChange, placehold
   );
 };
 
-// 9. CommandPalette Component
+// 9. CommandPalette Component with unified search controls
 interface CommandPaletteProps {
   open: boolean;
   onClose: () => void;
@@ -358,22 +444,23 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ open, onClose, c
       PaperProps={{
         sx: {
           position: 'fixed',
-          top: '10%',
+          top: '15%',
           bgcolor: '#102031',
           border: '1px solid #1e293b',
           borderRadius: '8px',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
           color: '#ffffff',
         },
       }}
     >
-      <Box sx={{ p: 2 }}>
+      <Box sx={{ p: 2, borderBottom: '1px solid #1e293b' }}>
         <SearchBar value={search} onChange={setSearch} placeholder="Type a command or search workspace..." />
       </Box>
-      <List sx={{ maxHeight: '300px', overflowY: 'auto', p: 0 }}>
+      <List sx={{ maxHeight: '240px', overflowY: 'auto', p: 0 }}>
         {filtered.length === 0 ? (
-          <Box sx={{ p: 2, textAlign: 'center' }}>
-            <Typography variant="body2" sx={{ color: '#b2bac2' }}>
-              No commands found
+          <Box sx={{ p: 3, textAlign: 'center' }}>
+            <Typography variant="body2" sx={{ color: '#b2bac2', fontSize: '0.78rem' }}>
+              No matching commands
             </Typography>
           </Box>
         ) : (
@@ -384,12 +471,33 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ open, onClose, c
                 cmd.action();
                 onClose();
               }}
-              sx={{ px: 2, py: 1.5, display: 'flex', justifyContent: 'space-between' }}
+              sx={{
+                px: 2,
+                py: 1.25,
+                display: 'flex',
+                justifyContent: 'space-between',
+                transition: 'all 0.1s ease',
+                '&:hover': {
+                  bgcolor: 'rgba(144, 202, 249, 0.08)',
+                  color: '#90caf9',
+                },
+              }}
             >
-              <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+              <Typography variant="body2" sx={{ fontWeight: 'medium', fontSize: '0.78rem' }}>
                 {cmd.label}
               </Typography>
-              <Chip label={cmd.category} size="small" sx={{ bgcolor: '#0a1929', color: '#90caf9', height: 18, fontSize: '0.65rem' }} />
+              <Chip
+                label={cmd.category}
+                size="small"
+                sx={{
+                  bgcolor: '#0a1929',
+                  color: '#90caf9',
+                  height: 16,
+                  fontSize: '0.6rem',
+                  fontWeight: 'bold',
+                  border: '1px solid rgba(144,202,249,0.15)',
+                }}
+              />
             </MenuItem>
           ))
         )}
@@ -398,7 +506,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ open, onClose, c
   );
 };
 
-// 10. EmptyState Component
+// 10. EmptyState Component with clean aesthetic padding
 interface EmptyStateProps {
   title: string;
   description: string;
@@ -413,15 +521,18 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ title, description, acti
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        py: 8,
-        px: 4,
+        py: 6,
+        px: 3,
         textAlign: 'center',
+        bgcolor: 'rgba(255,255,255,0.01)',
+        border: '1px dashed #1e293b',
+        borderRadius: '6px',
       }}
     >
-      <Typography variant="subtitle1" sx={{ fontWeight: 'bold', color: '#ffffff', mb: 1 }}>
+      <Typography variant="subtitle2" sx={{ fontWeight: 'bold', color: '#ffffff', mb: 0.5 }}>
         {title}
       </Typography>
-      <Typography variant="body2" sx={{ color: '#b2bac2', mb: 3, maxWidth: 300 }}>
+      <Typography variant="caption" sx={{ color: '#b2bac2', mb: 2, maxWidth: 280, display: 'block', lineHeight: 1.4 }}>
         {description}
       </Typography>
       {action}
@@ -432,13 +543,24 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ title, description, acti
 // 11. SkeletonLoader Component
 export const SkeletonLoader: React.FC<{ rows?: number }> = ({ rows = 3 }) => {
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
       {Array.from({ length: rows }).map((_, idx) => (
-        <Box key={idx} sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          <Skeleton variant="rectangular" width={40} height={40} sx={{ bgcolor: '#1e293b', borderRadius: '4px' }} />
+        <Box
+          key={idx}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 2,
+            p: 1.5,
+            border: '1px solid #1e293b',
+            borderRadius: '4px',
+            bgcolor: 'rgba(255,255,255,0.01)',
+          }}
+        >
+          <Skeleton variant="rectangular" width={32} height={32} sx={{ bgcolor: '#1e293b', borderRadius: '4px' }} />
           <Box sx={{ flexGrow: 1 }}>
-            <Skeleton variant="text" width="60%" sx={{ bgcolor: '#1e293b' }} />
-            <Skeleton variant="text" width="40%" sx={{ bgcolor: '#1e293b' }} />
+            <Skeleton variant="text" width="50%" height={16} sx={{ bgcolor: '#1e293b' }} />
+            <Skeleton variant="text" width="30%" height={12} sx={{ bgcolor: '#1e293b', mt: 0.5 }} />
           </Box>
         </Box>
       ))}
@@ -446,7 +568,7 @@ export const SkeletonLoader: React.FC<{ rows?: number }> = ({ rows = 3 }) => {
   );
 };
 
-// 12. StatusBadge Component
+// 12. StatusBadge Component with flat/vibrant design parameters
 interface StatusBadgeProps {
   status: 'success' | 'warning' | 'error' | 'info';
   label: string;
@@ -456,14 +578,14 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, label }) => {
   const getColors = () => {
     switch (status) {
       case 'success':
-        return { bg: 'rgba(76, 175, 80, 0.1)', border: '#4caf50', text: '#4caf50' };
+        return { bg: 'rgba(76, 175, 80, 0.08)', border: 'rgba(76, 175, 80, 0.25)', text: '#4caf50' };
       case 'warning':
-        return { bg: 'rgba(255, 152, 0, 0.1)', border: '#ff9800', text: '#ff9800' };
+        return { bg: 'rgba(255, 152, 0, 0.08)', border: 'rgba(255, 152, 0, 0.25)', text: '#ff9800' };
       case 'error':
-        return { bg: 'rgba(244, 67, 54, 0.1)', border: '#f44336', text: '#f44336' };
+        return { bg: 'rgba(244, 67, 54, 0.08)', border: 'rgba(244, 67, 54, 0.25)', text: '#f44336' };
       case 'info':
       default:
-        return { bg: 'rgba(33, 150, 243, 0.1)', border: '#2196f3', text: '#2196f3' };
+        return { bg: 'rgba(144, 202, 249, 0.08)', border: 'rgba(144, 202, 249, 0.25)', text: '#90caf9' };
     }
   };
 
@@ -474,14 +596,16 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, label }) => {
       sx={{
         display: 'inline-flex',
         alignItems: 'center',
-        px: 1.5,
+        px: 1.25,
         py: 0.25,
-        borderRadius: '12px',
+        borderRadius: '4px',
         bgcolor: colors.bg,
         border: `1px solid ${colors.border}`,
         color: colors.text,
-        fontSize: '0.75rem',
+        fontSize: '0.68rem',
         fontWeight: 'bold',
+        textTransform: 'uppercase',
+        letterSpacing: '0.5px',
       }}
     >
       {label}
@@ -503,9 +627,15 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
 
   return (
     <>
-      <IconButton onClick={(e) => setAnchorEl(e.currentTarget)} sx={{ color: '#ffffff' }}>
+      <IconButton
+        onClick={(e) => setAnchorEl(e.currentTarget)}
+        sx={{
+          color: '#ffffff',
+          '&:hover': { bgcolor: 'rgba(255,255,255,0.05)' },
+        }}
+      >
         <Badge badgeContent={notifications.length} color="error">
-          <NotificationsIcon />
+          <NotificationsIcon fontSize="small" />
         </Badge>
       </IconButton>
       <Menu
@@ -514,22 +644,24 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
         onClose={() => setAnchorEl(null)}
         sx={{
           '& .MuiPaper-root': {
-            width: '320px',
+            width: '280px',
             bgcolor: '#102031',
             border: '1px solid #1e293b',
+            boxShadow: '0 8px 24px rgba(0,0,0,0.3)',
             color: '#ffffff',
+            borderRadius: '6px',
           },
         }}
       >
-        <Box sx={{ p: 2, borderBottom: '1px solid #1e293b', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Typography variant="subtitle2" sx={{ fontWeight: 'bold' }}>
-            Notifications
+        <Box sx={{ p: 1.5, borderBottom: '1px solid #1e293b', display: 'flex', justifyContent: 'space-between', alignItems: 'center', bgcolor: '#0a1929' }}>
+          <Typography variant="caption" sx={{ fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+            System Alerts
           </Typography>
         </Box>
         {notifications.length === 0 ? (
-          <Box sx={{ p: 3, textAlign: 'center' }}>
-            <Typography variant="body2" sx={{ color: '#b2bac2' }}>
-              No notifications
+          <Box sx={{ p: 2.5, textAlign: 'center' }}>
+            <Typography variant="caption" sx={{ color: '#b2bac2' }}>
+              No active warnings
             </Typography>
           </Box>
         ) : (
@@ -537,20 +669,29 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
             <MenuItem
               key={notif.id}
               sx={{
-                py: 1.5,
+                py: 1.25,
                 px: 2,
                 borderBottom: '1px solid #1e293b',
                 whiteSpace: 'normal',
                 display: 'flex',
                 alignItems: 'flex-start',
                 justifyContent: 'space-between',
+                '&:hover': { bgcolor: 'rgba(255,255,255,0.02)' },
               }}
             >
-              <Typography variant="body2" sx={{ flexGrow: 1, mr: 2 }}>
+              <Typography variant="caption" sx={{ flexGrow: 1, mr: 1.5, lineHeight: 1.3 }}>
                 {notif.message}
               </Typography>
-              <IconButton size="small" onClick={() => onClear(notif.id)} sx={{ color: '#b2bac2', p: 0.5 }}>
-                <CloseIcon fontSize="inherit" />
+              <IconButton
+                size="small"
+                onClick={() => onClear(notif.id)}
+                sx={{
+                  color: '#b2bac2',
+                  p: 0.25,
+                  '&:hover': { color: '#ffffff' },
+                }}
+              >
+                <CloseIcon fontSize="inherit" style={{ fontSize: '10px' }} />
               </IconButton>
             </MenuItem>
           ))
@@ -560,7 +701,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
   );
 };
 
-// 14. PlaybackControls Component
+// 14. PlaybackControls Component with focused borders
 interface PlaybackControlsProps {
   playing: boolean;
   onPlayToggle: () => void;
@@ -575,23 +716,40 @@ export const PlaybackControls: React.FC<PlaybackControlsProps> = ({
   onSkipPrev,
 }) => {
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1.5 }}>
-      <IconButton onClick={onSkipPrev} size="small" sx={{ color: '#ffffff' }}>
-        <SkipPreviousIcon />
+    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
+      <IconButton
+        onClick={onSkipPrev}
+        size="small"
+        sx={{
+          color: '#b2bac2',
+          '&:hover': { color: '#ffffff', bgcolor: 'rgba(255,255,255,0.05)' },
+        }}
+      >
+        <SkipPreviousIcon fontSize="small" />
       </IconButton>
       <IconButton
         onClick={onPlayToggle}
         sx={{
           bgcolor: '#90caf9',
           color: '#0a1929',
-          '&:hover': { bgcolor: '#64b5f6' },
-          p: 1,
+          width: '32px',
+          height: '32px',
+          transition: 'all 0.1s ease',
+          '&:hover': { bgcolor: '#64b5f6', transform: 'scale(1.05)' },
+          p: 0.5,
         }}
       >
-        {playing ? <PauseIcon /> : <PlayIcon />}
+        {playing ? <PauseIcon fontSize="small" /> : <PlayIcon fontSize="small" />}
       </IconButton>
-      <IconButton onClick={onSkipNext} size="small" sx={{ color: '#ffffff' }}>
-        <SkipNextIcon />
+      <IconButton
+        onClick={onSkipNext}
+        size="small"
+        sx={{
+          color: '#b2bac2',
+          '&:hover': { color: '#ffffff', bgcolor: 'rgba(255,255,255,0.05)' },
+        }}
+      >
+        <SkipNextIcon fontSize="small" />
       </IconButton>
     </Box>
   );
@@ -610,15 +768,49 @@ export const TimelineControls: React.FC<TimelineControlsProps> = ({
   onFit,
 }) => {
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, bgcolor: '#0a1929', p: 0.5, borderRadius: '4px' }}>
-      <IconButton onClick={onZoomOut} size="small" sx={{ color: '#b2bac2' }}>
-        <ZoomOutIcon fontSize="small" />
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 0.5,
+        bgcolor: '#0a1929',
+        p: 0.5,
+        borderRadius: '4px',
+        border: '1px solid #1e293b',
+      }}
+    >
+      <IconButton
+        onClick={onZoomOut}
+        size="small"
+        sx={{
+          color: '#b2bac2',
+          p: 0.5,
+          '&:hover': { color: '#ffffff', bgcolor: 'rgba(255,255,255,0.05)' },
+        }}
+      >
+        <ZoomOutIcon style={{ fontSize: '14px' }} />
       </IconButton>
-      <IconButton onClick={onZoomIn} size="small" sx={{ color: '#b2bac2' }}>
-        <ZoomInIcon fontSize="small" />
+      <IconButton
+        onClick={onZoomIn}
+        size="small"
+        sx={{
+          color: '#b2bac2',
+          p: 0.5,
+          '&:hover': { color: '#ffffff', bgcolor: 'rgba(255,255,255,0.05)' },
+        }}
+      >
+        <ZoomInIcon style={{ fontSize: '14px' }} />
       </IconButton>
-      <IconButton onClick={onFit} size="small" sx={{ color: '#b2bac2' }}>
-        <FitIcon fontSize="small" />
+      <IconButton
+        onClick={onFit}
+        size="small"
+        sx={{
+          color: '#b2bac2',
+          p: 0.5,
+          '&:hover': { color: '#ffffff', bgcolor: 'rgba(255,255,255,0.05)' },
+        }}
+      >
+        <FitIcon style={{ fontSize: '14px' }} />
       </IconButton>
     </Box>
   );
