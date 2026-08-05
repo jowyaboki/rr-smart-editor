@@ -1,0 +1,14 @@
+{
+  "services": [
+    {
+      "name": "ValidationService",
+      "purpose": "Performs static analysis audits validating themes and tokens",
+      "package": "@ai-video-editor/design-system"
+    },
+    {
+      "name": "ThemeService",
+      "purpose": "Compiles recursive token dictionaries",
+      "package": "@ai-video-editor/design-system"
+    }
+  ]
+}

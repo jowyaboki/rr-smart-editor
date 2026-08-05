@@ -1,0 +1,16 @@
+{
+  "packages": [
+    {
+      "name": "@ai-video-editor/ui",
+      "purpose": "Central reusable creative suite component and layout library",
+      "dependencies": ["@mui/material"],
+      "owners": ["Core Presentation Team"]
+    },
+    {
+      "name": "@ai-video-editor/design-system",
+      "purpose": "Recursive theme inheritance and custom CSS variables generation engine",
+      "dependencies": [],
+      "owners": ["Theme Architecture Team"]
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "commands": [
+    {
+      "trigger": "Ctrl+K / Cmd+K",
+      "action": "Opens the Command Palette overlay",
+      "context": "Global Workspace"
+    }
+  ]
+}

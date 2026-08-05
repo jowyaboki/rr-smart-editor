@@ -1,0 +1,8 @@
+{
+  "events": [
+    {
+      "name": "storage",
+      "description": "Triggered when active workspace presets change, synchronizing the editor resizing"
+    }
+  ]
+}

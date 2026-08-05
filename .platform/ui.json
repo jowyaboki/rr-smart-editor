@@ -1,0 +1,12 @@
+{
+  "components": [
+    {
+      "name": "Panel",
+      "description": "Resizable panel with collapsible toggle bounds"
+    },
+    {
+      "name": "Inspector",
+      "description": "Right-hand sidebar detailing properties"
+    }
+  ]
+}
