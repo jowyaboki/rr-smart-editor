@@ -1,4 +1,4 @@
-# Performance UI Report - Phase 10
+# Performance UI Audit - Phase 10
 
 Analysis of React mount overhead and rendering latency metrics.
 
