@@ -1,0 +1,8 @@
+{
+  "workflows": [
+    {
+      "name": "Workspace Navigation",
+      "steps": "Switching active layouts between Classic, Audio, and Color presets"
+    }
+  ]
+}

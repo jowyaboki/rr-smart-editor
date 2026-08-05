@@ -1,0 +1,9 @@
+{
+  "apis": [
+    {
+      "endpoint": "/projects/:id/duplicate",
+      "method": "POST",
+      "description": "Duplicates active sequences"
+    }
+  ]
+}
