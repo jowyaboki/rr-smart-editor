@@ -169,8 +169,7 @@ const Renders: React.FC = () => {
     }
   };
 
-  const selectedJob =
-    jobs.find((j) => j.id === selectedJobId) || (jobs.length > 0 ? jobs[0] : null);
+  const selectedJob = jobs.find((j) => j.id === selectedJobId) || (jobs.length > 0 ? jobs[0] : null);
 
   const getStatusChipColor = (status: RenderJob['status']) => {
     switch (status) {
@@ -397,24 +396,14 @@ const Renders: React.FC = () => {
           </Paper>
 
           <Paper sx={{ p: 2 }}>
-            <Typography
-              variant="h6"
-              sx={{ mb: 2, fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: 1 }}
-            >
+            <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: 1 }}>
               <WorkerIcon color="primary" /> Worker Fleet Monitor
             </Typography>
             <Grid container spacing={2}>
               {workers.map((worker) => (
                 <Grid item xs={12} sm={6} key={worker.id}>
                   <Paper variant="outlined" sx={{ p: 2 }}>
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        mb: 1,
-                      }}
-                    >
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
                       <Typography sx={{ fontWeight: 'bold' }}>{worker.name}</Typography>
                       <Chip
                         label={worker.status.toUpperCase()}
@@ -441,11 +430,7 @@ const Renders: React.FC = () => {
                           <Typography variant="caption" color="text.secondary">
                             CPU Load
                           </Typography>
-                          <LinearProgress
-                            variant="determinate"
-                            value={worker.systemInfo.cpuUsage}
-                            color="info"
-                          />
+                          <LinearProgress variant="determinate" value={worker.systemInfo.cpuUsage} color="info" />
                           <Typography variant="caption" sx={{ fontWeight: 'bold' }}>
                             {worker.systemInfo.cpuUsage}%
                           </Typography>
@@ -454,11 +439,7 @@ const Renders: React.FC = () => {
                           <Typography variant="caption" color="text.secondary">
                             Memory Load
                           </Typography>
-                          <LinearProgress
-                            variant="determinate"
-                            value={worker.systemInfo.memoryUsage}
-                            color="info"
-                          />
+                          <LinearProgress variant="determinate" value={worker.systemInfo.memoryUsage} color="info" />
                           <Typography variant="caption" sx={{ fontWeight: 'bold' }}>
                             {worker.systemInfo.memoryUsage}%
                           </Typography>
@@ -491,10 +472,7 @@ const Renders: React.FC = () => {
                   <Typography variant="body2" color="text.secondary">
                     Active Stage
                   </Typography>
-                  <Typography
-                    variant="subtitle1"
-                    sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}
-                  >
+                  <Typography variant="subtitle1" sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
                     {selectedJob.stage}
                   </Typography>
                 </Grid>
@@ -518,10 +496,7 @@ const Renders: React.FC = () => {
                   <Typography variant="body2" color="text.secondary">
                     Codec / Format
                   </Typography>
-                  <Typography
-                    variant="body2"
-                    sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}
-                  >
+                  <Typography variant="body2" sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
                     {selectedJob.settings.codec} / {selectedJob.settings.format}
                   </Typography>
                 </Grid>
@@ -539,22 +514,20 @@ const Renders: React.FC = () => {
                 />
               </Box>
 
-              {selectedJob.status === 'completed' &&
-                selectedJob.artifacts &&
-                selectedJob.artifacts.length > 0 && (
-                  <Button
-                    component="a"
-                    href={`${API_URL}${selectedJob.artifacts[0].url}`}
-                    download
-                    variant="contained"
-                    color="success"
-                    fullWidth
-                    startIcon={<DownloadIcon />}
-                    sx={{ mb: 3 }}
-                  >
-                    Download Output Artifact
-                  </Button>
-                )}
+              {selectedJob.status === 'completed' && selectedJob.artifacts && selectedJob.artifacts.length > 0 && (
+                <Button
+                  component="a"
+                  href={`${API_URL}${selectedJob.artifacts[0].url}`}
+                  download
+                  variant="contained"
+                  color="success"
+                  fullWidth
+                  startIcon={<DownloadIcon />}
+                  sx={{ mb: 3 }}
+                >
+                  Download Output Artifact
+                </Button>
+              )}
 
               {selectedJob.error && (
                 <Alert severity="error" sx={{ mb: 2 }}>
@@ -564,35 +537,12 @@ const Renders: React.FC = () => {
 
               {selectedJob.warnings.length > 0 && (
                 <Box sx={{ mb: 2 }}>
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      fontWeight: 'bold',
-                      mb: 1,
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 0.5,
-                      color: 'warning.main',
-                    }}
-                  >
+                  <Typography variant="body2" sx={{ fontWeight: 'bold', mb: 1, display: 'flex', alignItems: 'center', gap: 0.5, color: 'warning.main' }}>
                     <WarningIcon fontSize="small" /> Warnings ({selectedJob.warnings.length})
                   </Typography>
-                  <Box
-                    sx={{
-                      p: 1,
-                      bgcolor: 'action.hover',
-                      borderRadius: 1,
-                      borderLeft: '3px solid',
-                      borderColor: 'warning.main',
-                    }}
-                  >
+                  <Box sx={{ p: 1, bgcolor: 'action.hover', borderRadius: 1, borderLeft: '3px solid', borderColor: 'warning.main' }}>
                     {selectedJob.warnings.map((warn, index) => (
-                      <Typography
-                        key={index}
-                        variant="caption"
-                        display="block"
-                        color="warning.main"
-                      >
+                      <Typography key={index} variant="caption" display="block" color="warning.main">
                         {warn}
                       </Typography>
                     ))}
@@ -601,16 +551,7 @@ const Renders: React.FC = () => {
               )}
 
               <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
-                <Typography
-                  variant="body2"
-                  sx={{
-                    fontWeight: 'bold',
-                    mb: 1,
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 0.5,
-                  }}
-                >
+                <Typography variant="body2" sx={{ fontWeight: 'bold', mb: 1, display: 'flex', alignItems: 'center', gap: 0.5 }}>
                   <TerminalIcon fontSize="small" /> Execution Logs Console
                 </Typography>
                 <Paper
@@ -629,12 +570,7 @@ const Renders: React.FC = () => {
                 >
                   <Box>
                     {selectedJob.logs.map((log, index) => (
-                      <Typography
-                        key={index}
-                        variant="caption"
-                        display="block"
-                        sx={{ fontFamily: 'monospace' }}
-                      >
+                      <Typography key={index} variant="caption" display="block" sx={{ fontFamily: 'monospace' }}>
                         {log}
                       </Typography>
                     ))}
@@ -643,19 +579,8 @@ const Renders: React.FC = () => {
               </Box>
             </Paper>
           ) : (
-            <Paper
-              sx={{
-                p: 4,
-                textAlign: 'center',
-                height: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <Typography color="text.secondary">
-                Select a job to view real-time logs and progress details
-              </Typography>
+            <Paper sx={{ p: 4, textAlign: 'center', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Typography color="text.secondary">Select a job to view real-time logs and progress details</Typography>
             </Paper>
           )}
         </Grid>

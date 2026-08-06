@@ -21,12 +21,9 @@ export function LoudnessMeter() {
         <div className="h-4 bg-gray-800 rounded overflow-hidden relative">
           <div
             className="h-full bg-gradient-to-r from-green-500 via-yellow-500 to-red-500 transition-all duration-300"
-            style={{
-              width: `${Math.max(0, Math.min(100, ((activeLoudnessLUFS + 60) / 60) * 100))}%`,
-            }}
+            style={{ width: `${Math.max(0, Math.min(100, ((activeLoudnessLUFS + 60) / 60) * 100))}%` }}
           />
-          <div className="absolute inset-y-0 right-1/3 border-r border-white border-opacity-40" />{' '}
-          {/* -23dB mark */}
+          <div className="absolute inset-y-0 right-1/3 border-r border-white border-opacity-40" /> {/* -23dB mark */}
         </div>
         <div className="flex justify-between text-[8px] text-gray-500">
           <span>-60 LUFS</span>
@@ -37,9 +34,7 @@ export function LoudnessMeter() {
 
       <div className="flex justify-between items-center text-xs">
         <span className="text-gray-400">Momentary Loudness</span>
-        <span className="font-mono font-bold text-indigo-400">
-          {activeLoudnessLUFS.toFixed(1)} LUFS
-        </span>
+        <span className="font-mono font-bold text-indigo-400">{activeLoudnessLUFS.toFixed(1)} LUFS</span>
       </div>
     </div>
   );

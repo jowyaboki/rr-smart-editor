@@ -6,7 +6,7 @@ import { defaultMotionPresets } from '../motion';
 // Instantiate the singleton design system engine
 export const webDesignSystemEngine = new DesignSystemService(
   'RR Smart Editor Web Design System',
-  '1.0.0',
+  '1.0.0'
 );
 
 // Register default themes

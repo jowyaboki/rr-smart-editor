@@ -26,10 +26,7 @@ export class ExecutionService {
       sceneId: initialContext?.sceneId,
       templateId: initialContext?.templateId,
       env: {
-        VITE_API_URL:
-          initialContext?.env?.VITE_API_URL ||
-          import.meta.env?.VITE_API_URL ||
-          'http://localhost:3001',
+        VITE_API_URL: initialContext?.env?.VITE_API_URL || import.meta.env?.VITE_API_URL || 'http://localhost:3001',
         ...initialContext?.env,
       },
     };
@@ -166,10 +163,7 @@ export class ExecutionService {
   /**
    * Resumes a paused execution.
    */
-  public static async resumeExecution(
-    workflow: Workflow,
-    executionId: string,
-  ): Promise<WorkflowExecution> {
+  public static async resumeExecution(workflow: Workflow, executionId: string): Promise<WorkflowExecution> {
     const exec = this.executions.get(executionId);
     if (!exec) throw new Error(`Execution ${executionId} not found`);
 
@@ -205,10 +199,7 @@ export class ExecutionService {
   /**
    * Retries a failed execution from the failed step.
    */
-  public static async retryExecution(
-    workflow: Workflow,
-    executionId: string,
-  ): Promise<WorkflowExecution> {
+  public static async retryExecution(workflow: Workflow, executionId: string): Promise<WorkflowExecution> {
     const exec = this.executions.get(executionId);
     if (!exec) throw new Error(`Execution ${executionId} not found`);
 

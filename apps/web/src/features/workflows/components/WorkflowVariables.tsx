@@ -18,7 +18,11 @@ import {
   Chip,
   Divider,
 } from '@mui/material';
-import { Add as AddIcon, Delete as DeleteIcon, Code as VarIcon } from '@mui/icons-material';
+import {
+  Add as AddIcon,
+  Delete as DeleteIcon,
+  Code as VarIcon,
+} from '@mui/icons-material';
 import { useWorkflowEngine } from '../hooks/useWorkflowEngine';
 import { WorkflowVariable, VariableScope } from '@ai-video-editor/shared';
 
@@ -108,20 +112,14 @@ export const WorkflowVariables: React.FC = () => {
 
   return (
     <Paper sx={{ p: 2 }}>
-      <Typography
-        variant="h6"
-        gutterBottom
-        fontWeight="bold"
-        sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
-      >
+      <Typography variant="h6" gutterBottom fontWeight="bold" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
         <VarIcon /> Declared Variables
       </Typography>
       <Divider sx={{ mb: 2 }} />
 
       {activeWf.variables.length === 0 ? (
         <Typography color="text.secondary" variant="body2" sx={{ py: 2, textAlign: 'center' }}>
-          No custom variables declared. Add one below to use it as ${'{name}'} placeholder in
-          configs.
+          No custom variables declared. Add one below to use it as ${'{name}'} placeholder in configs.
         </Typography>
       ) : (
         <TableContainer sx={{ maxHeight: 300, mb: 3 }}>
@@ -139,29 +137,19 @@ export const WorkflowVariables: React.FC = () => {
               {activeWf.variables.map((v, i) => (
                 <TableRow key={i}>
                   <TableCell sx={{ fontWeight: 'bold' }}>
-                    <code>
-                      ${'{'}
-                      {v.name}
-                      {'}'}
-                    </code>
+                    <code>${'{'}{v.name}{'}'}</code>
                   </TableCell>
                   <TableCell>
                     <Chip label={v.type.toUpperCase()} size="small" variant="outlined" />
                   </TableCell>
                   <TableCell>
-                    <Chip
-                      label={v.scope.toUpperCase()}
-                      size="small"
-                      color={getScopeColor(v.scope)}
-                    />
+                    <Chip label={v.scope.toUpperCase()} size="small" color={getScopeColor(v.scope)} />
                   </TableCell>
                   <TableCell>
                     <TextField
                       size="small"
                       variant="standard"
-                      value={
-                        typeof v.value === 'object' ? JSON.stringify(v.value) : String(v.value)
-                      }
+                      value={typeof v.value === 'object' ? JSON.stringify(v.value) : String(v.value)}
                       onChange={(e) => handleValueEdit(i, e.target.value)}
                       sx={{ fontSize: '0.85rem' }}
                     />
@@ -181,17 +169,7 @@ export const WorkflowVariables: React.FC = () => {
       <Typography variant="subtitle2" fontWeight="bold" sx={{ mb: 1.5 }}>
         Declare New Variable:
       </Typography>
-      <Box
-        sx={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: 2,
-          p: 2,
-          border: '1px dashed',
-          borderColor: 'divider',
-          borderRadius: 1,
-        }}
-      >
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, p: 2, border: '1px dashed', borderColor: 'divider', borderRadius: 1 }}>
         <TextField
           size="small"
           label="Variable Name"

@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
-import { Box, Typography, Divider, Button, Slider, IconButton, TextField } from '@mui/material';
+import { Box, Typography, Divider, Button, Slider, IconButton, TextField, Chip, Tooltip } from '@mui/material';
 import { PropertyGrid, SearchBar, StatusBadge } from '@ai-video-editor/ui';
 import { useTimelineStore } from '../../store/useTimelineStore';
 
 const PropertiesPanel: React.FC = () => {
   const { tracks } = useTimelineStore();
   const [search, setSearch] = useState('');
-  const [favorites, setFavorites] = useState<string[]>([]);
+  const [favorites, setFavorites] = useState<string[]>(['Opacity']);
   const [advancedMode, setAdvancedMode] = useState(false);
 
-  // Fallback defaults for selected asset or track
   const [opacity, setOpacity] = useState(100);
   const [scale, setScale] = useState(100);
   const [positionX, setPositionX] = useState(0);
@@ -25,8 +24,8 @@ const PropertiesPanel: React.FC = () => {
   };
 
   const toggleFavorite = (property: string) => {
-    setFavorites((prev) =>
-      prev.includes(property) ? prev.filter((p) => p !== property) : [...prev, property],
+    setFavorites(prev =>
+      prev.includes(property) ? prev.filter(p => p !== property) : [...prev, property]
     );
   };
 
@@ -121,7 +120,7 @@ const PropertiesPanel: React.FC = () => {
   const filteredProperties = propertiesList.filter(
     (p) =>
       p.name.toLowerCase().includes(search.toLowerCase()) ||
-      p.category.toLowerCase().includes(search.toLowerCase()),
+      p.category.toLowerCase().includes(search.toLowerCase())
   );
 
   const favoriteProps = filteredProperties.filter((p) => favorites.includes(p.name));
@@ -136,27 +135,14 @@ const PropertiesPanel: React.FC = () => {
         bgcolor: '#0d1527',
       }}
     >
-      <Box
-        sx={{
-          p: 2,
-          borderBottom: '1px solid #1b2f54',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 1.5,
-        }}
-      >
+      <Box sx={{ p: 2, borderBottom: '1px solid #1b2f54', display: 'flex', flexDirection: 'column', gap: 1.5 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Typography
-            variant="subtitle2"
-            sx={{
-              fontWeight: 'bold',
-              textTransform: 'uppercase',
-              fontSize: '0.72rem',
-              letterSpacing: '0.5px',
-            }}
-          >
-            Inspector Panel
-          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 'bold', textTransform: 'uppercase', fontSize: '0.72rem', letterSpacing: '0.5px' }}>
+              Advanced Properties
+            </Typography>
+            <StatusBadge status="success" label="Active" />
+          </Box>
           <Box sx={{ display: 'flex', gap: 1 }}>
             <Button
               size="small"
@@ -184,18 +170,8 @@ const PropertiesPanel: React.FC = () => {
       <Box sx={{ flexGrow: 1, overflowY: 'auto', p: 2 }}>
         {favoriteProps.length > 0 && (
           <Box sx={{ mb: 3 }}>
-            <Typography
-              variant="caption"
-              color="primary"
-              sx={{
-                fontWeight: 'bold',
-                display: 'block',
-                mb: 1.5,
-                textTransform: 'uppercase',
-                fontSize: '0.65rem',
-              }}
-            >
-              ⭐ Favorites
+            <Typography variant="caption" color="primary" sx={{ fontWeight: 'bold', display: 'block', mb: 1.5, textTransform: 'uppercase', fontSize: '0.65rem' }}>
+              ⭐ Pinned Favorites
             </Typography>
             <PropertyGrid
               properties={favoriteProps.map((p) => ({
@@ -203,11 +179,7 @@ const PropertiesPanel: React.FC = () => {
                 value: (
                   <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', gap: 1 }}>
                     {p.element}
-                    <IconButton
-                      size="small"
-                      onClick={() => toggleFavorite(p.name)}
-                      sx={{ p: 0.25, color: '#f59e0b' }}
-                    >
+                    <IconButton size="small" onClick={() => toggleFavorite(p.name)} sx={{ p: 0.25, color: '#f59e0b' }}>
                       ★
                     </IconButton>
                   </Box>
@@ -220,17 +192,7 @@ const PropertiesPanel: React.FC = () => {
 
         {generalProps.length > 0 ? (
           <Box>
-            <Typography
-              variant="caption"
-              sx={{
-                color: '#94a3b8',
-                fontWeight: 'bold',
-                display: 'block',
-                mb: 1.5,
-                textTransform: 'uppercase',
-                fontSize: '0.65rem',
-              }}
-            >
+            <Typography variant="caption" sx={{ color: '#94a3b8', fontWeight: 'bold', display: 'block', mb: 1.5, textTransform: 'uppercase', fontSize: '0.65rem' }}>
               ⚡ General parameters
             </Typography>
             <PropertyGrid
@@ -239,11 +201,7 @@ const PropertiesPanel: React.FC = () => {
                 value: (
                   <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', gap: 1 }}>
                     {p.element}
-                    <IconButton
-                      size="small"
-                      onClick={() => toggleFavorite(p.name)}
-                      sx={{ p: 0.25, color: '#94a3b8', '&:hover': { color: '#f59e0b' } }}
-                    >
+                    <IconButton size="small" onClick={() => toggleFavorite(p.name)} sx={{ p: 0.25, color: '#94a3b8', '&:hover': { color: '#f59e0b' } }}>
                       ☆
                     </IconButton>
                   </Box>
@@ -252,65 +210,30 @@ const PropertiesPanel: React.FC = () => {
             />
           </Box>
         ) : (
-          <Typography
-            variant="caption"
-            sx={{ color: '#94a3b8', display: 'block', textAlign: 'center', py: 3 }}
-          >
+          <Typography variant="caption" sx={{ color: '#94a3b8', display: 'block', textAlign: 'center', py: 3 }}>
             No matching settings.
           </Typography>
         )}
 
         {advancedMode && (
-          <Box
-            sx={{
-              mt: 3,
-              p: 1.5,
-              border: '1px solid #1b2f54',
-              borderRadius: '4px',
-              bgcolor: 'rgba(0,0,0,0.15)',
-            }}
-          >
-            <Typography
-              variant="caption"
-              color="secondary"
-              sx={{
-                fontWeight: 'bold',
-                display: 'block',
-                mb: 1,
-                fontSize: '0.65rem',
-                textTransform: 'uppercase',
-              }}
-            >
-              🛠️ Technical Metadata
+          <Box sx={{ mt: 3, p: 1.5, border: '1px solid #1b2f54', borderRadius: '4px', bgcolor: 'rgba(0,0,0,0.15)' }}>
+            <Typography variant="caption" color="secondary" sx={{ fontWeight: 'bold', display: 'block', mb: 1, fontSize: '0.65rem', textTransform: 'uppercase' }}>
+              🛠️ Technical Metadata / Warnings
             </Typography>
-            <Typography
-              variant="caption"
-              sx={{ color: '#94a3b8', display: 'block', lineHeight: 1.4 }}
-            >
-              Composition Frame Rate: 30.00 FPS
-              <br />
-              Video Aspect Ratio: 16:9 widescreen (1920x1080)
-              <br />
-              Render Driver: WebGL Acceleration enabled
+            <Typography variant="caption" sx={{ color: '#94a3b8', display: 'block', lineHeight: 1.4 }}>
+              Composition Frame Rate: 30.00 FPS<br />
+              Video Aspect Ratio: 16:9 widescreen (1920x1080)<br />
+              Render Driver: WebGL Acceleration enabled<br />
+              Compliance audit status: <Typography component="span" variant="caption" sx={{ color: '#10b981', fontWeight: 'bold' }}>Passed (100%)</Typography>
             </Typography>
           </Box>
         )}
       </Box>
 
-      {/* Inline Documentation */}
+      {/* Inline Documentation & AI explanations */}
       <Box sx={{ p: 1.5, borderTop: '1px solid #1b2f54', bgcolor: '#050b14' }}>
-        <Typography
-          variant="caption"
-          sx={{
-            color: '#94a3b8',
-            display: 'block',
-            fontSize: '0.68rem',
-            fontStyle: 'italic',
-            lineHeight: 1.3,
-          }}
-        >
-          💡 Inspector Tip: Opacity scale governs pixel blending alpha value. Scale dictates
-          timeline sizing.
+        <Typography variant="caption" sx={{ color: '#94a3b8', display: 'block', fontSize: '0.68rem', fontStyle: 'italic', lineHeight: 1.3 }}>
+          💡 AI Explanation: Opacity scales determine standard pixel alpha overlay bounds. Easing maps frame transitions smoothly.
         </Typography>
       </Box>
     </Box>

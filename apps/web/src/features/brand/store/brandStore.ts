@@ -81,12 +81,7 @@ export const useBrandStore = create<BrandState>((set, get) => {
 
     initBrandStore: () => {
       localBrandEngine.brandService.registerBrandKit(initialBrandKit);
-      localBrandEngine.versionService.createVersion(
-        '1.0.0',
-        initialBrandKit,
-        'Jules',
-        'Initial release.',
-      );
+      localBrandEngine.versionService.createVersion('1.0.0', initialBrandKit, 'Jules', 'Initial release.');
 
       set({
         activeKit: initialBrandKit,

@@ -11,7 +11,7 @@ export class NleSnappingService {
     clips: VirtualClip[],
     markers: TimelineMarker[],
     keyframes: VirtualKeyframe[],
-    playheadFrame?: number,
+    playheadFrame?: number
   ): number {
     if (!config.enabled) return targetFrame;
 
@@ -50,7 +50,7 @@ export class NleSnappingService {
     // 4. Snap to keyframes
     if (config.snapToKeyframes) {
       for (const kf of keyframes) {
-        const clip = clips.find((c) => c.id === kf.clipId);
+        const clip = clips.find(c => c.id === kf.clipId);
         const absFrame = clip ? clip.startFrame + kf.frame : kf.frame;
         checkCandidate(absFrame);
       }

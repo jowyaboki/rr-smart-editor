@@ -6,31 +6,25 @@ export const ShapeControls: React.FC = () => {
 
   if (!activeComp) return null;
 
-  const selectedLayer = activeComp.layers.find((l) => l.id === selectedLayerId);
+  const selectedLayer = activeComp.layers.find(l => l.id === selectedLayerId);
 
   if (!selectedLayer || selectedLayer.type !== 'shape') {
     return (
       <div style={{ padding: '24px 0', textAlign: 'center', color: '#71717a' }}>
         <p style={{ fontSize: '13px' }}>⚠️ No Shape Layer Selected</p>
-        <p style={{ fontSize: '11px', marginTop: '4px' }}>
-          Please select or create a shape layer to adjust vector properties, borders, and rounded
-          corners.
-        </p>
+        <p style={{ fontSize: '11px', marginTop: '4px' }}>Please select or create a shape layer to adjust vector properties, borders, and rounded corners.</p>
       </div>
     );
   }
 
   return (
-    <div
-      style={{ display: 'flex', flexDirection: 'column', gap: '16px', fontFamily: 'sans-serif' }}
-    >
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', fontFamily: 'sans-serif' }}>
       <div>
         <h3 style={{ fontSize: '14px', margin: '0 0 12px 0', fontWeight: 600, color: '#f8fafc' }}>
           📐 Vector Shape Layer Settings
         </h3>
         <p style={{ fontSize: '11px', color: '#71717a', margin: '0 0 16px 0' }}>
-          Adjust geometric attributes, canvas coordinates, fill gradients, and canvas anchor
-          overrides.
+          Adjust geometric attributes, canvas coordinates, fill gradients, and canvas anchor overrides.
         </p>
       </div>
 
@@ -41,9 +35,7 @@ export const ShapeControls: React.FC = () => {
             value={selectedLayer.shapeType || 'rectangle'}
             onChange={(e) => {
               selectedLayer.shapeType = e.target.value as any;
-              useMotionComposerStore.setState({
-                activeComp: { ...activeComp, layers: [...activeComp.layers] },
-              });
+              useMotionComposerStore.setState({ activeComp: { ...activeComp, layers: [...activeComp.layers] } });
             }}
             style={{
               width: '100%',
@@ -73,9 +65,7 @@ export const ShapeControls: React.FC = () => {
                 ...selectedLayer.shapeProperties,
                 fillColor: e.target.value,
               };
-              useMotionComposerStore.setState({
-                activeComp: { ...activeComp, layers: [...activeComp.layers] },
-              });
+              useMotionComposerStore.setState({ activeComp: { ...activeComp, layers: [...activeComp.layers] } });
             }}
             style={{
               width: '100%',
@@ -91,9 +81,7 @@ export const ShapeControls: React.FC = () => {
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
         <div>
-          <label style={{ fontSize: '11px', color: '#a1a1aa', fontWeight: 500 }}>
-            Stroke Color
-          </label>
+          <label style={{ fontSize: '11px', color: '#a1a1aa', fontWeight: 500 }}>Stroke Color</label>
           <input
             type="color"
             value={selectedLayer.shapeProperties?.strokeColor || '#FFFFFF'}
@@ -102,9 +90,7 @@ export const ShapeControls: React.FC = () => {
                 ...selectedLayer.shapeProperties,
                 strokeColor: e.target.value,
               };
-              useMotionComposerStore.setState({
-                activeComp: { ...activeComp, layers: [...activeComp.layers] },
-              });
+              useMotionComposerStore.setState({ activeComp: { ...activeComp, layers: [...activeComp.layers] } });
             }}
             style={{
               width: '100%',
@@ -118,9 +104,7 @@ export const ShapeControls: React.FC = () => {
         </div>
 
         <div>
-          <label style={{ fontSize: '11px', color: '#a1a1aa', fontWeight: 500 }}>
-            Stroke Width
-          </label>
+          <label style={{ fontSize: '11px', color: '#a1a1aa', fontWeight: 500 }}>Stroke Width</label>
           <input
             type="number"
             value={selectedLayer.shapeProperties?.strokeWidth || 4}
@@ -129,9 +113,7 @@ export const ShapeControls: React.FC = () => {
                 ...selectedLayer.shapeProperties,
                 strokeWidth: parseFloat(e.target.value) || 0,
               };
-              useMotionComposerStore.setState({
-                activeComp: { ...activeComp, layers: [...activeComp.layers] },
-              });
+              useMotionComposerStore.setState({ activeComp: { ...activeComp, layers: [...activeComp.layers] } });
             }}
             style={{
               width: '100%',
@@ -159,9 +141,7 @@ export const ShapeControls: React.FC = () => {
               ...selectedLayer.shapeProperties,
               cornerRadius: parseInt(e.target.value) || 0,
             };
-            useMotionComposerStore.setState({
-              activeComp: { ...activeComp, layers: [...activeComp.layers] },
-            });
+            useMotionComposerStore.setState({ activeComp: { ...activeComp, layers: [...activeComp.layers] } });
           }}
           style={{
             width: '100%',
@@ -177,17 +157,13 @@ export const ShapeControls: React.FC = () => {
         </h4>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
           <div>
-            <label style={{ fontSize: '11px', color: '#a1a1aa', fontWeight: 500 }}>
-              Position X
-            </label>
+            <label style={{ fontSize: '11px', color: '#a1a1aa', fontWeight: 500 }}>Position X</label>
             <input
               type="number"
               value={selectedLayer.transform.position[0]}
               onChange={(e) => {
                 selectedLayer.transform.position[0] = parseFloat(e.target.value) || 0;
-                useMotionComposerStore.setState({
-                  activeComp: { ...activeComp, layers: [...activeComp.layers] },
-                });
+                useMotionComposerStore.setState({ activeComp: { ...activeComp, layers: [...activeComp.layers] } });
               }}
               style={{
                 width: '100%',
@@ -203,17 +179,13 @@ export const ShapeControls: React.FC = () => {
           </div>
 
           <div>
-            <label style={{ fontSize: '11px', color: '#a1a1aa', fontWeight: 500 }}>
-              Position Y
-            </label>
+            <label style={{ fontSize: '11px', color: '#a1a1aa', fontWeight: 500 }}>Position Y</label>
             <input
               type="number"
               value={selectedLayer.transform.position[1]}
               onChange={(e) => {
                 selectedLayer.transform.position[1] = parseFloat(e.target.value) || 0;
-                useMotionComposerStore.setState({
-                  activeComp: { ...activeComp, layers: [...activeComp.layers] },
-                });
+                useMotionComposerStore.setState({ activeComp: { ...activeComp, layers: [...activeComp.layers] } });
               }}
               style={{
                 width: '100%',

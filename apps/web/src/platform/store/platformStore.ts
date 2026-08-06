@@ -49,59 +49,18 @@ export const usePlatformStore = create<PlatformState>((set, get) => {
       if (modulesList.length === 0) {
         const standardModules = [
           { id: 'engine_timeline', name: 'Timeline Engine', version: '1.0.0', dependencies: [] },
-          {
-            id: 'engine_renders',
-            name: 'Render Pipeline',
-            version: '1.0.0',
-            dependencies: ['engine_timeline'],
-          },
-          {
-            id: 'engine_media',
-            name: 'Media Ingestion Pipeline',
-            version: '1.0.0',
-            dependencies: [],
-          },
-          {
-            id: 'engine_audio',
-            name: 'Professional Audio Engine 2.0',
-            version: '1.0.0',
-            dependencies: ['engine_timeline'],
-          },
-          {
-            id: 'engine_color',
-            name: 'Professional Color Science Engine',
-            version: '1.0.0',
-            dependencies: ['engine_timeline'],
-          },
-          {
-            id: 'platform_delivery',
-            name: 'Export & Delivery Platform',
-            version: '1.0.0',
-            dependencies: ['engine_renders'],
-          },
-          {
-            id: 'platform_security',
-            name: 'Security & Governance Platform',
-            version: '1.0.0',
-            dependencies: [],
-          },
-          {
-            id: 'platform_api',
-            name: 'API Gateway & Public SDK',
-            version: '1.0.0',
-            dependencies: ['platform_security'],
-          },
+          { id: 'engine_renders', name: 'Render Pipeline', version: '1.0.0', dependencies: ['engine_timeline'] },
+          { id: 'engine_media', name: 'Media Ingestion Pipeline', version: '1.0.0', dependencies: [] },
+          { id: 'engine_audio', name: 'Professional Audio Engine 2.0', version: '1.0.0', dependencies: ['engine_timeline'] },
+          { id: 'engine_color', name: 'Professional Color Science Engine', version: '1.0.0', dependencies: ['engine_timeline'] },
+          { id: 'platform_delivery', name: 'Export & Delivery Platform', version: '1.0.0', dependencies: ['engine_renders'] },
+          { id: 'platform_security', name: 'Security & Governance Platform', version: '1.0.0', dependencies: [] },
+          { id: 'platform_api', name: 'API Gateway & Public SDK', version: '1.0.0', dependencies: ['platform_security'] },
         ];
 
         for (const m of standardModules) {
           globalPlatformKernel.moduleRegistry.registerModule({
-            manifest: {
-              id: m.id,
-              name: m.name,
-              version: m.version,
-              dependencies: m.dependencies,
-              capabilities: [],
-            },
+            manifest: { id: m.id, name: m.name, version: m.version, dependencies: m.dependencies, capabilities: [] },
             state: 'Running',
             services: [],
             initialize: async () => {},
@@ -140,34 +99,10 @@ export const usePlatformStore = create<PlatformState>((set, get) => {
     loadServices: () => {
       // Seed default DI services if empty
       const list = [
-        {
-          id: 'service_mixer',
-          interfaceName: 'AudioMixerService',
-          implementationClass: 'AudioMixerService',
-          isSingleton: true,
-          scope: 'global',
-        },
-        {
-          id: 'service_grading',
-          interfaceName: 'GradingService',
-          implementationClass: 'GradingService',
-          isSingleton: true,
-          scope: 'global',
-        },
-        {
-          id: 'service_policy',
-          interfaceName: 'PolicyService',
-          implementationClass: 'PolicyService',
-          isSingleton: true,
-          scope: 'global',
-        },
-        {
-          id: 'service_delivery',
-          interfaceName: 'DeliveryService',
-          implementationClass: 'DeliveryService',
-          isSingleton: true,
-          scope: 'global',
-        },
+        { id: 'service_mixer', interfaceName: 'AudioMixerService', implementationClass: 'AudioMixerService', isSingleton: true, scope: 'global' },
+        { id: 'service_grading', interfaceName: 'GradingService', implementationClass: 'GradingService', isSingleton: true, scope: 'global' },
+        { id: 'service_policy', interfaceName: 'PolicyService', implementationClass: 'PolicyService', isSingleton: true, scope: 'global' },
+        { id: 'service_delivery', interfaceName: 'DeliveryService', implementationClass: 'DeliveryService', isSingleton: true, scope: 'global' },
       ];
       set({ services: list });
     },

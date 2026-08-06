@@ -5,63 +5,21 @@ export const PlatformIntegrationViewer: React.FC = () => {
   const { modules, healthStatus, timelineEvents } = usePlatform();
 
   return (
-    <div
-      style={{
-        background: '#1c1c1c',
-        padding: '20px',
-        borderRadius: '8px',
-        border: '1px solid #333',
-        color: '#fff',
-      }}
-    >
-      <h3
-        style={{
-          marginTop: 0,
-          marginBottom: '20px',
-          fontSize: '16px',
-          color: '#00e5ff',
-          borderBottom: '1px solid #333',
-          paddingBottom: '10px',
-        }}
-      >
+    <div style={{ background: '#1c1c1c', padding: '20px', borderRadius: '8px', border: '1px solid #333', color: '#fff' }}>
+      <h3 style={{ marginTop: 0, marginBottom: '20px', fontSize: '16px', color: '#00e5ff', borderBottom: '1px solid #333', paddingBottom: '10px' }}>
         📊 Live Platform Integration & Dependency Graph
       </h3>
 
       {/* HEALTH STATUS SUMMARY */}
       {healthStatus && (
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: '10px',
-            marginBottom: '20px',
-          }}
-        >
-          <div
-            style={{
-              background: '#252526',
-              padding: '12px',
-              borderRadius: '6px',
-              border: '1px solid #333',
-              textAlign: 'center',
-            }}
-          >
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '20px' }}>
+          <div style={{ background: '#252526', padding: '12px', borderRadius: '6px', border: '1px solid #333', textAlign: 'center' }}>
             <div style={{ fontSize: '10px', color: '#888' }}>PLATFORM CORE STATUS</div>
-            <strong
-              style={{ fontSize: '18px', color: '#4caf50', marginTop: '4px', display: 'block' }}
-            >
+            <strong style={{ fontSize: '18px', color: '#4caf50', marginTop: '4px', display: 'block' }}>
               {healthStatus.status.toUpperCase()}
             </strong>
           </div>
-          <div
-            style={{
-              background: '#252526',
-              padding: '12px',
-              borderRadius: '6px',
-              border: '1px solid #333',
-              textAlign: 'center',
-            }}
-          >
+          <div style={{ background: '#252526', padding: '12px', borderRadius: '6px', border: '1px solid #333', textAlign: 'center' }}>
             <div style={{ fontSize: '10px', color: '#888' }}>HEARTBEAT TIMESTAMP</div>
             <strong style={{ fontSize: '13px', color: '#fff', marginTop: '6px', display: 'block' }}>
               {new Date(healthStatus.heartbeatTime).toLocaleTimeString()}
@@ -72,18 +30,8 @@ export const PlatformIntegrationViewer: React.FC = () => {
 
       {/* ACTIVE DEPENDENCY LISTING */}
       <div style={{ borderTop: '1px solid #2d2d2d', paddingTop: '16px', marginBottom: '16px' }}>
-        <h4 style={{ margin: '0 0 10px 0', fontSize: '14px', color: '#aaa' }}>
-          Topological Module Dependency Graph
-        </h4>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '6px',
-            maxHeight: '180px',
-            overflowY: 'auto',
-          }}
-        >
+        <h4 style={{ margin: '0 0 10px 0', fontSize: '14px', color: '#aaa' }}>Topological Module Dependency Graph</h4>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', maxHeight: '180px', overflowY: 'auto' }}>
           {modules.map((m) => (
             <div
               key={m.id}
@@ -99,9 +47,7 @@ export const PlatformIntegrationViewer: React.FC = () => {
             >
               <div>
                 <strong>{m.name}</strong>
-                <span style={{ color: '#888', marginLeft: '8px' }}>
-                  dependencies: [ {m.dependencies.join(', ') || 'None'} ]
-                </span>
+                <span style={{ color: '#888', marginLeft: '8px' }}>dependencies: [ {m.dependencies.join(', ') || 'None'} ]</span>
               </div>
               <span style={{ color: '#4caf50', fontWeight: 'bold' }}>{m.state}</span>
             </div>
@@ -111,18 +57,8 @@ export const PlatformIntegrationViewer: React.FC = () => {
 
       {/* STARTUP TIMELINE */}
       <div style={{ borderTop: '1px solid #2d2d2d', paddingTop: '16px' }}>
-        <h4 style={{ margin: '0 0 10px 0', fontSize: '14px', color: '#aaa' }}>
-          Diagnostics Startup Sequence Timeline
-        </h4>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '4px',
-            maxHeight: '120px',
-            overflowY: 'auto',
-          }}
-        >
+        <h4 style={{ margin: '0 0 10px 0', fontSize: '14px', color: '#aaa' }}>Diagnostics Startup Sequence Timeline</h4>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', maxHeight: '120px', overflowY: 'auto' }}>
           {timelineEvents.map((evt, idx) => (
             <div
               key={idx}

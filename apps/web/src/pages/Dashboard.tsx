@@ -119,30 +119,18 @@ const Dashboard: React.FC = () => {
   }
 
   const filteredProjects = projects?.filter((p) =>
-    p.name.toLowerCase().includes(search.toLowerCase()),
+    p.name.toLowerCase().includes(search.toLowerCase())
   );
 
   const stats = [
-    {
-      label: 'Active Projects',
-      value: <StatusBadge status="info" label={String(projects?.length || 0)} />,
-    },
+    { label: 'Active Projects', value: <StatusBadge status="info" label={String(projects?.length || 0)} /> },
     { label: 'Storage Usage', value: <StatusBadge status="success" label="0% (Offline mode)" /> },
     { label: 'Cluster Workers', value: <StatusBadge status="warning" label="Active" /> },
   ];
 
   return (
     <Box sx={{ color: '#ffffff' }}>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          mb: 4,
-          flexWrap: 'wrap',
-          gap: 2,
-        }}
-      >
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4, flexWrap: 'wrap', gap: 2 }}>
         <Box>
           <Typography variant="h4" sx={{ fontWeight: 'bold', letterSpacing: '0.5px' }}>
             Dashboard
@@ -187,21 +175,13 @@ const Dashboard: React.FC = () => {
         <Grid item xs={12} md={8}>
           <Panel title="All Compositions">
             <Box sx={{ mb: 3 }}>
-              <SearchBar
-                value={search}
-                onChange={setSearch}
-                placeholder="Filter projects by title..."
-              />
+              <SearchBar value={search} onChange={setSearch} placeholder="Filter projects by title..." />
             </Box>
 
             {filteredProjects?.length === 0 ? (
               <EmptyState
                 title="No Compositions Found"
-                description={
-                  search
-                    ? 'Try refining your search text.'
-                    : 'Create your very first project to begin timeline editing!'
-                }
+                description={search ? "Try refining your search text." : "Create your very first project to begin timeline editing!"}
                 action={
                   !search && (
                     <Button variant="contained" size="small" onClick={handleOpen}>
@@ -248,18 +228,12 @@ const Dashboard: React.FC = () => {
                     />
                     <ListItemSecondaryAction sx={{ display: 'flex', gap: 0.5 }}>
                       <Tooltip title="Open Workspace">
-                        <IconButton
-                          onClick={() => navigate(`/editor/${project.id}`)}
-                          sx={{ color: '#ffffff' }}
-                        >
+                        <IconButton onClick={() => navigate(`/editor/${project.id}`)} sx={{ color: '#ffffff' }}>
                           <OpenIcon fontSize="small" />
                         </IconButton>
                       </Tooltip>
                       <Tooltip title="Duplicate Project">
-                        <IconButton
-                          onClick={() => handleDuplicate(project.id)}
-                          sx={{ color: '#b2bac2' }}
-                        >
+                        <IconButton onClick={() => handleDuplicate(project.id)} sx={{ color: '#b2bac2' }}>
                           <DuplicateIcon fontSize="small" />
                         </IconButton>
                       </Tooltip>
@@ -274,10 +248,7 @@ const Dashboard: React.FC = () => {
                         </IconButton>
                       </Tooltip>
                       <Tooltip title="Delete Permanently">
-                        <IconButton
-                          onClick={() => deleteProject.mutate(project.id)}
-                          sx={{ color: '#f44336' }}
-                        >
+                        <IconButton onClick={() => deleteProject.mutate(project.id)} sx={{ color: '#f44336' }}>
                           <DeleteIcon fontSize="small" />
                         </IconButton>
                       </Tooltip>
@@ -314,12 +285,7 @@ const Dashboard: React.FC = () => {
               variant="contained"
               onClick={handleSubmit}
               disabled={!projectName}
-              sx={{
-                bgcolor: '#90caf9',
-                color: '#0a1929',
-                fontWeight: 'bold',
-                textTransform: 'none',
-              }}
+              sx={{ bgcolor: '#90caf9', color: '#0a1929', fontWeight: 'bold', textTransform: 'none' }}
             >
               {editingProject ? 'Save Changes' : 'Create Project'}
             </Button>

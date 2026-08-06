@@ -34,17 +34,11 @@ interface DeliveryState {
   selectPreset: (presetId: string | null) => void;
   setActivePanel: (panel: 'queue' | 'presets' | 'destinations' | 'monitoring') => void;
   setSearchQuery: (query: string) => void;
-  setStatusFilter: (
-    filter: 'all' | 'queued' | 'processing' | 'completed' | 'failed' | 'cancelled',
-  ) => void;
+  setStatusFilter: (filter: 'all' | 'queued' | 'processing' | 'completed' | 'failed' | 'cancelled') => void;
   setSort: (key: 'createdAt' | 'progress' | 'projectId', order?: 'asc' | 'desc') => void;
 
   // Core Service Delegations (No business logic here!)
-  submitDeliveryJob: (
-    projectId: string,
-    artifact: RenderArtifact,
-    presetId: string,
-  ) => Promise<DeliveryJob>;
+  submitDeliveryJob: (projectId: string, artifact: RenderArtifact, presetId: string) => Promise<DeliveryJob>;
   cancelDeliveryJob: (jobId: string) => Promise<void>;
   createCustomPreset: (preset: ExportPreset) => void;
   addLogMessage: (msg: string) => void;
@@ -70,49 +64,20 @@ export const useDeliveryStore = create<DeliveryState>((set, get) => {
         activeJobs.forEach((j) => {
           const fresh = globalDeliveryPlatformEngine.deliveryService.getJob(j.id);
           if (fresh) {
-            if (
-              fresh.progress > 0 &&
-              fresh.progress < 30 &&
-              !logs.some((l) => l.includes(`${j.id}: QC`))
-            ) {
-              logs.push(
-                `[${new Date().toISOString()}] [Event: ValidationCompleted] Job ${j.id} QC Passed.`,
-              );
+            if (fresh.progress > 0 && fresh.progress < 30 && !logs.some((l) => l.includes(`${j.id}: QC`))) {
+              logs.push(`[${new Date().toISOString()}] [Event: ValidationCompleted] Job ${j.id} QC Passed.`);
             }
-            if (
-              fresh.progress >= 30 &&
-              fresh.progress < 50 &&
-              !logs.some((l) => l.includes(`${j.id}: Export`))
-            ) {
-              logs.push(
-                `[${new Date().toISOString()}] [Event: EncodingStarted] Job ${j.id} re-encoding initiated.`,
-              );
+            if (fresh.progress >= 30 && fresh.progress < 50 && !logs.some((l) => l.includes(`${j.id}: Export`))) {
+              logs.push(`[${new Date().toISOString()}] [Event: EncodingStarted] Job ${j.id} re-encoding initiated.`);
             }
-            if (
-              fresh.progress >= 50 &&
-              fresh.progress < 75 &&
-              !logs.some((l) => l.includes(`${j.id}: Package`))
-            ) {
-              logs.push(
-                `[${new Date().toISOString()}] [Event: PackagingCompleted] Job ${j.id} packaged successfully.`,
-              );
+            if (fresh.progress >= 50 && fresh.progress < 75 && !logs.some((l) => l.includes(`${j.id}: Package`))) {
+              logs.push(`[${new Date().toISOString()}] [Event: PackagingCompleted] Job ${j.id} packaged successfully.`);
             }
-            if (
-              fresh.progress >= 75 &&
-              fresh.progress < 100 &&
-              !logs.some((l) => l.includes(`${j.id}: Upload`))
-            ) {
-              logs.push(
-                `[${new Date().toISOString()}] [Event: UploadStarted] Job ${j.id} uploading to destination servers.`,
-              );
+            if (fresh.progress >= 75 && fresh.progress < 100 && !logs.some((l) => l.includes(`${j.id}: Upload`))) {
+              logs.push(`[${new Date().toISOString()}] [Event: UploadStarted] Job ${j.id} uploading to destination servers.`);
             }
-            if (
-              fresh.progress === 100 &&
-              !logs.some((l) => l.includes(`${j.id}: DeliveryCompleted`))
-            ) {
-              logs.push(
-                `[${new Date().toISOString()}] [Event: DeliveryCompleted] Job ${j.id} distributed successfully.`,
-              );
+            if (fresh.progress === 100 && !logs.some((l) => l.includes(`${j.id}: DeliveryCompleted`))) {
+              logs.push(`[${new Date().toISOString()}] [Event: DeliveryCompleted] Job ${j.id} distributed successfully.`);
             }
           }
         });
@@ -186,8 +151,7 @@ export const useDeliveryStore = create<DeliveryState>((set, get) => {
 
     setSort: (key, order) => {
       const currentOrder = get().sortOrder;
-      const nextOrder =
-        order || (get().sortKey === key ? (currentOrder === 'asc' ? 'desc' : 'asc') : 'desc');
+      const nextOrder = order || (get().sortKey === key ? (currentOrder === 'asc' ? 'desc' : 'asc') : 'desc');
       set({ sortKey: key, sortOrder: nextOrder });
     },
 
@@ -199,14 +163,11 @@ export const useDeliveryStore = create<DeliveryState>((set, get) => {
           projectId,
           artifact,
           presetId,
-          'immediate',
+          'immediate'
         );
 
         const updatedJobs = globalDeliveryPlatformEngine.deliveryService.listJobs();
-        const logs = [
-          ...get().recentLogs,
-          `[${new Date().toISOString()}] [Event: DeliveryJobCreated] Submitted Job ${job.id}`,
-        ];
+        const logs = [...get().recentLogs, `[${new Date().toISOString()}] [Event: DeliveryJobCreated] Submitted Job ${job.id}`];
 
         set({
           jobs: updatedJobs,
@@ -225,10 +186,7 @@ export const useDeliveryStore = create<DeliveryState>((set, get) => {
       if (job) {
         job.status = 'cancelled';
         job.updatedAt = new Date().toISOString();
-        const logs = [
-          ...get().recentLogs,
-          `[${new Date().toISOString()}] [Event: DeliveryCancelled] Cancelled Job ${jobId}`,
-        ];
+        const logs = [...get().recentLogs, `[${new Date().toISOString()}] [Event: DeliveryCancelled] Cancelled Job ${jobId}`];
         set({
           jobs: globalDeliveryPlatformEngine.deliveryService.listJobs(),
           recentLogs: logs,

@@ -29,41 +29,33 @@ export interface WorkflowContext {
 }
 
 interface WorkflowState {
-  // Current dynamic workspace layout mode
   workspaceMode: string;
   setWorkspaceMode: (mode: string) => void;
 
-  // Global Context selection
   selectedContext: WorkflowContext | null;
   setSelectedContext: (context: WorkflowContext | null) => void;
 
-  // Discovery / Recommendation suggestions list
-  recommendedActions: Array<{
-    id: string;
-    label: string;
-    category: string;
-    description: string;
-    action: () => void;
-  }>;
+  recommendedActions: Array<{ id: string; label: string; category: string; description: string; action: () => void }>;
   recentCommands: string[];
   addRecentCommand: (cmd: string) => void;
 
-  // Background statuses
   statusPanelExpanded: boolean;
   setStatusPanelExpanded: (expanded: boolean) => void;
-  backgroundJobs: Array<{
-    id: string;
-    name: string;
-    status: 'running' | 'success' | 'failed';
-    progress: number;
-    type: string;
-  }>;
+  backgroundJobs: Array<{ id: string; name: string; status: 'running' | 'success' | 'failed'; progress: number; type: string }>;
   addJob: (job: { id: string; name: string; type: string }) => void;
-  updateJobProgress: (
-    id: string,
-    progress: number,
-    status?: 'running' | 'success' | 'failed',
-  ) => void;
+  updateJobProgress: (id: string, progress: number, status?: 'running' | 'success' | 'failed') => void;
+
+  // Workspace Locks & Custom Options
+  workspaceLocked: boolean;
+  toggleWorkspaceLock: () => void;
+
+  // Keyframe details / Easing Mode
+  activeEasing: 'linear' | 'ease-in' | 'ease-out' | 'bezier';
+  setActiveEasing: (easing: 'linear' | 'ease-in' | 'ease-out' | 'bezier') => void;
+
+  // Selected Transition
+  activeTransition: string;
+  setActiveTransition: (transition: string) => void;
 }
 
 export const useWorkflowStore = create<WorkflowState>((set) => ({
@@ -78,16 +70,11 @@ export const useWorkflowStore = create<WorkflowState>((set) => ({
   setSelectedContext: (selectedContext) => set({ selectedContext }),
 
   recommendedActions: [],
-  recentCommands: [
-    'Toggle Navigation Sidebar',
-    'Focus Productivity Mode',
-    'AI Timeline Splitter Agent',
-  ],
-  addRecentCommand: (cmd) =>
-    set((state) => {
-      const list = state.recentCommands.filter((c) => c !== cmd);
-      return { recentCommands: [cmd, ...list].slice(0, 5) };
-    }),
+  recentCommands: ['Toggle Navigation Sidebar', 'Focus Productivity Mode', 'AI Timeline Splitter Agent'],
+  addRecentCommand: (cmd) => set((state) => {
+    const list = state.recentCommands.filter((c) => c !== cmd);
+    return { recentCommands: [cmd, ...list].slice(0, 5) };
+  }),
 
   statusPanelExpanded: false,
   setStatusPanelExpanded: (statusPanelExpanded) => set({ statusPanelExpanded }),
@@ -95,22 +82,23 @@ export const useWorkflowStore = create<WorkflowState>((set) => ({
   backgroundJobs: [
     { id: 'job-1', name: 'Render Shard #2', status: 'running', progress: 42, type: 'Rendering' },
     { id: 'job-2', name: 'Cloud Sync upload', status: 'success', progress: 100, type: 'Upload' },
-    {
-      id: 'job-3',
-      name: 'Speech captions extraction',
-      status: 'running',
-      progress: 78,
-      type: 'AI',
-    },
+    { id: 'job-3', name: 'Speech captions extraction', status: 'running', progress: 78, type: 'AI' },
   ],
-  addJob: (job) =>
-    set((state) => ({
-      backgroundJobs: [...state.backgroundJobs, { ...job, status: 'running', progress: 0 }],
-    })),
-  updateJobProgress: (id, progress, status) =>
-    set((state) => ({
-      backgroundJobs: state.backgroundJobs.map((j) =>
-        j.id === id ? { ...j, progress, status: status || j.status } : j,
-      ),
-    })),
+  addJob: (job) => set((state) => ({
+    backgroundJobs: [...state.backgroundJobs, { ...job, status: 'running', progress: 0 }]
+  })),
+  updateJobProgress: (id, progress, status) => set((state) => ({
+    backgroundJobs: state.backgroundJobs.map((j) =>
+      j.id === id ? { ...j, progress, status: status || j.status } : j
+    )
+  })),
+
+  workspaceLocked: false,
+  toggleWorkspaceLock: () => set((state) => ({ workspaceLocked: !state.workspaceLocked })),
+
+  activeEasing: 'bezier',
+  setActiveEasing: (activeEasing) => set({ activeEasing }),
+
+  activeTransition: 'crossfade',
+  setActiveTransition: (activeTransition) => set({ activeTransition }),
 }));

@@ -106,11 +106,7 @@ describe('Performance & Scalability Framework Tests', () => {
     // Add key-lru-3, which breaches budget. Since key-lru-1 was accessed, key-lru-2 should be evicted!
     CacheService.set('key-lru-3', 'c'.repeat(25)); // 54 bytes
 
-    assert.strictEqual(
-      CacheService.get('key-lru-2'),
-      null,
-      'LRU evicted least-recently accessed key',
-    );
+    assert.strictEqual(CacheService.get('key-lru-2'), null, 'LRU evicted least-recently accessed key');
     assert.ok(CacheService.get('key-lru-1'), 'LRU preserved recently accessed key');
 
     // 2. Test LFU Policy explicitly
@@ -128,11 +124,7 @@ describe('Performance & Scalability Framework Tests', () => {
     // Add key-lfu-3. Since key-lfu-1 has lower access frequency, it should be evicted!
     CacheService.set('key-lfu-3', 'c'.repeat(25));
 
-    assert.strictEqual(
-      CacheService.get('key-lfu-1'),
-      null,
-      'LFU evicted least-frequently accessed key',
-    );
+    assert.strictEqual(CacheService.get('key-lfu-1'), null, 'LFU evicted least-frequently accessed key');
     assert.ok(CacheService.get('key-lfu-2'), 'LFU preserved frequently accessed key');
 
     // Reset budgets

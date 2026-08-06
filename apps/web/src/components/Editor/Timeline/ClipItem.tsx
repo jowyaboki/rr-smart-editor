@@ -38,7 +38,6 @@ const ClipItem: React.FC<ClipItemProps> = React.memo(({ clip, zoom }) => {
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mouseup', handleMouseUp);
 
-    // Contextual selection integration - Update active selection store on click
     setSelectedContext({
       type: clip.type === 'audio' ? 'Audio Clip' : 'Video Clip',
       id: clip.id,
@@ -48,7 +47,6 @@ const ClipItem: React.FC<ClipItemProps> = React.memo(({ clip, zoom }) => {
     e.stopPropagation();
   };
 
-  // Determine colors based on design tokens & clip state
   const isVideo = clip.type === 'video';
   const accentColor = isVideo ? '#00f0ff' : '#ec4899';
   const borderCol = hovered ? accentColor : 'rgba(255,255,255,0.15)';
@@ -80,14 +78,7 @@ const ClipItem: React.FC<ClipItemProps> = React.memo(({ clip, zoom }) => {
         '&:active': { cursor: 'grabbing', transform: 'scale(0.99)' },
       }}
     >
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          width: '100%',
-        }}
-      >
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
         <Typography
           variant="caption"
           noWrap
@@ -96,12 +87,11 @@ const ClipItem: React.FC<ClipItemProps> = React.memo(({ clip, zoom }) => {
             fontWeight: 'bold',
             fontSize: '0.72rem',
             pointerEvents: 'none',
-            textShadow: '0 1px 2px rgba(0,0,0,0.8)',
+            textShadow: '0 1px 2px rgba(0,0,0,0.8)'
           }}
         >
           {clip.name}
         </Typography>
-        {/* Type Icon Badge */}
         <Typography
           variant="caption"
           sx={{
@@ -113,55 +103,48 @@ const ClipItem: React.FC<ClipItemProps> = React.memo(({ clip, zoom }) => {
             color: '#ffffff',
             fontWeight: 'bold',
             textTransform: 'uppercase',
-            pointerEvents: 'none',
+            pointerEvents: 'none'
           }}
         >
           {clip.type}
         </Typography>
       </Box>
 
-      {/* Mock Waveform / Frame Strip representation */}
+      {/* Cinematic Waveform preview lines */}
       <Box
         sx={{
-          height: '6px',
+          height: '10px',
           mt: 0.5,
           width: '100%',
-          opacity: 0.5,
+          opacity: 0.6,
           display: 'flex',
           gap: '2px',
           alignItems: 'flex-end',
-          pointerEvents: 'none',
+          pointerEvents: 'none'
         }}
       >
-        {[...Array(Math.max(1, Math.floor(width / 8)))].map((_, idx) => (
+        {[...Array(Math.max(1, Math.floor(width / 6)))].map((_, idx) => (
           <Box
             key={idx}
             sx={{
               flexGrow: 1,
-              height: `${(Math.sin(idx * 0.5) + 1.2) * 50}%`,
+              height: `${(Math.sin(idx * 0.4) + 1.2) * 45}%`,
               bgcolor: isVideo ? '#00f0ff' : '#ec4899',
-              borderRadius: '1px',
+              borderRadius: '1px'
             }}
           />
         ))}
       </Box>
 
-      {/* Mock Keyframe markers */}
-      <Box
-        sx={{
-          position: 'absolute',
-          bottom: '4px',
-          left: '10%',
-          display: 'flex',
-          gap: '3px',
-          pointerEvents: 'none',
-        }}
-      >
-        <Box sx={{ width: '4px', height: '4px', bgcolor: '#ffffff', transform: 'rotate(45deg)' }} />
-        <Box sx={{ width: '4px', height: '4px', bgcolor: '#ffffff', transform: 'rotate(45deg)' }} />
-      </Box>
+      {/* Bezier visual handles and diamond easing markers */}
+      {hovered && (
+        <Box sx={{ position: 'absolute', bottom: '4px', left: '15%', display: 'flex', gap: '4px', pointerEvents: 'none' }}>
+          <Box sx={{ width: '5px', height: '5px', bgcolor: '#ffffff', transform: 'rotate(45deg)', border: '1px solid #00f0ff' }} />
+          <Box sx={{ width: '5px', height: '5px', bgcolor: '#ffffff', transform: 'rotate(45deg)', border: '1px solid #00f0ff' }} />
+        </Box>
+      )}
 
-      {/* Left Trim Handle */}
+      {/* Double sided non-destructive trim handle overlays */}
       <Box
         onMouseDown={(e) => {
           e.stopPropagation();
@@ -188,12 +171,11 @@ const ClipItem: React.FC<ClipItemProps> = React.memo(({ clip, zoom }) => {
           bottom: 0,
           width: 6,
           cursor: 'ew-resize',
-          bgcolor: hovered ? 'rgba(255,255,255,0.15)' : 'transparent',
+          bgcolor: hovered ? 'rgba(255,255,255,0.2)' : 'transparent',
           '&:hover': { bgcolor: accentColor, width: 8 },
         }}
       />
 
-      {/* Right Trim Handle */}
       <Box
         onMouseDown={(e) => {
           e.stopPropagation();
@@ -217,7 +199,7 @@ const ClipItem: React.FC<ClipItemProps> = React.memo(({ clip, zoom }) => {
           bottom: 0,
           width: 6,
           cursor: 'ew-resize',
-          bgcolor: hovered ? 'rgba(255,255,255,0.15)' : 'transparent',
+          bgcolor: hovered ? 'rgba(255,255,255,0.2)' : 'transparent',
           '&:hover': { bgcolor: accentColor, width: 8 },
         }}
       />

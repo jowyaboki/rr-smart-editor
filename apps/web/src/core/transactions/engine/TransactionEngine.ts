@@ -2,14 +2,7 @@ import { useTransactionStore } from '../store/transactionStore';
 import { ValidationService } from '../services/ValidationService';
 import { ExecutionService } from '../execution/ExecutionService';
 import { RollbackService } from '../services/RollbackService';
-import {
-  EditorTransaction,
-  TransactionBatch,
-  TransactionContext,
-  TransactionScope,
-  TransactionMetadata,
-  TransactionResult,
-} from '../types';
+import { EditorTransaction, TransactionBatch, TransactionContext, TransactionScope, TransactionMetadata, TransactionResult } from '../types';
 
 export class TransactionEngine {
   private static listeners: Map<string, Array<(data: any) => void>> = new Map();
@@ -21,19 +14,14 @@ export class TransactionEngine {
     this.listeners.get(event)!.push(callback);
     return () => {
       const arr = this.listeners.get(event) || [];
-      this.listeners.set(
-        event,
-        arr.filter((cb) => cb !== callback),
-      );
+      this.listeners.set(event, arr.filter((cb) => cb !== callback));
     };
   }
 
   private static emit(event: string, data: any): void {
     const arr = this.listeners.get(event) || [];
     for (const cb of arr) {
-      try {
-        cb(data);
-      } catch {}
+      try { cb(data); } catch {}
     }
   }
 
@@ -59,7 +47,7 @@ export class TransactionEngine {
   public static begin(
     name: string,
     scope: TransactionScope = 'timeline',
-    metadata?: Partial<TransactionMetadata>,
+    metadata?: Partial<TransactionMetadata>
   ): EditorTransaction {
     const id = `tx_${Math.random().toString(36).substr(2, 9)}`;
     const tx: EditorTransaction = {
@@ -85,35 +73,21 @@ export class TransactionEngine {
     }
 
     setActiveTransaction(tx);
-    this.emit('TransactionStarted', {
-      transactionId: id,
-      name,
-      timestamp: new Date().toISOString(),
-    });
+    this.emit('TransactionStarted', { transactionId: id, name, timestamp: new Date().toISOString() });
     return tx;
   }
 
   public static async commit(): Promise<TransactionResult> {
-    const { activeTransaction, setActiveTransaction, pushToUndo, activeBatch } =
-      useTransactionStore.getState();
+    const { activeTransaction, setActiveTransaction, pushToUndo, activeBatch } = useTransactionStore.getState();
     if (!activeTransaction) {
-      return {
-        success: false,
-        transactionId: '',
-        status: 'failed',
-        warnings: [],
-        error: 'No active transaction',
-      };
+      return { success: false, transactionId: '', status: 'failed', warnings: [], error: 'No active transaction' };
     }
 
     const warnings: string[] = [];
     const context = this.getContext(activeTransaction, warnings);
 
     try {
-      const transformedTx = await ValidationService.validateAndTransform(
-        activeTransaction,
-        context,
-      );
+      const transformedTx = await ValidationService.validateAndTransform(activeTransaction, context);
 
       await ExecutionService.execute(transformedTx, context);
 
@@ -133,11 +107,7 @@ export class TransactionEngine {
         }
       }
 
-      this.emit('TransactionCommitted', {
-        transactionId: transformedTx.id,
-        warnings,
-        timestamp: new Date().toISOString(),
-      });
+      this.emit('TransactionCommitted', { transactionId: transformedTx.id, warnings, timestamp: new Date().toISOString() });
       return { success: true, transactionId: transformedTx.id, status: 'committed', warnings };
     } catch (err: any) {
       activeTransaction.status = 'failed';
@@ -157,18 +127,8 @@ export class TransactionEngine {
         setActiveTransaction(null);
       }
 
-      this.emit('TransactionFailed', {
-        transactionId: activeTransaction.id,
-        error: err.message,
-        timestamp: new Date().toISOString(),
-      });
-      return {
-        success: false,
-        transactionId: activeTransaction.id,
-        status: 'failed',
-        warnings,
-        error: err.message,
-      };
+      this.emit('TransactionFailed', { transactionId: activeTransaction.id, error: err.message, timestamp: new Date().toISOString() });
+      return { success: false, transactionId: activeTransaction.id, status: 'failed', warnings, error: err.message };
     }
   }
 
@@ -189,10 +149,7 @@ export class TransactionEngine {
       setActiveTransaction(null);
     }
 
-    this.emit('TransactionRolledBack', {
-      transactionId: activeTransaction.id,
-      timestamp: new Date().toISOString(),
-    });
+    this.emit('TransactionRolledBack', { transactionId: activeTransaction.id, timestamp: new Date().toISOString() });
   }
 
   public static cancel(): void {
@@ -207,10 +164,7 @@ export class TransactionEngine {
       setActiveTransaction(null);
     }
 
-    this.emit('TransactionCancelled', {
-      transactionId: activeTransaction.id,
-      timestamp: new Date().toISOString(),
-    });
+    this.emit('TransactionCancelled', { transactionId: activeTransaction.id, timestamp: new Date().toISOString() });
   }
 
   public static async retry(): Promise<TransactionResult> {
@@ -249,13 +203,7 @@ export class TransactionEngine {
         await RollbackService.rollbackBatch(batch, context);
       }
 
-      return {
-        success: false,
-        transactionId: id,
-        status: 'failed',
-        warnings: [],
-        error: err.message,
-      };
+      return { success: false, transactionId: id, status: 'failed', warnings: [], error: err.message };
     }
   }
 }

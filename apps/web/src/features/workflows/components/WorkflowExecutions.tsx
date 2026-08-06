@@ -56,12 +56,7 @@ export const WorkflowExecutions: React.FC = () => {
 
   return (
     <Paper sx={{ p: 2 }}>
-      <Typography
-        variant="h6"
-        gutterBottom
-        fontWeight="bold"
-        sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
-      >
+      <Typography variant="h6" gutterBottom fontWeight="bold" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
         <HistoryIcon /> Execution History & Monitoring
       </Typography>
       <Divider sx={{ mb: 2 }} />
@@ -77,10 +72,7 @@ export const WorkflowExecutions: React.FC = () => {
             const wf = engine.workflows.find((w) => w.id === exec.workflowId);
 
             return (
-              <Box
-                key={exec.id}
-                sx={{ mb: 2, border: '1px solid', borderColor: 'divider', borderRadius: 1 }}
-              >
+              <Box key={exec.id} sx={{ mb: 2, border: '1px solid', borderColor: 'divider', borderRadius: 1 }}>
                 <ListItem button onClick={() => toggleExpand(exec.id)}>
                   <ListItemText
                     primary={
@@ -105,13 +97,8 @@ export const WorkflowExecutions: React.FC = () => {
                           value={exec.progress}
                           color={getStatusColor(exec.status)}
                         />
-                        <Typography
-                          variant="caption"
-                          color="text.secondary"
-                          sx={{ display: 'block', mt: 0.5 }}
-                        >
-                          Progress: {exec.progress}% | Started:{' '}
-                          {new Date(exec.startedAt).toLocaleTimeString()}
+                        <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 0.5 }}>
+                          Progress: {exec.progress}% | Started: {new Date(exec.startedAt).toLocaleTimeString()}
                         </Typography>
                       </Box>
                     }
@@ -213,13 +200,8 @@ export const WorkflowExecutions: React.FC = () => {
                               {/* Output / Error detailed box */}
                               <Box sx={{ ml: 3, mt: 0.5 }}>
                                 {isSuccess && log.output && (
-                                  <Paper
-                                    variant="outlined"
-                                    sx={{ p: 1, backgroundColor: 'background.paper' }}
-                                  >
-                                    <pre
-                                      style={{ margin: 0, fontSize: '0.75rem', overflowX: 'auto' }}
-                                    >
+                                  <Paper variant="outlined" sx={{ p: 1, backgroundColor: 'background.paper' }}>
+                                    <pre style={{ margin: 0, fontSize: '0.75rem', overflowX: 'auto' }}>
                                       {JSON.stringify(log.output, null, 2)}
                                     </pre>
                                   </Paper>

@@ -32,47 +32,6 @@ import {
   ZoomOut as ZoomOutIcon,
   FitScreen as FitIcon,
 } from '@mui/icons-material';
-import { DESIGN_TOKENS } from '../theme';
-
-// Layout Persistence Abstract Interface for LocalStorage or future Cloud Sync
-export const LayoutPersistenceService = {
-  savePreset: (presetName: string, state: any) => {
-    try {
-      localStorage.setItem(`rr_layout_preset_data_${presetName}`, JSON.stringify(state));
-    } catch (e) {
-      console.error('Error persisting layout preset:', e);
-    }
-  },
-  loadPreset: (presetName: string) => {
-    try {
-      const data = localStorage.getItem(`rr_layout_preset_data_${presetName}`);
-      return data ? JSON.parse(data) : null;
-    } catch {
-      return null;
-    }
-  },
-  exportWorkspace: () => {
-    const keys = Object.keys(localStorage).filter((k) => k.startsWith('rr_'));
-    const exportObj: Record<string, string | null> = {};
-    keys.forEach((k) => {
-      exportObj[k] = localStorage.getItem(k);
-    });
-    return JSON.stringify(exportObj, null, 2);
-  },
-  importWorkspace: (jsonStr: string) => {
-    try {
-      const obj = JSON.parse(jsonStr);
-      Object.keys(obj).forEach((k) => {
-        if (k.startsWith('rr_')) {
-          localStorage.setItem(k, obj[k]);
-        }
-      });
-      return true;
-    } catch {
-      return false;
-    }
-  },
-};
 
 // 1. Panel Component with minimum/maximum boundaries and smooth hover animations
 interface PanelProps {
@@ -81,11 +40,6 @@ interface PanelProps {
   children: React.ReactNode;
   collapsed?: boolean;
   onToggleCollapse?: () => void;
-  tabGroup?: string[];
-  activeTab?: string;
-  onTabChange?: (tab: string) => void;
-  pinned?: boolean;
-  onTogglePin?: () => void;
 }
 
 export const Panel: React.FC<PanelProps> = ({
@@ -94,11 +48,6 @@ export const Panel: React.FC<PanelProps> = ({
   children,
   collapsed,
   onToggleCollapse,
-  tabGroup,
-  activeTab,
-  onTabChange,
-  pinned,
-  onTogglePin,
 }) => {
   if (collapsed) {
     return (
@@ -107,8 +56,8 @@ export const Panel: React.FC<PanelProps> = ({
           width: '40px',
           minWidth: '40px',
           height: '100%',
-          bgcolor: DESIGN_TOKENS.colors.dark.bgPaper,
-          borderRight: `1px solid ${DESIGN_TOKENS.colors.dark.border}`,
+          bgcolor: '#102031',
+          borderRight: '1px solid #1e293b',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -120,11 +69,8 @@ export const Panel: React.FC<PanelProps> = ({
           onClick={onToggleCollapse}
           size="small"
           sx={{
-            color: DESIGN_TOKENS.colors.dark.textSecondary,
-            '&:hover': {
-              color: DESIGN_TOKENS.colors.dark.accentPrimary,
-              bgcolor: 'rgba(0,240,255,0.08)',
-            },
+            color: '#b2bac2',
+            '&:hover': { color: '#90caf9', bgcolor: 'rgba(144,202,249,0.08)' },
           }}
         >
           ➕
@@ -141,105 +87,45 @@ export const Panel: React.FC<PanelProps> = ({
         height: '100%',
         minWidth: '150px',
         maxWidth: '100%',
-        bgcolor: DESIGN_TOKENS.colors.dark.bgPaper,
-        border: `1px solid ${DESIGN_TOKENS.colors.dark.border}`,
-        borderRadius: DESIGN_TOKENS.borderRadius.sm,
+        bgcolor: '#102031',
+        border: '1px solid #1e293b',
+        borderRadius: '6px',
         overflow: 'hidden',
-        boxShadow: DESIGN_TOKENS.shadows.panel,
+        boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
         transition: 'all 0.15s ease-in-out',
-        '&:hover': {
-          borderColor: DESIGN_TOKENS.colors.dark.borderHover,
-        },
       }}
     >
-      {(title || actions || onToggleCollapse || tabGroup) && (
+      {(title || actions || onToggleCollapse) && (
         <Box
           sx={{
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
             px: 2,
-            py: 0.75,
-            bgcolor: DESIGN_TOKENS.colors.dark.bgMain,
-            borderBottom: `1px solid ${DESIGN_TOKENS.colors.dark.border}`,
+            py: 1,
+            bgcolor: '#0a1929',
+            borderBottom: '1px solid #1e293b',
           }}
         >
-          {tabGroup && tabGroup.length > 0 ? (
-            <Box sx={{ display: 'flex', gap: 0.5, overflowX: 'auto', mr: 2 }}>
-              {tabGroup.map((tab) => {
-                const isSel = activeTab === tab;
-                return (
-                  <Button
-                    key={tab}
-                    size="small"
-                    onClick={() => onTabChange?.(tab)}
-                    sx={{
-                      fontSize: '0.7rem',
-                      px: 1.5,
-                      py: 0.25,
-                      minWidth: 'unset',
-                      color: isSel
-                        ? DESIGN_TOKENS.colors.dark.accentPrimary
-                        : DESIGN_TOKENS.colors.dark.textSecondary,
-                      borderBottom: isSel
-                        ? `2px solid ${DESIGN_TOKENS.colors.dark.accentPrimary}`
-                        : 'none',
-                      borderRadius: 0,
-                      '&:hover': {
-                        bgcolor: 'rgba(0, 240, 255, 0.04)',
-                      },
-                    }}
-                  >
-                    {tab}
-                  </Button>
-                );
-              })}
-            </Box>
-          ) : (
-            title && (
-              <Typography
-                variant="subtitle2"
-                sx={{
-                  fontWeight: DESIGN_TOKENS.typography.weight.bold,
-                  color: DESIGN_TOKENS.colors.dark.textPrimary,
-                  letterSpacing: '0.2px',
-                  fontSize: DESIGN_TOKENS.typography.size.caption,
-                  textTransform: 'uppercase',
-                }}
-              >
-                {title}
-              </Typography>
-            )
+          {title && (
+            <Typography
+              variant="subtitle2"
+              sx={{ fontWeight: 'bold', color: '#ffffff', letterSpacing: '0.2px', fontSize: '0.8rem' }}
+            >
+              {title}
+            </Typography>
           )}
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             {actions}
-            {onTogglePin && (
-              <IconButton
-                onClick={onTogglePin}
-                size="small"
-                sx={{
-                  color: pinned
-                    ? DESIGN_TOKENS.colors.dark.accentPrimary
-                    : DESIGN_TOKENS.colors.dark.textSecondary,
-                  p: 0.5,
-                  '&:hover': { color: DESIGN_TOKENS.colors.dark.accentPrimary },
-                }}
-              >
-                📌
-              </IconButton>
-            )}
             {onToggleCollapse && (
               <IconButton
                 onClick={onToggleCollapse}
                 size="small"
                 sx={{
-                  color: DESIGN_TOKENS.colors.dark.textSecondary,
+                  color: '#b2bac2',
                   p: 0.5,
                   transition: 'transform 0.15s ease',
-                  '&:hover': {
-                    color: DESIGN_TOKENS.colors.dark.accentSecondary,
-                    transform: 'scale(1.1)',
-                  },
+                  '&:hover': { color: '#ff9800', transform: 'scale(1.1)' },
                 }}
               >
                 ➖
@@ -248,11 +134,7 @@ export const Panel: React.FC<PanelProps> = ({
           </Box>
         </Box>
       )}
-      <Box
-        sx={{ flexGrow: 1, overflow: 'auto', p: 1.5, bgcolor: DESIGN_TOKENS.colors.dark.bgPaper }}
-      >
-        {children}
-      </Box>
+      <Box sx={{ flexGrow: 1, overflow: 'auto', p: 2, bgcolor: '#102031' }}>{children}</Box>
     </Box>
   );
 };
@@ -270,33 +152,21 @@ export const Inspector: React.FC<InspectorProps> = ({ title, children }) => {
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        bgcolor: DESIGN_TOKENS.colors.dark.bgPaper,
-        border: `1px solid ${DESIGN_TOKENS.colors.dark.border}`,
-        borderRadius: DESIGN_TOKENS.borderRadius.sm,
-        boxShadow: DESIGN_TOKENS.shadows.panel,
+        bgcolor: '#102031',
+        border: '1px solid #1e293b',
+        borderRadius: '6px',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
       }}
     >
-      <Box
-        sx={{
-          p: 2,
-          borderBottom: `1px solid ${DESIGN_TOKENS.colors.dark.border}`,
-          bgcolor: DESIGN_TOKENS.colors.dark.bgMain,
-        }}
-      >
+      <Box sx={{ p: 2, borderBottom: '1px solid #1e293b', bgcolor: '#0a1929' }}>
         <Typography
           variant="subtitle2"
-          sx={{
-            fontWeight: DESIGN_TOKENS.typography.weight.bold,
-            color: DESIGN_TOKENS.colors.dark.textPrimary,
-            letterSpacing: '0.5px',
-            textTransform: 'uppercase',
-            fontSize: DESIGN_TOKENS.typography.size.caption,
-          }}
+          sx={{ fontWeight: 'bold', color: '#ffffff', letterSpacing: '0.5px', textTransform: 'uppercase', fontSize: '0.75rem' }}
         >
           {title}
         </Typography>
       </Box>
-      <Box sx={{ flexGrow: 1, overflowY: 'auto', p: 1.5 }}>{children}</Box>
+      <Box sx={{ flexGrow: 1, overflowY: 'auto', p: 2 }}>{children}</Box>
     </Box>
   );
 };
@@ -322,8 +192,8 @@ export const PropertyGrid: React.FC<PropertyGridProps> = ({ properties }) => {
           <Typography
             variant="caption"
             sx={{
-              color: DESIGN_TOKENS.colors.dark.textSecondary,
-              fontWeight: DESIGN_TOKENS.typography.weight.medium,
+              color: '#b2bac2',
+              fontWeight: 'medium',
               fontSize: '0.72rem',
               whiteSpace: 'nowrap',
               overflow: 'hidden',
@@ -334,9 +204,9 @@ export const PropertyGrid: React.FC<PropertyGridProps> = ({ properties }) => {
           </Typography>
           <Box
             sx={{
-              color: DESIGN_TOKENS.colors.dark.textPrimary,
-              fontSize: DESIGN_TOKENS.typography.size.body2,
-              fontWeight: DESIGN_TOKENS.typography.weight.bold,
+              color: '#ffffff',
+              fontSize: '0.75rem',
+              fontWeight: 'bold',
               display: 'flex',
               alignItems: 'center',
             }}
@@ -363,8 +233,8 @@ export const Toolbar: React.FC<ToolbarProps> = ({ children }) => {
         gap: 1.5,
         px: 2,
         py: 0.75,
-        bgcolor: DESIGN_TOKENS.colors.dark.bgMain,
-        borderBottom: `1px solid ${DESIGN_TOKENS.colors.dark.border}`,
+        bgcolor: '#0a1929',
+        borderBottom: '1px solid #1e293b',
       }}
     >
       {children}
@@ -383,7 +253,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ children }) => {
       sx={{
         width: '100%',
         height: '100%',
-        bgcolor: DESIGN_TOKENS.colors.dark.bgPaper,
+        bgcolor: '#102031',
         display: 'flex',
         flexDirection: 'column',
       }}
@@ -420,11 +290,11 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({ trigger, items }) => {
         onClose={handleClose}
         sx={{
           '& .MuiPaper-root': {
-            bgcolor: DESIGN_TOKENS.colors.dark.bgPaper,
-            border: `1px solid ${DESIGN_TOKENS.colors.dark.border}`,
-            boxShadow: DESIGN_TOKENS.shadows.dropdown,
-            color: DESIGN_TOKENS.colors.dark.textPrimary,
-            borderRadius: DESIGN_TOKENS.borderRadius.sm,
+            bgcolor: '#102031',
+            border: '1px solid #1e293b',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+            color: '#ffffff',
+            borderRadius: '6px',
             minWidth: '160px',
           },
         }}
@@ -442,8 +312,8 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({ trigger, items }) => {
               py: 1,
               transition: 'all 0.1s ease',
               '&:hover': {
-                bgcolor: 'rgba(0, 240, 255, 0.08)',
-                color: DESIGN_TOKENS.colors.dark.accentPrimary,
+                bgcolor: 'rgba(144, 202, 249, 0.08)',
+                color: '#90caf9',
               },
             }}
           >
@@ -474,56 +344,34 @@ export const Modal: React.FC<ModalProps> = ({ open, onClose, title, children, ac
       maxWidth="sm"
       PaperProps={{
         sx: {
-          bgcolor: DESIGN_TOKENS.colors.dark.bgPaper,
-          border: `1px solid ${DESIGN_TOKENS.colors.dark.border}`,
-          borderRadius: DESIGN_TOKENS.borderRadius.md,
-          boxShadow: DESIGN_TOKENS.shadows.dropdown,
-          color: DESIGN_TOKENS.colors.dark.textPrimary,
+          bgcolor: '#102031',
+          border: '1px solid #1e293b',
+          borderRadius: '8px',
+          boxShadow: '0 12px 36px rgba(0,0,0,0.5)',
+          color: '#ffffff',
         },
       }}
     >
-      <DialogTitle
-        sx={{
-          m: 0,
-          p: 2,
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          borderBottom: `1px solid ${DESIGN_TOKENS.colors.dark.border}`,
-        }}
-      >
-        <Typography
-          variant="subtitle1"
-          component="div"
-          sx={{ fontWeight: DESIGN_TOKENS.typography.weight.bold, letterSpacing: '0.2px' }}
-        >
+      <DialogTitle sx={{ m: 0, p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #1e293b' }}>
+        <Typography variant="subtitle1" component="div" sx={{ fontWeight: 'bold', letterSpacing: '0.2px' }}>
           {title}
         </Typography>
         <IconButton
           onClick={onClose}
           size="small"
           sx={{
-            color: DESIGN_TOKENS.colors.dark.textSecondary,
-            '&:hover': {
-              color: DESIGN_TOKENS.colors.dark.textPrimary,
-              bgcolor: 'rgba(255,255,255,0.05)',
-            },
+            color: '#b2bac2',
+            '&:hover': { color: '#ffffff', bgcolor: 'rgba(255,255,255,0.05)' },
           }}
         >
           <CloseIcon fontSize="small" />
         </IconButton>
       </DialogTitle>
-      <DialogContent sx={{ py: 3, bgcolor: DESIGN_TOKENS.colors.dark.bgPaper }}>
+      <DialogContent sx={{ py: 3, bgcolor: '#102031' }}>
         {children}
       </DialogContent>
       {actions && (
-        <DialogActions
-          sx={{
-            p: 2,
-            borderTop: `1px solid ${DESIGN_TOKENS.colors.dark.border}`,
-            bgcolor: DESIGN_TOKENS.colors.dark.bgMain,
-          }}
-        >
+        <DialogActions sx={{ p: 2, borderTop: '1px solid #1e293b', bgcolor: '#0a1929' }}>
           {actions}
         </DialogActions>
       )}
@@ -547,26 +395,22 @@ export const SearchBar: React.FC<SearchBarProps> = ({ value, onChange, placehold
       size="small"
       fullWidth
       InputProps={{
-        startAdornment: (
-          <SearchIcon
-            sx={{ color: DESIGN_TOKENS.colors.dark.textSecondary, mr: 1, fontSize: 16 }}
-          />
-        ),
+        startAdornment: <SearchIcon sx={{ color: '#b2bac2', mr: 1, fontSize: 16 }} />,
         sx: {
           height: '32px',
           fontSize: '0.78rem',
-          bgcolor: DESIGN_TOKENS.colors.dark.bgMain,
-          color: DESIGN_TOKENS.colors.dark.textPrimary,
+          bgcolor: '#0a1929',
+          color: '#ffffff',
           borderRadius: '4px',
           transition: 'all 0.1s ease-in-out',
           '& .MuiOutlinedInput-notchedOutline': {
-            borderColor: DESIGN_TOKENS.colors.dark.border,
+            borderColor: '#1e293b',
           },
           '&:hover .MuiOutlinedInput-notchedOutline': {
-            borderColor: DESIGN_TOKENS.colors.dark.textSecondary,
+            borderColor: '#b2bac2',
           },
           '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            borderColor: DESIGN_TOKENS.colors.dark.accentPrimary,
+            borderColor: '#90caf9',
             borderWidth: '1.5px',
           },
         },
@@ -588,7 +432,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ open, onClose, c
   const filtered = commands.filter(
     (cmd) =>
       cmd.label.toLowerCase().includes(search.toLowerCase()) ||
-      cmd.category.toLowerCase().includes(search.toLowerCase()),
+      cmd.category.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -601,28 +445,21 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ open, onClose, c
         sx: {
           position: 'fixed',
           top: '15%',
-          bgcolor: DESIGN_TOKENS.colors.dark.bgPaper,
-          border: `1px solid ${DESIGN_TOKENS.colors.dark.border}`,
-          borderRadius: DESIGN_TOKENS.borderRadius.md,
-          boxShadow: DESIGN_TOKENS.shadows.dropdown,
-          color: DESIGN_TOKENS.colors.dark.textPrimary,
+          bgcolor: '#102031',
+          border: '1px solid #1e293b',
+          borderRadius: '8px',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
+          color: '#ffffff',
         },
       }}
     >
-      <Box sx={{ p: 2, borderBottom: `1px solid ${DESIGN_TOKENS.colors.dark.border}` }}>
-        <SearchBar
-          value={search}
-          onChange={setSearch}
-          placeholder="Type a command or search workspace..."
-        />
+      <Box sx={{ p: 2, borderBottom: '1px solid #1e293b' }}>
+        <SearchBar value={search} onChange={setSearch} placeholder="Type a command or search workspace..." />
       </Box>
       <List sx={{ maxHeight: '240px', overflowY: 'auto', p: 0 }}>
         {filtered.length === 0 ? (
           <Box sx={{ p: 3, textAlign: 'center' }}>
-            <Typography
-              variant="body2"
-              sx={{ color: DESIGN_TOKENS.colors.dark.textSecondary, fontSize: '0.78rem' }}
-            >
+            <Typography variant="body2" sx={{ color: '#b2bac2', fontSize: '0.78rem' }}>
               No matching commands
             </Typography>
           </Box>
@@ -641,27 +478,24 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ open, onClose, c
                 justifyContent: 'space-between',
                 transition: 'all 0.1s ease',
                 '&:hover': {
-                  bgcolor: 'rgba(0, 240, 255, 0.08)',
-                  color: DESIGN_TOKENS.colors.dark.accentPrimary,
+                  bgcolor: 'rgba(144, 202, 249, 0.08)',
+                  color: '#90caf9',
                 },
               }}
             >
-              <Typography
-                variant="body2"
-                sx={{ fontWeight: DESIGN_TOKENS.typography.weight.medium, fontSize: '0.78rem' }}
-              >
+              <Typography variant="body2" sx={{ fontWeight: 'medium', fontSize: '0.78rem' }}>
                 {cmd.label}
               </Typography>
               <Chip
                 label={cmd.category}
                 size="small"
                 sx={{
-                  bgcolor: DESIGN_TOKENS.colors.dark.bgMain,
-                  color: DESIGN_TOKENS.colors.dark.accentPrimary,
+                  bgcolor: '#0a1929',
+                  color: '#90caf9',
                   height: 16,
                   fontSize: '0.6rem',
-                  fontWeight: DESIGN_TOKENS.typography.weight.bold,
-                  border: `1px solid rgba(0, 240, 255, 0.15)`,
+                  fontWeight: 'bold',
+                  border: '1px solid rgba(144,202,249,0.15)',
                 }}
               />
             </MenuItem>
@@ -691,30 +525,14 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ title, description, acti
         px: 3,
         textAlign: 'center',
         bgcolor: 'rgba(255,255,255,0.01)',
-        border: `1px dashed ${DESIGN_TOKENS.colors.dark.border}`,
-        borderRadius: DESIGN_TOKENS.borderRadius.sm,
+        border: '1px dashed #1e293b',
+        borderRadius: '6px',
       }}
     >
-      <Typography
-        variant="subtitle2"
-        sx={{
-          fontWeight: DESIGN_TOKENS.typography.weight.bold,
-          color: DESIGN_TOKENS.colors.dark.textPrimary,
-          mb: 0.5,
-        }}
-      >
+      <Typography variant="subtitle2" sx={{ fontWeight: 'bold', color: '#ffffff', mb: 0.5 }}>
         {title}
       </Typography>
-      <Typography
-        variant="caption"
-        sx={{
-          color: DESIGN_TOKENS.colors.dark.textSecondary,
-          mb: 2,
-          maxWidth: 280,
-          display: 'block',
-          lineHeight: 1.4,
-        }}
-      >
+      <Typography variant="caption" sx={{ color: '#b2bac2', mb: 2, maxWidth: 280, display: 'block', lineHeight: 1.4 }}>
         {description}
       </Typography>
       {action}
@@ -734,30 +552,15 @@ export const SkeletonLoader: React.FC<{ rows?: number }> = ({ rows = 3 }) => {
             alignItems: 'center',
             gap: 2,
             p: 1.5,
-            border: `1px solid ${DESIGN_TOKENS.colors.dark.border}`,
+            border: '1px solid #1e293b',
             borderRadius: '4px',
             bgcolor: 'rgba(255,255,255,0.01)',
           }}
         >
-          <Skeleton
-            variant="rectangular"
-            width={32}
-            height={32}
-            sx={{ bgcolor: DESIGN_TOKENS.colors.dark.border, borderRadius: '4px' }}
-          />
+          <Skeleton variant="rectangular" width={32} height={32} sx={{ bgcolor: '#1e293b', borderRadius: '4px' }} />
           <Box sx={{ flexGrow: 1 }}>
-            <Skeleton
-              variant="text"
-              width="50%"
-              height={16}
-              sx={{ bgcolor: DESIGN_TOKENS.colors.dark.border }}
-            />
-            <Skeleton
-              variant="text"
-              width="30%"
-              height={12}
-              sx={{ bgcolor: DESIGN_TOKENS.colors.dark.border, mt: 0.5 }}
-            />
+            <Skeleton variant="text" width="50%" height={16} sx={{ bgcolor: '#1e293b' }} />
+            <Skeleton variant="text" width="30%" height={12} sx={{ bgcolor: '#1e293b', mt: 0.5 }} />
           </Box>
         </Box>
       ))}
@@ -775,30 +578,14 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, label }) => {
   const getColors = () => {
     switch (status) {
       case 'success':
-        return {
-          bg: 'rgba(16, 185, 129, 0.08)',
-          border: 'rgba(16, 185, 129, 0.25)',
-          text: DESIGN_TOKENS.colors.dark.success,
-        };
+        return { bg: 'rgba(76, 175, 80, 0.08)', border: 'rgba(76, 175, 80, 0.25)', text: '#4caf50' };
       case 'warning':
-        return {
-          bg: 'rgba(245, 158, 11, 0.08)',
-          border: 'rgba(245, 158, 11, 0.25)',
-          text: DESIGN_TOKENS.colors.dark.warning,
-        };
+        return { bg: 'rgba(255, 152, 0, 0.08)', border: 'rgba(255, 152, 0, 0.25)', text: '#ff9800' };
       case 'error':
-        return {
-          bg: 'rgba(239, 68, 68, 0.08)',
-          border: 'rgba(239, 68, 68, 0.25)',
-          text: DESIGN_TOKENS.colors.dark.error,
-        };
+        return { bg: 'rgba(244, 67, 54, 0.08)', border: 'rgba(244, 67, 54, 0.25)', text: '#f44336' };
       case 'info':
       default:
-        return {
-          bg: 'rgba(0, 240, 255, 0.08)',
-          border: 'rgba(0, 240, 255, 0.25)',
-          text: DESIGN_TOKENS.colors.dark.accentPrimary,
-        };
+        return { bg: 'rgba(144, 202, 249, 0.08)', border: 'rgba(144, 202, 249, 0.25)', text: '#90caf9' };
     }
   };
 
@@ -843,7 +630,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
       <IconButton
         onClick={(e) => setAnchorEl(e.currentTarget)}
         sx={{
-          color: DESIGN_TOKENS.colors.dark.textPrimary,
+          color: '#ffffff',
           '&:hover': { bgcolor: 'rgba(255,255,255,0.05)' },
         }}
       >
@@ -858,38 +645,22 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
         sx={{
           '& .MuiPaper-root': {
             width: '280px',
-            bgcolor: DESIGN_TOKENS.colors.dark.bgPaper,
-            border: `1px solid ${DESIGN_TOKENS.colors.dark.border}`,
-            boxShadow: DESIGN_TOKENS.shadows.dropdown,
-            color: DESIGN_TOKENS.colors.dark.textPrimary,
-            borderRadius: DESIGN_TOKENS.borderRadius.sm,
+            bgcolor: '#102031',
+            border: '1px solid #1e293b',
+            boxShadow: '0 8px 24px rgba(0,0,0,0.3)',
+            color: '#ffffff',
+            borderRadius: '6px',
           },
         }}
       >
-        <Box
-          sx={{
-            p: 1.5,
-            borderBottom: `1px solid ${DESIGN_TOKENS.colors.dark.border}`,
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            bgcolor: DESIGN_TOKENS.colors.dark.bgMain,
-          }}
-        >
-          <Typography
-            variant="caption"
-            sx={{
-              fontWeight: DESIGN_TOKENS.typography.weight.bold,
-              textTransform: 'uppercase',
-              letterSpacing: '0.5px',
-            }}
-          >
+        <Box sx={{ p: 1.5, borderBottom: '1px solid #1e293b', display: 'flex', justifyContent: 'space-between', alignItems: 'center', bgcolor: '#0a1929' }}>
+          <Typography variant="caption" sx={{ fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
             System Alerts
           </Typography>
         </Box>
         {notifications.length === 0 ? (
           <Box sx={{ p: 2.5, textAlign: 'center' }}>
-            <Typography variant="caption" sx={{ color: DESIGN_TOKENS.colors.dark.textSecondary }}>
+            <Typography variant="caption" sx={{ color: '#b2bac2' }}>
               No active warnings
             </Typography>
           </Box>
@@ -900,7 +671,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
               sx={{
                 py: 1.25,
                 px: 2,
-                borderBottom: `1px solid ${DESIGN_TOKENS.colors.dark.border}`,
+                borderBottom: '1px solid #1e293b',
                 whiteSpace: 'normal',
                 display: 'flex',
                 alignItems: 'flex-start',
@@ -915,9 +686,9 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
                 size="small"
                 onClick={() => onClear(notif.id)}
                 sx={{
-                  color: DESIGN_TOKENS.colors.dark.textSecondary,
+                  color: '#b2bac2',
                   p: 0.25,
-                  '&:hover': { color: DESIGN_TOKENS.colors.dark.textPrimary },
+                  '&:hover': { color: '#ffffff' },
                 }}
               >
                 <CloseIcon fontSize="inherit" style={{ fontSize: '10px' }} />
@@ -950,11 +721,8 @@ export const PlaybackControls: React.FC<PlaybackControlsProps> = ({
         onClick={onSkipPrev}
         size="small"
         sx={{
-          color: DESIGN_TOKENS.colors.dark.textSecondary,
-          '&:hover': {
-            color: DESIGN_TOKENS.colors.dark.textPrimary,
-            bgcolor: 'rgba(255,255,255,0.05)',
-          },
+          color: '#b2bac2',
+          '&:hover': { color: '#ffffff', bgcolor: 'rgba(255,255,255,0.05)' },
         }}
       >
         <SkipPreviousIcon fontSize="small" />
@@ -962,12 +730,12 @@ export const PlaybackControls: React.FC<PlaybackControlsProps> = ({
       <IconButton
         onClick={onPlayToggle}
         sx={{
-          bgcolor: DESIGN_TOKENS.colors.dark.accentPrimary,
-          color: DESIGN_TOKENS.colors.dark.bgMain,
+          bgcolor: '#90caf9',
+          color: '#0a1929',
           width: '32px',
           height: '32px',
           transition: 'all 0.1s ease',
-          '&:hover': { bgcolor: '#00d0f0', transform: 'scale(1.05)' },
+          '&:hover': { bgcolor: '#64b5f6', transform: 'scale(1.05)' },
           p: 0.5,
         }}
       >
@@ -977,11 +745,8 @@ export const PlaybackControls: React.FC<PlaybackControlsProps> = ({
         onClick={onSkipNext}
         size="small"
         sx={{
-          color: DESIGN_TOKENS.colors.dark.textSecondary,
-          '&:hover': {
-            color: DESIGN_TOKENS.colors.dark.textPrimary,
-            bgcolor: 'rgba(255,255,255,0.05)',
-          },
+          color: '#b2bac2',
+          '&:hover': { color: '#ffffff', bgcolor: 'rgba(255,255,255,0.05)' },
         }}
       >
         <SkipNextIcon fontSize="small" />
@@ -1008,22 +773,19 @@ export const TimelineControls: React.FC<TimelineControlsProps> = ({
         display: 'flex',
         alignItems: 'center',
         gap: 0.5,
-        bgcolor: DESIGN_TOKENS.colors.dark.bgMain,
+        bgcolor: '#0a1929',
         p: 0.5,
         borderRadius: '4px',
-        border: `1px solid ${DESIGN_TOKENS.colors.dark.border}`,
+        border: '1px solid #1e293b',
       }}
     >
       <IconButton
         onClick={onZoomOut}
         size="small"
         sx={{
-          color: DESIGN_TOKENS.colors.dark.textSecondary,
+          color: '#b2bac2',
           p: 0.5,
-          '&:hover': {
-            color: DESIGN_TOKENS.colors.dark.textPrimary,
-            bgcolor: 'rgba(255,255,255,0.05)',
-          },
+          '&:hover': { color: '#ffffff', bgcolor: 'rgba(255,255,255,0.05)' },
         }}
       >
         <ZoomOutIcon style={{ fontSize: '14px' }} />
@@ -1032,12 +794,9 @@ export const TimelineControls: React.FC<TimelineControlsProps> = ({
         onClick={onZoomIn}
         size="small"
         sx={{
-          color: DESIGN_TOKENS.colors.dark.textSecondary,
+          color: '#b2bac2',
           p: 0.5,
-          '&:hover': {
-            color: DESIGN_TOKENS.colors.dark.textPrimary,
-            bgcolor: 'rgba(255,255,255,0.05)',
-          },
+          '&:hover': { color: '#ffffff', bgcolor: 'rgba(255,255,255,0.05)' },
         }}
       >
         <ZoomInIcon style={{ fontSize: '14px' }} />
@@ -1046,12 +805,9 @@ export const TimelineControls: React.FC<TimelineControlsProps> = ({
         onClick={onFit}
         size="small"
         sx={{
-          color: DESIGN_TOKENS.colors.dark.textSecondary,
+          color: '#b2bac2',
           p: 0.5,
-          '&:hover': {
-            color: DESIGN_TOKENS.colors.dark.textPrimary,
-            bgcolor: 'rgba(255,255,255,0.05)',
-          },
+          '&:hover': { color: '#ffffff', bgcolor: 'rgba(255,255,255,0.05)' },
         }}
       >
         <FitIcon style={{ fontSize: '14px' }} />

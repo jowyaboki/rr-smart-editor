@@ -100,9 +100,7 @@ export const DeliveryQueueCard: React.FC<{
       />
       <div style={{ flex: 1 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span style={{ fontWeight: 'bold', fontSize: '13px' }}>
-            Job ID: {job.id.substring(0, 12)}...
-          </span>
+          <span style={{ fontWeight: 'bold', fontSize: '13px' }}>Job ID: {job.id.substring(0, 12)}...</span>
           <span
             style={{
               fontSize: '10px',
@@ -114,42 +112,18 @@ export const DeliveryQueueCard: React.FC<{
             ● {job.status}
           </span>
         </div>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            fontSize: '11px',
-            color: '#aaa',
-            marginTop: '4px',
-          }}
-        >
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#aaa', marginTop: '4px' }}>
           <span>Proj: {job.projectId}</span>
           <span>Preset: {job.presetId}</span>
         </div>
         {job.status === 'processing' && (
           <div style={{ marginTop: '8px' }}>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                fontSize: '10px',
-                marginBottom: '2px',
-              }}
-            >
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px', marginBottom: '2px' }}>
               <span>Progress</span>
               <span>{job.progress}%</span>
             </div>
-            <div
-              style={{ background: '#333', height: '4px', borderRadius: '2px', overflow: 'hidden' }}
-            >
-              <div
-                style={{
-                  background: '#2196f3',
-                  width: `${job.progress}%`,
-                  height: '100%',
-                  transition: 'width 0.3s',
-                }}
-              />
+            <div style={{ background: '#333', height: '4px', borderRadius: '2px', overflow: 'hidden' }}>
+              <div style={{ background: '#2196f3', width: `${job.progress}%`, height: '100%', transition: 'width 0.3s' }} />
             </div>
           </div>
         )}
@@ -161,39 +135,15 @@ export const DeliveryQueueCard: React.FC<{
 export const QualityReportCard: React.FC<{ report?: QualityReport }> = ({ report }) => {
   if (!report) {
     return (
-      <div
-        style={{
-          background: '#252526',
-          padding: '16px',
-          borderRadius: '6px',
-          border: '1px solid #333',
-          color: '#999',
-          textAlign: 'center',
-        }}
-      >
+      <div style={{ background: '#252526', padding: '16px', borderRadius: '6px', border: '1px solid #333', color: '#999', textAlign: 'center' }}>
         No QC Report compiled for this job yet.
       </div>
     );
   }
 
   return (
-    <div
-      style={{
-        background: '#252526',
-        padding: '16px',
-        borderRadius: '6px',
-        border: '1px solid #333',
-        color: '#fff',
-      }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: '12px',
-        }}
-      >
+    <div style={{ background: '#252526', padding: '16px', borderRadius: '6px', border: '1px solid #333', color: '#fff' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
         <h4 style={{ margin: 0, fontSize: '13px', color: '#aaa' }}>QUALITY CONTROL SCORE</h4>
         <span
           style={{
@@ -206,15 +156,7 @@ export const QualityReportCard: React.FC<{ report?: QualityReport }> = ({ report
         </span>
       </div>
 
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: '8px',
-          fontSize: '11px',
-          marginBottom: '12px',
-        }}
-      >
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', fontSize: '11px', marginBottom: '12px' }}>
         <div style={{ background: '#1e1e1e', padding: '8px', borderRadius: '4px' }}>
           <span style={{ color: '#aaa' }}>Status: </span>
           <strong style={{ color: report.isValid ? '#4caf50' : '#f44336' }}>
@@ -229,18 +171,8 @@ export const QualityReportCard: React.FC<{ report?: QualityReport }> = ({ report
 
       {report.violations.length > 0 ? (
         <div>
-          <h5 style={{ margin: '0 0 6px 0', fontSize: '11px', color: '#aaa' }}>
-            VIOLATIONS ({report.violations.length})
-          </h5>
-          <div
-            style={{
-              maxHeight: '120px',
-              overflowY: 'auto',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '4px',
-            }}
-          >
+          <h5 style={{ margin: '0 0 6px 0', fontSize: '11px', color: '#aaa' }}>VIOLATIONS ({report.violations.length})</h5>
+          <div style={{ maxHeight: '120px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '4px' }}>
             {report.violations.map((v, i) => (
               <div
                 key={i}
@@ -252,14 +184,7 @@ export const QualityReportCard: React.FC<{ report?: QualityReport }> = ({ report
                   fontSize: '11px',
                 }}
               >
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    fontWeight: 'bold',
-                    color: '#f44336',
-                  }}
-                >
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 'bold', color: '#f44336' }}>
                   <span>{v.type}</span>
                   <span style={{ fontSize: '9px', opacity: 0.8 }}>{v.severity.toUpperCase()}</span>
                 </div>
@@ -279,20 +204,9 @@ export const QualityReportCard: React.FC<{ report?: QualityReport }> = ({ report
 
 export const DestinationCard: React.FC<{ destination: Destination }> = ({ destination }) => {
   return (
-    <div
-      style={{
-        background: '#2a2a2b',
-        padding: '10px',
-        borderRadius: '6px',
-        border: '1px solid #333',
-        color: '#fff',
-        marginBottom: '6px',
-      }}
-    >
+    <div style={{ background: '#2a2a2b', padding: '10px', borderRadius: '6px', border: '1px solid #333', color: '#fff', marginBottom: '6px' }}>
       <div style={{ fontWeight: 'bold', fontSize: '12px' }}>{destination.name}</div>
-      <div
-        style={{ fontSize: '10px', color: '#888', marginTop: '2px', textTransform: 'capitalize' }}
-      >
+      <div style={{ fontSize: '10px', color: '#888', marginTop: '2px', textTransform: 'capitalize' }}>
         Type: {destination.type} | Config: {JSON.stringify(destination.config)}
       </div>
     </div>
@@ -365,9 +279,7 @@ export const DeliveryDashboard: React.FC = () => {
       createdAt: new Date().toISOString(),
     };
 
-    addLogMessage(
-      `[Action: submitDeliveryJob] Creating delivery workflow for ${simulatedProject}...`,
-    );
+    addLogMessage(`[Action: submitDeliveryJob] Creating delivery workflow for ${simulatedProject}...`);
     await submitDeliveryJob(simulatedProject, mockArtifact, selectedPresetId);
   };
 
@@ -413,66 +325,16 @@ export const DeliveryDashboard: React.FC = () => {
 
         {/* TOP TELEMETRY WIDGETS */}
         <div style={{ display: 'flex', gap: '16px' }}>
-          <div
-            style={{
-              background: '#252526',
-              padding: '6px 12px',
-              borderRadius: '4px',
-              border: '1px solid #333',
-            }}
-          >
-            <span
-              style={{
-                fontSize: '10px',
-                color: '#888',
-                display: 'block',
-                textTransform: 'uppercase',
-              }}
-            >
-              Active Tasks
-            </span>
-            <strong style={{ color: '#2196f3', fontSize: '14px' }}>
-              {activeJobsCount} Running
-            </strong>
+          <div style={{ background: '#252526', padding: '6px 12px', borderRadius: '4px', border: '1px solid #333' }}>
+            <span style={{ fontSize: '10px', color: '#888', display: 'block', textTransform: 'uppercase' }}>Active Tasks</span>
+            <strong style={{ color: '#2196f3', fontSize: '14px' }}>{activeJobsCount} Running</strong>
           </div>
-          <div
-            style={{
-              background: '#252526',
-              padding: '6px 12px',
-              borderRadius: '4px',
-              border: '1px solid #333',
-            }}
-          >
-            <span
-              style={{
-                fontSize: '10px',
-                color: '#888',
-                display: 'block',
-                textTransform: 'uppercase',
-              }}
-            >
-              Completed
-            </span>
+          <div style={{ background: '#252526', padding: '6px 12px', borderRadius: '4px', border: '1px solid #333' }}>
+            <span style={{ fontSize: '10px', color: '#888', display: 'block', textTransform: 'uppercase' }}>Completed</span>
             <strong style={{ color: '#4caf50', fontSize: '14px' }}>{completedJobsCount}</strong>
           </div>
-          <div
-            style={{
-              background: '#252526',
-              padding: '6px 12px',
-              borderRadius: '4px',
-              border: '1px solid #333',
-            }}
-          >
-            <span
-              style={{
-                fontSize: '10px',
-                color: '#888',
-                display: 'block',
-                textTransform: 'uppercase',
-              }}
-            >
-              Failed
-            </span>
+          <div style={{ background: '#252526', padding: '6px 12px', borderRadius: '4px', border: '1px solid #333' }}>
+            <span style={{ fontSize: '10px', color: '#888', display: 'block', textTransform: 'uppercase' }}>Failed</span>
             <strong style={{ color: '#f44336', fontSize: '14px' }}>{failedJobsCount}</strong>
           </div>
         </div>
@@ -493,15 +355,7 @@ export const DeliveryDashboard: React.FC = () => {
           }}
         >
           <div>
-            <h3
-              style={{
-                margin: '0 0 10px 0',
-                fontSize: '12px',
-                color: '#aaa',
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em',
-              }}
-            >
+            <h3 style={{ margin: '0 0 10px 0', fontSize: '12px', color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
               Export Presets
             </h3>
             {presets.map((preset) => (
@@ -515,15 +369,7 @@ export const DeliveryDashboard: React.FC = () => {
           </div>
 
           <div style={{ borderTop: '1px solid #2d2d2d', paddingTop: '16px' }}>
-            <h3
-              style={{
-                margin: '0 0 10px 0',
-                fontSize: '12px',
-                color: '#aaa',
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em',
-              }}
-            >
+            <h3 style={{ margin: '0 0 10px 0', fontSize: '12px', color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
               Quick Action Simulation
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -561,16 +407,7 @@ export const DeliveryDashboard: React.FC = () => {
           </div>
 
           <div style={{ borderTop: '1px solid #2d2d2d', paddingTop: '16px' }}>
-            <h3
-              style={{
-                margin: '0 0 8px 0',
-                fontSize: '12px',
-                color: '#aaa',
-                textTransform: 'uppercase',
-              }}
-            >
-              Navigation
-            </h3>
+            <h3 style={{ margin: '0 0 8px 0', fontSize: '12px', color: '#aaa', textTransform: 'uppercase' }}>Navigation</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
               {(['queue', 'presets', 'destinations', 'monitoring'] as const).map((p) => (
                 <div
@@ -674,19 +511,9 @@ export const DeliveryDashboard: React.FC = () => {
           {/* MAIN PANELS CONDITIONAL RENDER */}
           {activePanel === 'queue' && (
             <div>
-              <h2 style={{ margin: '0 0 12px 0', fontSize: '15px', color: '#fff' }}>
-                Delivery Queue
-              </h2>
+              <h2 style={{ margin: '0 0 12px 0', fontSize: '15px', color: '#fff' }}>Delivery Queue</h2>
               {jobs.length === 0 ? (
-                <div
-                  style={{
-                    padding: '40px',
-                    textAlign: 'center',
-                    color: '#666',
-                    border: '1px dashed #333',
-                    borderRadius: '8px',
-                  }}
-                >
+                <div style={{ padding: '40px', textAlign: 'center', color: '#666', border: '1px dashed #333', borderRadius: '8px' }}>
                   No jobs found matching criteria. Submit a simulation on the left.
                 </div>
               ) : (
@@ -711,34 +538,15 @@ export const DeliveryDashboard: React.FC = () => {
 
           {activePanel === 'presets' && (
             <div>
-              <h2 style={{ margin: '0 0 12px 0', fontSize: '15px', color: '#fff' }}>
-                All Configured Profiles
-              </h2>
+              <h2 style={{ margin: '0 0 12px 0', fontSize: '15px', color: '#fff' }}>All Configured Profiles</h2>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                 {presets.map((preset) => (
-                  <div
-                    key={preset.id}
-                    style={{
-                      background: '#1c1c1c',
-                      border: '1px solid #333',
-                      padding: '16px',
-                      borderRadius: '8px',
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        fontWeight: 'bold',
-                        color: '#fff',
-                      }}
-                    >
+                  <div key={preset.id} style={{ background: '#1c1c1c', border: '1px solid #333', padding: '16px', borderRadius: '8px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 'bold', color: '#fff' }}>
                       <span>{preset.name}</span>
                       <code style={{ fontSize: '11px', color: '#2196f3' }}>{preset.format}</code>
                     </div>
-                    <p style={{ fontSize: '12px', color: '#aaa', margin: '8px 0 12px 0' }}>
-                      {preset.description}
-                    </p>
+                    <p style={{ fontSize: '12px', color: '#aaa', margin: '8px 0 12px 0' }}>{preset.description}</p>
                     <div style={{ fontSize: '11px', color: '#888' }}>
                       <div>Codec: {preset.encodingProfile.videoCodec || 'Copy'}</div>
                       <div>Destinations: {preset.destinations.length} target(s)</div>
@@ -751,35 +559,13 @@ export const DeliveryDashboard: React.FC = () => {
 
           {activePanel === 'destinations' && (
             <div>
-              <h2 style={{ margin: '0 0 12px 0', fontSize: '15px', color: '#fff' }}>
-                Configured Destinations
-              </h2>
+              <h2 style={{ margin: '0 0 12px 0', fontSize: '15px', color: '#fff' }}>Configured Destinations</h2>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                 {[
-                  {
-                    id: 'dest_local_default',
-                    name: 'Local Output Folder',
-                    type: 'local',
-                    config: { path: '/tmp/exports' },
-                  },
-                  {
-                    id: 'dest_ftp_main',
-                    name: 'Secure Broadcast FTP',
-                    type: 'ftp_sftp',
-                    config: { host: 'sftp.broadcast.net' },
-                  },
-                  {
-                    id: 'dest_aws_s3',
-                    name: 'Object Storage AWS S3',
-                    type: 'object_storage',
-                    config: { bucket: 'studio-deliveries' },
-                  },
-                  {
-                    id: 'dest_yt_api',
-                    name: 'YouTube API publisher',
-                    type: 'social',
-                    config: { channelId: 'UC_broadway' },
-                  },
+                  { id: 'dest_local_default', name: 'Local Output Folder', type: 'local', config: { path: '/tmp/exports' } },
+                  { id: 'dest_ftp_main', name: 'Secure Broadcast FTP', type: 'ftp_sftp', config: { host: 'sftp.broadcast.net' } },
+                  { id: 'dest_aws_s3', name: 'Object Storage AWS S3', type: 'object_storage', config: { bucket: 'studio-deliveries' } },
+                  { id: 'dest_yt_api', name: 'YouTube API publisher', type: 'social', config: { channelId: 'UC_broadway' } },
                 ].map((d: any) => (
                   <DestinationCard key={d.id} destination={d} />
                 ))}
@@ -789,62 +575,19 @@ export const DeliveryDashboard: React.FC = () => {
 
           {activePanel === 'monitoring' && (
             <div>
-              <h2 style={{ margin: '0 0 12px 0', fontSize: '15px', color: '#fff' }}>
-                Active Network Monitoring
-              </h2>
-              <div
-                style={{
-                  background: '#1a1a1a',
-                  border: '1px solid #333',
-                  borderRadius: '8px',
-                  padding: '16px',
-                }}
-              >
-                <div
-                  style={{
-                    display: 'grid',
-                    gridTemplateColumns: '1fr 1fr 1fr',
-                    gap: '16px',
-                    marginBottom: '20px',
-                  }}
-                >
-                  <div
-                    style={{
-                      background: '#252526',
-                      padding: '12px',
-                      borderRadius: '6px',
-                      textAlign: 'center',
-                    }}
-                  >
-                    <span style={{ fontSize: '10px', color: '#888', display: 'block' }}>
-                      ESTIMATED BANDWIDTH
-                    </span>
+              <h2 style={{ margin: '0 0 12px 0', fontSize: '15px', color: '#fff' }}>Active Network Monitoring</h2>
+              <div style={{ background: '#1a1a1a', border: '1px solid #333', borderRadius: '8px', padding: '16px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '16px', marginBottom: '20px' }}>
+                  <div style={{ background: '#252526', padding: '12px', borderRadius: '6px', textAlign: 'center' }}>
+                    <span style={{ fontSize: '10px', color: '#888', display: 'block' }}>ESTIMATED BANDWIDTH</span>
                     <strong style={{ fontSize: '18px', color: '#2196f3' }}>5.0 MB/s</strong>
                   </div>
-                  <div
-                    style={{
-                      background: '#252526',
-                      padding: '12px',
-                      borderRadius: '6px',
-                      textAlign: 'center',
-                    }}
-                  >
-                    <span style={{ fontSize: '10px', color: '#888', display: 'block' }}>
-                      AVG COMPILATION TIME
-                    </span>
+                  <div style={{ background: '#252526', padding: '12px', borderRadius: '6px', textAlign: 'center' }}>
+                    <span style={{ fontSize: '10px', color: '#888', display: 'block' }}>AVG COMPILATION TIME</span>
                     <strong style={{ fontSize: '18px', color: '#4caf50' }}>1.2s</strong>
                   </div>
-                  <div
-                    style={{
-                      background: '#252526',
-                      padding: '12px',
-                      borderRadius: '6px',
-                      textAlign: 'center',
-                    }}
-                  >
-                    <span style={{ fontSize: '10px', color: '#888', display: 'block' }}>
-                      RETRY SUCCESS RATE
-                    </span>
+                  <div style={{ background: '#252526', padding: '12px', borderRadius: '6px', textAlign: 'center' }}>
+                    <span style={{ fontSize: '10px', color: '#888', display: 'block' }}>RETRY SUCCESS RATE</span>
                     <strong style={{ fontSize: '18px', color: '#4caf50' }}>100%</strong>
                   </div>
                 </div>
@@ -865,27 +608,11 @@ export const DeliveryDashboard: React.FC = () => {
             gap: '16px',
           }}
         >
-          <h3
-            style={{
-              margin: '0 0 4px 0',
-              fontSize: '12px',
-              color: '#aaa',
-              textTransform: 'uppercase',
-            }}
-          >
-            Selected Job Details
-          </h3>
+          <h3 style={{ margin: '0 0 4px 0', fontSize: '12px', color: '#aaa', textTransform: 'uppercase' }}>Selected Job Details</h3>
 
           {selectedJob ? (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-              <div
-                style={{
-                  background: '#252526',
-                  padding: '12px',
-                  borderRadius: '6px',
-                  border: '1px solid #333',
-                }}
-              >
+              <div style={{ background: '#252526', padding: '12px', borderRadius: '6px', border: '1px solid #333' }}>
                 <div style={{ fontSize: '11px', color: '#aaa' }}>Job ID</div>
                 <code style={{ fontSize: '13px', fontWeight: 'bold' }}>{selectedJob.id}</code>
                 <div style={{ fontSize: '11px', color: '#aaa', marginTop: '8px' }}>Project ID</div>
@@ -893,183 +620,85 @@ export const DeliveryDashboard: React.FC = () => {
               </div>
 
               {/* ENCODING PROFILE SUMMARY */}
-              <div
-                style={{
-                  background: '#252526',
-                  padding: '12px',
-                  borderRadius: '6px',
-                  border: '1px solid #333',
-                }}
-              >
-                <h4
-                  style={{
-                    margin: '0 0 8px 0',
-                    fontSize: '12px',
-                    color: '#2196f3',
-                    textTransform: 'uppercase',
-                  }}
-                >
+              <div style={{ background: '#252526', padding: '12px', borderRadius: '6px', border: '1px solid #333' }}>
+                <h4 style={{ margin: '0 0 8px 0', fontSize: '12px', color: '#2196f3', textTransform: 'uppercase' }}>
                   ⚙️ Encoding & Codec Profiles
                 </h4>
                 {presets.find((p) => p.id === selectedJob.presetId) ? (
-                  <div
-                    style={{
-                      fontSize: '11px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: '4px',
-                    }}
-                  >
+                  <div style={{ fontSize: '11px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
                     <div>
                       Video Codec:{' '}
                       <strong style={{ color: '#fff' }}>
-                        {presets.find((p) => p.id === selectedJob.presetId)?.encodingProfile
-                          .videoCodec || 'Copy'}
+                        {presets.find((p) => p.id === selectedJob.presetId)?.encodingProfile.videoCodec || 'Copy'}
                       </strong>
                     </div>
                     <div>
                       Audio Codec:{' '}
                       <strong style={{ color: '#fff' }}>
-                        {presets.find((p) => p.id === selectedJob.presetId)?.encodingProfile
-                          .audioCodec || 'Copy'}
+                        {presets.find((p) => p.id === selectedJob.presetId)?.encodingProfile.audioCodec || 'Copy'}
                       </strong>
                     </div>
                     <div>
                       Resolution:{' '}
                       <strong style={{ color: '#fff' }}>
-                        {presets.find((p) => p.id === selectedJob.presetId)?.encodingProfile
-                          .resolution
+                        {presets.find((p) => p.id === selectedJob.presetId)?.encodingProfile.resolution
                           ? `${presets.find((p) => p.id === selectedJob.presetId)?.encodingProfile.resolution?.width}x${presets.find((p) => p.id === selectedJob.presetId)?.encodingProfile.resolution?.height}`
                           : 'Original'}
                       </strong>
                     </div>
                   </div>
                 ) : (
-                  <span style={{ fontSize: '11px', color: '#888' }}>
-                    No encoding parameters needed.
-                  </span>
+                  <span style={{ fontSize: '11px', color: '#888' }}>No encoding parameters needed.</span>
                 )}
               </div>
 
               {/* PACKAGING SETTINGS */}
-              <div
-                style={{
-                  background: '#252526',
-                  padding: '12px',
-                  borderRadius: '6px',
-                  border: '1px solid #333',
-                }}
-              >
-                <h4
-                  style={{
-                    margin: '0 0 8px 0',
-                    fontSize: '12px',
-                    color: '#e91e63',
-                    textTransform: 'uppercase',
-                  }}
-                >
+              <div style={{ background: '#252526', padding: '12px', borderRadius: '6px', border: '1px solid #333' }}>
+                <h4 style={{ margin: '0 0 8px 0', fontSize: '12px', color: '#e91e63', textTransform: 'uppercase' }}>
                   📦 Packaging Settings
                 </h4>
                 {presets.find((p) => p.id === selectedJob.presetId)?.packagingProfile ? (
-                  <div
-                    style={{
-                      fontSize: '11px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: '4px',
-                    }}
-                  >
+                  <div style={{ fontSize: '11px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
                     <div>
                       Format:{' '}
                       <strong style={{ color: '#fff' }}>
-                        {presets
-                          .find((p) => p.id === selectedJob.presetId)
-                          ?.packagingProfile?.format.toUpperCase()}
+                        {presets.find((p) => p.id === selectedJob.presetId)?.packagingProfile?.format.toUpperCase()}
                       </strong>
                     </div>
                     <div>
                       Segment Size:{' '}
                       <strong style={{ color: '#fff' }}>
-                        {
-                          presets.find((p) => p.id === selectedJob.presetId)?.packagingProfile
-                            ?.segmentDurationSeconds
-                        }
-                        s
+                        {presets.find((p) => p.id === selectedJob.presetId)?.packagingProfile?.segmentDurationSeconds}s
                       </strong>
                     </div>
                   </div>
                 ) : (
-                  <span style={{ fontSize: '11px', color: '#888' }}>
-                    Plain wrapper file packaging.
-                  </span>
+                  <span style={{ fontSize: '11px', color: '#888' }}>Plain wrapper file packaging.</span>
                 )}
               </div>
 
               {/* QUALITY CONTROL SUMMARY */}
               <div>
-                <h4
-                  style={{
-                    margin: '0 0 8px 0',
-                    fontSize: '12px',
-                    color: '#ff9800',
-                    textTransform: 'uppercase',
-                  }}
-                >
+                <h4 style={{ margin: '0 0 8px 0', fontSize: '12px', color: '#ff9800', textTransform: 'uppercase' }}>
                   📊 Quality Control Audit
                 </h4>
                 <QualityReportCard report={selectedJob.qualityReport} />
               </div>
 
               {/* ESTIMATIONS CARD */}
-              <div
-                style={{
-                  background: 'rgba(33, 150, 243, 0.1)',
-                  border: '1px solid rgba(33, 150, 243, 0.3)',
-                  padding: '12px',
-                  borderRadius: '6px',
-                }}
-              >
-                <h4
-                  style={{
-                    margin: '0 0 8px 0',
-                    fontSize: '11px',
-                    color: '#90caf9',
-                    textTransform: 'uppercase',
-                  }}
-                >
+              <div style={{ background: 'rgba(33, 150, 243, 0.1)', border: '1px solid rgba(33, 150, 243, 0.3)', padding: '12px', borderRadius: '6px' }}>
+                <h4 style={{ margin: '0 0 8px 0', fontSize: '11px', color: '#90caf9', textTransform: 'uppercase' }}>
                   ⏱️ Real-time Estimations
                 </h4>
-                <div
-                  style={{
-                    fontSize: '11px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '4px',
-                    color: '#ccc',
-                  }}
-                >
-                  <div>
-                    Estimated Size: <strong>18.5 MB</strong>
-                  </div>
-                  <div>
-                    Estimated Processing Duration: <strong>1.5s</strong>
-                  </div>
-                  <div>
-                    Estimated Delivery ETA: <strong>3.7s</strong>
-                  </div>
+                <div style={{ fontSize: '11px', display: 'flex', flexDirection: 'column', gap: '4px', color: '#ccc' }}>
+                  <div>Estimated Size: <strong>18.5 MB</strong></div>
+                  <div>Estimated Processing Duration: <strong>1.5s</strong></div>
+                  <div>Estimated Delivery ETA: <strong>3.7s</strong></div>
                 </div>
               </div>
             </div>
           ) : (
-            <div
-              style={{
-                padding: '30px 10px',
-                textAlign: 'center',
-                color: '#666',
-                border: '1px dashed #333',
-                borderRadius: '6px',
-              }}
-            >
+            <div style={{ padding: '30px 10px', textAlign: 'center', color: '#666', border: '1px dashed #333', borderRadius: '6px' }}>
               Select a job from the queue to inspect details, encoding settings and QC scores.
             </div>
           )}
@@ -1090,14 +719,7 @@ export const DeliveryDashboard: React.FC = () => {
       >
         {/* REAL-TIME EVENT BUS LOGS */}
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <h4
-            style={{
-              margin: '0 0 6px 0',
-              fontSize: '11px',
-              color: '#aaa',
-              textTransform: 'uppercase',
-            }}
-          >
+          <h4 style={{ margin: '0 0 6px 0', fontSize: '11px', color: '#aaa', textTransform: 'uppercase' }}>
             📡 Real-Time Delivery Event Console
           </h4>
           <div
@@ -1117,9 +739,7 @@ export const DeliveryDashboard: React.FC = () => {
             }}
           >
             {recentLogs.length === 0 ? (
-              <span style={{ color: '#444' }}>
-                Console idle. Submit a job to listen to EventBus telemetry...
-              </span>
+              <span style={{ color: '#444' }}>Console idle. Submit a job to listen to EventBus telemetry...</span>
             ) : (
               recentLogs.map((log, idx) => <div key={idx}>{log}</div>)
             )}
@@ -1128,14 +748,7 @@ export const DeliveryDashboard: React.FC = () => {
 
         {/* COMPLIANCE SCORE METER */}
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-          <h4
-            style={{
-              margin: '0 0 6px 0',
-              fontSize: '11px',
-              color: '#aaa',
-              textTransform: 'uppercase',
-            }}
-          >
+          <h4 style={{ margin: '0 0 6px 0', fontSize: '11px', color: '#aaa', textTransform: 'uppercase' }}>
             Brand & Codec Safety Gauge
           </h4>
           <div
@@ -1147,9 +760,7 @@ export const DeliveryDashboard: React.FC = () => {
               textAlign: 'center',
             }}
           >
-            <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#4caf50' }}>
-              100% Secure
-            </div>
+            <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#4caf50' }}>100% Secure</div>
             <div style={{ fontSize: '10px', color: '#888', marginTop: '2px' }}>
               All packaged output files strictly validated
             </div>

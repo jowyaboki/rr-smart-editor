@@ -1,82 +1,135 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Box, Typography, Button, TextField, Divider, Chip, IconButton } from '@mui/material';
 import { useReviewComments } from '../hooks/useReviewComments';
+import { CheckCircle as CheckIcon, Pending as PendingIcon, Star as StarIcon, Close as CloseIcon } from '@mui/icons-material';
 
 export const TimelineCommentsPanel: React.FC = () => {
-  const { comments, resolveComment } = useReviewComments();
+  const { comments, resolveComment, addComment } = useReviewComments();
+  const [newText, setNewText] = useState('');
+
+  const activeComments = comments.filter((c) => !c.resolved);
+  const resolvedComments = comments.filter((c) => c.resolved);
+
+  const handleAdd = () => {
+    if (newText.trim()) {
+      addComment(newText, 150); // Mocks adding feedback at Frame 150
+      setNewText('');
+    }
+  };
 
   return (
-    <div
-      style={{
-        padding: '12px',
-        background: '#111',
-        color: '#fff',
-        border: '1px solid #333',
-        borderRadius: '4px',
-        marginTop: '12px',
-      }}
-    >
-      <span style={{ fontSize: '12px', fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>
-        Timeline Frame Feedback
-      </span>
+    <Box sx={{ p: 1.5, display: 'flex', flexDirection: 'column', gap: 1.5, bgcolor: '#0d1527', border: '1px solid #1b2f54', borderRadius: '6px' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#ffffff', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+          Frame Annotations & Review Checklist
+        </Typography>
+        <Chip
+          label={`${activeComments.length} Pending`}
+          size="small"
+          sx={{ height: 16, fontSize: '0.6rem', bgcolor: 'rgba(245, 158, 11, 0.15)', color: '#f59e0b', fontWeight: 'bold' }}
+        />
+      </Box>
 
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '6px',
-          maxHeight: '200px',
-          overflowY: 'auto',
-        }}
-      >
-        {comments.map((comment) => (
-          <div
+      {/* Drawing note instruction */}
+      <Box sx={{ p: 1, borderRadius: '4px', bgcolor: 'rgba(0, 240, 255, 0.05)', border: '1px solid rgba(0, 240, 255, 0.2)' }}>
+        <Typography variant="caption" sx={{ color: '#00f0ff', fontSize: '0.62rem', display: 'block', lineHeight: 1.3 }}>
+          💡 Review Instruction: Draw directly on composition preview frames to overlay redline comments. Version comparison active.
+        </Typography>
+      </Box>
+
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, maxHeight: '200px', overflowY: 'auto' }}>
+        {activeComments.map((comment) => (
+          <Box
             key={comment.id}
-            style={{
-              padding: '8px',
-              background: '#1a1a1a',
-              border: `1px solid ${comment.resolved ? '#333' : '#444'}`,
-              borderRadius: '3px',
-              opacity: comment.resolved ? 0.5 : 1,
+            sx={{
+              p: 1,
+              bgcolor: '#12203d',
+              border: '1px solid #1b2f54',
+              borderRadius: '4px',
+              transition: 'border-color 0.15s ease',
+              '&:hover': { borderColor: '#ec4899' },
             }}
           >
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginBottom: '4px',
-              }}
-            >
-              <span style={{ fontSize: '10px', fontWeight: 'bold', color: '#1976d2' }}>
-                {comment.authorName}
-              </span>
-              <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 0.5 }}>
+              <Typography variant="caption" sx={{ color: '#00f0ff', fontWeight: 'bold', fontSize: '0.65rem' }}>
+                {comment.authorName || 'Guest Reviewer'}
+              </Typography>
+              <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
                 {comment.frame !== undefined && (
-                  <span style={{ fontSize: '9px', color: '#888' }}>Frame {comment.frame}</span>
+                  <Chip
+                    label={`Frame ${comment.frame}`}
+                    size="small"
+                    sx={{ height: 14, fontSize: '0.55rem', bgcolor: '#050b14', color: '#94a3b8' }}
+                  />
                 )}
-                {!comment.resolved && (
-                  <button
-                    onClick={() => resolveComment(comment.id)}
-                    style={{
-                      padding: '1px 4px',
-                      fontSize: '8px',
-                      background: '#2e7d32',
-                      color: '#fff',
-                      border: 'none',
-                      borderRadius: '2px',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    Resolve
-                  </button>
-                )}
-              </div>
-            </div>
-            <div style={{ fontSize: '11px' }}>{comment.text}</div>
-          </div>
+                <Button
+                  size="small"
+                  onClick={() => resolveComment(comment.id)}
+                  sx={{
+                    p: '1px 6px',
+                    minWidth: 'unset',
+                    fontSize: '0.55rem',
+                    bgcolor: 'rgba(16, 185, 129, 0.15)',
+                    color: '#10b981',
+                    fontWeight: 'bold',
+                    '&:hover': { bgcolor: 'rgba(16, 185, 129, 0.3)' },
+                  }}
+                >
+                  Resolve
+                </Button>
+              </Box>
+            </Box>
+            <Typography variant="caption" sx={{ color: '#ffffff', fontSize: '0.7rem', display: 'block', lineHeight: 1.3 }}>
+              {comment.text}
+            </Typography>
+          </Box>
         ))}
-      </div>
-    </div>
+
+        {resolvedComments.map((comment) => (
+          <Box
+            key={comment.id}
+            sx={{
+              p: 1,
+              bgcolor: 'rgba(255,255,255,0.02)',
+              border: '1px dashed #1b2f54',
+              borderRadius: '4px',
+              opacity: 0.5,
+            }}
+          >
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Typography variant="caption" sx={{ color: '#94a3b8', textDecoration: 'line-through', fontSize: '0.65rem' }}>
+                {comment.text}
+              </Typography>
+              <Chip label="Resolved" size="small" icon={<CheckIcon style={{ fontSize: 10, color: '#10b981' }} />} sx={{ height: 14, fontSize: '0.55rem' }} />
+            </Box>
+          </Box>
+        ))}
+      </Box>
+
+      <Divider sx={{ borderColor: '#1b2f54' }} />
+
+      <Box sx={{ display: 'flex', gap: 1 }}>
+        <TextField
+          value={newText}
+          onChange={(e) => setNewText(e.target.value)}
+          placeholder="Add frame feedback..."
+          size="small"
+          fullWidth
+          InputProps={{
+            sx: { fontSize: '0.72rem', color: '#ffffff', bgcolor: '#050b14' },
+          }}
+        />
+        <Button
+          size="small"
+          variant="contained"
+          onClick={handleAdd}
+          sx={{ fontSize: '0.68rem', bgcolor: '#ec4899', color: '#ffffff', fontWeight: 'bold', '&:hover': { bgcolor: '#d92680' } }}
+        >
+          Post
+        </Button>
+      </Box>
+    </Box>
   );
 };
+
 export default TimelineCommentsPanel;

@@ -28,8 +28,7 @@ export function ScopesPanel() {
             {scopesState.activeScope.replace('_', ' ')} Monitor
           </div>
           <div className="text-[10px] text-gray-600">
-            Real-time sub-sample:{' '}
-            <span className="text-indigo-400">1/{scopesState.subSampleRate} pixels</span>
+            Real-time sub-sample: <span className="text-indigo-400">1/{scopesState.subSampleRate} pixels</span>
           </div>
         </div>
 
@@ -60,15 +59,9 @@ export function ScopesPanel() {
         {/* Schematic RGB Parade */}
         {scopesState.activeScope === 'rgb_parade' && (
           <div className="absolute inset-0 flex p-3 space-x-3 opacity-25">
-            <div className="flex-1 border-r border-[#2d2d35] flex items-end justify-center pb-2 text-[8px] text-red-500 font-bold">
-              R
-            </div>
-            <div className="flex-1 border-r border-[#2d2d35] flex items-end justify-center pb-2 text-[8px] text-green-500 font-bold">
-              G
-            </div>
-            <div className="flex-1 flex items-end justify-center pb-2 text-[8px] text-blue-500 font-bold">
-              B
-            </div>
+            <div className="flex-1 border-r border-[#2d2d35] flex items-end justify-center pb-2 text-[8px] text-red-500 font-bold">R</div>
+            <div className="flex-1 border-r border-[#2d2d35] flex items-end justify-center pb-2 text-[8px] text-green-500 font-bold">G</div>
+            <div className="flex-1 flex items-end justify-center pb-2 text-[8px] text-blue-500 font-bold">B</div>
           </div>
         )}
       </div>

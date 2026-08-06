@@ -8,30 +8,13 @@ import { SpeechTranscriptionPanel } from './SpeechTranscriptionPanel';
 import { RestorationRack } from './RestorationRack';
 
 export function AudioMixerPanel() {
-  const {
-    project,
-    setProject,
-    updateTrackFader,
-    updateTrackPan,
-    toggleTrackMute,
-    toggleTrackSolo,
-    mixerState,
-    updateMixerState,
-  } = useAudioStore();
+  const { project, setProject, updateTrackFader, updateTrackPan, toggleTrackMute, toggleTrackSolo, mixerState, updateMixerState } = useAudioStore();
 
   const handleInit = () => {
     const defaultProject = globalAudioEngine2.createProject('proj-audio', 'Commercial Dub Master');
 
     // Add dialogue track
-    const defaultMixer = {
-      id: 'mixer-1',
-      faderGainDb: 0.0,
-      pan: 0.0,
-      solo: false,
-      mute: false,
-      monitor: true,
-      channelLayout: 'stereo' as any,
-    };
+    const defaultMixer = { id: 'mixer-1', faderGainDb: 0.0, pan: 0.0, solo: false, mute: false, monitor: true, channelLayout: 'stereo' as any };
     defaultProject.tracks['track-dialogue'] = {
       id: 'track-dialogue',
       name: 'Dialogue Track',
@@ -77,12 +60,8 @@ export function AudioMixerPanel() {
       {/* Dialogue and tracks panels */}
       <div className="flex-1 flex flex-col border-r border-[#2d2d35]">
         <div className="h-14 bg-[#1e1e24] border-b border-[#2d2d35] flex items-center justify-between px-6">
-          <h2 className="text-md font-bold uppercase tracking-wider text-indigo-400">
-            Audio Mixer Console
-          </h2>
-          <div className="text-xs text-gray-400">
-            Project: <span className="text-white font-semibold">{project.name}</span>
-          </div>
+          <h2 className="text-md font-bold uppercase tracking-wider text-indigo-400">Audio Mixer Console</h2>
+          <div className="text-xs text-gray-400">Project: <span className="text-white font-semibold">{project.name}</span></div>
         </div>
 
         {/* Dynamic Fader Strips */}
@@ -92,9 +71,7 @@ export function AudioMixerPanel() {
               key={track.id}
               onClick={() => updateMixerState({ selectedTrackId: track.id })}
               className={`w-36 bg-[#1a1a20] rounded-lg border p-4 flex flex-col justify-between cursor-pointer transition ${
-                mixerState.selectedTrackId === track.id
-                  ? 'border-indigo-600'
-                  : 'border-[#2d2d35] hover:border-gray-700'
+                mixerState.selectedTrackId === track.id ? 'border-indigo-600' : 'border-[#2d2d35] hover:border-gray-700'
               }`}
             >
               {/* Pan Pot */}
@@ -109,13 +86,7 @@ export function AudioMixerPanel() {
                   onChange={(e) => updateTrackPan(track.id, parseFloat(e.target.value))}
                   className="w-full accent-indigo-600 h-1.5 rounded-lg bg-gray-700"
                 />
-                <span className="text-[9px] font-mono text-gray-400 block">
-                  {track.mixer.pan > 0
-                    ? `R ${track.mixer.pan.toFixed(1)}`
-                    : track.mixer.pan < 0
-                      ? `L ${Math.abs(track.mixer.pan).toFixed(1)}`
-                      : 'Center'}
-                </span>
+                <span className="text-[9px] font-mono text-gray-400 block">{track.mixer.pan > 0 ? `R ${track.mixer.pan.toFixed(1)}` : track.mixer.pan < 0 ? `L ${Math.abs(track.mixer.pan).toFixed(1)}` : 'Center'}</span>
               </div>
 
               {/* Fader Slider */}
@@ -132,9 +103,7 @@ export function AudioMixerPanel() {
                   className="h-44 accent-indigo-500"
                 />
                 <span className="text-xs font-mono font-bold text-indigo-400">
-                  {track.mixer.faderGainDb > 0
-                    ? `+${track.mixer.faderGainDb.toFixed(1)}`
-                    : `${track.mixer.faderGainDb.toFixed(1)}`}
+                  {track.mixer.faderGainDb > 0 ? `+${track.mixer.faderGainDb.toFixed(1)}` : `${track.mixer.faderGainDb.toFixed(1)}`}
                 </span>
               </div>
 
@@ -142,19 +111,13 @@ export function AudioMixerPanel() {
               <div className="space-y-2 text-center">
                 <div className="flex space-x-2">
                   <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      toggleTrackMute(track.id);
-                    }}
+                    onClick={(e) => { e.stopPropagation(); toggleTrackMute(track.id); }}
                     className={`flex-1 py-1 rounded text-xs font-bold transition ${track.mixer.mute ? 'bg-red-600 text-white' : 'bg-[#2d2d35] text-gray-400 hover:text-white'}`}
                   >
                     M
                   </button>
                   <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      toggleTrackSolo(track.id);
-                    }}
+                    onClick={(e) => { e.stopPropagation(); toggleTrackSolo(track.id); }}
                     className={`flex-1 py-1 rounded text-xs font-bold transition ${track.mixer.solo ? 'bg-yellow-500 text-black' : 'bg-[#2d2d35] text-gray-400 hover:text-white'}`}
                   >
                     S

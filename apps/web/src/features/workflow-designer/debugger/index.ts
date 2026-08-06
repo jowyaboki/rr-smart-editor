@@ -8,11 +8,7 @@ export const toggleNodeBreakpoint = (nodeId: string, enabled: boolean) => {
 export const getActiveNodeLogs = (nodeId: string) => {
   return designer.debug.getLogsForNode(nodeId);
 };
-export const recordNodeDebugLog = (
-  nodeId: string,
-  level: 'info' | 'warn' | 'error',
-  message: string,
-) => {
+export const recordNodeDebugLog = (nodeId: string, level: 'info' | 'warn' | 'error', message: string) => {
   designer.debug.logNodeEvent(nodeId, level, message);
 };
 export const stepNodeForward = () => {

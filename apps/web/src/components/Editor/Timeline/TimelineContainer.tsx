@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Slider, Stack, Typography } from '@mui/material';
+import { Box, Slider, Stack, Typography, Chip, Tooltip } from '@mui/material';
 import { ZoomIn as ZoomInIcon, ZoomOut as ZoomOutIcon } from '@mui/icons-material';
 import { useTimelineStore } from '../../../store/useTimelineStore';
 import { useTimelineVirtualization } from '../../../features/performance/hooks/useTimelineVirtualization';
@@ -10,7 +10,6 @@ const TimelineContainer: React.FC = () => {
   const { tracks, playhead, zoom, setZoom, setPlayhead } = useTimelineStore();
 
   const handleTimelineClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    // Only move playhead if we click in the header/ruler space (not on clips)
     if (e.target === e.currentTarget || (e.target as HTMLElement).id === 'timeline-ruler') {
       const rect = e.currentTarget.getBoundingClientRect();
       const x = e.clientX - rect.left - 150; // Subtract track header width
@@ -21,7 +20,6 @@ const TimelineContainer: React.FC = () => {
   };
 
   const { containerRef, visibleRanges } = useTimelineVirtualization(tracks, zoom);
-
   const totalHeight = tracks.length * 60;
 
   return (
@@ -29,32 +27,40 @@ const TimelineContainer: React.FC = () => {
       <Box
         sx={{
           p: 1,
-          borderBottom: '1px solid #333',
+          borderBottom: '1px solid #1b2f54',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          bgcolor: 'background.paper',
+          bgcolor: '#0d1527',
         }}
       >
-        <Typography variant="caption" sx={{ fontWeight: 'bold' }}>
-          Timeline
+        <Stack direction="row" spacing={1.5} alignItems="center">
+          <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#ffffff', textTransform: 'uppercase', fontSize: '0.68rem', letterSpacing: '0.5px' }}>
+            Multi-track timeline
+          </Typography>
           {visibleRanges.virtualizationSavingsPercentage > 0 && (
-            <Typography variant="caption" color="success.main" sx={{ ml: 1, fontWeight: 'normal' }}>
-              ({visibleRanges.virtualizationSavingsPercentage}% virtualized)
+            <Typography variant="caption" color="success.main" sx={{ fontWeight: 'bold', fontSize: '0.65rem' }}>
+              ({visibleRanges.virtualizationSavingsPercentage}% Virtualized)
             </Typography>
           )}
-        </Typography>
+
+          {/* Timeline markers / Chapter nodes */}
+          <Chip label="Intro (0:00)" size="small" sx={{ height: 16, fontSize: '0.55rem', bgcolor: '#12203d', color: '#00f0ff', border: '1px solid rgba(0, 240, 255, 0.2)' }} />
+          <Chip label="Chorus (0:15)" size="small" sx={{ height: 16, fontSize: '0.55rem', bgcolor: '#12203d', color: '#ec4899', border: '1px solid rgba(236, 72, 153, 0.2)' }} />
+          <Chip label="Outro (1:00)" size="small" sx={{ height: 16, fontSize: '0.55rem', bgcolor: '#12203d', color: '#f59e0b', border: '1px solid rgba(245, 158, 11, 0.2)' }} />
+        </Stack>
+
         <Stack direction="row" spacing={1} alignItems="center">
-          <ZoomOutIcon fontSize="small" />
+          <ZoomOutIcon fontSize="small" sx={{ color: '#94a3b8' }} />
           <Slider
             value={zoom}
             min={0.1}
             max={5}
             step={0.1}
             onChange={(e, v) => setZoom(v as number)}
-            sx={{ width: 100 }}
+            sx={{ width: 100, color: '#00f0ff' }}
           />
-          <ZoomInIcon fontSize="small" />
+          <ZoomInIcon fontSize="small" sx={{ color: '#94a3b8' }} />
         </Stack>
       </Box>
       <Box

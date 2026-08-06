@@ -1,8 +1,6 @@
-# Media Browser UX Guide
+# Media Browser Guide - Phase 10
 
-The upgraded Media Explorer provides professional asset ingestion tools.
+Guide detailing adaptative grid/list thumbnails and asset metadata cards.
 
-## Features
-* **Cloud Sync badging**: Status indicators showing real-time local vs CDN asset synchronization.
-* **Favorites Toggling**: Mark key visual elements directly in the thumbnail card layer.
-* **Smart Filtering**: Chip buttons filtering images, video sequences, and audio segments.
+## 1. Browser Viewports
+* Displays compact details card formats in standard lists or grid outlines.

@@ -37,38 +37,12 @@ interface MediaManagementState {
   setRightsFilter: (filter: 'all' | 'cleared' | 'pending' | 'expired' | 'restricted') => void;
 
   // Delegation Actions
-  ingestNewAsset: (
-    name: string,
-    url: string,
-    size?: number,
-    mimeType?: string,
-  ) => Promise<MediaAsset>;
-  pushNewVersion: (
-    assetId: string,
-    url: string,
-    size?: number,
-    changelog?: string,
-  ) => Promise<void>;
+  ingestNewAsset: (name: string, url: string, size?: number, mimeType?: string) => Promise<MediaAsset>;
+  pushNewVersion: (assetId: string, url: string, size?: number, changelog?: string) => Promise<void>;
   restoreAssetVersion: (assetId: string, versionNumber: number) => Promise<void>;
-  assignAssetLicense: (
-    assetId: string,
-    type: string,
-    owner: string,
-    territories: string[],
-    expDate?: string,
-  ) => Promise<void>;
-  submitAssetForApproval: (
-    assetId: string,
-    versionId: string,
-    requestedBy: string,
-    approvers: string[],
-  ) => Promise<void>;
-  voteOnApproval: (
-    requestId: string,
-    approver: string,
-    vote: 'approve' | 'reject',
-    comment?: string,
-  ) => Promise<void>;
+  assignAssetLicense: (assetId: string, type: string, owner: string, territories: string[], expDate?: string) => Promise<void>;
+  submitAssetForApproval: (assetId: string, versionId: string, requestedBy: string, approvers: string[]) => Promise<void>;
+  voteOnApproval: (requestId: string, approver: string, vote: 'approve' | 'reject', comment?: string) => Promise<void>;
   migrateAssetTier: (assetId: string, tier: 'online' | 'nearline' | 'cold') => Promise<void>;
   createFolder: (name: string, parentId?: string) => Promise<void>;
   createCollection: (name: string, type: 'standard' | 'smart', criteria?: any) => Promise<void>;
@@ -153,22 +127,15 @@ export const useMediaManagementStore = create<MediaManagementState>((set, get) =
     ingestNewAsset: async (name, url, size, mimeType) => {
       set({ isLoading: true });
       try {
-        const tech =
-          await globalMediaManagementPlatformEngine.metadataService.extractTechnicalMetadata(
-            url,
-            size || 1024 * 100,
-            mimeType || 'video/mp4',
-          );
+        const tech = await globalMediaManagementPlatformEngine.metadataService.extractTechnicalMetadata(
+          url,
+          size || 1024 * 100,
+          mimeType || 'video/mp4'
+        );
 
         const activeFolderId = get().selectedFolderId;
-        const folder = activeFolderId
-          ? globalMediaManagementPlatformEngine.catalogService.getFolder(activeFolderId)
-          : undefined;
-        const metadata =
-          await globalMediaManagementPlatformEngine.metadataService.compileMetadataProfile(
-            url,
-            folder,
-          );
+        const folder = activeFolderId ? globalMediaManagementPlatformEngine.catalogService.getFolder(activeFolderId) : undefined;
+        const metadata = await globalMediaManagementPlatformEngine.metadataService.compileMetadataProfile(url, folder);
 
         const assetId = `asset_${Math.random().toString(36).substr(2, 9)}`;
 
@@ -223,7 +190,7 @@ export const useMediaManagementStore = create<MediaManagementState>((set, get) =
         size || 1024 * 100,
         `chk_${Math.random().toString(36).substr(2, 9)}`,
         'Admin',
-        changelog,
+        changelog
       );
 
       get().loadAssets();
@@ -267,7 +234,7 @@ export const useMediaManagementStore = create<MediaManagementState>((set, get) =
         asset,
         versionId,
         requestedBy,
-        approvers,
+        approvers
       );
 
       get().loadApprovalRequests();
@@ -280,7 +247,7 @@ export const useMediaManagementStore = create<MediaManagementState>((set, get) =
         requestId,
         approver,
         vote,
-        comment,
+        comment
       );
 
       get().loadApprovalRequests();

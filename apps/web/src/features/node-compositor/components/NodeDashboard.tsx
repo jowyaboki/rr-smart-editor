@@ -32,9 +32,11 @@ export const NodeDashboard: React.FC = () => {
       position: { x: 100, y: 300 },
       inputs: [
         { id: `p_in_${newId}`, name: 'input', direction: 'input', type: 'image' },
-        { id: `p_rad_${newId}`, name: 'radius', direction: 'input', type: 'number', value: 15 },
+        { id: `p_rad_${newId}`, name: 'radius', direction: 'input', type: 'number', value: 15 }
       ],
-      outputs: [{ id: `p_out_${newId}`, name: 'image', direction: 'output', type: 'image' }],
+      outputs: [
+        { id: `p_out_${newId}`, name: 'image', direction: 'output', type: 'image' }
+      ],
       properties: { radius: 15 },
     };
     addNode(newNode);
@@ -48,59 +50,42 @@ export const NodeDashboard: React.FC = () => {
       category: 'ai',
       type: 'ai_face_blur',
       position: { x: 100, y: 350 },
-      inputs: [{ id: `p_in_${newId}`, name: 'input', direction: 'input', type: 'image' }],
-      outputs: [{ id: `p_out_${newId}`, name: 'image', direction: 'output', type: 'image' }],
+      inputs: [
+        { id: `p_in_${newId}`, name: 'input', direction: 'input', type: 'image' }
+      ],
+      outputs: [
+        { id: `p_out_${newId}`, name: 'image', direction: 'output', type: 'image' }
+      ],
       properties: { sensitivity: 0.8 },
     };
     addNode(newNode);
   };
 
   return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateRows: '50px 1fr',
-        height: '100vh',
-        backgroundColor: '#0c0c0e',
-        color: '#e2e8f0',
-        fontFamily: 'Inter, system-ui, sans-serif',
-        boxSizing: 'border-box',
-        overflow: 'hidden',
-      }}
-    >
+    <div style={{
+      display: 'grid',
+      gridTemplateRows: '50px 1fr',
+      height: '100vh',
+      backgroundColor: '#0c0c0e',
+      color: '#e2e8f0',
+      fontFamily: 'Inter, system-ui, sans-serif',
+      boxSizing: 'border-box',
+      overflow: 'hidden',
+    }}>
       {/* HEADER CONTROLLER */}
-      <header
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: '0 20px',
-          backgroundColor: '#111115',
-          borderBottom: '1px solid #1f1f23',
-        }}
-      >
+      <header style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '0 20px',
+        backgroundColor: '#111115',
+        borderBottom: '1px solid #1f1f23',
+      }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <h2
-            style={{
-              fontSize: '15px',
-              fontWeight: 700,
-              margin: 0,
-              color: '#f8fafc',
-              letterSpacing: '0.5px',
-            }}
-          >
+          <h2 style={{ fontSize: '15px', fontWeight: 700, margin: 0, color: '#f8fafc', letterSpacing: '0.5px' }}>
             ⚗️ Procedural Node Compositor
           </h2>
-          <span
-            style={{
-              fontSize: '10px',
-              backgroundColor: '#8b5cf620',
-              color: '#8b5cf6',
-              padding: '2px 8px',
-              borderRadius: '4px',
-              fontWeight: 600,
-            }}
-          >
+          <span style={{ fontSize: '10px', backgroundColor: '#8b5cf620', color: '#8b5cf6', padding: '2px 8px', borderRadius: '4px', fontWeight: 600 }}>
             Active: {graph.name}
           </span>
         </div>
@@ -171,15 +156,13 @@ export const NodeDashboard: React.FC = () => {
       </header>
 
       {/* 3-PANE LAYOUT */}
-      <main
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 340px',
-          padding: '16px',
-          gap: '16px',
-          overflow: 'hidden',
-        }}
-      >
+      <main style={{
+        display: 'grid',
+        gridTemplateColumns: '1fr 340px',
+        padding: '16px',
+        gap: '16px',
+        overflow: 'hidden',
+      }}>
         {/* LEFT CANVAS WORKSPACE */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', overflow: 'hidden' }}>
           <div style={{ display: 'flex', gap: '8px' }}>
@@ -207,25 +190,10 @@ export const NodeDashboard: React.FC = () => {
         </div>
 
         {/* RIGHT PROPERTY INSPECTORS & PREVIEWS */}
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '16px',
-            overflowY: 'auto',
-            paddingRight: '4px',
-          }}
-        >
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', overflowY: 'auto', paddingRight: '4px' }}>
           <SplitPreview />
           <PerformanceOverlay />
-          <div
-            style={{
-              backgroundColor: '#141417',
-              border: '1px solid #27272a',
-              borderRadius: '8px',
-              padding: '16px',
-            }}
-          >
+          <div style={{ backgroundColor: '#141417', border: '1px solid #27272a', borderRadius: '8px', padding: '16px' }}>
             <NodeInspector />
           </div>
         </div>

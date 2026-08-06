@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Box, CssBaseline, ThemeProvider, Button, Typography } from '@mui/material';
+import { Box, CssBaseline, ThemeProvider, Button, Typography, Chip, Tooltip } from '@mui/material';
 import { Panel as SplitPanel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import { darkTheme, Panel as CustomPanel, Inspector } from '@ai-video-editor/ui';
 import Toolbar from '../components/Editor/Toolbar';
@@ -9,9 +9,8 @@ import Preview from '../components/Editor/Preview';
 import Timeline from '../components/Editor/Timeline';
 import PropertiesPanel from '../components/Editor/PropertiesPanel';
 import StatusBar from '../components/Editor/StatusBar';
-import { ContextualToolbar } from '../components/Editor/ContextualToolbar';
-import { UnifiedStatusCenter } from '../components/Editor/UnifiedStatusCenter';
 import { useWorkflowStore } from '../store/useWorkflowStore';
+import TimelineCommentsPanel from '../features/collaboration/components/TimelineCommentsPanel';
 
 // Recovery integration
 import { useAutoSave } from '../features/recovery/hooks/useAutoSave';
@@ -33,8 +32,12 @@ const Editor: React.FC = () => {
   // Initialize and run startup Recovery scanner
   const { scanForRecovery } = useRecovery(id || '');
 
-  // Workflow orchestration layout subscriptions
-  const { workspaceMode, setWorkspaceMode } = useWorkflowStore();
+  // Workspace presets state integration
+  const [layoutPreset, setLayoutPreset] = useState(() => {
+    return localStorage.getItem('rr_editor_layout_preset') || 'classic';
+  });
+
+  const { workspaceLocked } = useWorkflowStore();
 
   useEffect(() => {
     if (id) {
@@ -42,137 +45,93 @@ const Editor: React.FC = () => {
     }
   }, [id, scanForRecovery]);
 
-  // Compute pane sizes according to active workflow presets
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const activePreset = localStorage.getItem('rr_editor_layout_preset') || 'classic';
+      setLayoutPreset(activePreset);
+    };
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
+
+  // Compute pane sizes according to active layout/productivity presets
   const sidebarDefaultSize =
-    workspaceMode === 'audio'
-      ? 15
-      : workspaceMode === 'color'
-        ? 25
-        : workspaceMode === 'import'
-          ? 40
-          : workspaceMode === 'focus'
-            ? 0
-            : workspaceMode === 'editing'
-              ? 15
-              : workspaceMode === 'review'
-                ? 20
-                : workspaceMode === 'presentation'
-                  ? 0
-                  : workspaceMode === 'ai'
-                    ? 30
-                    : workspaceMode === 'minimal'
-                      ? 5
-                      : 20;
+    layoutPreset === 'audio' ? 15 :
+    layoutPreset === 'color' ? 25 :
+    layoutPreset === 'focus' ? 0 :
+    layoutPreset === 'editing' ? 15 :
+    layoutPreset === 'review' ? 20 :
+    layoutPreset === 'presentation' ? 0 :
+    layoutPreset === 'ai' ? 30 :
+    layoutPreset === 'minimal' ? 5 : 20;
 
   const previewDefaultSize =
-    workspaceMode === 'audio'
-      ? 40
-      : workspaceMode === 'color'
-        ? 55
-        : workspaceMode === 'import'
-          ? 10
-          : workspaceMode === 'focus'
-            ? 90
-            : workspaceMode === 'editing'
-              ? 45
-              : workspaceMode === 'review'
-                ? 70
-                : workspaceMode === 'presentation'
-                  ? 100
-                  : workspaceMode === 'ai'
-                    ? 50
-                    : workspaceMode === 'minimal'
-                      ? 80
-                      : 60;
+    layoutPreset === 'audio' ? 40 :
+    layoutPreset === 'color' ? 55 :
+    layoutPreset === 'focus' ? 90 :
+    layoutPreset === 'editing' ? 45 :
+    layoutPreset === 'review' ? 70 :
+    layoutPreset === 'presentation' ? 100 :
+    layoutPreset === 'ai' ? 50 :
+    layoutPreset === 'minimal' ? 80 : 60;
 
   const timelineDefaultSize =
-    workspaceMode === 'audio'
-      ? 60
-      : workspaceMode === 'color'
-        ? 45
-        : workspaceMode === 'import'
-          ? 50
-          : workspaceMode === 'focus'
-            ? 10
-            : workspaceMode === 'editing'
-              ? 55
-              : workspaceMode === 'review'
-                ? 30
-                : workspaceMode === 'presentation'
-                  ? 0
-                  : workspaceMode === 'ai'
-                    ? 50
-                    : workspaceMode === 'minimal'
-                      ? 20
-                      : 40;
+    layoutPreset === 'audio' ? 60 :
+    layoutPreset === 'color' ? 45 :
+    layoutPreset === 'focus' ? 10 :
+    layoutPreset === 'editing' ? 55 :
+    layoutPreset === 'review' ? 30 :
+    layoutPreset === 'presentation' ? 0 :
+    layoutPreset === 'ai' ? 50 :
+    layoutPreset === 'minimal' ? 20 : 40;
 
   const inspectorDefaultSize =
-    workspaceMode === 'audio'
-      ? 20
-      : workspaceMode === 'color'
-        ? 20
-        : workspaceMode === 'import'
-          ? 10
-          : workspaceMode === 'focus'
-            ? 0
-            : workspaceMode === 'editing'
-              ? 20
-              : workspaceMode === 'review'
-                ? 10
-                : workspaceMode === 'presentation'
-                  ? 0
-                  : workspaceMode === 'ai'
-                    ? 20
-                    : workspaceMode === 'minimal'
-                      ? 0
-                      : 20;
+    layoutPreset === 'audio' ? 20 :
+    layoutPreset === 'color' ? 20 :
+    layoutPreset === 'focus' ? 0 :
+    layoutPreset === 'editing' ? 20 :
+    layoutPreset === 'review' ? 10 :
+    layoutPreset === 'presentation' ? 0 :
+    layoutPreset === 'ai' ? 20 :
+    layoutPreset === 'minimal' ? 0 : 20;
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          height: '100vh',
-          overflow: 'hidden',
-          bgcolor: '#050b14',
-        }}
-      >
+      <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden', bgcolor: '#050b14' }}>
         <CssBaseline />
-        {workspaceMode !== 'presentation' && <Toolbar projectId={id} />}
+        {layoutPreset !== 'presentation' && <Toolbar projectId={id} />}
 
-        {/* Dynamic Contextual Toolbar for selected items */}
-        {workspaceMode !== 'presentation' && (
-          <Box sx={{ px: 2, pt: 1, pb: 0.5 }}>
-            <ContextualToolbar />
+        {/* Coordinated live layout stats bar */}
+        {layoutPreset !== 'presentation' && (
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', px: 2, py: 0.5, bgcolor: '#0d1527', borderBottom: '1px solid #1b2f54' }}>
+            <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+              <Typography variant="caption" sx={{ color: '#00f0ff', fontWeight: 'bold' }}>
+                Active Mode: {layoutPreset.toUpperCase()}
+              </Typography>
+              <Chip label="WebGL 60FPS" size="small" sx={{ height: 16, fontSize: '0.55rem', bgcolor: 'rgba(16, 185, 129, 0.15)', color: '#10b981' }} />
+            </Box>
+            <Typography variant="caption" sx={{ color: '#94a3b8' }}>
+              Project: {projectName}
+            </Typography>
           </Box>
         )}
 
         <Box sx={{ flexGrow: 1, display: 'flex', overflow: 'hidden', p: 1, gap: 1 }}>
           <PanelGroup direction="horizontal">
-            {/* Left Sidebar inside Panel wrapper if layout preset allows */}
+            {/* Left Sidebar inside Panel wrapper */}
             {sidebarDefaultSize > 0 && (
               <SplitPanel defaultSize={sidebarDefaultSize} minSize={10}>
-                <CustomPanel title={`${workspaceMode.toUpperCase()} Explorer`}>
+                <CustomPanel title="Workspace Explorer">
                   <Sidebar projectId={id || ''} />
                 </CustomPanel>
               </SplitPanel>
             )}
 
-            {sidebarDefaultSize > 0 && (
+            {sidebarDefaultSize > 0 && !workspaceLocked && (
               <PanelResizeHandle
-                style={{
-                  width: '6px',
-                  backgroundColor: 'transparent',
-                  cursor: 'col-resize',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
+                style={{ width: '6px', backgroundColor: 'transparent', cursor: 'col-resize', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               >
-                <Box
-                  sx={{ width: '2px', height: '30px', bgcolor: '#1b2f54', borderRadius: '1px' }}
-                />
+                <Box sx={{ width: '2px', height: '30px', bgcolor: '#1b2f54', borderRadius: '1px' }} />
               </PanelResizeHandle>
             )}
 
@@ -187,20 +146,11 @@ const Editor: React.FC = () => {
                   </SplitPanel>
                 )}
 
-                {previewDefaultSize > 0 && timelineDefaultSize > 0 && (
+                {previewDefaultSize > 0 && timelineDefaultSize > 0 && !workspaceLocked && (
                   <PanelResizeHandle
-                    style={{
-                      height: '6px',
-                      backgroundColor: 'transparent',
-                      cursor: 'row-resize',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
+                    style={{ height: '6px', backgroundColor: 'transparent', cursor: 'row-resize', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                   >
-                    <Box
-                      sx={{ height: '2px', width: '30px', bgcolor: '#1b2f54', borderRadius: '1px' }}
-                    />
+                    <Box sx={{ height: '2px', width: '30px', bgcolor: '#1b2f54', borderRadius: '1px' }} />
                   </PanelResizeHandle>
                 )}
 
@@ -214,20 +164,11 @@ const Editor: React.FC = () => {
               </PanelGroup>
             </SplitPanel>
 
-            {inspectorDefaultSize > 0 && (
+            {inspectorDefaultSize > 0 && !workspaceLocked && (
               <PanelResizeHandle
-                style={{
-                  width: '6px',
-                  backgroundColor: 'transparent',
-                  cursor: 'col-resize',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
+                style={{ width: '6px', backgroundColor: 'transparent', cursor: 'col-resize', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               >
-                <Box
-                  sx={{ width: '2px', height: '30px', bgcolor: '#1b2f54', borderRadius: '1px' }}
-                />
+                <Box sx={{ width: '2px', height: '30px', bgcolor: '#1b2f54', borderRadius: '1px' }} />
               </PanelResizeHandle>
             )}
 
@@ -235,15 +176,21 @@ const Editor: React.FC = () => {
             {inspectorDefaultSize > 0 && (
               <SplitPanel defaultSize={inspectorDefaultSize} minSize={10}>
                 <Inspector title="Track Inspector & ABAC">
-                  <PropertiesPanel />
+                  <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', gap: 1.5 }}>
+                    <PropertiesPanel />
+                    {layoutPreset === 'review' && (
+                      <Box sx={{ flexGrow: 1 }}>
+                        <TimelineCommentsPanel />
+                      </Box>
+                    )}
+                  </Box>
                 </Inspector>
               </SplitPanel>
             )}
           </PanelGroup>
         </Box>
 
-        {/* Permanently visible contextual status bar or expanded Unified Status Center */}
-        {workspaceMode !== 'presentation' && <UnifiedStatusCenter />}
+        {layoutPreset !== 'presentation' && <StatusBar />}
 
         {/* Unscheduled shutdown recovery dialog */}
         <RecoveryDialog projectId={id || ''} />

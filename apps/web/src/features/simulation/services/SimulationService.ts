@@ -1,9 +1,4 @@
-import {
-  SimulationEngine,
-  IDigitalTwin,
-  Scenario,
-  SimulationResult,
-} from '@ai-video-editor/simulation-engine';
+import { SimulationEngine, IDigitalTwin, Scenario, SimulationResult } from '@ai-video-editor/simulation-engine';
 
 export class SimulationService {
   private engine: SimulationEngine;

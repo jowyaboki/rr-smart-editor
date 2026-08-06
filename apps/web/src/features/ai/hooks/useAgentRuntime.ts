@@ -20,14 +20,7 @@ export function useAgentRuntime() {
 
     try {
       const result = await runtime.executeAgentRun(message, {
-        permissions: [
-          'read_project',
-          'write_project',
-          'write_timeline',
-          'read_assets',
-          'render',
-          'publish',
-        ],
+        permissions: ['read_project', 'write_project', 'write_timeline', 'read_assets', 'render', 'publish'],
         requireConfirmation: true,
         onConfirm: async (toolName, args) => {
           // Automatic confirmation mock for standard execution

@@ -116,52 +116,19 @@ export const PlatformDashboard: React.FC = () => {
               UNIFIED PLATFORM KERNEL RUNTIME CONSOLE
             </h1>
             <p style={{ margin: 0, fontSize: '11px', color: '#888' }}>
-              Central bootstrapping, DI discovery, topological dependency graph, and diagnostics
-              timeline
+              Central bootstrapping, DI discovery, topological dependency graph, and diagnostics timeline
             </p>
           </div>
         </div>
 
         {/* TOP STATUS GAUGES */}
         <div style={{ display: 'flex', gap: '16px' }}>
-          <div
-            style={{
-              background: '#252526',
-              padding: '6px 12px',
-              borderRadius: '4px',
-              border: '1px solid #333',
-            }}
-          >
-            <span
-              style={{
-                fontSize: '10px',
-                color: '#888',
-                display: 'block',
-                textTransform: 'uppercase',
-              }}
-            >
-              Modules Loaded
-            </span>
+          <div style={{ background: '#252526', padding: '6px 12px', borderRadius: '4px', border: '1px solid #333' }}>
+            <span style={{ fontSize: '10px', color: '#888', display: 'block', textTransform: 'uppercase' }}>Modules Loaded</span>
             <strong style={{ color: '#2196f3', fontSize: '14px' }}>{modules.length} Active</strong>
           </div>
-          <div
-            style={{
-              background: '#252526',
-              padding: '6px 12px',
-              borderRadius: '4px',
-              border: '1px solid #333',
-            }}
-          >
-            <span
-              style={{
-                fontSize: '10px',
-                color: '#888',
-                display: 'block',
-                textTransform: 'uppercase',
-              }}
-            >
-              Heartbeat Status
-            </span>
+          <div style={{ background: '#252526', padding: '6px 12px', borderRadius: '4px', border: '1px solid #333' }}>
+            <span style={{ fontSize: '10px', color: '#888', display: 'block', textTransform: 'uppercase' }}>Heartbeat Status</span>
             <strong style={{ color: '#4caf50', fontSize: '14px' }}>HEALTHY</strong>
           </div>
         </div>
@@ -183,15 +150,7 @@ export const PlatformDashboard: React.FC = () => {
         >
           {/* PLATFORM MODULES HEARTBEAT */}
           <div>
-            <h3
-              style={{
-                margin: '0 0 10px 0',
-                fontSize: '12px',
-                color: '#aaa',
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em',
-              }}
-            >
+            <h3 style={{ margin: '0 0 10px 0', fontSize: '12px', color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
               🧬 Platform Modules
             </h3>
             {modules.map((m) => (
@@ -225,16 +184,7 @@ export const PlatformDashboard: React.FC = () => {
 
           {/* NAVIGATION */}
           <div style={{ borderTop: '1px solid #2d2d2d', paddingTop: '16px' }}>
-            <h3
-              style={{
-                margin: '0 0 8px 0',
-                fontSize: '12px',
-                color: '#aaa',
-                textTransform: 'uppercase',
-              }}
-            >
-              Navigation
-            </h3>
+            <h3 style={{ margin: '0 0 8px 0', fontSize: '12px', color: '#aaa', textTransform: 'uppercase' }}>Navigation</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
               {(['modules', 'services', 'health', 'diagnostics'] as const).map((p) => (
                 <div
@@ -303,42 +253,18 @@ export const PlatformDashboard: React.FC = () => {
           {/* ACTIVE PANEL RENDERS */}
           {activePanel === 'modules' && (
             <div>
-              <h2
-                style={{
-                  margin: '0 0 12px 0',
-                  fontSize: '14px',
-                  color: '#fff',
-                  textTransform: 'uppercase',
-                }}
-              >
+              <h2 style={{ margin: '0 0 12px 0', fontSize: '14px', color: '#fff', textTransform: 'uppercase' }}>
                 Module Graph Topological Startup Timeline
               </h2>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                 {modules.map((m) => (
-                  <div
-                    key={m.id}
-                    style={{
-                      background: '#1c1c1c',
-                      border: '1px solid #333',
-                      padding: '16px',
-                      borderRadius: '8px',
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        fontWeight: 'bold',
-                        color: '#fff',
-                      }}
-                    >
+                  <div key={m.id} style={{ background: '#1c1c1c', border: '1px solid #333', padding: '16px', borderRadius: '8px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 'bold', color: '#fff' }}>
                       <span>{m.name}</span>
                       <code style={{ fontSize: '11px', color: '#2196f3' }}>v{m.version}</code>
                     </div>
                     <div style={{ fontSize: '11px', color: '#aaa', marginTop: '8px' }}>
-                      <div>
-                        State: <strong style={{ color: '#4caf50' }}>{m.state}</strong>
-                      </div>
+                      <div>State: <strong style={{ color: '#4caf50' }}>{m.state}</strong></div>
                       <div>Dependencies: {m.dependencies.join(', ') || 'None'}</div>
                     </div>
                   </div>
@@ -349,35 +275,16 @@ export const PlatformDashboard: React.FC = () => {
 
           {activePanel === 'services' && (
             <div>
-              <h2
-                style={{
-                  margin: '0 0 12px 0',
-                  fontSize: '14px',
-                  color: '#fff',
-                  textTransform: 'uppercase',
-                }}
-              >
+              <h2 style={{ margin: '0 0 12px 0', fontSize: '14px', color: '#fff', textTransform: 'uppercase' }}>
                 DI Services Registries Discoverability
               </h2>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                 {services.map((s) => (
-                  <div
-                    key={s.id}
-                    style={{
-                      background: '#1c1c1c',
-                      border: '1px solid #333',
-                      padding: '16px',
-                      borderRadius: '8px',
-                    }}
-                  >
+                  <div key={s.id} style={{ background: '#1c1c1c', border: '1px solid #333', padding: '16px', borderRadius: '8px' }}>
                     <div style={{ fontWeight: 'bold', color: '#fff' }}>{s.interfaceName}</div>
                     <div style={{ fontSize: '11px', color: '#aaa', marginTop: '6px' }}>
-                      <div>
-                        Impl Class: <code>{s.implementationClass}</code>
-                      </div>
-                      <div>
-                        Singleton: {s.isSingleton ? 'YES' : 'NO'} | Scope: {s.scope}
-                      </div>
+                      <div>Impl Class: <code>{s.implementationClass}</code></div>
+                      <div>Singleton: {s.isSingleton ? 'YES' : 'NO'} | Scope: {s.scope}</div>
                     </div>
                   </div>
                 ))}
@@ -387,70 +294,27 @@ export const PlatformDashboard: React.FC = () => {
 
           {activePanel === 'health' && (
             <div>
-              <h2
-                style={{
-                  margin: '0 0 12px 0',
-                  fontSize: '14px',
-                  color: '#fff',
-                  textTransform: 'uppercase',
-                }}
-              >
+              <h2 style={{ margin: '0 0 12px 0', fontSize: '14px', color: '#fff', textTransform: 'uppercase' }}>
                 Real-time Health Monitor Telemetry
               </h2>
               {healthStatus && (
-                <div
-                  style={{
-                    background: '#1c1c1c',
-                    border: '1px solid #333',
-                    padding: '16px',
-                    borderRadius: '8px',
-                  }}
-                >
-                  <div
-                    style={{
-                      display: 'grid',
-                      gridTemplateColumns: '1fr 1fr 1fr',
-                      gap: '12px',
-                      textAlign: 'center',
-                      marginBottom: '16px',
-                    }}
-                  >
+                <div style={{ background: '#1c1c1c', border: '1px solid #333', padding: '16px', borderRadius: '8px' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px', textAlign: 'center', marginBottom: '16px' }}>
                     <div style={{ background: '#252526', padding: '12px', borderRadius: '6px' }}>
                       <span style={{ fontSize: '10px', color: '#888' }}>MEMORY HEAP</span>
-                      <strong
-                        style={{
-                          fontSize: '16px',
-                          color: '#2196f3',
-                          display: 'block',
-                          marginTop: '4px',
-                        }}
-                      >
+                      <strong style={{ fontSize: '16px', color: '#2196f3', display: 'block', marginTop: '4px' }}>
                         {(healthStatus.memoryUsageBytes / (1024 * 1024)).toFixed(1)} MB
                       </strong>
                     </div>
                     <div style={{ background: '#252526', padding: '12px', borderRadius: '6px' }}>
                       <span style={{ fontSize: '10px', color: '#888' }}>ERRORS</span>
-                      <strong
-                        style={{
-                          fontSize: '16px',
-                          color: '#f44336',
-                          display: 'block',
-                          marginTop: '4px',
-                        }}
-                      >
+                      <strong style={{ fontSize: '16px', color: '#f44336', display: 'block', marginTop: '4px' }}>
                         {healthStatus.errorsCount}
                       </strong>
                     </div>
                     <div style={{ background: '#252526', padding: '12px', borderRadius: '6px' }}>
                       <span style={{ fontSize: '10px', color: '#888' }}>WARNINGS</span>
-                      <strong
-                        style={{
-                          fontSize: '16px',
-                          color: '#ff9800',
-                          display: 'block',
-                          marginTop: '4px',
-                        }}
-                      >
+                      <strong style={{ fontSize: '16px', color: '#ff9800', display: 'block', marginTop: '4px' }}>
                         {healthStatus.warningsCount}
                       </strong>
                     </div>
@@ -462,35 +326,12 @@ export const PlatformDashboard: React.FC = () => {
 
           {activePanel === 'diagnostics' && (
             <div>
-              <h2
-                style={{
-                  margin: '0 0 12px 0',
-                  fontSize: '14px',
-                  color: '#fff',
-                  textTransform: 'uppercase',
-                }}
-              >
+              <h2 style={{ margin: '0 0 12px 0', fontSize: '14px', color: '#fff', textTransform: 'uppercase' }}>
                 Diagnostics Timeline Events Profiling
               </h2>
-              <div
-                style={{
-                  background: '#1c1c1c',
-                  border: '1px solid #333',
-                  padding: '16px',
-                  borderRadius: '8px',
-                }}
-              >
+              <div style={{ background: '#1c1c1c', border: '1px solid #333', padding: '16px', borderRadius: '8px' }}>
                 {timelineEvents.map((evt, idx) => (
-                  <div
-                    key={idx}
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      borderBottom: '1px solid #222',
-                      padding: '8px 0',
-                      fontSize: '12px',
-                    }}
-                  >
+                  <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #222', padding: '8px 0', fontSize: '12px' }}>
                     <span>{evt.task}</span>
                     <strong style={{ color: '#00e5ff' }}>{evt.durationMs}ms</strong>
                   </div>
@@ -512,51 +353,19 @@ export const PlatformDashboard: React.FC = () => {
             gap: '16px',
           }}
         >
-          <h3
-            style={{
-              margin: '0 0 4px 0',
-              fontSize: '12px',
-              color: '#aaa',
-              textTransform: 'uppercase',
-            }}
-          >
-            Subsystem Inspector
-          </h3>
+          <h3 style={{ margin: '0 0 4px 0', fontSize: '12px', color: '#aaa', textTransform: 'uppercase' }}>Subsystem Inspector</h3>
 
           {activeModule ? (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-              <div
-                style={{
-                  background: '#252526',
-                  padding: '12px',
-                  borderRadius: '6px',
-                  border: '1px solid #333',
-                }}
-              >
+              <div style={{ background: '#252526', padding: '12px', borderRadius: '6px', border: '1px solid #333' }}>
                 <div style={{ fontSize: '10px', color: '#aaa' }}>Module ID</div>
                 <code>{activeModule.id}</code>
-                <h4 style={{ margin: '8px 0 0 0', fontSize: '14px', color: '#fff' }}>
-                  {activeModule.name}
-                </h4>
+                <h4 style={{ margin: '8px 0 0 0', fontSize: '14px', color: '#fff' }}>{activeModule.name}</h4>
               </div>
 
               {/* SERVICE CONVERSIONS */}
-              <div
-                style={{
-                  background: '#252526',
-                  padding: '12px',
-                  borderRadius: '6px',
-                  border: '1px solid #333',
-                }}
-              >
-                <h4
-                  style={{
-                    margin: '0 0 8px 0',
-                    fontSize: '11px',
-                    color: '#2196f3',
-                    textTransform: 'uppercase',
-                  }}
-                >
+              <div style={{ background: '#252526', padding: '12px', borderRadius: '6px', border: '1px solid #333' }}>
+                <h4 style={{ margin: '0 0 8px 0', fontSize: '11px', color: '#2196f3', textTransform: 'uppercase' }}>
                   🔑 Module Capabilities Manifests
                 </h4>
                 {activeModule.capabilities.length > 0 ? (
@@ -566,24 +375,13 @@ export const PlatformDashboard: React.FC = () => {
                     </div>
                   ))
                 ) : (
-                  <div style={{ fontSize: '11px', color: '#888' }}>
-                    No capabilities registered explicitly.
-                  </div>
+                  <div style={{ fontSize: '11px', color: '#888' }}>No capabilities registered explicitly.</div>
                 )}
               </div>
             </div>
           ) : (
-            <div
-              style={{
-                padding: '40px 10px',
-                textAlign: 'center',
-                color: '#666',
-                border: '1px dashed #333',
-                borderRadius: '6px',
-              }}
-            >
-              Select a platform module from left sidebar keyring to inspect registered capabilities,
-              states and DI dependencies.
+            <div style={{ padding: '40px 10px', textAlign: 'center', color: '#666', border: '1px dashed #333', borderRadius: '6px' }}>
+              Select a platform module from left sidebar keyring to inspect registered capabilities, states and DI dependencies.
             </div>
           )}
         </div>
@@ -603,14 +401,7 @@ export const PlatformDashboard: React.FC = () => {
       >
         {/* LOGS CONSOLE */}
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <h4
-            style={{
-              margin: '0 0 6px 0',
-              fontSize: '11px',
-              color: '#aaa',
-              textTransform: 'uppercase',
-            }}
-          >
+          <h4 style={{ margin: '0 0 6px 0', fontSize: '11px', color: '#aaa', textTransform: 'uppercase' }}>
             🛰️ Platform Kernel System Logs
           </h4>
           <div
@@ -637,14 +428,7 @@ export const PlatformDashboard: React.FC = () => {
 
         {/* HEAL RATE TELEMETRY */}
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-          <h4
-            style={{
-              margin: '0 0 6px 0',
-              fontSize: '11px',
-              color: '#aaa',
-              textTransform: 'uppercase',
-            }}
-          >
+          <h4 style={{ margin: '0 0 6px 0', fontSize: '11px', color: '#aaa', textTransform: 'uppercase' }}>
             Diagnostics Health Score Gages
           </h4>
           <div
@@ -656,9 +440,7 @@ export const PlatformDashboard: React.FC = () => {
               textAlign: 'center',
             }}
           >
-            <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#4caf50' }}>
-              100% Core Normal
-            </div>
+            <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#4caf50' }}>100% Core Normal</div>
             <div style={{ fontSize: '10px', color: '#888', marginTop: '2px' }}>
               All 8 registered platform engines Running safely
             </div>

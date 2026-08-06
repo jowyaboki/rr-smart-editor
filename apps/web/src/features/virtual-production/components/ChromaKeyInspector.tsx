@@ -43,9 +43,7 @@ export function ChromaKeyInspector() {
         </div>
 
         <div>
-          <label className="text-[10px] text-gray-500 block mb-1">
-            Spill Reduction / Edge Feather
-          </label>
+          <label className="text-[10px] text-gray-500 block mb-1">Spill Reduction / Edge Feather</label>
           <div className="flex items-center space-x-2">
             <input
               type="range"

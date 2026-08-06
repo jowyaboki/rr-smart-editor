@@ -36,9 +36,7 @@ interface ApiGatewayState {
   loadIntegrations: () => void;
   selectApiKey: (id: string | null) => void;
   selectWebhook: (id: string | null) => void;
-  setActivePanel: (
-    panel: 'keys' | 'webhooks' | 'playground' | 'documentation' | 'integrations',
-  ) => void;
+  setActivePanel: (panel: 'keys' | 'webhooks' | 'playground' | 'documentation' | 'integrations') => void;
   setPlayground: (path: string, method: 'GET' | 'POST', body?: string) => void;
 
   // Delegation Actions
@@ -60,10 +58,7 @@ export const useApiStore = create<ApiGatewayState>((set, get) => {
 
     playgroundPath: '/v1/projects',
     playgroundMethod: 'GET',
-    playgroundHeaders: {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer test_token_999',
-    },
+    playgroundHeaders: { 'Content-Type': 'application/json', 'Authorization': 'Bearer test_token_999' },
     playgroundBody: '{}',
     playgroundResponse: null,
     playgroundResponseStatus: null,
@@ -99,7 +94,7 @@ export const useApiStore = create<ApiGatewayState>((set, get) => {
           scopes: ['projects:read', 'renders:write', 'assets:read'],
           isActive: true,
           createdAt: new Date().toISOString(),
-        },
+        }
       ];
       set({ apiKeys: list });
     },
@@ -157,12 +152,9 @@ export const useApiStore = create<ApiGatewayState>((set, get) => {
     },
 
     rotateApiKeySecret: async (keyId) => {
-      const updated = get().apiKeys.map((k) => {
+      const updated = get().apiKeys.map(k => {
         if (k.id === keyId) {
-          return {
-            ...k,
-            secretKeyHash: `HASHED_SECRET_ROTATED_${Math.random().toString(36).substr(2, 6).toUpperCase()}`,
-          };
+          return { ...k, secretKeyHash: `HASHED_SECRET_ROTATED_${Math.random().toString(36).substr(2, 6).toUpperCase()}` };
         }
         return k;
       });
@@ -216,11 +208,7 @@ export const useApiStore = create<ApiGatewayState>((set, get) => {
         });
 
         // Trigger webhook delivery event simulation if post succeeds
-        if (
-          get().playgroundPath === '/v1/renders' &&
-          get().playgroundMethod === 'POST' &&
-          res.statusCode === 201
-        ) {
+        if (get().playgroundPath === '/v1/renders' && get().playgroundMethod === 'POST' && res.statusCode === 201) {
           await globalApiPlatformEngine.webhookService.dispatchEvent('render.completed', {
             jobId: res.body.job?.id || 'job_placeholder',
             status: 'completed',

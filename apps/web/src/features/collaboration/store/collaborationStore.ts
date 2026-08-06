@@ -33,25 +33,13 @@ export const useCollaborationStore = create<CollaborationState>((set) => ({
   locks: {},
   isConnected: true,
 
-  joinSession: (sessionId, projectId, participants) =>
-    set({ sessionId, projectId, participants, isConnected: true }),
+  joinSession: (sessionId, projectId, participants) => set({ sessionId, projectId, participants, isConnected: true }),
 
-  leaveSession: () =>
-    set({
-      sessionId: null,
-      projectId: null,
-      participants: [],
-      presences: {},
-      operations: [],
-      comments: [],
-      locks: {},
-      isConnected: false,
-    }),
+  leaveSession: () => set({ sessionId: null, projectId: null, participants: [], presences: {}, operations: [], comments: [], locks: {}, isConnected: false }),
 
-  updateLocalPresence: (userId, presence) =>
-    set((state) => ({
-      presences: { ...state.presences, [userId]: presence },
-    })),
+  updateLocalPresence: (userId, presence) => set((state) => ({
+    presences: { ...state.presences, [userId]: presence },
+  })),
 
   updateRemotePresences: (presences) => set({ presences }),
 
@@ -61,16 +49,15 @@ export const useCollaborationStore = create<CollaborationState>((set) => ({
 
   appendComment: (comment) => set((state) => ({ comments: [...state.comments, comment] })),
 
-  updateLock: (targetId, lock) =>
-    set((state) => {
-      const updated = { ...state.locks };
-      if (lock) {
-        updated[targetId] = lock;
-      } else {
-        delete updated[targetId];
-      }
-      return { locks: updated };
-    }),
+  updateLock: (targetId, lock) => set((state) => {
+    const updated = { ...state.locks };
+    if (lock) {
+      updated[targetId] = lock;
+    } else {
+      delete updated[targetId];
+    }
+    return { locks: updated };
+  }),
 
   setConnected: (isConnected) => set({ isConnected }),
 }));

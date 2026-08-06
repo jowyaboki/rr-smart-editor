@@ -37,6 +37,8 @@ import {
   Memory as RenderIcon,
   Keyboard as KeyboardIcon,
   Layers as WorkspaceIcon,
+  Lock as LockIcon,
+  LockOpen as UnlockIcon
 } from '@mui/icons-material';
 import { darkTheme, DESIGN_TOKENS } from '../theme';
 import { CommandPalette } from './Shared';
@@ -64,7 +66,17 @@ const menuItems = [
   { label: 'Settings', icon: <SettingsIcon />, path: '/' },
 ];
 
-export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+interface LayoutProps {
+  children: React.ReactNode;
+  workspaceLocked?: boolean;
+  onToggleWorkspaceLock?: () => void;
+}
+
+export const Layout: React.FC<LayoutProps> = ({
+  children,
+  workspaceLocked = false,
+  onToggleWorkspaceLock
+}) => {
   const [openPalette, setOpenPalette] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
     const saved = localStorage.getItem('rr_sidebar_collapsed');
@@ -180,35 +192,15 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         localStorage.setItem('rr_editor_layout_preset', 'classic');
         window.dispatchEvent(new Event('storage'));
       },
-    },
+    }
   ];
 
   const searchEverythingCommands = [
-    {
-      label: 'Search All Video Tracks',
-      category: 'Timeline',
-      action: () => alert('Fuzzy searching timeline clip items...'),
-    },
-    {
-      label: 'Import New Asset File',
-      category: 'Assets',
-      action: () => alert('Asset library loader launched!'),
-    },
-    {
-      label: 'Load Chroma Key / Green Screen Effect',
-      category: 'Effects',
-      action: () => alert('Chroma Key shader loaded.'),
-    },
-    {
-      label: 'Inspect System Performance Heartbeat',
-      category: 'Settings',
-      action: () => alert('Triggering diagnostics grid...'),
-    },
-    {
-      label: 'Deploy AI Timeline Splitter Agent',
-      category: 'AI Tools',
-      action: () => alert('AI edit suggestion agent ready.'),
-    },
+    { label: 'Search All Video Tracks', category: 'Timeline', action: () => alert('Fuzzy searching timeline clip items...') },
+    { label: 'Import New Asset File', category: 'Assets', action: () => alert('Asset library loader launched!') },
+    { label: 'Load Chroma Key / Green Screen Effect', category: 'Effects', action: () => alert('Chroma Key shader loaded.') },
+    { label: 'Inspect System Performance Heartbeat', category: 'Settings', action: () => alert('Triggering diagnostics grid...') },
+    { label: 'Deploy AI Timeline Splitter Agent', category: 'AI Tools', action: () => alert('AI edit suggestion agent ready.') }
   ];
 
   const allCommands = [...commands, ...layoutCommands, ...searchEverythingCommands];
@@ -238,14 +230,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
               >
                 🚀
               </IconButton>
-              <Typography
-                variant="subtitle1"
-                sx={{
-                  fontWeight: DESIGN_TOKENS.typography.weight.bold,
-                  letterSpacing: '0.5px',
-                  mr: 3,
-                }}
-              >
+              <Typography variant="subtitle1" sx={{ fontWeight: DESIGN_TOKENS.typography.weight.bold, letterSpacing: '0.5px', mr: 3 }}>
                 RR Smart Editor
               </Typography>
 
@@ -253,8 +238,16 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
               <WorkflowNavigator />
             </Box>
 
-            {/* Global Search trigger for command palette */}
+            {/* Global Search trigger for command palette & Workspace lock */}
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              {onToggleWorkspaceLock && (
+                <Tooltip title={workspaceLocked ? 'Unlock Workspace Columns' : 'Lock Workspace Layout'}>
+                  <IconButton onClick={onToggleWorkspaceLock} sx={{ color: workspaceLocked ? '#ec4899' : '#94a3b8' }}>
+                    {workspaceLocked ? <LockIcon fontSize="small" /> : <UnlockIcon fontSize="small" />}
+                  </IconButton>
+                </Tooltip>
+              )}
+
               <Button
                 variant="outlined"
                 size="small"
@@ -312,9 +305,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                           justifyContent: sidebarCollapsed ? 'center' : 'initial',
                           px: 2.5,
                           bgcolor: isActive ? 'rgba(0, 240, 255, 0.08)' : 'transparent',
-                          borderLeft: isActive
-                            ? `3px solid ${DESIGN_TOKENS.colors.dark.accentPrimary}`
-                            : '3px solid transparent',
+                          borderLeft: isActive ? `3px solid ${DESIGN_TOKENS.colors.dark.accentPrimary}` : '3px solid transparent',
                           '&:hover': {
                             bgcolor: 'rgba(255, 255, 255, 0.04)',
                           },
@@ -325,9 +316,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                             minWidth: 0,
                             mr: sidebarCollapsed ? 'auto' : 2,
                             justifyContent: 'center',
-                            color: isActive
-                              ? DESIGN_TOKENS.colors.dark.accentPrimary
-                              : DESIGN_TOKENS.colors.dark.textSecondary,
+                            color: isActive ? DESIGN_TOKENS.colors.dark.accentPrimary : DESIGN_TOKENS.colors.dark.textSecondary,
                           }}
                         >
                           {item.icon}
@@ -337,12 +326,8 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                             primary={item.label}
                             primaryTypographyProps={{
                               fontSize: '0.8rem',
-                              fontWeight: isActive
-                                ? DESIGN_TOKENS.typography.weight.bold
-                                : 'normal',
-                              color: isActive
-                                ? DESIGN_TOKENS.colors.dark.accentPrimary
-                                : DESIGN_TOKENS.colors.dark.textPrimary,
+                              fontWeight: isActive ? DESIGN_TOKENS.typography.weight.bold : 'normal',
+                              color: isActive ? DESIGN_TOKENS.colors.dark.accentPrimary : DESIGN_TOKENS.colors.dark.textPrimary,
                             }}
                           />
                         )}
