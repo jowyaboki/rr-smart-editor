@@ -215,6 +215,25 @@ const PropertiesPanel: React.FC = () => {
           </Typography>
         )}
 
+        {/* 1. Enterprise governance / workspace permissions visualization */}
+        <Box sx={{ mt: 3, p: 1.5, border: '1px solid #1b2f54', borderRadius: '4px', bgcolor: 'rgba(0,0,0,0.15)' }}>
+          <Typography variant="caption" color="secondary" sx={{ fontWeight: 'bold', display: 'block', mb: 1, fontSize: '0.65rem', textTransform: 'uppercase' }}>
+            🔐 Enterprise Governance & Permissions
+          </Typography>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.75 }}>
+            <Typography variant="caption" sx={{ color: '#94a3b8' }}>User Role</Typography>
+            <Typography variant="caption" sx={{ color: '#00f0ff', fontWeight: 'bold' }}>Manager (Read/Write/Delete)</Typography>
+          </Box>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.75 }}>
+            <Typography variant="caption" sx={{ color: '#94a3b8' }}>ABAC Boundary Audit</Typography>
+            <Typography variant="caption" sx={{ color: '#10b981', fontWeight: 'bold' }}>Verified (SOC2 compliant)</Typography>
+          </Box>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Typography variant="caption" sx={{ color: '#94a3b8' }}>Lifecycle state</Typography>
+            <Typography variant="caption" sx={{ color: '#f59e0b', fontWeight: 'bold' }}>Active (Retention: 7 Yrs)</Typography>
+          </Box>
+        </Box>
+
         {advancedMode && (
           <Box sx={{ mt: 3, p: 1.5, border: '1px solid #1b2f54', borderRadius: '4px', bgcolor: 'rgba(0,0,0,0.15)' }}>
             <Typography variant="caption" color="secondary" sx={{ fontWeight: 'bold', display: 'block', mb: 1, fontSize: '0.65rem', textTransform: 'uppercase' }}>

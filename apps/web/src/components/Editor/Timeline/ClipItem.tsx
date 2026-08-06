@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Tooltip, Avatar } from '@mui/material';
 import { Clip, useTimelineStore } from '../../../store/useTimelineStore';
 import { useWorkflowStore } from '../../../store/useWorkflowStore';
 
@@ -10,7 +10,7 @@ interface ClipItemProps {
 
 const ClipItem: React.FC<ClipItemProps> = React.memo(({ clip, zoom }) => {
   const updateClip = useTimelineStore((state) => state.updateClip);
-  const setSelectedContext = useWorkflowStore((state) => state.setSelectedContext);
+  const { setSelectedContext, collaborators } = useWorkflowStore();
   const left = clip.start * zoom;
   const width = clip.duration * zoom;
   const isDragging = useRef(false);
@@ -49,8 +49,14 @@ const ClipItem: React.FC<ClipItemProps> = React.memo(({ clip, zoom }) => {
 
   const isVideo = clip.type === 'video';
   const accentColor = isVideo ? '#00f0ff' : '#ec4899';
-  const borderCol = hovered ? accentColor : 'rgba(255,255,255,0.15)';
-  const shadow = hovered ? `0 0 10px ${accentColor}88` : 'none';
+
+  // Find if a collaborator is currently selecting this specific clip
+  const occupyingCollab = collaborators.find(c => c.selectionId === clip.id);
+  const isOccupied = !!occupyingCollab;
+
+  const borderCol = occupyingCollab ? occupyingCollab.color : (hovered ? accentColor : 'rgba(255,255,255,0.15)');
+  const borderStyle = occupyingCollab ? 'dashed' : 'solid';
+  const shadow = (hovered || isOccupied) ? `0 0 10px ${borderCol}88` : 'none';
 
   return (
     <Box
@@ -65,7 +71,7 @@ const ClipItem: React.FC<ClipItemProps> = React.memo(({ clip, zoom }) => {
         top: '8%',
         bgcolor: isVideo ? 'rgba(0, 240, 255, 0.15)' : 'rgba(236, 72, 153, 0.15)',
         borderRadius: '6px',
-        border: `1.5px solid ${borderCol}`,
+        border: `1.5px ${borderStyle} ${borderCol}`,
         boxShadow: shadow,
         cursor: 'grab',
         display: 'flex',
@@ -79,19 +85,28 @@ const ClipItem: React.FC<ClipItemProps> = React.memo(({ clip, zoom }) => {
       }}
     >
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-        <Typography
-          variant="caption"
-          noWrap
-          sx={{
-            color: '#ffffff',
-            fontWeight: 'bold',
-            fontSize: '0.72rem',
-            pointerEvents: 'none',
-            textShadow: '0 1px 2px rgba(0,0,0,0.8)'
-          }}
-        >
-          {clip.name}
-        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+          {isOccupied && (
+            <Tooltip title={`Selected by ${occupyingCollab.name}`}>
+              <Typography sx={{ fontSize: '0.72rem', cursor: 'pointer' }}>
+                {occupyingCollab.avatar}
+              </Typography>
+            </Tooltip>
+          )}
+          <Typography
+            variant="caption"
+            noWrap
+            sx={{
+              color: '#ffffff',
+              fontWeight: 'bold',
+              fontSize: '0.72rem',
+              pointerEvents: 'none',
+              textShadow: '0 1px 2px rgba(0,0,0,0.8)'
+            }}
+          >
+            {clip.name}
+          </Typography>
+        </Box>
         <Typography
           variant="caption"
           sx={{

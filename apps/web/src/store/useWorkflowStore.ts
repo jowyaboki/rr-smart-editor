@@ -28,6 +28,18 @@ export interface WorkflowContext {
   meta?: Record<string, any>;
 }
 
+export interface Collaborator {
+  id: string;
+  name: string;
+  avatar: string;
+  status: 'active' | 'away' | 'offline';
+  workspace: string;
+  tool: string;
+  selectionId?: string;
+  playhead: number; // In frames
+  color: string;
+}
+
 interface WorkflowState {
   workspaceMode: string;
   setWorkspaceMode: (mode: string) => void;
@@ -56,6 +68,16 @@ interface WorkflowState {
   // Selected Transition
   activeTransition: string;
   setActiveTransition: (transition: string) => void;
+
+  // Phase 1 Real-time Collaborators
+  collaborators: Collaborator[];
+  setCollaborators: (collaborators: Collaborator[]) => void;
+  updateCollaboratorPlayhead: (id: string, playhead: number) => void;
+  updateCollaboratorSelection: (id: string, selectionId: string) => void;
+
+  // Viewport Active Editor Name (editing ownership)
+  viewportOwner: string | null;
+  setViewportOwner: (owner: string | null) => void;
 }
 
 export const useWorkflowStore = create<WorkflowState>((set) => ({
@@ -101,4 +123,20 @@ export const useWorkflowStore = create<WorkflowState>((set) => ({
 
   activeTransition: 'crossfade',
   setActiveTransition: (activeTransition) => set({ activeTransition }),
+
+  viewportOwner: 'Sarah (Lead Motion Designer)',
+
+  collaborators: [
+    { id: 'user-1', name: 'Sarah (Lead Motion Designer)', avatar: '👩‍🎤', status: 'active', workspace: 'Motion Graphics', tool: 'Easing Preset', selectionId: 'clip-v1', playhead: 120, color: '#ec4899' },
+    { id: 'user-2', name: 'James (Colorist)', avatar: '👨‍🎨', status: 'active', workspace: 'Color grading', tool: 'LUT calibration', selectionId: 'clip-v2', playhead: 340, color: '#f59e0b' },
+    { id: 'user-3', name: 'Michael (Audio Lead)', avatar: '🎧', status: 'away', workspace: 'Audio Mix', tool: 'Biquad filter', playhead: 15, color: '#10b981' },
+    { id: 'user-4', name: 'Copilot AI Copilot', avatar: '🤖', status: 'active', workspace: 'AI Suite', tool: 'Timeline Suggester', playhead: 0, color: '#00f0ff' }
+  ],
+  setCollaborators: (collaborators) => set({ collaborators }),
+  updateCollaboratorPlayhead: (id, playhead) => set((state) => ({
+    collaborators: state.collaborators.map((c) => c.id === id ? { ...c, playhead } : c)
+  })),
+  updateCollaboratorSelection: (id, selectionId) => set((state) => ({
+    collaborators: state.collaborators.map((c) => c.id === id ? { ...c, selectionId } : c)
+  })),
 }));

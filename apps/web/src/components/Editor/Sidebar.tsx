@@ -9,7 +9,8 @@ import {
   RateReview as ReviewIcon,
   Extension as ExtensionIcon,
   Gesture as MotionIcon,
-  AutoFixHigh as VFXIcon
+  AutoFixHigh as VFXIcon,
+  Leaderboard as StatsIcon
 } from '@mui/icons-material';
 import MediaManager from './MediaManager';
 import AIAssistant from './AIAssistant';
@@ -17,6 +18,7 @@ import { ReviewSidebar } from '../../features/collaboration/components/ReviewSid
 import { PluginManagerPanel } from '../../plugins/components/PluginManagerPanel';
 import { MotionWorkspace } from './MotionWorkspace';
 import { VFXWorkspace } from './VFXWorkspace';
+import { ProductionDashboard } from './ProductionDashboard';
 
 // Lazy load heavy diagnostics panel
 const PerformanceDashboard = React.lazy(() =>
@@ -47,13 +49,18 @@ const Sidebar: React.FC<SidebarProps> = ({ projectId }) => {
           sx={{ minWidth: 'auto', textTransform: 'none', fontSize: '0.75rem' }}
         />
         <Tab
+          icon={<StatsIcon />}
+          label="Ops Dash"
+          sx={{ minWidth: 'auto', textTransform: 'none', fontSize: '0.75rem' }}
+        />
+        <Tab
           icon={<MotionIcon />}
           label="Motion"
           sx={{ minWidth: 'auto', textTransform: 'none', fontSize: '0.75rem' }}
         />
         <Tab
           icon={<VFXIcon />}
-          label="VFX Browser"
+          label="VFX"
           sx={{ minWidth: 'auto', textTransform: 'none', fontSize: '0.75rem' }}
         />
         <Tab
@@ -89,22 +96,23 @@ const Sidebar: React.FC<SidebarProps> = ({ projectId }) => {
       </Tabs>
       <Box sx={{ p: 1, flexGrow: 1, overflowY: 'auto' }}>
         {value === 0 && <MediaManager projectId={projectId} />}
-        {value === 1 && <MotionWorkspace />}
-        {value === 2 && <VFXWorkspace />}
-        {value === 3 && <AIAssistant />}
-        {value === 4 && (
+        {value === 1 && <ProductionDashboard />}
+        {value === 2 && <MotionWorkspace />}
+        {value === 3 && <VFXWorkspace />}
+        {value === 4 && <AIAssistant />}
+        {value === 5 && (
           <Typography variant="body2" sx={{ p: 2 }}>
             Text Overlays
           </Typography>
         )}
-        {value === 5 && (
+        {value === 6 && (
           <Typography variant="body2" sx={{ p: 2 }}>
             Audio Tracks
           </Typography>
         )}
-        {value === 6 && <ReviewSidebar projectId={projectId} />}
-        {value === 7 && <PluginManagerPanel />}
-        {value === 8 && (
+        {value === 7 && <ReviewSidebar projectId={projectId} />}
+        {value === 8 && <PluginManagerPanel />}
+        {value === 9 && (
           <Suspense
             fallback={
               <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
