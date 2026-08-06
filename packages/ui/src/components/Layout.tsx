@@ -70,12 +70,16 @@ interface LayoutProps {
   children: React.ReactNode;
   workspaceLocked?: boolean;
   onToggleWorkspaceLock?: () => void;
+  workspaceMode?: string;
+  onSetWorkspaceMode?: (mode: string) => void;
 }
 
 export const Layout: React.FC<LayoutProps> = ({
   children,
   workspaceLocked = false,
-  onToggleWorkspaceLock
+  onToggleWorkspaceLock,
+  workspaceMode = 'editing',
+  onSetWorkspaceMode
 }) => {
   const [openPalette, setOpenPalette] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
@@ -195,11 +199,14 @@ export const Layout: React.FC<LayoutProps> = ({
     }
   ];
 
+  // Fuzzy Universal Search extensions indexing projects, tasks, comments, and tutorials (Phase 6)
   const searchEverythingCommands = [
-    { label: 'Search All Video Tracks', category: 'Timeline', action: () => alert('Fuzzy searching timeline clip items...') },
-    { label: 'Import New Asset File', category: 'Assets', action: () => alert('Asset library loader launched!') },
-    { label: 'Load Chroma Key / Green Screen Effect', category: 'Effects', action: () => alert('Chroma Key shader loaded.') },
-    { label: 'Inspect System Performance Heartbeat', category: 'Settings', action: () => alert('Triggering diagnostics grid...') },
+    { label: 'Filter: Active Comments: "Mute vocal rumble on audio track 2"', category: 'Active Comments', action: () => alert('Showing review comment location...') },
+    { label: 'Filter: Active Tasks: "SLA Shard #2 Render completed"', category: 'Active Tasks', action: () => alert('Viewing SLA Task progress...') },
+    { label: 'Search Guide: "How to map colorist primary wheels"', category: 'Documentation', action: () => alert('Loading Knowledge Hub Article...') },
+    { label: 'Search Guide: "Smoothing tracks with Bezier Curves"', category: 'Documentation', action: () => alert('Loading Knowledge Hub Article...') },
+    { label: 'Search Guide: "Resolving multi-user edit collisions"', category: 'Documentation', action: () => alert('Loading Knowledge Hub Article...') },
+    { label: 'Search Guide: "Custom biquad cutoffs parameters"', category: 'Documentation', action: () => alert('Loading Knowledge Hub Article...') },
     { label: 'Deploy AI Timeline Splitter Agent', category: 'AI Tools', action: () => alert('AI edit suggestion agent ready.') }
   ];
 
@@ -234,8 +241,8 @@ export const Layout: React.FC<LayoutProps> = ({
                 RR Smart Editor
               </Typography>
 
-              {/* Integrated Persistent Workflow Navigator stage bar */}
-              <WorkflowNavigator />
+              {/* Integrated Persistent Workflow Navigator stage bar with prop mapping */}
+              <WorkflowNavigator workspaceMode={workspaceMode} onSetWorkspaceMode={onSetWorkspaceMode} />
             </Box>
 
             {/* Global Search trigger for command palette & Workspace lock */}

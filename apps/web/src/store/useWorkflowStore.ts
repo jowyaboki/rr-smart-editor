@@ -40,6 +40,13 @@ export interface Collaborator {
   color: string;
 }
 
+export interface KnowledgeArticle {
+  id: string;
+  title: string;
+  category: string;
+  content: string;
+}
+
 interface WorkflowState {
   workspaceMode: string;
   setWorkspaceMode: (mode: string) => void;
@@ -78,9 +85,17 @@ interface WorkflowState {
   // Viewport Active Editor Name (editing ownership)
   viewportOwner: string | null;
   setViewportOwner: (owner: string | null) => void;
+
+  // Creative Knowledge Articles
+  articles: KnowledgeArticle[];
+  searchArticles: (query: string) => KnowledgeArticle[];
+
+  // Adaptive Inspector predictive history count
+  recentPropertiesEdited: string[];
+  recordPropertyEdit: (propName: string) => void;
 }
 
-export const useWorkflowStore = create<WorkflowState>((set) => ({
+export const useWorkflowStore = create<WorkflowState>((set, get) => ({
   workspaceMode: 'editing',
   setWorkspaceMode: (mode) => {
     set({ workspaceMode: mode });
@@ -139,4 +154,24 @@ export const useWorkflowStore = create<WorkflowState>((set) => ({
   updateCollaboratorSelection: (id, selectionId) => set((state) => ({
     collaborators: state.collaborators.map((c) => c.id === id ? { ...c, selectionId } : c)
   })),
+
+  articles: [
+    { id: 'art-1', title: 'How to map colorist primary wheels', category: 'Colorist Tutorial', content: 'Use Lift, Gamma, and Gain parameters to adjust chromatic highlights and balance exposure levels.' },
+    { id: 'art-2', title: 'Smoothing tracks with Bezier Curves', category: 'Motion Guide', content: 'Activate Bezier curves inside the motion graphics editor to calculate dynamic cubic ease transforms.' },
+    { id: 'art-3', title: 'Resolving multi-user edit collisions', category: 'Collaboration Best Practice', content: 'Layout locks let you lock track resizes or editing ownership to ensure zero conflicts during live review sessions.' },
+    { id: 'art-4', title: 'Custom biquad cutoffs parameters', category: 'Audio Engineering', content: 'Enable high-pass filters with a cutoff at 80Hz to eliminate background rumble.' }
+  ],
+  searchArticles: (query) => {
+    const list = get().articles;
+    return list.filter(art =>
+      art.title.toLowerCase().includes(query.toLowerCase()) ||
+      art.category.toLowerCase().includes(query.toLowerCase())
+    );
+  },
+
+  recentPropertiesEdited: ['Opacity', 'Scale'],
+  recordPropertyEdit: (propName) => set((state) => {
+    const list = state.recentPropertiesEdited.filter(p => p !== propName);
+    return { recentPropertiesEdited: [propName, ...list].slice(0, 3) };
+  }),
 }));

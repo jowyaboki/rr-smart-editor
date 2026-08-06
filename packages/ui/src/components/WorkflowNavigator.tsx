@@ -10,7 +10,6 @@ import {
   CloudQueue as CloudIcon,
   Memory as RenderIcon
 } from '@mui/icons-material';
-import { useWorkflowStore } from '../../../../apps/web/src/store/useWorkflowStore';
 import { DESIGN_TOKENS } from '../theme';
 
 const STAGES = [
@@ -24,9 +23,15 @@ const STAGES = [
   { id: 'cloud', label: 'Cloud Sync', icon: <CloudIcon style={{ fontSize: 14 }} /> },
 ];
 
-export const WorkflowNavigator: React.FC = () => {
-  const { workspaceMode, setWorkspaceMode } = useWorkflowStore();
+interface WorkflowNavigatorProps {
+  workspaceMode?: string;
+  onSetWorkspaceMode?: (mode: string) => void;
+}
 
+export const WorkflowNavigator: React.FC<WorkflowNavigatorProps> = ({
+  workspaceMode = 'editing',
+  onSetWorkspaceMode
+}) => {
   return (
     <Box
       sx={{
@@ -45,7 +50,7 @@ export const WorkflowNavigator: React.FC = () => {
           <Tooltip key={stage.id} title={`Activate ${stage.label} layout presets`}>
             <Button
               size="small"
-              onClick={() => setWorkspaceMode(stage.id)}
+              onClick={() => onSetWorkspaceMode?.(stage.id)}
               startIcon={stage.icon}
               sx={{
                 borderRadius: '16px',

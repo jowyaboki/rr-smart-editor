@@ -5,7 +5,8 @@ import {
   CloudUpload as CloudIcon,
   DoneAll as DoneIcon,
   TrendingUp as TrendIcon,
-  AttachMoney as CostIcon
+  AttachMoney as CostIcon,
+  LocalActivity as HealthIcon
 } from '@mui/icons-material';
 
 export const ProductionDashboard: React.FC = () => {
@@ -23,7 +24,24 @@ export const ProductionDashboard: React.FC = () => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', gap: 2.5 }}>
-      {/* 1. Production SLA & Milestones */}
+      {/* 1. Project Health Status center card (v11 Sprint) */}
+      <Box sx={{ p: 1.5, border: '2px solid #00f0ff', borderRadius: '8px', bgcolor: 'rgba(0, 240, 255, 0.05)', boxShadow: '0 0 10px rgba(0, 240, 255, 0.15)' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <HealthIcon sx={{ color: '#00f0ff', fontSize: 16 }} />
+            <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#ffffff', textTransform: 'uppercase', fontSize: '0.65rem', letterSpacing: '0.5px' }}>
+              Project Health & Diagnostics
+            </Typography>
+          </Box>
+          <Chip label="HEALTHY (100%)" size="small" sx={{ height: 16, fontSize: '0.55rem', bgcolor: '#10b981', color: '#050b14', fontWeight: 'bold' }} />
+        </Box>
+        <Typography variant="caption" sx={{ color: '#94a3b8', display: 'block', mb: 1, lineHeight: 1.3 }}>
+          Unused Media Files: <Typography component="span" variant="caption" sx={{ color: '#ffffff', fontWeight: 'bold' }}>2 assets</Typography> | Pending Reviews: <Typography component="span" variant="caption" sx={{ color: '#ffffff', fontWeight: 'bold' }}>1 item</Typography><br />
+          Render Readiness: <Typography component="span" variant="caption" sx={{ color: '#10b981', fontWeight: 'bold' }}>Ready</Typography> | Delivery Readiness: <Typography component="span" variant="caption" sx={{ color: '#10b981', fontWeight: 'bold' }}>Ready</Typography>
+        </Typography>
+      </Box>
+
+      {/* 2. Production SLA & Milestones */}
       <Box sx={{ p: 1.5, border: '1px solid #1b2f54', borderRadius: '6px', bgcolor: '#0d1527' }}>
         <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#94a3b8', textTransform: 'uppercase', fontSize: '0.65rem', mb: 1.5, display: 'block' }}>
           Production Operations & Milestones
@@ -49,7 +67,7 @@ export const ProductionDashboard: React.FC = () => {
         ))}
       </Box>
 
-      {/* 2. Executive Analytics Overview (Line / Metric KPIs) */}
+      {/* 3. Executive Analytics Overview (Line / Metric KPIs) */}
       <Box sx={{ p: 1.5, border: '1px solid #1b2f54', borderRadius: '6px', bgcolor: '#0d1527' }}>
         <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#94a3b8', textTransform: 'uppercase', fontSize: '0.65rem', mb: 1.5, display: 'block' }}>
           Executive Resource Utilization
@@ -74,7 +92,7 @@ export const ProductionDashboard: React.FC = () => {
         </Grid>
       </Box>
 
-      {/* 3. Render throughput trends / Live shard diagnostics */}
+      {/* 4. Render throughput trends / Live shard diagnostics */}
       <Box sx={{ p: 1.5, border: '1px solid #1b2f54', borderRadius: '6px', bgcolor: '#0d1527' }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1.5 }}>
           <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#94a3b8', textTransform: 'uppercase', fontSize: '0.65rem' }}>

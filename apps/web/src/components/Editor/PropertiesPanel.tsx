@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { Box, Typography, Divider, Button, Slider, IconButton, TextField, Chip, Tooltip } from '@mui/material';
 import { PropertyGrid, SearchBar, StatusBadge } from '@ai-video-editor/ui';
 import { useTimelineStore } from '../../store/useTimelineStore';
+import { useWorkflowStore } from '../../store/useWorkflowStore';
 
 const PropertiesPanel: React.FC = () => {
   const { tracks } = useTimelineStore();
+  const { recentPropertiesEdited, recordPropertyEdit } = useWorkflowStore();
   const [search, setSearch] = useState('');
   const [favorites, setFavorites] = useState<string[]>(['Opacity']);
   const [advancedMode, setAdvancedMode] = useState(false);
@@ -38,7 +40,10 @@ const PropertiesPanel: React.FC = () => {
           <Slider
             size="small"
             value={opacity}
-            onChange={(e, v) => setOpacity(v as number)}
+            onChange={(e, v) => {
+              setOpacity(v as number);
+              recordPropertyEdit('Opacity');
+            }}
             min={0}
             max={100}
             sx={{ flexGrow: 1 }}
@@ -55,7 +60,10 @@ const PropertiesPanel: React.FC = () => {
           <Slider
             size="small"
             value={scale}
-            onChange={(e, v) => setScale(v as number)}
+            onChange={(e, v) => {
+              setScale(v as number);
+              recordPropertyEdit('Scale');
+            }}
             min={1}
             max={500}
             sx={{ flexGrow: 1 }}
@@ -72,7 +80,10 @@ const PropertiesPanel: React.FC = () => {
           <Slider
             size="small"
             value={positionX}
-            onChange={(e, v) => setPositionX(v as number)}
+            onChange={(e, v) => {
+              setPositionX(v as number);
+              recordPropertyEdit('Position X');
+            }}
             min={-1920}
             max={1920}
             sx={{ flexGrow: 1 }}
@@ -89,7 +100,10 @@ const PropertiesPanel: React.FC = () => {
           <Slider
             size="small"
             value={positionY}
-            onChange={(e, v) => setPositionY(v as number)}
+            onChange={(e, v) => {
+              setPositionY(v as number);
+              recordPropertyEdit('Position Y');
+            }}
             min={-1080}
             max={1080}
             sx={{ flexGrow: 1 }}
@@ -106,7 +120,10 @@ const PropertiesPanel: React.FC = () => {
           <Slider
             size="small"
             value={volume}
-            onChange={(e, v) => setVolume(v as number)}
+            onChange={(e, v) => {
+              setVolume(v as number);
+              recordPropertyEdit('Fader Volume');
+            }}
             min={-60}
             max={12}
             sx={{ flexGrow: 1 }}
@@ -139,7 +156,7 @@ const PropertiesPanel: React.FC = () => {
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <Typography variant="subtitle2" sx={{ fontWeight: 'bold', textTransform: 'uppercase', fontSize: '0.72rem', letterSpacing: '0.5px' }}>
-              Advanced Properties
+              Predictive Inspector
             </Typography>
             <StatusBadge status="success" label="Active" />
           </Box>
@@ -166,6 +183,18 @@ const PropertiesPanel: React.FC = () => {
 
         <SearchBar value={search} onChange={setSearch} placeholder="Filter clip attributes..." />
       </Box>
+
+      {/* Frequently / Recently edited properties history */}
+      {recentPropertiesEdited.length > 0 && (
+        <Box sx={{ px: 2, pt: 1, pb: 0.5, display: 'flex', flexWrap: 'wrap', gap: 1, alignItems: 'center' }}>
+          <Typography variant="caption" sx={{ color: '#94a3b8', fontSize: '0.6rem', textTransform: 'uppercase', fontWeight: 'bold' }}>
+            Recently Modified:
+          </Typography>
+          {recentPropertiesEdited.map((p, idx) => (
+            <Chip key={idx} label={p} size="small" sx={{ height: 16, fontSize: '0.55rem', bgcolor: '#12203d', color: '#00f0ff' }} />
+          ))}
+        </Box>
+      )}
 
       <Box sx={{ flexGrow: 1, overflowY: 'auto', p: 2 }}>
         {favoriteProps.length > 0 && (
@@ -215,7 +244,7 @@ const PropertiesPanel: React.FC = () => {
           </Typography>
         )}
 
-        {/* 1. Enterprise governance / workspace permissions visualization */}
+        {/* Enterprise governance / workspace permissions visualization */}
         <Box sx={{ mt: 3, p: 1.5, border: '1px solid #1b2f54', borderRadius: '4px', bgcolor: 'rgba(0,0,0,0.15)' }}>
           <Typography variant="caption" color="secondary" sx={{ fontWeight: 'bold', display: 'block', mb: 1, fontSize: '0.65rem', textTransform: 'uppercase' }}>
             🔐 Enterprise Governance & Permissions
