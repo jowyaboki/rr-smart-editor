@@ -8,15 +8,18 @@ import Templates from './pages/Templates';
 import Workflows from './pages/Workflows';
 import Renders from './pages/Renders';
 import { ErrorBoundary } from './features/release/components/ErrorBoundary';
+import { useWorkflowStore } from './store/useWorkflowStore';
 
 const App: React.FC = () => {
+  const { workspaceLocked, toggleWorkspaceLock } = useWorkflowStore();
+
   return (
     <ErrorBoundary>
       <Routes>
         <Route
           path="/"
           element={
-            <Layout>
+            <Layout workspaceLocked={workspaceLocked} onToggleWorkspaceLock={toggleWorkspaceLock}>
               <Dashboard />
             </Layout>
           }
@@ -24,7 +27,7 @@ const App: React.FC = () => {
         <Route
           path="/preview"
           element={
-            <Layout>
+            <Layout workspaceLocked={workspaceLocked} onToggleWorkspaceLock={toggleWorkspaceLock}>
               <Preview />
             </Layout>
           }
@@ -32,7 +35,7 @@ const App: React.FC = () => {
         <Route
           path="/templates"
           element={
-            <Layout>
+            <Layout workspaceLocked={workspaceLocked} onToggleWorkspaceLock={toggleWorkspaceLock}>
               <Templates />
             </Layout>
           }
@@ -40,7 +43,7 @@ const App: React.FC = () => {
         <Route
           path="/workflows"
           element={
-            <Layout>
+            <Layout workspaceLocked={workspaceLocked} onToggleWorkspaceLock={toggleWorkspaceLock}>
               <Workflows />
             </Layout>
           }
@@ -48,7 +51,7 @@ const App: React.FC = () => {
         <Route
           path="/renders"
           element={
-            <Layout>
+            <Layout workspaceLocked={workspaceLocked} onToggleWorkspaceLock={toggleWorkspaceLock}>
               <Renders />
             </Layout>
           }

@@ -15,7 +15,6 @@ import {
   IconButton,
   Button,
   Tooltip,
-  TextField,
   Divider,
 } from '@mui/material';
 import {
@@ -38,9 +37,12 @@ import {
   Memory as RenderIcon,
   Keyboard as KeyboardIcon,
   Layers as WorkspaceIcon,
+  Lock as LockIcon,
+  LockOpen as UnlockIcon
 } from '@mui/icons-material';
-import { darkTheme } from '../theme';
+import { darkTheme, DESIGN_TOKENS } from '../theme';
 import { CommandPalette } from './Shared';
+import { WorkflowNavigator } from './WorkflowNavigator';
 
 const drawerWidth = 220;
 
@@ -64,7 +66,17 @@ const menuItems = [
   { label: 'Settings', icon: <SettingsIcon />, path: '/' },
 ];
 
-export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+interface LayoutProps {
+  children: React.ReactNode;
+  workspaceLocked?: boolean;
+  onToggleWorkspaceLock?: () => void;
+}
+
+export const Layout: React.FC<LayoutProps> = ({
+  children,
+  workspaceLocked = false,
+  onToggleWorkspaceLock
+}) => {
   const [openPalette, setOpenPalette] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
     const saved = localStorage.getItem('rr_sidebar_collapsed');
@@ -110,46 +122,102 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       action: () => setSidebarCollapsed((c: boolean) => !c),
     },
     {
-      label: 'Load Classic Layout Preset',
-      category: 'Workspace Preset',
+      label: 'Focus Productivity Mode (Full screen center viewport)',
+      category: 'Productivity Mode',
       action: () => {
-        localStorage.setItem('rr_editor_layout_preset', 'classic');
+        localStorage.setItem('rr_editor_layout_preset', 'focus');
         window.dispatchEvent(new Event('storage'));
       },
     },
     {
-      label: 'Load Audio Mixer Layout Preset',
-      category: 'Workspace Preset',
+      label: 'Editing Productivity Mode (Timeline dominant)',
+      category: 'Productivity Mode',
+      action: () => {
+        localStorage.setItem('rr_editor_layout_preset', 'editing');
+        window.dispatchEvent(new Event('storage'));
+      },
+    },
+    {
+      label: 'Review Productivity Mode (Feedback tools active)',
+      category: 'Productivity Mode',
+      action: () => {
+        localStorage.setItem('rr_editor_layout_preset', 'review');
+        window.dispatchEvent(new Event('storage'));
+      },
+    },
+    {
+      label: 'Presentation Productivity Mode (Frameless composition view)',
+      category: 'Productivity Mode',
+      action: () => {
+        localStorage.setItem('rr_editor_layout_preset', 'presentation');
+        window.dispatchEvent(new Event('storage'));
+      },
+    },
+    {
+      label: 'Audio Productivity Mode (Mixer faders & waveforms prioritized)',
+      category: 'Productivity Mode',
       action: () => {
         localStorage.setItem('rr_editor_layout_preset', 'audio');
         window.dispatchEvent(new Event('storage'));
       },
     },
     {
-      label: 'Load Color Grading Layout Preset',
-      category: 'Workspace Preset',
+      label: 'Color Productivity Mode (LUT Calibration/Scopes)',
+      category: 'Productivity Mode',
       action: () => {
         localStorage.setItem('rr_editor_layout_preset', 'color');
         window.dispatchEvent(new Event('storage'));
       },
     },
+    {
+      label: 'AI Copilot Productivity Mode (Intelligent suggestions)',
+      category: 'Productivity Mode',
+      action: () => {
+        localStorage.setItem('rr_editor_layout_preset', 'ai');
+        window.dispatchEvent(new Event('storage'));
+      },
+    },
+    {
+      label: 'Minimalist Productivity Mode',
+      category: 'Productivity Mode',
+      action: () => {
+        localStorage.setItem('rr_editor_layout_preset', 'minimal');
+        window.dispatchEvent(new Event('storage'));
+      },
+    },
+    {
+      label: 'Classic Layout Preset',
+      category: 'Workspace Preset',
+      action: () => {
+        localStorage.setItem('rr_editor_layout_preset', 'classic');
+        window.dispatchEvent(new Event('storage'));
+      },
+    }
   ];
 
-  const allCommands = [...commands, ...layoutCommands];
+  const searchEverythingCommands = [
+    { label: 'Search All Video Tracks', category: 'Timeline', action: () => alert('Fuzzy searching timeline clip items...') },
+    { label: 'Import New Asset File', category: 'Assets', action: () => alert('Asset library loader launched!') },
+    { label: 'Load Chroma Key / Green Screen Effect', category: 'Effects', action: () => alert('Chroma Key shader loaded.') },
+    { label: 'Inspect System Performance Heartbeat', category: 'Settings', action: () => alert('Triggering diagnostics grid...') },
+    { label: 'Deploy AI Timeline Splitter Agent', category: 'AI Tools', action: () => alert('AI edit suggestion agent ready.') }
+  ];
+
+  const allCommands = [...commands, ...layoutCommands, ...searchEverythingCommands];
 
   const width = sidebarCollapsed ? 64 : drawerWidth;
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: '#0a1929' }}>
+      <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: DESIGN_TOKENS.colors.dark.bgMain }}>
         <CssBaseline />
 
         <AppBar
           position="fixed"
           sx={{
             zIndex: (theme) => theme.zIndex.drawer + 1,
-            bgcolor: '#0a1929',
-            borderBottom: '1px solid #1e293b',
+            bgcolor: DESIGN_TOKENS.colors.dark.bgMain,
+            borderBottom: `1px solid ${DESIGN_TOKENS.colors.dark.border}`,
             boxShadow: 'none',
           }}
         >
@@ -158,17 +226,28 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
               <IconButton
                 edge="start"
                 onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-                sx={{ color: '#ffffff' }}
+                sx={{ color: DESIGN_TOKENS.colors.dark.accentPrimary }}
               >
                 🚀
               </IconButton>
-              <Typography variant="subtitle1" sx={{ fontWeight: 'bold', letterSpacing: '0.5px' }}>
+              <Typography variant="subtitle1" sx={{ fontWeight: DESIGN_TOKENS.typography.weight.bold, letterSpacing: '0.5px', mr: 3 }}>
                 RR Smart Editor
               </Typography>
+
+              {/* Integrated Persistent Workflow Navigator stage bar */}
+              <WorkflowNavigator />
             </Box>
 
-            {/* Global Search trigger for command palette */}
+            {/* Global Search trigger for command palette & Workspace lock */}
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              {onToggleWorkspaceLock && (
+                <Tooltip title={workspaceLocked ? 'Unlock Workspace Columns' : 'Lock Workspace Layout'}>
+                  <IconButton onClick={onToggleWorkspaceLock} sx={{ color: workspaceLocked ? '#ec4899' : '#94a3b8' }}>
+                    {workspaceLocked ? <LockIcon fontSize="small" /> : <UnlockIcon fontSize="small" />}
+                  </IconButton>
+                </Tooltip>
+              )}
+
               <Button
                 variant="outlined"
                 size="small"
@@ -176,13 +255,13 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                 startIcon={<KeyboardIcon />}
                 sx={{
                   textTransform: 'none',
-                  borderColor: '#1e293b',
-                  color: '#b2bac2',
-                  bgcolor: '#102031',
+                  borderColor: DESIGN_TOKENS.colors.dark.border,
+                  color: DESIGN_TOKENS.colors.dark.textSecondary,
+                  bgcolor: DESIGN_TOKENS.colors.dark.bgPaper,
                   px: 2,
                   '&:hover': {
-                    borderColor: '#90caf9',
-                    bgcolor: '#102031',
+                    borderColor: DESIGN_TOKENS.colors.dark.accentPrimary,
+                    bgcolor: DESIGN_TOKENS.colors.dark.bgPaper,
                   },
                 }}
               >
@@ -201,8 +280,8 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
             [`& .MuiDrawer-paper`]: {
               width: width,
               boxSizing: 'border-box',
-              bgcolor: '#102031',
-              borderRight: '1px solid #1e293b',
+              bgcolor: DESIGN_TOKENS.colors.dark.bgPaper,
+              borderRight: `1px solid ${DESIGN_TOKENS.colors.dark.border}`,
               transition: 'width 0.2s ease-in-out',
               overflowX: 'hidden',
             },
@@ -225,8 +304,8 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                           minHeight: 40,
                           justifyContent: sidebarCollapsed ? 'center' : 'initial',
                           px: 2.5,
-                          bgcolor: isActive ? 'rgba(144, 202, 249, 0.08)' : 'transparent',
-                          borderLeft: isActive ? '3px solid #90caf9' : '3px solid transparent',
+                          bgcolor: isActive ? 'rgba(0, 240, 255, 0.08)' : 'transparent',
+                          borderLeft: isActive ? `3px solid ${DESIGN_TOKENS.colors.dark.accentPrimary}` : '3px solid transparent',
                           '&:hover': {
                             bgcolor: 'rgba(255, 255, 255, 0.04)',
                           },
@@ -237,7 +316,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                             minWidth: 0,
                             mr: sidebarCollapsed ? 'auto' : 2,
                             justifyContent: 'center',
-                            color: isActive ? '#90caf9' : '#b2bac2',
+                            color: isActive ? DESIGN_TOKENS.colors.dark.accentPrimary : DESIGN_TOKENS.colors.dark.textSecondary,
                           }}
                         >
                           {item.icon}
@@ -247,8 +326,8 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                             primary={item.label}
                             primaryTypographyProps={{
                               fontSize: '0.8rem',
-                              fontWeight: isActive ? 'bold' : 'normal',
-                              color: isActive ? '#90caf9' : '#ffffff',
+                              fontWeight: isActive ? DESIGN_TOKENS.typography.weight.bold : 'normal',
+                              color: isActive ? DESIGN_TOKENS.colors.dark.accentPrimary : DESIGN_TOKENS.colors.dark.textPrimary,
                             }}
                           />
                         )}

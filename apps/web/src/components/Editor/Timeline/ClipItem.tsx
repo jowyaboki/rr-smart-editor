@@ -1,6 +1,7 @@
-import React, { useRef } from 'react';
-import { Box, Typography } from '@mui/material';
+import React, { useRef, useState } from 'react';
+import { Box, Typography, Tooltip, Avatar } from '@mui/material';
 import { Clip, useTimelineStore } from '../../../store/useTimelineStore';
+import { useWorkflowStore } from '../../../store/useWorkflowStore';
 
 interface ClipItemProps {
   clip: Clip;
@@ -9,11 +10,13 @@ interface ClipItemProps {
 
 const ClipItem: React.FC<ClipItemProps> = React.memo(({ clip, zoom }) => {
   const updateClip = useTimelineStore((state) => state.updateClip);
+  const { setSelectedContext, collaborators } = useWorkflowStore();
   const left = clip.start * zoom;
   const width = clip.duration * zoom;
   const isDragging = useRef(false);
   const startX = useRef(0);
   const originalStart = useRef(0);
+  const [hovered, setHovered] = useState(false);
 
   const handleMouseMove = (e: MouseEvent) => {
     if (!isDragging.current) return;
@@ -34,41 +37,160 @@ const ClipItem: React.FC<ClipItemProps> = React.memo(({ clip, zoom }) => {
     originalStart.current = clip.start;
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mouseup', handleMouseUp);
+
+    setSelectedContext({
+      type: clip.type === 'audio' ? 'Audio Clip' : 'Video Clip',
+      id: clip.id,
+      name: clip.name,
+    });
+
     e.stopPropagation();
   };
+
+  const isVideo = clip.type === 'video';
+  const accentColor = isVideo ? '#00f0ff' : '#ec4899';
+
+  // Find if a collaborator is currently selecting this specific clip
+  const occupyingCollab = collaborators.find(c => c.selectionId === clip.id);
+  const isOccupied = !!occupyingCollab;
+
+  const borderCol = occupyingCollab ? occupyingCollab.color : (hovered ? accentColor : 'rgba(255,255,255,0.15)');
+  const borderStyle = occupyingCollab ? 'dashed' : 'solid';
+  const shadow = (hovered || isOccupied) ? `0 0 10px ${borderCol}88` : 'none';
 
   return (
     <Box
       onMouseDown={handleMouseDown}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       sx={{
         position: 'absolute',
         left,
         width,
-        height: '80%',
-        top: '10%',
-        bgcolor: clip.type === 'video' ? 'primary.main' : 'secondary.main',
-        borderRadius: 1,
-        border: '1px solid rgba(255,255,255,0.2)',
+        height: '84%',
+        top: '8%',
+        bgcolor: isVideo ? 'rgba(0, 240, 255, 0.15)' : 'rgba(236, 72, 153, 0.15)',
+        borderRadius: '6px',
+        border: `1.5px ${borderStyle} ${borderCol}`,
+        boxShadow: shadow,
         cursor: 'grab',
         display: 'flex',
-        alignItems: 'center',
+        flexDirection: 'column',
+        justifyContent: 'center',
         px: 1,
         overflow: 'hidden',
         userSelect: 'none',
-        '&:active': { cursor: 'grabbing' },
-        '&:hover': {
-          filter: 'brightness(1.1)',
-        },
+        transition: 'all 0.15s cubic-bezier(0.4, 0, 0.2, 1)',
+        '&:active': { cursor: 'grabbing', transform: 'scale(0.99)' },
       }}
     >
-      <Typography
-        variant="caption"
-        noWrap
-        sx={{ color: 'white', fontWeight: 'bold', pointerEvents: 'none' }}
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+          {isOccupied && (
+            <Tooltip title={`Selected by ${occupyingCollab.name}`}>
+              <Typography sx={{ fontSize: '0.72rem', cursor: 'pointer' }}>
+                {occupyingCollab.avatar}
+              </Typography>
+            </Tooltip>
+          )}
+          <Typography
+            variant="caption"
+            noWrap
+            sx={{
+              color: '#ffffff',
+              fontWeight: 'bold',
+              fontSize: '0.72rem',
+              pointerEvents: 'none',
+              textShadow: '0 1px 2px rgba(0,0,0,0.8)'
+            }}
+          >
+            {clip.name}
+          </Typography>
+        </Box>
+        <Typography
+          variant="caption"
+          sx={{
+            fontSize: '0.55rem',
+            px: 0.5,
+            py: 0.1,
+            borderRadius: '2px',
+            bgcolor: isVideo ? 'rgba(0, 240, 255, 0.3)' : 'rgba(236, 72, 153, 0.3)',
+            color: '#ffffff',
+            fontWeight: 'bold',
+            textTransform: 'uppercase',
+            pointerEvents: 'none'
+          }}
+        >
+          {clip.type}
+        </Typography>
+      </Box>
+
+      {/* Cinematic Waveform preview lines */}
+      <Box
+        sx={{
+          height: '10px',
+          mt: 0.5,
+          width: '100%',
+          opacity: 0.6,
+          display: 'flex',
+          gap: '2px',
+          alignItems: 'flex-end',
+          pointerEvents: 'none'
+        }}
       >
-        {clip.name}
-      </Typography>
-      {/* Resizer Handle */}
+        {[...Array(Math.max(1, Math.floor(width / 6)))].map((_, idx) => (
+          <Box
+            key={idx}
+            sx={{
+              flexGrow: 1,
+              height: `${(Math.sin(idx * 0.4) + 1.2) * 45}%`,
+              bgcolor: isVideo ? '#00f0ff' : '#ec4899',
+              borderRadius: '1px'
+            }}
+          />
+        ))}
+      </Box>
+
+      {/* Bezier visual handles and diamond easing markers */}
+      {hovered && (
+        <Box sx={{ position: 'absolute', bottom: '4px', left: '15%', display: 'flex', gap: '4px', pointerEvents: 'none' }}>
+          <Box sx={{ width: '5px', height: '5px', bgcolor: '#ffffff', transform: 'rotate(45deg)', border: '1px solid #00f0ff' }} />
+          <Box sx={{ width: '5px', height: '5px', bgcolor: '#ffffff', transform: 'rotate(45deg)', border: '1px solid #00f0ff' }} />
+        </Box>
+      )}
+
+      {/* Double sided non-destructive trim handle overlays */}
+      <Box
+        onMouseDown={(e) => {
+          e.stopPropagation();
+          const startX = e.clientX;
+          const origStart = clip.start;
+          const origDur = clip.duration;
+          const onMove = (me: MouseEvent) => {
+            const dx = (me.clientX - startX) / zoom;
+            const newStart = Math.max(0, Math.round(origStart + dx));
+            const newDur = Math.max(1, Math.round(origDur - (newStart - origStart)));
+            updateClip(clip.id, { start: newStart, duration: newDur });
+          };
+          const onUp = () => {
+            window.removeEventListener('mousemove', onMove);
+            window.removeEventListener('mouseup', onUp);
+          };
+          window.addEventListener('mousemove', onMove);
+          window.addEventListener('mouseup', onUp);
+        }}
+        sx={{
+          position: 'absolute',
+          left: 0,
+          top: 0,
+          bottom: 0,
+          width: 6,
+          cursor: 'ew-resize',
+          bgcolor: hovered ? 'rgba(255,255,255,0.2)' : 'transparent',
+          '&:hover': { bgcolor: accentColor, width: 8 },
+        }}
+      />
+
       <Box
         onMouseDown={(e) => {
           e.stopPropagation();
@@ -90,9 +212,10 @@ const ClipItem: React.FC<ClipItemProps> = React.memo(({ clip, zoom }) => {
           right: 0,
           top: 0,
           bottom: 0,
-          width: 5,
+          width: 6,
           cursor: 'ew-resize',
-          '&:hover': { bgcolor: 'rgba(255,255,255,0.3)' },
+          bgcolor: hovered ? 'rgba(255,255,255,0.2)' : 'transparent',
+          '&:hover': { bgcolor: accentColor, width: 8 },
         }}
       />
     </Box>
