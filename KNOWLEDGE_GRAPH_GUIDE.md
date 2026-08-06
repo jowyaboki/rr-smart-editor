@@ -1,10 +1,9 @@
-# Knowledge Graph Guide - Phase 10
+# Knowledge Graph Guide
 
-Guide to the platform repository knowledge graph.
+Integrating Documentation search articles, hotkeys, and AI guides into one searchable index.
 
-## 1. Conceptual Schema Nodes
-* **Packages**: `@ai-video-editor/ui`, `@ai-video-editor/design-system`.
-* **Components**: `Panel`, `Inspector`, `PropertyGrid`, `Modal`, `Layout`.
-* **Hooks**: `useProjects`, `useAutoSave`, `useRecovery`.
-* **Endpoints**: API Controllers and distributed rendering heartbeats.
-* **Engines**: Audio mixer engines and colorist graders.
+## Indices
+* **How to map colorist primary wheels** (Colorist Guide)
+* **Smoothing tracks with Bezier Curves** (Motion Graphics Guide)
+* **Resolving multi-user edit collisions** (Collaboration Guide)
+* **Custom biquad cutoffs parameters** (Audio Engineering Guide)
