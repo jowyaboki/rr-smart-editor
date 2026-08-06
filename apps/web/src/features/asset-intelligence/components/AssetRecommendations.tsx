@@ -6,23 +6,60 @@ export const AssetRecommendations: React.FC = () => {
 
   if (!activeAsset) {
     return (
-      <div style={{ background: '#1e1e1e', padding: '20px', borderRadius: '8px', border: '1px solid #333', color: '#888', textAlign: 'center' }}>
+      <div
+        style={{
+          background: '#1e1e1e',
+          padding: '20px',
+          borderRadius: '8px',
+          border: '1px solid #333',
+          color: '#888',
+          textAlign: 'center',
+        }}
+      >
         Select an asset from search results to generate recommendations.
       </div>
     );
   }
 
   return (
-    <div style={{ background: '#1e1e1e', padding: '20px', borderRadius: '8px', border: '1px solid #333', color: '#fff' }}>
-      <h3 style={{ marginTop: 0, marginBottom: '16px', fontSize: '16px', color: '#9c27b0', borderBottom: '1px solid #333', paddingBottom: '10px' }}>
+    <div
+      style={{
+        background: '#1e1e1e',
+        padding: '20px',
+        borderRadius: '8px',
+        border: '1px solid #333',
+        color: '#fff',
+      }}
+    >
+      <h3
+        style={{
+          marginTop: 0,
+          marginBottom: '16px',
+          fontSize: '16px',
+          color: '#9c27b0',
+          borderBottom: '1px solid #333',
+          paddingBottom: '10px',
+        }}
+      >
         💡 Cognitive Companion Recommendations
       </h3>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
         {isLoading ? (
-          <div style={{ textAlign: 'center', color: '#aaa', fontSize: '13px' }}>Calculating scores...</div>
+          <div style={{ textAlign: 'center', color: '#aaa', fontSize: '13px' }}>
+            Calculating scores...
+          </div>
         ) : recommendations.length === 0 ? (
-          <div style={{ padding: '12px', background: '#252526', borderRadius: '4px', textAlign: 'center', color: '#888', fontSize: '13px' }}>
+          <div
+            style={{
+              padding: '12px',
+              background: '#252526',
+              borderRadius: '4px',
+              textAlign: 'center',
+              color: '#888',
+              fontSize: '13px',
+            }}
+          >
             No related suggestions found.
           </div>
         ) : (
@@ -38,7 +75,9 @@ export const AssetRecommendations: React.FC = () => {
                 cursor: 'pointer',
               }}
             >
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
+              <div
+                style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}
+              >
                 <span
                   style={{
                     fontSize: '11px',
@@ -49,14 +88,14 @@ export const AssetRecommendations: React.FC = () => {
                       rec.type === 'frequently_used_together'
                         ? 'rgba(233, 30, 99, 0.15)'
                         : rec.type === 'brand_compatible'
-                        ? 'rgba(76, 175, 80, 0.15)'
-                        : 'rgba(156, 39, 176, 0.15)',
+                          ? 'rgba(76, 175, 80, 0.15)'
+                          : 'rgba(156, 39, 176, 0.15)',
                     color:
                       rec.type === 'frequently_used_together'
                         ? '#e91e63'
                         : rec.type === 'brand_compatible'
-                        ? '#4caf50'
-                        : '#9c27b0',
+                          ? '#4caf50'
+                          : '#9c27b0',
                     textTransform: 'uppercase',
                   }}
                 >

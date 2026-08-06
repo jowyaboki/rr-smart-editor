@@ -2,15 +2,32 @@ import React, { useEffect } from 'react';
 import { useAssetIntelligenceStore } from '../store/assetIntelligenceStore';
 
 export const SearchPanel: React.FC = () => {
-  const { searchQuery, searchResults, performSearch, setSearchQuery, inspectAsset, isLoading } = useAssetIntelligenceStore();
+  const { searchQuery, searchResults, performSearch, setSearchQuery, inspectAsset, isLoading } =
+    useAssetIntelligenceStore();
 
   useEffect(() => {
     performSearch();
   }, []);
 
   return (
-    <div style={{ background: '#1e1e1e', padding: '20px', borderRadius: '8px', border: '1px solid #333' }}>
-      <h3 style={{ marginTop: 0, marginBottom: '16px', fontSize: '16px', color: '#2196f3', borderBottom: '1px solid #333', paddingBottom: '10px' }}>
+    <div
+      style={{
+        background: '#1e1e1e',
+        padding: '20px',
+        borderRadius: '8px',
+        border: '1px solid #333',
+      }}
+    >
+      <h3
+        style={{
+          marginTop: 0,
+          marginBottom: '16px',
+          fontSize: '16px',
+          color: '#2196f3',
+          borderBottom: '1px solid #333',
+          paddingBottom: '10px',
+        }}
+      >
         🔍 Semantic Concept Search
       </h3>
 
@@ -49,9 +66,24 @@ export const SearchPanel: React.FC = () => {
       </div>
 
       {/* Threshold and weight sliders */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: '20px',
+          marginBottom: '20px',
+        }}
+      >
         <div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#aaa', marginBottom: '4px' }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              fontSize: '12px',
+              color: '#aaa',
+              marginBottom: '4px',
+            }}
+          >
             <span>Similarity Threshold</span>
             <span>{((searchQuery.threshold || 0.25) * 100).toFixed(0)}%</span>
           </div>
@@ -67,7 +99,15 @@ export const SearchPanel: React.FC = () => {
         </div>
 
         <div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#aaa', marginBottom: '4px' }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              fontSize: '12px',
+              color: '#aaa',
+              marginBottom: '4px',
+            }}
+          >
             <span>Keyword (Metadata) Weight</span>
             <span>{((searchQuery.hybridWeight || 0.5) * 100).toFixed(0)}%</span>
           </div>
@@ -86,7 +126,16 @@ export const SearchPanel: React.FC = () => {
       {/* Results */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
         {searchResults.length === 0 ? (
-          <div style={{ padding: '20px', background: '#252526', borderRadius: '4px', textAlign: 'center', color: '#888', fontSize: '13px' }}>
+          <div
+            style={{
+              padding: '20px',
+              background: '#252526',
+              borderRadius: '4px',
+              textAlign: 'center',
+              color: '#888',
+              fontSize: '13px',
+            }}
+          >
             No assets found matching the query criteria. Try adjusting the similarity threshold.
           </div>
         ) : (

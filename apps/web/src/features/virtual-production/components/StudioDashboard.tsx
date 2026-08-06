@@ -32,18 +32,106 @@ export function StudioDashboard() {
             const defaultStudio = {
               id: 'studio-001',
               name: 'Studio Main',
-              stage: { id: 'stage-1', name: 'Main Stage', dimensions: [12, 8, 4] as [number, number, number], gridSize: 0.5, originOffset: [0, 0, 0] as [number, number, number] },
+              stage: {
+                id: 'stage-1',
+                name: 'Main Stage',
+                dimensions: [12, 8, 4] as [number, number, number],
+                gridSize: 0.5,
+                originOffset: [0, 0, 0] as [number, number, number],
+              },
               cameras: {
-                'cam-1': { id: 'cam-1', name: 'A-Camera (Wide)', type: 'perspective' as any, transform: { position: [0, 1.6, 6] as [number, number, number], rotation: [0, 0, 0] as [number, number, number], scale: [1, 1, 1] as [number, number, number], anchorPoint: [0, 0] as [number, number], opacity: 1.0 }, projection: 'perspective' as any, fov: 65, focalLength: 35, lensPreset: '35mm_street' as any, depthOfField: { enabled: false, aperture: 2.8, focusDistance: 5.0, bladeCount: 9 }, bookmarks: [] },
-                'cam-2': { id: 'cam-2', name: 'Dolly Tracker Camera', type: 'dolly' as any, transform: { position: [2, 1.2, 4] as [number, number, number], rotation: [0, -15, 0] as [number, number, number], scale: [1, 1, 1] as [number, number, number], anchorPoint: [0, 0] as [number, number], opacity: 1.0 }, projection: 'perspective' as any, fov: 40, focalLength: 50, lensPreset: '50mm_standard' as any, depthOfField: { enabled: true, aperture: 1.8, focusDistance: 3.5, bladeCount: 9 }, bookmarks: [] },
+                'cam-1': {
+                  id: 'cam-1',
+                  name: 'A-Camera (Wide)',
+                  type: 'perspective' as any,
+                  transform: {
+                    position: [0, 1.6, 6] as [number, number, number],
+                    rotation: [0, 0, 0] as [number, number, number],
+                    scale: [1, 1, 1] as [number, number, number],
+                    anchorPoint: [0, 0] as [number, number],
+                    opacity: 1.0,
+                  },
+                  projection: 'perspective' as any,
+                  fov: 65,
+                  focalLength: 35,
+                  lensPreset: '35mm_street' as any,
+                  depthOfField: {
+                    enabled: false,
+                    aperture: 2.8,
+                    focusDistance: 5.0,
+                    bladeCount: 9,
+                  },
+                  bookmarks: [],
+                },
+                'cam-2': {
+                  id: 'cam-2',
+                  name: 'Dolly Tracker Camera',
+                  type: 'dolly' as any,
+                  transform: {
+                    position: [2, 1.2, 4] as [number, number, number],
+                    rotation: [0, -15, 0] as [number, number, number],
+                    scale: [1, 1, 1] as [number, number, number],
+                    anchorPoint: [0, 0] as [number, number],
+                    opacity: 1.0,
+                  },
+                  projection: 'perspective' as any,
+                  fov: 40,
+                  focalLength: 50,
+                  lensPreset: '50mm_standard' as any,
+                  depthOfField: { enabled: true, aperture: 1.8, focusDistance: 3.5, bladeCount: 9 },
+                  bookmarks: [],
+                },
               },
               cameraRigs: {},
               lightRigs: {
-                'light-1': { id: 'light-1', name: 'Key Sun Light', type: 'directional' as any, transform: { position: [5, 10, 5] as [number, number, number], rotation: [45, 45, 0] as [number, number, number], scale: [1, 1, 1] as [number, number, number], anchorPoint: [0, 0] as [number, number], opacity: 1.0 }, color: '#fff9e6', intensity: 1.5, temperature: 5500, shadows: { enabled: true, bias: 0.005, radius: 4, resolution: 2048 }, groupName: 'Key Group' },
-                'light-2': { id: 'light-2', name: 'Fill Ambient Spot', type: 'spot' as any, transform: { position: [-5, 6, 3] as [number, number, number], rotation: [15, -45, 0] as [number, number, number], scale: [1, 1, 1] as [number, number, number], anchorPoint: [0, 0] as [number, number], opacity: 1.0 }, color: '#dcf0ff', intensity: 0.8, temperature: 7000, shadows: { enabled: false, bias: 0.005, radius: 4, resolution: 1024 }, spotAngle: 45, spotPenumbra: 0.3, groupName: 'Fill Group' },
+                'light-1': {
+                  id: 'light-1',
+                  name: 'Key Sun Light',
+                  type: 'directional' as any,
+                  transform: {
+                    position: [5, 10, 5] as [number, number, number],
+                    rotation: [45, 45, 0] as [number, number, number],
+                    scale: [1, 1, 1] as [number, number, number],
+                    anchorPoint: [0, 0] as [number, number],
+                    opacity: 1.0,
+                  },
+                  color: '#fff9e6',
+                  intensity: 1.5,
+                  temperature: 5500,
+                  shadows: { enabled: true, bias: 0.005, radius: 4, resolution: 2048 },
+                  groupName: 'Key Group',
+                },
+                'light-2': {
+                  id: 'light-2',
+                  name: 'Fill Ambient Spot',
+                  type: 'spot' as any,
+                  transform: {
+                    position: [-5, 6, 3] as [number, number, number],
+                    rotation: [15, -45, 0] as [number, number, number],
+                    scale: [1, 1, 1] as [number, number, number],
+                    anchorPoint: [0, 0] as [number, number],
+                    opacity: 1.0,
+                  },
+                  color: '#dcf0ff',
+                  intensity: 0.8,
+                  temperature: 7000,
+                  shadows: { enabled: false, bias: 0.005, radius: 4, resolution: 1024 },
+                  spotAngle: 45,
+                  spotPenumbra: 0.3,
+                  groupName: 'Fill Group',
+                },
               },
               environments: {
-                'env-1': { id: 'env-1', name: 'Studio Cyc Backplate', type: 'hdri' as any, sourceUrl: '/assets/hdr/studio_cyc.hdr', proceduralParams: {}, exposure: 1.0, blurAmount: 0.0, rotationY: 0.0 },
+                'env-1': {
+                  id: 'env-1',
+                  name: 'Studio Cyc Backplate',
+                  type: 'hdri' as any,
+                  sourceUrl: '/assets/hdr/studio_cyc.hdr',
+                  proceduralParams: {},
+                  exposure: 1.0,
+                  blurAmount: 0.0,
+                  rotationY: 0.0,
+                },
               },
               trackingSources: {},
               calibrationProfiles: {},
@@ -68,7 +156,9 @@ export function StudioDashboard() {
       {/* Sidebar - Outliner & Hierarchy */}
       <div className="w-80 border-r border-[#2d2d35] bg-[#222228] flex flex-col">
         <div className="p-4 border-b border-[#2d2d35]">
-          <h2 className="text-md font-bold uppercase tracking-wider text-indigo-400">Studio Outliner</h2>
+          <h2 className="text-md font-bold uppercase tracking-wider text-indigo-400">
+            Studio Outliner
+          </h2>
         </div>
 
         {/* Cameras Hierarchy Section */}
@@ -83,12 +173,23 @@ export function StudioDashboard() {
                     id,
                     name: `New Camera ${Object.keys(studio.cameras).length + 1}`,
                     type: 'perspective',
-                    transform: { position: [0, 1.6, 5], rotation: [0, 0, 0], scale: [1, 1, 1], anchorPoint: [0, 0], opacity: 1.0 },
+                    transform: {
+                      position: [0, 1.6, 5],
+                      rotation: [0, 0, 0],
+                      scale: [1, 1, 1],
+                      anchorPoint: [0, 0],
+                      opacity: 1.0,
+                    },
                     projection: 'perspective',
                     fov: 54,
                     focalLength: 35,
                     lensPreset: '35mm_street',
-                    depthOfField: { enabled: false, aperture: 2.8, focusDistance: 5.0, bladeCount: 9 },
+                    depthOfField: {
+                      enabled: false,
+                      aperture: 2.8,
+                      focusDistance: 5.0,
+                      bladeCount: 9,
+                    },
                     bookmarks: [],
                   });
                 }}
@@ -103,7 +204,9 @@ export function StudioDashboard() {
                   key={cam.id}
                   onClick={() => selectCamera(cam.id)}
                   className={`p-2 rounded cursor-pointer transition text-sm flex justify-between items-center ${
-                    selectedCameraId === cam.id ? 'bg-indigo-600 text-white' : 'hover:bg-[#2d2d35] text-gray-300'
+                    selectedCameraId === cam.id
+                      ? 'bg-indigo-600 text-white'
+                      : 'hover:bg-[#2d2d35] text-gray-300'
                   }`}
                 >
                   <span>🎥 {cam.name}</span>
@@ -126,7 +229,13 @@ export function StudioDashboard() {
                     id,
                     name: `New Light ${Object.keys(studio.lightRigs).length + 1}`,
                     type: 'point',
-                    transform: { position: [0, 4, 0], rotation: [0, 0, 0], scale: [1, 1, 1], anchorPoint: [0, 0], opacity: 1.0 },
+                    transform: {
+                      position: [0, 4, 0],
+                      rotation: [0, 0, 0],
+                      scale: [1, 1, 1],
+                      anchorPoint: [0, 0],
+                      opacity: 1.0,
+                    },
                     color: '#ffffff',
                     intensity: 1.0,
                     temperature: 6500,
@@ -145,7 +254,9 @@ export function StudioDashboard() {
                   key={light.id}
                   onClick={() => selectLight(light.id)}
                   className={`p-2 rounded cursor-pointer transition text-sm flex justify-between items-center ${
-                    selectedLightId === light.id ? 'bg-indigo-600 text-white' : 'hover:bg-[#2d2d35] text-gray-300'
+                    selectedLightId === light.id
+                      ? 'bg-indigo-600 text-white'
+                      : 'hover:bg-[#2d2d35] text-gray-300'
                   }`}
                 >
                   <span>💡 {light.name}</span>
@@ -159,7 +270,9 @@ export function StudioDashboard() {
 
           {/* AI Assistance Inspector */}
           <div className="p-4 bg-[#1a1a20] rounded-lg border border-[#2d2d35] space-y-3">
-            <span className="text-xs font-bold text-indigo-400 uppercase block">AI Staging Copilot</span>
+            <span className="text-xs font-bold text-indigo-400 uppercase block">
+              AI Staging Copilot
+            </span>
             <input
               type="text"
               placeholder="Suggest optimal lighting..."
@@ -241,16 +354,21 @@ export function StudioDashboard() {
             <h3 className="text-sm font-bold text-gray-400 uppercase">Camera Properties</h3>
             <div>
               <label className="text-xs text-gray-400 block mb-1">Name</label>
-              <div className="text-sm font-semibold text-white">{studio.cameras[selectedCameraId].name}</div>
+              <div className="text-sm font-semibold text-white">
+                {studio.cameras[selectedCameraId].name}
+              </div>
             </div>
             <div>
               <label className="text-xs text-gray-400 block mb-1">Lens Preset</label>
-              <div className="text-sm text-indigo-400 font-medium capitalize">{studio.cameras[selectedCameraId].lensPreset}</div>
+              <div className="text-sm text-indigo-400 font-medium capitalize">
+                {studio.cameras[selectedCameraId].lensPreset}
+              </div>
             </div>
             <div>
               <label className="text-xs text-gray-400 block mb-1">FOV / Focal Length</label>
               <div className="text-xs text-white">
-                {studio.cameras[selectedCameraId].fov}° / {studio.cameras[selectedCameraId].focalLength}mm
+                {studio.cameras[selectedCameraId].fov}° /{' '}
+                {studio.cameras[selectedCameraId].focalLength}mm
               </div>
             </div>
             <div>
@@ -267,7 +385,9 @@ export function StudioDashboard() {
             <h3 className="text-sm font-bold text-gray-400 uppercase">Light Properties</h3>
             <div>
               <label className="text-xs text-gray-400 block mb-1">Name</label>
-              <div className="text-sm font-semibold text-white">{studio.lightRigs[selectedLightId].name}</div>
+              <div className="text-sm font-semibold text-white">
+                {studio.lightRigs[selectedLightId].name}
+              </div>
             </div>
             <div>
               <label className="text-xs text-gray-400 block mb-1">Color Temperature</label>
@@ -277,7 +397,9 @@ export function StudioDashboard() {
                   min="2000"
                   max="15000"
                   value={studio.lightRigs[selectedLightId].temperature}
-                  onChange={(e) => updateLight(selectedLightId, { temperature: parseInt(e.target.value) })}
+                  onChange={(e) =>
+                    updateLight(selectedLightId, { temperature: parseInt(e.target.value) })
+                  }
                   className="w-full accent-indigo-600"
                 />
                 <span className="text-xs text-white min-w-14 text-right">
@@ -294,7 +416,9 @@ export function StudioDashboard() {
                   max="5"
                   step="0.1"
                   value={studio.lightRigs[selectedLightId].intensity}
-                  onChange={(e) => updateLight(selectedLightId, { intensity: parseFloat(e.target.value) })}
+                  onChange={(e) =>
+                    updateLight(selectedLightId, { intensity: parseFloat(e.target.value) })
+                  }
                   className="w-full accent-indigo-600"
                 />
                 <span className="text-xs text-white min-w-10 text-right">
@@ -315,7 +439,9 @@ export function StudioDashboard() {
               </div>
               <div className="text-xs text-gray-300">
                 <span className="text-gray-500 block mb-1">Source file</span>
-                <span className="truncate text-gray-300 block">{activeEnv.sourceUrl || 'Procedural Generator'}</span>
+                <span className="truncate text-gray-300 block">
+                  {activeEnv.sourceUrl || 'Procedural Generator'}
+                </span>
               </div>
               <div>
                 <label className="text-xs text-gray-400 block mb-1">HDR Exposure</label>
@@ -343,7 +469,9 @@ export function StudioDashboard() {
         </div>
 
         <div className="p-4 border-t border-[#2d2d35] space-y-4 bg-[#1e1e24]">
-          <h3 className="text-xs font-bold text-gray-400 uppercase">Hardware Tracking Diagnostic</h3>
+          <h3 className="text-xs font-bold text-gray-400 uppercase">
+            Hardware Tracking Diagnostic
+          </h3>
           <TrackingMonitor />
           <CalibrationPanel />
         </div>

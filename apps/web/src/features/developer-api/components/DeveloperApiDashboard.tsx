@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDeveloperApi } from '../hooks/useDeveloperApi';
-import {
-  ApiKey,
-  Webhook,
-  WebhookEvent,
-} from '@ai-video-editor/api-gateway';
+import { ApiKey, Webhook, WebhookEvent } from '@ai-video-editor/api-gateway';
 
 // ==========================================
 // REUSABLE PRESENTATION WIDGETS
@@ -31,11 +27,21 @@ export const ApiKeyCard: React.FC<{
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <strong style={{ fontSize: '12px' }}>{apiKey.name}</strong>
-        <span style={{ fontSize: '9px', background: 'rgba(76, 175, 80, 0.2)', color: '#4caf50', padding: '1px 4px', borderRadius: '3px' }}>
+        <span
+          style={{
+            fontSize: '9px',
+            background: 'rgba(76, 175, 80, 0.2)',
+            color: '#4caf50',
+            padding: '1px 4px',
+            borderRadius: '3px',
+          }}
+        >
           Active
         </span>
       </div>
-      <div style={{ margin: '4px 0 0 0', fontSize: '11px', color: '#aaa', fontFamily: 'monospace' }}>
+      <div
+        style={{ margin: '4px 0 0 0', fontSize: '11px', color: '#aaa', fontFamily: 'monospace' }}
+      >
         Prefix: {apiKey.keyPrefix}************
       </div>
     </div>
@@ -76,7 +82,13 @@ export const WebhookEventRow: React.FC<{
         <strong>{event.event}</strong>
         <span style={{ color: '#888', marginLeft: '8px' }}>Attempt #{event.attemptsCount}</span>
       </div>
-      <span style={{ color: getStatusColor(event.deliveryStatus), fontWeight: 'bold', textTransform: 'uppercase' }}>
+      <span
+        style={{
+          color: getStatusColor(event.deliveryStatus),
+          fontWeight: 'bold',
+          textTransform: 'uppercase',
+        }}
+      >
         {event.deliveryStatus}
       </span>
     </div>
@@ -118,7 +130,9 @@ export const DeveloperApiDashboard: React.FC = () => {
 
   const [newKeyName, setNewKeyName] = useState('Broadway Web Integration Key');
   const [newWebhookUrl, setNewWebhookUrl] = useState('https://hooks.slack.com/services/broadway');
-  const [selectedLanguage, setSelectedLanguage] = useState<'typescript' | 'python' | 'go'>('typescript');
+  const [selectedLanguage, setSelectedLanguage] = useState<'typescript' | 'python' | 'go'>(
+    'typescript',
+  );
 
   useEffect(() => {
     initStore();
@@ -181,20 +195,57 @@ export const DeveloperApiDashboard: React.FC = () => {
               ENTERPRISE API GATEWAY, INTEGRATION HUB & PUBLIC SDK
             </h1>
             <p style={{ margin: 0, fontSize: '11px', color: '#888' }}>
-              Stable external endpoints gateway, dynamic webhooks deliveries, and multilang client SDK generators
+              Stable external endpoints gateway, dynamic webhooks deliveries, and multilang client
+              SDK generators
             </p>
           </div>
         </div>
 
         {/* TOP STATUS WIDGETS */}
         <div style={{ display: 'flex', gap: '16px' }}>
-          <div style={{ background: '#252526', padding: '6px 12px', borderRadius: '4px', border: '1px solid #333' }}>
-            <span style={{ fontSize: '10px', color: '#888', display: 'block', textTransform: 'uppercase' }}>API Keys Active</span>
-            <strong style={{ color: '#2196f3', fontSize: '14px' }}>{apiKeys.length} Registered</strong>
+          <div
+            style={{
+              background: '#252526',
+              padding: '6px 12px',
+              borderRadius: '4px',
+              border: '1px solid #333',
+            }}
+          >
+            <span
+              style={{
+                fontSize: '10px',
+                color: '#888',
+                display: 'block',
+                textTransform: 'uppercase',
+              }}
+            >
+              API Keys Active
+            </span>
+            <strong style={{ color: '#2196f3', fontSize: '14px' }}>
+              {apiKeys.length} Registered
+            </strong>
           </div>
-          <div style={{ background: '#252526', padding: '6px 12px', borderRadius: '4px', border: '1px solid #333' }}>
-            <span style={{ fontSize: '10px', color: '#888', display: 'block', textTransform: 'uppercase' }}>Webhooks Configured</span>
-            <strong style={{ color: '#4caf50', fontSize: '14px' }}>{webhooks.length} Endpoints</strong>
+          <div
+            style={{
+              background: '#252526',
+              padding: '6px 12px',
+              borderRadius: '4px',
+              border: '1px solid #333',
+            }}
+          >
+            <span
+              style={{
+                fontSize: '10px',
+                color: '#888',
+                display: 'block',
+                textTransform: 'uppercase',
+              }}
+            >
+              Webhooks Configured
+            </span>
+            <strong style={{ color: '#4caf50', fontSize: '14px' }}>
+              {webhooks.length} Endpoints
+            </strong>
           </div>
         </div>
       </div>
@@ -215,7 +266,15 @@ export const DeveloperApiDashboard: React.FC = () => {
         >
           {/* API KEYS KEYRING */}
           <div>
-            <h3 style={{ margin: '0 0 10px 0', fontSize: '12px', color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            <h3
+              style={{
+                margin: '0 0 10px 0',
+                fontSize: '12px',
+                color: '#aaa',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+              }}
+            >
               🔑 API Keyring Keys
             </h3>
             {apiKeys.map((k) => (
@@ -228,7 +287,10 @@ export const DeveloperApiDashboard: React.FC = () => {
             ))}
 
             {/* CREATE KEY */}
-            <form onSubmit={handleCreateApiKey} style={{ display: 'flex', gap: '6px', marginTop: '8px' }}>
+            <form
+              onSubmit={handleCreateApiKey}
+              style={{ display: 'flex', gap: '6px', marginTop: '8px' }}
+            >
               <input
                 type="text"
                 value={newKeyName}
@@ -263,7 +325,15 @@ export const DeveloperApiDashboard: React.FC = () => {
 
           {/* REGISTERED WEBHOOKS */}
           <div style={{ borderTop: '1px solid #2d2d2d', paddingTop: '16px' }}>
-            <h3 style={{ margin: '0 0 10px 0', fontSize: '12px', color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            <h3
+              style={{
+                margin: '0 0 10px 0',
+                fontSize: '12px',
+                color: '#aaa',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+              }}
+            >
               📡 Webhooks Subscriptions
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
@@ -289,7 +359,10 @@ export const DeveloperApiDashboard: React.FC = () => {
             </div>
 
             {/* REGISTER WEBHOOK */}
-            <form onSubmit={handleRegisterWebhook} style={{ display: 'flex', gap: '6px', marginTop: '8px' }}>
+            <form
+              onSubmit={handleRegisterWebhook}
+              style={{ display: 'flex', gap: '6px', marginTop: '8px' }}
+            >
               <input
                 type="text"
                 value={newWebhookUrl}
@@ -324,7 +397,16 @@ export const DeveloperApiDashboard: React.FC = () => {
 
           {/* MENU SELECTIONS */}
           <div style={{ borderTop: '1px solid #2d2d2d', paddingTop: '16px' }}>
-            <h3 style={{ margin: '0 0 8px 0', fontSize: '12px', color: '#aaa', textTransform: 'uppercase' }}>Navigation</h3>
+            <h3
+              style={{
+                margin: '0 0 8px 0',
+                fontSize: '12px',
+                color: '#aaa',
+                textTransform: 'uppercase',
+              }}
+            >
+              Navigation
+            </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
               {(['playground', 'keys', 'webhooks', 'documentation'] as const).map((p) => (
                 <div
@@ -411,13 +493,41 @@ export const DeveloperApiDashboard: React.FC = () => {
           {activePanel === 'playground' && (
             <div style={{ display: 'grid', gridTemplateRows: '1fr 1.2fr', gap: '16px', flex: 1 }}>
               {/* PLAYGROUND REQUEST BODY / HEADERS */}
-              <div style={{ background: '#1c1c1c', border: '1px solid #333', borderRadius: '6px', padding: '12px', display: 'flex', flexDirection: 'column' }}>
-                <h3 style={{ margin: '0 0 8px 0', fontSize: '12px', color: '#aaa', textTransform: 'uppercase' }}>
+              <div
+                style={{
+                  background: '#1c1c1c',
+                  border: '1px solid #333',
+                  borderRadius: '6px',
+                  padding: '12px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
+                <h3
+                  style={{
+                    margin: '0 0 8px 0',
+                    fontSize: '12px',
+                    color: '#aaa',
+                    textTransform: 'uppercase',
+                  }}
+                >
                   Request Headers & Payload
                 </h3>
-                <div style={{ display: 'flex', gap: '10px', fontSize: '11px', color: '#ccc', marginBottom: '8px' }}>
-                  <span>Method: <strong style={{ color: '#ff9800' }}>{playgroundMethod}</strong></span>
-                  <span>Path: <strong style={{ color: '#fff' }}>{playgroundPath}</strong></span>
+                <div
+                  style={{
+                    display: 'flex',
+                    gap: '10px',
+                    fontSize: '11px',
+                    color: '#ccc',
+                    marginBottom: '8px',
+                  }}
+                >
+                  <span>
+                    Method: <strong style={{ color: '#ff9800' }}>{playgroundMethod}</strong>
+                  </span>
+                  <span>
+                    Path: <strong style={{ color: '#fff' }}>{playgroundPath}</strong>
+                  </span>
                 </div>
                 <pre
                   style={{
@@ -437,13 +547,45 @@ export const DeveloperApiDashboard: React.FC = () => {
               </div>
 
               {/* RESPONSE INSPECTOR */}
-              <div style={{ background: '#1c1c1c', border: '1px solid #333', borderRadius: '6px', padding: '12px', display: 'flex', flexDirection: 'column' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                  <h3 style={{ margin: 0, fontSize: '12px', color: '#aaa', textTransform: 'uppercase' }}>
+              <div
+                style={{
+                  background: '#1c1c1c',
+                  border: '1px solid #333',
+                  borderRadius: '6px',
+                  padding: '12px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: '8px',
+                  }}
+                >
+                  <h3
+                    style={{
+                      margin: 0,
+                      fontSize: '12px',
+                      color: '#aaa',
+                      textTransform: 'uppercase',
+                    }}
+                  >
                     Response Payload Inspector
                   </h3>
                   {playgroundResponseStatus && (
-                    <span style={{ fontSize: '11px', fontWeight: 'bold', color: playgroundResponseStatus === 200 || playgroundResponseStatus === 201 ? '#4caf50' : '#f44336' }}>
+                    <span
+                      style={{
+                        fontSize: '11px',
+                        fontWeight: 'bold',
+                        color:
+                          playgroundResponseStatus === 200 || playgroundResponseStatus === 201
+                            ? '#4caf50'
+                            : '#f44336',
+                      }}
+                    >
                       Status: {playgroundResponseStatus}
                     </span>
                   )}
@@ -461,7 +603,9 @@ export const DeveloperApiDashboard: React.FC = () => {
                     overflowY: 'auto',
                   }}
                 >
-                  {playgroundResponse ? JSON.stringify(playgroundResponse, null, 2) : 'No response generated yet. Send a request above...'}
+                  {playgroundResponse
+                    ? JSON.stringify(playgroundResponse, null, 2)
+                    : 'No response generated yet. Send a request above...'}
                 </pre>
               </div>
             </div>
@@ -469,10 +613,21 @@ export const DeveloperApiDashboard: React.FC = () => {
 
           {activePanel === 'webhooks' && (
             <div>
-              <h2 style={{ margin: '0 0 12px 0', fontSize: '15px', color: '#fff' }}>Webhook Delivery History Logs</h2>
+              <h2 style={{ margin: '0 0 12px 0', fontSize: '15px', color: '#fff' }}>
+                Webhook Delivery History Logs
+              </h2>
               {webhookEvents.length === 0 ? (
-                <div style={{ padding: '40px', textAlign: 'center', color: '#666', border: '1px dashed #333', borderRadius: '8px' }}>
-                  No webhooks sent yet. Send a POST /v1/renders request in the playground to trigger automated event dispatches!
+                <div
+                  style={{
+                    padding: '40px',
+                    textAlign: 'center',
+                    color: '#666',
+                    border: '1px dashed #333',
+                    borderRadius: '8px',
+                  }}
+                >
+                  No webhooks sent yet. Send a POST /v1/renders request in the playground to trigger
+                  automated event dispatches!
                 </div>
               ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
@@ -486,7 +641,9 @@ export const DeveloperApiDashboard: React.FC = () => {
 
           {activePanel === 'documentation' && (
             <div>
-              <h2 style={{ margin: '0 0 12px 0', fontSize: '15px', color: '#fff' }}>Dynamic Multi-language Public SDK Reference</h2>
+              <h2 style={{ margin: '0 0 12px 0', fontSize: '15px', color: '#fff' }}>
+                Dynamic Multi-language Public SDK Reference
+              </h2>
               <div style={{ display: 'flex', gap: '8px', marginBottom: '12px' }}>
                 {(['typescript', 'python', 'go'] as const).map((lang) => (
                   <button
@@ -538,19 +695,51 @@ export const DeveloperApiDashboard: React.FC = () => {
             gap: '16px',
           }}
         >
-          <h3 style={{ margin: '0 0 4px 0', fontSize: '12px', color: '#aaa', textTransform: 'uppercase' }}>Scope & Quotas</h3>
+          <h3
+            style={{
+              margin: '0 0 4px 0',
+              fontSize: '12px',
+              color: '#aaa',
+              textTransform: 'uppercase',
+            }}
+          >
+            Scope & Quotas
+          </h3>
 
           {activeKey && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <div style={{ background: '#252526', padding: '12px', borderRadius: '6px', border: '1px solid #333' }}>
+              <div
+                style={{
+                  background: '#252526',
+                  padding: '12px',
+                  borderRadius: '6px',
+                  border: '1px solid #333',
+                }}
+              >
                 <div style={{ fontSize: '10px', color: '#aaa' }}>Selected Key ID</div>
                 <code>{activeKey.id}</code>
-                <h4 style={{ margin: '8px 0 0 0', fontSize: '13px', color: '#fff' }}>{activeKey.name}</h4>
+                <h4 style={{ margin: '8px 0 0 0', fontSize: '13px', color: '#fff' }}>
+                  {activeKey.name}
+                </h4>
               </div>
 
               {/* SCOPES CHECKLIST */}
-              <div style={{ background: '#252526', padding: '12px', borderRadius: '6px', border: '1px solid #333' }}>
-                <h4 style={{ margin: '0 0 8px 0', fontSize: '11px', color: '#2196f3', textTransform: 'uppercase' }}>
+              <div
+                style={{
+                  background: '#252526',
+                  padding: '12px',
+                  borderRadius: '6px',
+                  border: '1px solid #333',
+                }}
+              >
+                <h4
+                  style={{
+                    margin: '0 0 8px 0',
+                    fontSize: '11px',
+                    color: '#2196f3',
+                    textTransform: 'uppercase',
+                  }}
+                >
                   🔑 Active Token Scopes
                 </h4>
                 {activeKey.scopes.map((scope) => (
@@ -561,13 +750,33 @@ export const DeveloperApiDashboard: React.FC = () => {
               </div>
 
               {/* RATE LIMIT CODES */}
-              <div style={{ background: '#252526', padding: '12px', borderRadius: '6px', border: '1px solid #333' }}>
-                <h4 style={{ margin: '0 0 8px 0', fontSize: '11px', color: '#ff9800', textTransform: 'uppercase' }}>
+              <div
+                style={{
+                  background: '#252526',
+                  padding: '12px',
+                  borderRadius: '6px',
+                  border: '1px solid #333',
+                }}
+              >
+                <h4
+                  style={{
+                    margin: '0 0 8px 0',
+                    fontSize: '11px',
+                    color: '#ff9800',
+                    textTransform: 'uppercase',
+                  }}
+                >
                   ⏱️ API Rate Quotas
                 </h4>
-                <div style={{ fontSize: '11px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                  <div>Rate Limit: <strong>60 requests / min</strong></div>
-                  <div>Daily Quotas limit: <strong>10,000 / day</strong></div>
+                <div
+                  style={{ fontSize: '11px', display: 'flex', flexDirection: 'column', gap: '4px' }}
+                >
+                  <div>
+                    Rate Limit: <strong>60 requests / min</strong>
+                  </div>
+                  <div>
+                    Daily Quotas limit: <strong>10,000 / day</strong>
+                  </div>
                 </div>
               </div>
 
@@ -592,15 +801,45 @@ export const DeveloperApiDashboard: React.FC = () => {
 
           {activeWebhook && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <div style={{ background: '#252526', padding: '12px', borderRadius: '6px', border: '1px solid #333' }}>
+              <div
+                style={{
+                  background: '#252526',
+                  padding: '12px',
+                  borderRadius: '6px',
+                  border: '1px solid #333',
+                }}
+              >
                 <div style={{ fontSize: '10px', color: '#aaa' }}>Selected Webhook ID</div>
                 <code>{activeWebhook.id}</code>
-                <p style={{ margin: '8px 0 0 0', fontSize: '12px', color: '#fff', wordBreak: 'break-all' }}>{activeWebhook.url}</p>
+                <p
+                  style={{
+                    margin: '8px 0 0 0',
+                    fontSize: '12px',
+                    color: '#fff',
+                    wordBreak: 'break-all',
+                  }}
+                >
+                  {activeWebhook.url}
+                </p>
               </div>
 
               {/* WEBHOOK DETAILS */}
-              <div style={{ background: '#252526', padding: '12px', borderRadius: '6px', border: '1px solid #333' }}>
-                <h4 style={{ margin: '0 0 8px 0', fontSize: '11px', color: '#e91e63', textTransform: 'uppercase' }}>
+              <div
+                style={{
+                  background: '#252526',
+                  padding: '12px',
+                  borderRadius: '6px',
+                  border: '1px solid #333',
+                }}
+              >
+                <h4
+                  style={{
+                    margin: '0 0 8px 0',
+                    fontSize: '11px',
+                    color: '#e91e63',
+                    textTransform: 'uppercase',
+                  }}
+                >
                   📡 Subscribed Events ({activeWebhook.subscribedEvents.length})
                 </h4>
                 {activeWebhook.subscribedEvents.map((evt) => (
@@ -613,8 +852,17 @@ export const DeveloperApiDashboard: React.FC = () => {
           )}
 
           {!activeKey && !activeWebhook && (
-            <div style={{ padding: '40px 10px', textAlign: 'center', color: '#666', border: '1px dashed #333', borderRadius: '6px' }}>
-              Select an API key or webhook endpoint from side keyring to inspect active scopes or rotate signing secrets.
+            <div
+              style={{
+                padding: '40px 10px',
+                textAlign: 'center',
+                color: '#666',
+                border: '1px dashed #333',
+                borderRadius: '6px',
+              }}
+            >
+              Select an API key or webhook endpoint from side keyring to inspect active scopes or
+              rotate signing secrets.
             </div>
           )}
         </div>
@@ -634,7 +882,14 @@ export const DeveloperApiDashboard: React.FC = () => {
       >
         {/* LOGS CONSOLE */}
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <h4 style={{ margin: '0 0 6px 0', fontSize: '11px', color: '#aaa', textTransform: 'uppercase' }}>
+          <h4
+            style={{
+              margin: '0 0 6px 0',
+              fontSize: '11px',
+              color: '#aaa',
+              textTransform: 'uppercase',
+            }}
+          >
             🖥️ API Gateway Events Console
           </h4>
           <div
@@ -661,7 +916,14 @@ export const DeveloperApiDashboard: React.FC = () => {
 
         {/* WEBHOOK DELIVERY GAUGE */}
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-          <h4 style={{ margin: '0 0 6px 0', fontSize: '11px', color: '#aaa', textTransform: 'uppercase' }}>
+          <h4
+            style={{
+              margin: '0 0 6px 0',
+              fontSize: '11px',
+              color: '#aaa',
+              textTransform: 'uppercase',
+            }}
+          >
             Webhook Deliveries Status
           </h4>
           <div

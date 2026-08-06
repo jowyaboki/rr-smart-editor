@@ -10,10 +10,7 @@ import {
   Paper,
   Divider,
 } from '@mui/material';
-import {
-  AutoAwesome as TemplateIcon,
-  AddCircle as CreateIcon,
-} from '@mui/icons-material';
+import { AutoAwesome as TemplateIcon, AddCircle as CreateIcon } from '@mui/icons-material';
 import { useWorkflowEngine } from '../hooks/useWorkflowEngine';
 
 export const WorkflowTemplates: React.FC = () => {
@@ -25,7 +22,12 @@ export const WorkflowTemplates: React.FC = () => {
 
   return (
     <Paper sx={{ p: 2 }}>
-      <Typography variant="h6" gutterBottom fontWeight="bold" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+      <Typography
+        variant="h6"
+        gutterBottom
+        fontWeight="bold"
+        sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
+      >
         <TemplateIcon color="primary" /> Reusable Pipeline Blueprints
       </Typography>
       <Divider sx={{ mb: 3 }} />
@@ -33,12 +35,19 @@ export const WorkflowTemplates: React.FC = () => {
       <Grid container spacing={2.5}>
         {engine.templates.map((tpl) => (
           <Grid item xs={12} sm={6} md={4} key={tpl.id}>
-            <Card variant="outlined" sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+            <Card
+              variant="outlined"
+              sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+            >
               <CardContent sx={{ flexGrow: 1 }}>
                 <Typography variant="subtitle1" fontWeight="bold" color="text.primary">
                   {tpl.name}
                 </Typography>
-                <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 1, fontWeight: 'bold' }}>
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  sx={{ display: 'block', mb: 1, fontWeight: 'bold' }}
+                >
                   Category: {tpl.category || 'General'}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">

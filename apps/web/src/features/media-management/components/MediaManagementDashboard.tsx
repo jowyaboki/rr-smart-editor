@@ -47,7 +47,15 @@ export const AssetGridItem: React.FC<{
       }}
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <strong style={{ fontSize: '12px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '140px' }}>
+        <strong
+          style={{
+            fontSize: '12px',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            maxWidth: '140px',
+          }}
+        >
           {asset.name}
         </strong>
         <span
@@ -79,7 +87,16 @@ export const AssetGridItem: React.FC<{
         ))}
       </div>
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px', color: '#888', borderTop: '1px solid #333', paddingTop: '6px' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          fontSize: '10px',
+          color: '#888',
+          borderTop: '1px solid #333',
+          paddingTop: '6px',
+        }}
+      >
         <span>v{asset.currentVersionNumber}</span>
         <span>{asset.technicalMetadata.mimeType}</span>
       </div>
@@ -161,7 +178,12 @@ export const MediaManagementDashboard: React.FC = () => {
 
   const handleVersionUpdate = async () => {
     if (!activeAsset) return;
-    await pushNewVersion(activeAsset.id, `/uploads/raw/${activeAsset.name.replace('.mp4', '_v2.mp4')}`, activeAsset.technicalMetadata.size * 1.1, changelog);
+    await pushNewVersion(
+      activeAsset.id,
+      `/uploads/raw/${activeAsset.name.replace('.mp4', '_v2.mp4')}`,
+      activeAsset.technicalMetadata.size * 1.1,
+      changelog,
+    );
   };
 
   const handleRestoreVersion = async (vNumber: number) => {
@@ -171,7 +193,13 @@ export const MediaManagementDashboard: React.FC = () => {
 
   const handleAssignLicense = async () => {
     if (!activeAsset) return;
-    await assignAssetLicense(activeAsset.id, rightsType, rightsOwner, ['US', 'EU'], licenseExp ? `${licenseExp}T00:00:00.000Z` : undefined);
+    await assignAssetLicense(
+      activeAsset.id,
+      rightsType,
+      rightsOwner,
+      ['US', 'EU'],
+      licenseExp ? `${licenseExp}T00:00:00.000Z` : undefined,
+    );
   };
 
   const handleSubmitApproval = async () => {
@@ -181,7 +209,12 @@ export const MediaManagementDashboard: React.FC = () => {
   };
 
   const handleVoteApproval = async (requestId: string, vote: 'approve' | 'reject') => {
-    await voteOnApproval(requestId, 'Lead_Editor_Review', vote, 'Looks spectacular, fits brand palette perfectly.');
+    await voteOnApproval(
+      requestId,
+      'Lead_Editor_Review',
+      vote,
+      'Looks spectacular, fits brand palette perfectly.',
+    );
   };
 
   const handleMigrateTier = async (tier: 'online' | 'nearline' | 'cold') => {
@@ -225,12 +258,44 @@ export const MediaManagementDashboard: React.FC = () => {
 
         {/* LOGO SAFE AREA INDICATORS */}
         <div style={{ display: 'flex', gap: '16px' }}>
-          <div style={{ background: '#252526', padding: '6px 12px', borderRadius: '4px', border: '1px solid #333' }}>
-            <span style={{ fontSize: '10px', color: '#888', display: 'block', textTransform: 'uppercase' }}>Assets Cataloged</span>
+          <div
+            style={{
+              background: '#252526',
+              padding: '6px 12px',
+              borderRadius: '4px',
+              border: '1px solid #333',
+            }}
+          >
+            <span
+              style={{
+                fontSize: '10px',
+                color: '#888',
+                display: 'block',
+                textTransform: 'uppercase',
+              }}
+            >
+              Assets Cataloged
+            </span>
             <strong style={{ color: '#4caf50', fontSize: '14px' }}>{filteredAssets.length}</strong>
           </div>
-          <div style={{ background: '#252526', padding: '6px 12px', borderRadius: '4px', border: '1px solid #333' }}>
-            <span style={{ fontSize: '10px', color: '#888', display: 'block', textTransform: 'uppercase' }}>Folders Active</span>
+          <div
+            style={{
+              background: '#252526',
+              padding: '6px 12px',
+              borderRadius: '4px',
+              border: '1px solid #333',
+            }}
+          >
+            <span
+              style={{
+                fontSize: '10px',
+                color: '#888',
+                display: 'block',
+                textTransform: 'uppercase',
+              }}
+            >
+              Folders Active
+            </span>
             <strong style={{ color: '#2196f3', fontSize: '14px' }}>{folders.length}</strong>
           </div>
         </div>
@@ -252,7 +317,15 @@ export const MediaManagementDashboard: React.FC = () => {
         >
           {/* FOLDERS TREE */}
           <div>
-            <h3 style={{ margin: '0 0 10px 0', fontSize: '12px', color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            <h3
+              style={{
+                margin: '0 0 10px 0',
+                fontSize: '12px',
+                color: '#aaa',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+              }}
+            >
               🗂️ Asset Folders
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
@@ -263,7 +336,8 @@ export const MediaManagementDashboard: React.FC = () => {
                   borderRadius: '4px',
                   cursor: 'pointer',
                   fontSize: '12px',
-                  background: !selectedFolderId && !selectedCollectionId ? '#252526' : 'transparent',
+                  background:
+                    !selectedFolderId && !selectedCollectionId ? '#252526' : 'transparent',
                   color: !selectedFolderId && !selectedCollectionId ? '#fff' : '#aaa',
                 }}
               >
@@ -324,7 +398,15 @@ export const MediaManagementDashboard: React.FC = () => {
 
           {/* COLLECTIONS CATALOG */}
           <div style={{ borderTop: '1px solid #2d2d2d', paddingTop: '16px' }}>
-            <h3 style={{ margin: '0 0 10px 0', fontSize: '12px', color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            <h3
+              style={{
+                margin: '0 0 10px 0',
+                fontSize: '12px',
+                color: '#aaa',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+              }}
+            >
               ⭐ Dynamic Collections
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
@@ -382,10 +464,20 @@ export const MediaManagementDashboard: React.FC = () => {
 
           {/* INGEST COMPONENT PANEL */}
           <div style={{ borderTop: '1px solid #2d2d2d', paddingTop: '16px', marginTop: 'auto' }}>
-            <h3 style={{ margin: '0 0 10px 0', fontSize: '12px', color: '#aaa', textTransform: 'uppercase' }}>
+            <h3
+              style={{
+                margin: '0 0 10px 0',
+                fontSize: '12px',
+                color: '#aaa',
+                textTransform: 'uppercase',
+              }}
+            >
               📥 Batch Ingest Inbound
             </h3>
-            <form onSubmit={handleIngestSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <form
+              onSubmit={handleIngestSubmit}
+              style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}
+            >
               <input
                 type="text"
                 value={ingestName}
@@ -514,16 +606,37 @@ export const MediaManagementDashboard: React.FC = () => {
 
           {/* MAIN ASSETS GRID */}
           <div>
-            <h2 style={{ margin: '0 0 12px 0', fontSize: '14px', color: '#fff', textTransform: 'uppercase' }}>
+            <h2
+              style={{
+                margin: '0 0 12px 0',
+                fontSize: '14px',
+                color: '#fff',
+                textTransform: 'uppercase',
+              }}
+            >
               Media Assets Catalog ({filteredAssets.length})
             </h2>
 
             {filteredAssets.length === 0 ? (
-              <div style={{ padding: '40px', textAlign: 'center', color: '#666', border: '1px dashed #333', borderRadius: '8px' }}>
+              <div
+                style={{
+                  padding: '40px',
+                  textAlign: 'center',
+                  color: '#666',
+                  border: '1px dashed #333',
+                  borderRadius: '8px',
+                }}
+              >
                 No assets found in folder/collection. Use "Batch Ingest" to add.
               </div>
             ) : (
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '12px' }}>
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+                  gap: '12px',
+                }}
+              >
                 {filteredAssets.map((asset) => (
                   <AssetGridItem
                     key={asset.id}
@@ -552,47 +665,143 @@ export const MediaManagementDashboard: React.FC = () => {
           {activeAsset ? (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               {/* ASSET TITLE */}
-              <div style={{ background: '#252526', padding: '12px', borderRadius: '6px', border: '1px solid #333' }}>
-                <div style={{ fontSize: '10px', color: '#aaa', textTransform: 'uppercase' }}>Active Asset ID</div>
+              <div
+                style={{
+                  background: '#252526',
+                  padding: '12px',
+                  borderRadius: '6px',
+                  border: '1px solid #333',
+                }}
+              >
+                <div style={{ fontSize: '10px', color: '#aaa', textTransform: 'uppercase' }}>
+                  Active Asset ID
+                </div>
                 <code style={{ fontSize: '12px', fontWeight: 'bold' }}>{activeAsset.id}</code>
-                <h3 style={{ margin: '8px 0 0 0', fontSize: '15px', color: '#fff' }}>{activeAsset.name}</h3>
-                <p style={{ margin: '4px 0 0 0', fontSize: '11px', color: '#888', wordBreak: 'break-all' }}>{activeAsset.url}</p>
+                <h3 style={{ margin: '8px 0 0 0', fontSize: '15px', color: '#fff' }}>
+                  {activeAsset.name}
+                </h3>
+                <p
+                  style={{
+                    margin: '4px 0 0 0',
+                    fontSize: '11px',
+                    color: '#888',
+                    wordBreak: 'break-all',
+                  }}
+                >
+                  {activeAsset.url}
+                </p>
               </div>
 
               {/* TECHNICAL METADATA (EXIF/IPTC/XMP) */}
-              <div style={{ background: '#252526', padding: '12px', borderRadius: '6px', border: '1px solid #333' }}>
-                <h4 style={{ margin: '0 0 8px 0', fontSize: '11px', color: '#2196f3', textTransform: 'uppercase' }}>
+              <div
+                style={{
+                  background: '#252526',
+                  padding: '12px',
+                  borderRadius: '6px',
+                  border: '1px solid #333',
+                }}
+              >
+                <h4
+                  style={{
+                    margin: '0 0 8px 0',
+                    fontSize: '11px',
+                    color: '#2196f3',
+                    textTransform: 'uppercase',
+                  }}
+                >
                   ⚙️ Technical & EXIF Profiling
                 </h4>
-                <div style={{ fontSize: '11px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                  <div>Mime Type: <strong style={{ color: '#fff' }}>{activeAsset.technicalMetadata.mimeType}</strong></div>
-                  <div>Resolution: <strong style={{ color: '#fff' }}>
-                    {activeAsset.technicalMetadata.resolution
-                      ? `${activeAsset.technicalMetadata.resolution.width}x${activeAsset.technicalMetadata.resolution.height}`
-                      : 'N/A'}
-                  </strong></div>
-                  <div>Camera Model: <strong style={{ color: '#fff' }}>{activeAsset.metadata.exif?.camera || 'N/A'}</strong></div>
-                  <div>Rating XMP: <strong style={{ color: '#fff' }}>{activeAsset.metadata.xmp?.rating || 'N/A'} stars</strong></div>
+                <div
+                  style={{ fontSize: '11px', display: 'flex', flexDirection: 'column', gap: '4px' }}
+                >
+                  <div>
+                    Mime Type:{' '}
+                    <strong style={{ color: '#fff' }}>
+                      {activeAsset.technicalMetadata.mimeType}
+                    </strong>
+                  </div>
+                  <div>
+                    Resolution:{' '}
+                    <strong style={{ color: '#fff' }}>
+                      {activeAsset.technicalMetadata.resolution
+                        ? `${activeAsset.technicalMetadata.resolution.width}x${activeAsset.technicalMetadata.resolution.height}`
+                        : 'N/A'}
+                    </strong>
+                  </div>
+                  <div>
+                    Camera Model:{' '}
+                    <strong style={{ color: '#fff' }}>
+                      {activeAsset.metadata.exif?.camera || 'N/A'}
+                    </strong>
+                  </div>
+                  <div>
+                    Rating XMP:{' '}
+                    <strong style={{ color: '#fff' }}>
+                      {activeAsset.metadata.xmp?.rating || 'N/A'} stars
+                    </strong>
+                  </div>
                 </div>
               </div>
 
               {/* MEDIA RIGHTS & LICENSES */}
-              <div style={{ background: '#252526', padding: '12px', borderRadius: '6px', border: '1px solid #333' }}>
-                <h4 style={{ margin: '0 0 8px 0', fontSize: '11px', color: '#ff9800', textTransform: 'uppercase' }}>
+              <div
+                style={{
+                  background: '#252526',
+                  padding: '12px',
+                  borderRadius: '6px',
+                  border: '1px solid #333',
+                }}
+              >
+                <h4
+                  style={{
+                    margin: '0 0 8px 0',
+                    fontSize: '11px',
+                    color: '#ff9800',
+                    textTransform: 'uppercase',
+                  }}
+                >
                   ⚖️ Media Copyrights & Rights
                 </h4>
                 {activeAsset.rights ? (
-                  <div style={{ fontSize: '11px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                    <div>License: <strong style={{ color: '#fff' }}>{activeAsset.rights.license.type}</strong></div>
-                    <div>Owner: <strong style={{ color: '#fff' }}>{activeAsset.rights.license.owner}</strong></div>
-                    <div>Allowed: <strong style={{ color: '#fff' }}>{activeAsset.rights.license.allowedTerritories.join(', ')}</strong></div>
-                    <div>Status: <strong style={{ color: activeAsset.rights.approvalStatus === 'cleared' ? '#4caf50' : '#f44336' }}>
-                      {activeAsset.rights.approvalStatus.toUpperCase()}
-                    </strong></div>
+                  <div
+                    style={{
+                      fontSize: '11px',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '4px',
+                    }}
+                  >
+                    <div>
+                      License:{' '}
+                      <strong style={{ color: '#fff' }}>{activeAsset.rights.license.type}</strong>
+                    </div>
+                    <div>
+                      Owner:{' '}
+                      <strong style={{ color: '#fff' }}>{activeAsset.rights.license.owner}</strong>
+                    </div>
+                    <div>
+                      Allowed:{' '}
+                      <strong style={{ color: '#fff' }}>
+                        {activeAsset.rights.license.allowedTerritories.join(', ')}
+                      </strong>
+                    </div>
+                    <div>
+                      Status:{' '}
+                      <strong
+                        style={{
+                          color:
+                            activeAsset.rights.approvalStatus === 'cleared' ? '#4caf50' : '#f44336',
+                        }}
+                      >
+                        {activeAsset.rights.approvalStatus.toUpperCase()}
+                      </strong>
+                    </div>
                   </div>
                 ) : (
                   <div>
-                    <p style={{ margin: '0 0 8px 0', fontSize: '11px', color: '#888' }}>No active license assigned yet.</p>
+                    <p style={{ margin: '0 0 8px 0', fontSize: '11px', color: '#888' }}>
+                      No active license assigned yet.
+                    </p>
                     <button
                       onClick={handleAssignLicense}
                       style={{
@@ -613,11 +822,33 @@ export const MediaManagementDashboard: React.FC = () => {
               </div>
 
               {/* VERSION HISTORY */}
-              <div style={{ background: '#252526', padding: '12px', borderRadius: '6px', border: '1px solid #333' }}>
-                <h4 style={{ margin: '0 0 8px 0', fontSize: '11px', color: '#e91e63', textTransform: 'uppercase' }}>
+              <div
+                style={{
+                  background: '#252526',
+                  padding: '12px',
+                  borderRadius: '6px',
+                  border: '1px solid #333',
+                }}
+              >
+                <h4
+                  style={{
+                    margin: '0 0 8px 0',
+                    fontSize: '11px',
+                    color: '#e91e63',
+                    textTransform: 'uppercase',
+                  }}
+                >
                   ⏳ Version History ({activeAsset.versions.length})
                 </h4>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', maxHeight: '120px', overflowY: 'auto' }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '6px',
+                    maxHeight: '120px',
+                    overflowY: 'auto',
+                  }}
+                >
                   {activeAsset.versions.map((ver) => (
                     <div
                       key={ver.id}
@@ -693,8 +924,22 @@ export const MediaManagementDashboard: React.FC = () => {
               </div>
 
               {/* STORAGE LIFECYCLE MANAGEMENT */}
-              <div style={{ background: '#252526', padding: '12px', borderRadius: '6px', border: '1px solid #333' }}>
-                <h4 style={{ margin: '0 0 8px 0', fontSize: '11px', color: '#00bcd4', textTransform: 'uppercase' }}>
+              <div
+                style={{
+                  background: '#252526',
+                  padding: '12px',
+                  borderRadius: '6px',
+                  border: '1px solid #333',
+                }}
+              >
+                <h4
+                  style={{
+                    margin: '0 0 8px 0',
+                    fontSize: '11px',
+                    color: '#00bcd4',
+                    textTransform: 'uppercase',
+                  }}
+                >
                   🧊 Storage Lifecycle Transition
                 </h4>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '6px' }}>
@@ -721,8 +966,22 @@ export const MediaManagementDashboard: React.FC = () => {
               </div>
 
               {/* APPROVAL WORKFLOW ACTION */}
-              <div style={{ background: '#252526', padding: '12px', borderRadius: '6px', border: '1px solid #333' }}>
-                <h4 style={{ margin: '0 0 8px 0', fontSize: '11px', color: '#9c27b0', textTransform: 'uppercase' }}>
+              <div
+                style={{
+                  background: '#252526',
+                  padding: '12px',
+                  borderRadius: '6px',
+                  border: '1px solid #333',
+                }}
+              >
+                <h4
+                  style={{
+                    margin: '0 0 8px 0',
+                    fontSize: '11px',
+                    color: '#9c27b0',
+                    textTransform: 'uppercase',
+                  }}
+                >
                   👥 Brand Approval Workflows
                 </h4>
                 {approvalRequests.find((r) => r.assetId === activeAsset.id) ? (
@@ -730,13 +989,21 @@ export const MediaManagementDashboard: React.FC = () => {
                     <div>
                       Request Status:{' '}
                       <strong style={{ color: '#ea80fc' }}>
-                        {approvalRequests.find((r) => r.assetId === activeAsset.id)?.currentStatus.toUpperCase()}
+                        {approvalRequests
+                          .find((r) => r.assetId === activeAsset.id)
+                          ?.currentStatus.toUpperCase()}
                       </strong>
                     </div>
-                    {approvalRequests.find((r) => r.assetId === activeAsset.id)?.currentStatus === 'review' && (
+                    {approvalRequests.find((r) => r.assetId === activeAsset.id)?.currentStatus ===
+                      'review' && (
                       <div style={{ display: 'flex', gap: '6px', marginTop: '8px' }}>
                         <button
-                          onClick={() => handleVoteApproval(approvalRequests.find((r) => r.assetId === activeAsset.id)!.id, 'approve')}
+                          onClick={() =>
+                            handleVoteApproval(
+                              approvalRequests.find((r) => r.assetId === activeAsset.id)!.id,
+                              'approve',
+                            )
+                          }
                           style={{
                             flex: 1,
                             background: '#4caf50',
@@ -751,7 +1018,12 @@ export const MediaManagementDashboard: React.FC = () => {
                           Approve
                         </button>
                         <button
-                          onClick={() => handleVoteApproval(approvalRequests.find((r) => r.assetId === activeAsset.id)!.id, 'reject')}
+                          onClick={() =>
+                            handleVoteApproval(
+                              approvalRequests.find((r) => r.assetId === activeAsset.id)!.id,
+                              'reject',
+                            )
+                          }
                           style={{
                             flex: 1,
                             background: '#f44336',
@@ -789,8 +1061,17 @@ export const MediaManagementDashboard: React.FC = () => {
               </div>
             </div>
           ) : (
-            <div style={{ padding: '40px 10px', textAlign: 'center', color: '#666', border: '1px dashed #333', borderRadius: '6px' }}>
-              Select an asset from the main grid to review EXIF properties, rights, versions, and approve transitions.
+            <div
+              style={{
+                padding: '40px 10px',
+                textAlign: 'center',
+                color: '#666',
+                border: '1px dashed #333',
+                borderRadius: '6px',
+              }}
+            >
+              Select an asset from the main grid to review EXIF properties, rights, versions, and
+              approve transitions.
             </div>
           )}
         </div>
@@ -810,7 +1091,14 @@ export const MediaManagementDashboard: React.FC = () => {
       >
         {/* LOGS CONSOLE */}
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <h4 style={{ margin: '0 0 6px 0', fontSize: '11px', color: '#aaa', textTransform: 'uppercase' }}>
+          <h4
+            style={{
+              margin: '0 0 6px 0',
+              fontSize: '11px',
+              color: '#aaa',
+              textTransform: 'uppercase',
+            }}
+          >
             🖥️ System Governance Logs
           </h4>
           <div
@@ -837,7 +1125,14 @@ export const MediaManagementDashboard: React.FC = () => {
 
         {/* METRICS WIDGET */}
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-          <h4 style={{ margin: '0 0 6px 0', fontSize: '11px', color: '#aaa', textTransform: 'uppercase' }}>
+          <h4
+            style={{
+              margin: '0 0 6px 0',
+              fontSize: '11px',
+              color: '#aaa',
+              textTransform: 'uppercase',
+            }}
+          >
             Storage & Analytics Growth
           </h4>
           <div

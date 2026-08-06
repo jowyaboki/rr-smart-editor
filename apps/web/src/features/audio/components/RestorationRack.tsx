@@ -12,7 +12,9 @@ export function RestorationRack() {
 
       <div className="space-y-2">
         <div>
-          <label className="text-[10px] text-gray-500 block mb-1">AI Voice De-Noise Threshold</label>
+          <label className="text-[10px] text-gray-500 block mb-1">
+            AI Voice De-Noise Threshold
+          </label>
           <div className="flex items-center space-x-2">
             <input
               type="range"
@@ -30,7 +32,9 @@ export function RestorationRack() {
           <span>Automatic Silence Trimmer</span>
           <button
             onClick={() => {
-              alert('Analyzed timeline and extracted 3 gaps of dead air silences non-destructively!');
+              alert(
+                'Analyzed timeline and extracted 3 gaps of dead air silences non-destructively!',
+              );
             }}
             className="text-xs text-indigo-400 hover:text-indigo-300 font-semibold"
           >

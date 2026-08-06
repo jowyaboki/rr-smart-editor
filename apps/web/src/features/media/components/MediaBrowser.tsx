@@ -23,8 +23,16 @@ export const MediaBrowser: React.FC = () => {
   // Mock upload drag & drop trigger
   const handleMockUpload = () => {
     const files = [
-      { name: 'vlog_scenery.mp4', size: 1024 * 1024 * 12, path: '/local/footages/vlog_scenery.mp4' },
-      { name: 'voice_voiceover.mp3', size: 1024 * 1024 * 3, path: '/local/audios/voice_voiceover.mp3' },
+      {
+        name: 'vlog_scenery.mp4',
+        size: 1024 * 1024 * 12,
+        path: '/local/footages/vlog_scenery.mp4',
+      },
+      {
+        name: 'voice_voiceover.mp3',
+        size: 1024 * 1024 * 3,
+        path: '/local/audios/voice_voiceover.mp3',
+      },
       { name: 'splash_logo.png', size: 1024 * 512, path: '/local/images/splash_logo.png' },
     ];
     // Random select
@@ -56,7 +64,14 @@ export const MediaBrowser: React.FC = () => {
       }}
     >
       {/* Header and Mock Upload Trigger */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '20px',
+        }}
+      >
         <div>
           <h2 style={{ margin: 0, fontSize: '22px' }}>Professional Media Browser</h2>
           <div style={{ fontSize: '11px', color: '#b2bac2', marginTop: '4px' }}>
@@ -82,12 +97,33 @@ export const MediaBrowser: React.FC = () => {
       <div style={{ display: 'grid', gridTemplateColumns: '200px 1.5fr 1fr', gap: '20px' }}>
         {/* Left Side: Collections Directories */}
         <div style={{ backgroundColor: '#102031', padding: '12px', borderRadius: '6px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-            <span style={{ fontSize: '12px', fontWeight: 'bold', color: '#b2bac2' }}>COLLECTIONS</span>
-            <button onClick={handleAddCollection} style={{ background: 'none', border: 'none', color: '#10b981', cursor: 'pointer', fontSize: '14px', fontWeight: 'bold' }}>+</button>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: '12px',
+            }}
+          >
+            <span style={{ fontSize: '12px', fontWeight: 'bold', color: '#b2bac2' }}>
+              COLLECTIONS
+            </span>
+            <button
+              onClick={handleAddCollection}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#10b981',
+                cursor: 'pointer',
+                fontSize: '14px',
+                fontWeight: 'bold',
+              }}
+            >
+              +
+            </button>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-            {collections.map(col => (
+            {collections.map((col) => (
               <button
                 key={col.id}
                 onClick={() => selectCollection(col.id)}
@@ -109,9 +145,19 @@ export const MediaBrowser: React.FC = () => {
           </div>
 
           <div style={{ borderTop: '1px solid #1e293b', marginTop: '16px', paddingTop: '16px' }}>
-            <span style={{ fontSize: '12px', fontWeight: 'bold', color: '#b2bac2', display: 'block', marginBottom: '8px' }}>FILTER BY TYPE</span>
+            <span
+              style={{
+                fontSize: '12px',
+                fontWeight: 'bold',
+                color: '#b2bac2',
+                display: 'block',
+                marginBottom: '8px',
+              }}
+            >
+              FILTER BY TYPE
+            </span>
             <div style={{ display: 'flex', gap: '4px' }}>
-              {['video', 'audio', 'image'].map(t => (
+              {['video', 'audio', 'image'].map((t) => (
                 <button
                   key={t}
                   onClick={() => selectType(selectedType === t ? null : t)}
@@ -138,7 +184,7 @@ export const MediaBrowser: React.FC = () => {
           {/* Search bar */}
           <input
             value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
+            onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="🔍 Search indexed files, codecs, encoders..."
             style={{
               padding: '8px 12px',
@@ -153,16 +199,45 @@ export const MediaBrowser: React.FC = () => {
           {/* Active queue ingest status */}
           {activeJobs.length > 0 && (
             <div style={{ backgroundColor: '#1e293b', padding: '10px', borderRadius: '4px' }}>
-              <div style={{ fontSize: '11px', fontWeight: 'bold', color: '#fbbf24', marginBottom: '6px' }}>Background Ingestion Queue</div>
+              <div
+                style={{
+                  fontSize: '11px',
+                  fontWeight: 'bold',
+                  color: '#fbbf24',
+                  marginBottom: '6px',
+                }}
+              >
+                Background Ingestion Queue
+              </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                {activeJobs.map(job => (
+                {activeJobs.map((job) => (
                   <div key={job.id} style={{ fontSize: '11px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2px' }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        marginBottom: '2px',
+                      }}
+                    >
                       <span>{job.filename}</span>
                       <span>{job.progress}%</span>
                     </div>
-                    <div style={{ width: '100%', height: '3px', backgroundColor: '#0a1929', borderRadius: '10px', overflow: 'hidden' }}>
-                      <div style={{ width: `${job.progress}%`, height: '100%', backgroundColor: '#fbbf24' }} />
+                    <div
+                      style={{
+                        width: '100%',
+                        height: '3px',
+                        backgroundColor: '#0a1929',
+                        borderRadius: '10px',
+                        overflow: 'hidden',
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: `${job.progress}%`,
+                          height: '100%',
+                          backgroundColor: '#fbbf24',
+                        }}
+                      />
                     </div>
                   </div>
                 ))}
@@ -181,7 +256,7 @@ export const MediaBrowser: React.FC = () => {
               paddingRight: '6px',
             }}
           >
-            {assets.map(asset => {
+            {assets.map((asset) => {
               const isSelected = selectedAsset?.id === asset.id;
               return (
                 <div
@@ -203,7 +278,17 @@ export const MediaBrowser: React.FC = () => {
                   <div style={{ fontSize: '24px', marginBottom: '4px' }}>
                     {asset.type === 'video' ? '🎬' : asset.type === 'audio' ? '🎵' : '🖼'}
                   </div>
-                  <div style={{ fontSize: '10px', fontWeight: 'bold', width: '100%', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={asset.filename}>
+                  <div
+                    style={{
+                      fontSize: '10px',
+                      fontWeight: 'bold',
+                      width: '100%',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                    }}
+                    title={asset.filename}
+                  >
                     {asset.filename}
                   </div>
                   <div style={{ fontSize: '8px', color: '#b2bac2', marginTop: '2px' }}>
@@ -214,7 +299,15 @@ export const MediaBrowser: React.FC = () => {
             })}
 
             {assets.length === 0 && (
-              <div style={{ gridColumn: '1/-1', textAlign: 'center', padding: '40px', opacity: 0.5, fontSize: '12px' }}>
+              <div
+                style={{
+                  gridColumn: '1/-1',
+                  textAlign: 'center',
+                  padding: '40px',
+                  opacity: 0.5,
+                  fontSize: '12px',
+                }}
+              >
                 No assets imported yet. Click "Import Media File" above!
               </div>
             )}

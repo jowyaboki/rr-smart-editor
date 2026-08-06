@@ -1,24 +1,316 @@
-import React from 'react';
-import { Box, Typography, Divider } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Typography, Divider, Button, Slider, IconButton, TextField } from '@mui/material';
+import { PropertyGrid, SearchBar, StatusBadge } from '@ai-video-editor/ui';
+import { useTimelineStore } from '../../store/useTimelineStore';
 
 const PropertiesPanel: React.FC = () => {
+  const { tracks } = useTimelineStore();
+  const [search, setSearch] = useState('');
+  const [favorites, setFavorites] = useState<string[]>([]);
+  const [advancedMode, setAdvancedMode] = useState(false);
+
+  // Fallback defaults for selected asset or track
+  const [opacity, setOpacity] = useState(100);
+  const [scale, setScale] = useState(100);
+  const [positionX, setPositionX] = useState(0);
+  const [positionY, setPositionY] = useState(0);
+  const [volume, setVolume] = useState(0); // dB scale
+
+  const handleReset = () => {
+    setOpacity(100);
+    setScale(100);
+    setPositionX(0);
+    setPositionY(0);
+    setVolume(0);
+  };
+
+  const toggleFavorite = (property: string) => {
+    setFavorites((prev) =>
+      prev.includes(property) ? prev.filter((p) => p !== property) : [...prev, property],
+    );
+  };
+
+  const propertiesList = [
+    {
+      category: 'Transform',
+      name: 'Opacity',
+      element: (
+        <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Slider
+            size="small"
+            value={opacity}
+            onChange={(e, v) => setOpacity(v as number)}
+            min={0}
+            max={100}
+            sx={{ flexGrow: 1 }}
+          />
+          <Typography variant="caption">{opacity}%</Typography>
+        </Box>
+      ),
+    },
+    {
+      category: 'Transform',
+      name: 'Scale',
+      element: (
+        <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Slider
+            size="small"
+            value={scale}
+            onChange={(e, v) => setScale(v as number)}
+            min={1}
+            max={500}
+            sx={{ flexGrow: 1 }}
+          />
+          <Typography variant="caption">{scale}%</Typography>
+        </Box>
+      ),
+    },
+    {
+      category: 'Transform',
+      name: 'Position X',
+      element: (
+        <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Slider
+            size="small"
+            value={positionX}
+            onChange={(e, v) => setPositionX(v as number)}
+            min={-1920}
+            max={1920}
+            sx={{ flexGrow: 1 }}
+          />
+          <Typography variant="caption">{positionX}px</Typography>
+        </Box>
+      ),
+    },
+    {
+      category: 'Transform',
+      name: 'Position Y',
+      element: (
+        <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Slider
+            size="small"
+            value={positionY}
+            onChange={(e, v) => setPositionY(v as number)}
+            min={-1080}
+            max={1080}
+            sx={{ flexGrow: 1 }}
+          />
+          <Typography variant="caption">{positionY}px</Typography>
+        </Box>
+      ),
+    },
+    {
+      category: 'Audio Level',
+      name: 'Fader Volume',
+      element: (
+        <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Slider
+            size="small"
+            value={volume}
+            onChange={(e, v) => setVolume(v as number)}
+            min={-60}
+            max={12}
+            sx={{ flexGrow: 1 }}
+          />
+          <Typography variant="caption">{volume > 0 ? `+${volume}` : volume} dB</Typography>
+        </Box>
+      ),
+    },
+  ];
+
+  const filteredProperties = propertiesList.filter(
+    (p) =>
+      p.name.toLowerCase().includes(search.toLowerCase()) ||
+      p.category.toLowerCase().includes(search.toLowerCase()),
+  );
+
+  const favoriteProps = filteredProperties.filter((p) => favorites.includes(p.name));
+  const generalProps = filteredProperties.filter((p) => !favorites.includes(p.name));
+
   return (
     <Box
       sx={{
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        bgcolor: 'background.paper',
-        borderLeft: '1px solid #333',
+        bgcolor: '#0d1527',
       }}
     >
-      <Box sx={{ p: 2 }}>
-        <Typography variant="subtitle2" gutterBottom>
-          Properties
-        </Typography>
-        <Divider sx={{ mb: 2 }} />
-        <Typography variant="body2" color="text.secondary">
-          Select an element to view its properties.
+      <Box
+        sx={{
+          p: 2,
+          borderBottom: '1px solid #1b2f54',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 1.5,
+        }}
+      >
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Typography
+            variant="subtitle2"
+            sx={{
+              fontWeight: 'bold',
+              textTransform: 'uppercase',
+              fontSize: '0.72rem',
+              letterSpacing: '0.5px',
+            }}
+          >
+            Inspector Panel
+          </Typography>
+          <Box sx={{ display: 'flex', gap: 1 }}>
+            <Button
+              size="small"
+              variant={advancedMode ? 'contained' : 'outlined'}
+              onClick={() => setAdvancedMode(!advancedMode)}
+              sx={{ fontSize: '0.65rem', py: 0.25, px: 1, height: '24px' }}
+            >
+              {advancedMode ? 'Advanced' : 'Simple'}
+            </Button>
+            <Button
+              size="small"
+              variant="outlined"
+              color="error"
+              onClick={handleReset}
+              sx={{ fontSize: '0.65rem', py: 0.25, px: 1, height: '24px' }}
+            >
+              Reset All
+            </Button>
+          </Box>
+        </Box>
+
+        <SearchBar value={search} onChange={setSearch} placeholder="Filter clip attributes..." />
+      </Box>
+
+      <Box sx={{ flexGrow: 1, overflowY: 'auto', p: 2 }}>
+        {favoriteProps.length > 0 && (
+          <Box sx={{ mb: 3 }}>
+            <Typography
+              variant="caption"
+              color="primary"
+              sx={{
+                fontWeight: 'bold',
+                display: 'block',
+                mb: 1.5,
+                textTransform: 'uppercase',
+                fontSize: '0.65rem',
+              }}
+            >
+              ⭐ Favorites
+            </Typography>
+            <PropertyGrid
+              properties={favoriteProps.map((p) => ({
+                label: p.name,
+                value: (
+                  <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', gap: 1 }}>
+                    {p.element}
+                    <IconButton
+                      size="small"
+                      onClick={() => toggleFavorite(p.name)}
+                      sx={{ p: 0.25, color: '#f59e0b' }}
+                    >
+                      ★
+                    </IconButton>
+                  </Box>
+                ),
+              }))}
+            />
+            <Divider sx={{ my: 2, borderColor: '#1b2f54' }} />
+          </Box>
+        )}
+
+        {generalProps.length > 0 ? (
+          <Box>
+            <Typography
+              variant="caption"
+              sx={{
+                color: '#94a3b8',
+                fontWeight: 'bold',
+                display: 'block',
+                mb: 1.5,
+                textTransform: 'uppercase',
+                fontSize: '0.65rem',
+              }}
+            >
+              ⚡ General parameters
+            </Typography>
+            <PropertyGrid
+              properties={generalProps.map((p) => ({
+                label: p.name,
+                value: (
+                  <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', gap: 1 }}>
+                    {p.element}
+                    <IconButton
+                      size="small"
+                      onClick={() => toggleFavorite(p.name)}
+                      sx={{ p: 0.25, color: '#94a3b8', '&:hover': { color: '#f59e0b' } }}
+                    >
+                      ☆
+                    </IconButton>
+                  </Box>
+                ),
+              }))}
+            />
+          </Box>
+        ) : (
+          <Typography
+            variant="caption"
+            sx={{ color: '#94a3b8', display: 'block', textAlign: 'center', py: 3 }}
+          >
+            No matching settings.
+          </Typography>
+        )}
+
+        {advancedMode && (
+          <Box
+            sx={{
+              mt: 3,
+              p: 1.5,
+              border: '1px solid #1b2f54',
+              borderRadius: '4px',
+              bgcolor: 'rgba(0,0,0,0.15)',
+            }}
+          >
+            <Typography
+              variant="caption"
+              color="secondary"
+              sx={{
+                fontWeight: 'bold',
+                display: 'block',
+                mb: 1,
+                fontSize: '0.65rem',
+                textTransform: 'uppercase',
+              }}
+            >
+              🛠️ Technical Metadata
+            </Typography>
+            <Typography
+              variant="caption"
+              sx={{ color: '#94a3b8', display: 'block', lineHeight: 1.4 }}
+            >
+              Composition Frame Rate: 30.00 FPS
+              <br />
+              Video Aspect Ratio: 16:9 widescreen (1920x1080)
+              <br />
+              Render Driver: WebGL Acceleration enabled
+            </Typography>
+          </Box>
+        )}
+      </Box>
+
+      {/* Inline Documentation */}
+      <Box sx={{ p: 1.5, borderTop: '1px solid #1b2f54', bgcolor: '#050b14' }}>
+        <Typography
+          variant="caption"
+          sx={{
+            color: '#94a3b8',
+            display: 'block',
+            fontSize: '0.68rem',
+            fontStyle: 'italic',
+            lineHeight: 1.3,
+          }}
+        >
+          💡 Inspector Tip: Opacity scale governs pixel blending alpha value. Scale dictates
+          timeline sizing.
         </Typography>
       </Box>
     </Box>

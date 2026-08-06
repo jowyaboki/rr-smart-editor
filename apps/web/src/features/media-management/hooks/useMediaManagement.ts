@@ -24,7 +24,8 @@ export const useMediaManagement = () => {
         (a) =>
           a.id.toLowerCase().includes(q) ||
           a.name.toLowerCase().includes(q) ||
-          (a.metadata.aiGeneratedTags && a.metadata.aiGeneratedTags.some((t) => t.toLowerCase().includes(q)))
+          (a.metadata.aiGeneratedTags &&
+            a.metadata.aiGeneratedTags.some((t) => t.toLowerCase().includes(q))),
       );
     }
 

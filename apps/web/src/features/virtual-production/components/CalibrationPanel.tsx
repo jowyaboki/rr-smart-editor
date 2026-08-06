@@ -19,10 +19,13 @@ export function CalibrationPanel() {
             observedPixels: [100 * i, 200] as [number, number],
           })),
           1920,
-          1080
+          1080,
         );
 
-        const profile = globalVirtualStudioEngine.calibrationService.createProfile(solverResult, 'Lens Profile v1');
+        const profile = globalVirtualStudioEngine.calibrationService.createProfile(
+          solverResult,
+          'Lens Profile v1',
+        );
         setStatus('Calibration converged successfully!');
 
         if (studio) {

@@ -8,7 +8,8 @@ import { FalseColorOverlay } from './FalseColorOverlay';
 import { globalColorScienceEngine } from '@ai-video-editor/color-science';
 
 export function ColorDashboard() {
-  const { activeGrade, setGrade, pipeline, setPipeline, isCalibrated, setCalibrated } = useColorStore();
+  const { activeGrade, setGrade, pipeline, setPipeline, isCalibrated, setCalibrated } =
+    useColorStore();
 
   const initializeDefaultGrade = () => {
     const grade = globalColorScienceEngine.createDefaultGrade('grade-001', 'Cinematic Film Look A');
@@ -17,9 +18,34 @@ export function ColorDashboard() {
     const defaultPipeline = {
       id: 'pipeline-001',
       name: 'ACES Rec709 Output',
-      inputTransform: { id: 'it-1', name: 'S-Log3 to ACES', sourceGamut: 'srgb' as any, sourceGamma: 'S-Log3' },
-      workingSpace: { colorSpace: { id: 'cs-aces', name: 'ACEScg', type: 'acescg' as any, primaries: { red: [0.713, 0.293] as [number, number], green: [0.165, 0.79] as [number, number], blue: [0.128, 0.044] as [number, number], white: [0.32168, 0.33767] as [number, number] }, gammaCurve: 'linear' as any, gammaValue: 1.0 }, linearEncoding: true },
-      outputTransform: { id: 'ot-1', name: 'ACES Output sRGB', targetGamut: 'srgb' as any, targetGamma: 'srgb' },
+      inputTransform: {
+        id: 'it-1',
+        name: 'S-Log3 to ACES',
+        sourceGamut: 'srgb' as any,
+        sourceGamma: 'S-Log3',
+      },
+      workingSpace: {
+        colorSpace: {
+          id: 'cs-aces',
+          name: 'ACEScg',
+          type: 'acescg' as any,
+          primaries: {
+            red: [0.713, 0.293] as [number, number],
+            green: [0.165, 0.79] as [number, number],
+            blue: [0.128, 0.044] as [number, number],
+            white: [0.32168, 0.33767] as [number, number],
+          },
+          gammaCurve: 'linear' as any,
+          gammaValue: 1.0,
+        },
+        linearEncoding: true,
+      },
+      outputTransform: {
+        id: 'ot-1',
+        name: 'ACES Output sRGB',
+        targetGamut: 'srgb' as any,
+        targetGamma: 'srgb',
+      },
     };
     setPipeline(defaultPipeline);
   };
@@ -43,8 +69,12 @@ export function ColorDashboard() {
       {/* Scope View & Reference Window */}
       <div className="flex-1 flex flex-col border-r border-[#2d2d35]">
         <div className="h-12 border-b border-[#2d2d35] bg-[#1a1a1f] flex items-center justify-between px-6">
-          <span className="text-sm font-bold uppercase tracking-wider text-indigo-400">Color Grading Workspace</span>
-          <span className="text-xs text-gray-400">Pipeline: <span className="font-semibold text-white">{pipeline?.name}</span></span>
+          <span className="text-sm font-bold uppercase tracking-wider text-indigo-400">
+            Color Grading Workspace
+          </span>
+          <span className="text-xs text-gray-400">
+            Pipeline: <span className="font-semibold text-white">{pipeline?.name}</span>
+          </span>
         </div>
 
         <div className="flex-1 grid grid-cols-2 gap-4 p-4 overflow-hidden">
@@ -66,10 +96,14 @@ export function ColorDashboard() {
       {/* Grade Control Panels */}
       <div className="w-96 bg-[#1a1a1f] flex flex-col">
         <div className="p-4 border-b border-[#2d2d35] flex justify-between items-center bg-[#222228]">
-          <span className="text-xs font-bold uppercase tracking-wider text-gray-400">Colorist Controls</span>
+          <span className="text-xs font-bold uppercase tracking-wider text-gray-400">
+            Colorist Controls
+          </span>
           <button
             onClick={() => {
-              alert('AI grading agent has evaluated this clip contrast and matched lighting highlights!');
+              alert(
+                'AI grading agent has evaluated this clip contrast and matched lighting highlights!',
+              );
             }}
             className="text-xs text-indigo-400 hover:text-indigo-300 font-semibold"
           >

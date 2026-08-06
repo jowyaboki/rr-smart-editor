@@ -2,7 +2,16 @@ import React from 'react';
 import { useColorStore } from '../store/colorStore';
 
 export function ColorWheels() {
-  const { activeGrade, selectedWheel, selectWheel, updateGradeLift, updateGradeGamma, updateGradeGain, updateGradeOffset, updateGradeCreative } = useColorStore();
+  const {
+    activeGrade,
+    selectedWheel,
+    selectWheel,
+    updateGradeLift,
+    updateGradeGamma,
+    updateGradeGain,
+    updateGradeOffset,
+    updateGradeCreative,
+  } = useColorStore();
 
   if (!activeGrade) return null;
 

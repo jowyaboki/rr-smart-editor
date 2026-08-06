@@ -32,6 +32,7 @@ export function useVirtualProduction() {
     isStudioLoaded: !!studio,
     camerasCount: studio ? Object.keys(studio.cameras).length : 0,
     lightsCount: studio ? Object.keys(studio.lightRigs).length : 0,
-    activeVirtualSet: studio && studio.activeVirtualSetId ? studio.virtualSets[studio.activeVirtualSetId] : null,
+    activeVirtualSet:
+      studio && studio.activeVirtualSetId ? studio.virtualSets[studio.activeVirtualSetId] : null,
   };
 }

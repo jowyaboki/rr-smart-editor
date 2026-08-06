@@ -18,7 +18,7 @@ export function CameraBookmarkBar() {
   const handleAddBookmark = () => {
     const nextCameraState = globalVirtualStudioEngine.cameraService.createBookmark(
       camera,
-      `Bookmark ${camera.bookmarks.length + 1}`
+      `Bookmark ${camera.bookmarks.length + 1}`,
     );
 
     setStudio({
@@ -31,7 +31,7 @@ export function CameraBookmarkBar() {
   };
 
   const handleRecallBookmark = (bookmarkId: string) => {
-    const bookmark = camera.bookmarks.find(b => b.id === bookmarkId);
+    const bookmark = camera.bookmarks.find((b) => b.id === bookmarkId);
     if (!bookmark) return;
 
     // Fast animation transition simulated

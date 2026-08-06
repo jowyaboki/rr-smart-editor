@@ -3,7 +3,7 @@ export class TransactionError extends Error {
     message: string,
     public readonly transactionId: string,
     public readonly stage: 'validation' | 'execution' | 'rollback' | 'commit',
-    public readonly originalError?: any
+    public readonly originalError?: any,
   ) {
     super(message);
     this.name = 'TransactionError';

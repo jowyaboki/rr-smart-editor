@@ -26,7 +26,13 @@ export class LRUCachePolicy implements CachePolicy {
     this.accessTimes.delete(key);
   }
 
-  public evict(incomingSize: number, currentSize: number, maxSize: number, cache: Map<string, CacheEntry<any>>, deleteFn: (k: string) => void): void {
+  public evict(
+    incomingSize: number,
+    currentSize: number,
+    maxSize: number,
+    cache: Map<string, CacheEntry<any>>,
+    deleteFn: (k: string) => void,
+  ): void {
     let localCurrentSize = currentSize;
     while (localCurrentSize + incomingSize > maxSize && cache.size > 0) {
       let oldestKey: string | null = null;
@@ -71,7 +77,13 @@ export class LFUCachePolicy implements CachePolicy {
     this.frequencies.delete(key);
   }
 
-  public evict(incomingSize: number, currentSize: number, maxSize: number, cache: Map<string, CacheEntry<any>>, deleteFn: (k: string) => void): void {
+  public evict(
+    incomingSize: number,
+    currentSize: number,
+    maxSize: number,
+    cache: Map<string, CacheEntry<any>>,
+    deleteFn: (k: string) => void,
+  ): void {
     let localCurrentSize = currentSize;
     while (localCurrentSize + incomingSize > maxSize && cache.size > 0) {
       let leastKey: string | null = null;
@@ -123,7 +135,13 @@ export class MemoryLimitedPolicy implements CachePolicy {
   public set<T>(key: string, entry: CacheEntry<T>, cache: Map<string, CacheEntry<any>>): void {}
   public onDelete(key: string): void {}
 
-  public evict(incomingSize: number, currentSize: number, maxSize: number, cache: Map<string, CacheEntry<any>>, deleteFn: (k: string) => void): void {
+  public evict(
+    incomingSize: number,
+    currentSize: number,
+    maxSize: number,
+    cache: Map<string, CacheEntry<any>>,
+    deleteFn: (k: string) => void,
+  ): void {
     let localCurrentSize = currentSize;
     const sorted = Array.from(cache.values()).sort((a, b) => a.createdAt - b.createdAt);
     for (const entry of sorted) {
@@ -154,7 +172,13 @@ export class HybridCachePolicy implements CachePolicy {
     this.lru.onDelete(key);
   }
 
-  public evict(incomingSize: number, currentSize: number, maxSize: number, cache: Map<string, CacheEntry<any>>, deleteFn: (k: string) => void): void {
+  public evict(
+    incomingSize: number,
+    currentSize: number,
+    maxSize: number,
+    cache: Map<string, CacheEntry<any>>,
+    deleteFn: (k: string) => void,
+  ): void {
     // 1. Evict expired entries first
     const now = Date.now();
     cache.forEach((entry, key) => {
@@ -282,13 +306,37 @@ export class CacheService {
     const policy = this.activePolicy;
 
     if (policy instanceof LRUCachePolicy) {
-      policy.evict(incomingSizeBytes, this.currentCacheSizeBytes, this.maxCacheSizeBytes, this.cache, (k) => this.delete(k));
+      policy.evict(
+        incomingSizeBytes,
+        this.currentCacheSizeBytes,
+        this.maxCacheSizeBytes,
+        this.cache,
+        (k) => this.delete(k),
+      );
     } else if (policy instanceof LFUCachePolicy) {
-      policy.evict(incomingSizeBytes, this.currentCacheSizeBytes, this.maxCacheSizeBytes, this.cache, (k) => this.delete(k));
+      policy.evict(
+        incomingSizeBytes,
+        this.currentCacheSizeBytes,
+        this.maxCacheSizeBytes,
+        this.cache,
+        (k) => this.delete(k),
+      );
     } else if (policy instanceof MemoryLimitedPolicy) {
-      policy.evict(incomingSizeBytes, this.currentCacheSizeBytes, this.maxCacheSizeBytes, this.cache, (k) => this.delete(k));
+      policy.evict(
+        incomingSizeBytes,
+        this.currentCacheSizeBytes,
+        this.maxCacheSizeBytes,
+        this.cache,
+        (k) => this.delete(k),
+      );
     } else if (policy instanceof HybridCachePolicy) {
-      policy.evict(incomingSizeBytes, this.currentCacheSizeBytes, this.maxCacheSizeBytes, this.cache, (k) => this.delete(k));
+      policy.evict(
+        incomingSizeBytes,
+        this.currentCacheSizeBytes,
+        this.maxCacheSizeBytes,
+        this.cache,
+        (k) => this.delete(k),
+      );
     } else {
       // Default fallback
       const now = Date.now();
@@ -297,7 +345,10 @@ export class CacheService {
           this.delete(key);
         }
       });
-      while (this.currentCacheSizeBytes + incomingSizeBytes > this.maxCacheSizeBytes && this.cache.size > 0) {
+      while (
+        this.currentCacheSizeBytes + incomingSizeBytes > this.maxCacheSizeBytes &&
+        this.cache.size > 0
+      ) {
         const oldestKey = Array.from(this.cache.keys())[0];
         if (oldestKey) {
           this.delete(oldestKey);

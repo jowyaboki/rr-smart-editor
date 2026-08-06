@@ -15,9 +15,16 @@ export class TwinManager {
     variables: WorkflowVariable[] = [],
     assets: any[] = [],
     plugins: string[] = [],
-    permissions: string[] = []
+    permissions: string[] = [],
   ): IDigitalTwin {
-    const twin = this.engine.createTwin(project, workflows, variables, assets, plugins, permissions);
+    const twin = this.engine.createTwin(
+      project,
+      workflows,
+      variables,
+      assets,
+      plugins,
+      permissions,
+    );
     this.twins.set(twin.id, twin);
     return twin;
   }

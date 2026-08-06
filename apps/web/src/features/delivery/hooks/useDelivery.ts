@@ -15,7 +15,7 @@ export const useDelivery = () => {
         (job) =>
           job.id.toLowerCase().includes(q) ||
           job.projectId.toLowerCase().includes(q) ||
-          job.presetId.toLowerCase().includes(q)
+          job.presetId.toLowerCase().includes(q),
       );
     }
 

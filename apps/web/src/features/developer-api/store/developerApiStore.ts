@@ -54,7 +54,10 @@ export const useDeveloperApiStore = create<DeveloperApiState>((set, get) => {
 
     playgroundPath: '/v1/projects',
     playgroundMethod: 'GET',
-    playgroundHeaders: { 'Content-Type': 'application/json', 'Authorization': 'Bearer test_token_999' },
+    playgroundHeaders: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer test_token_999',
+    },
     playgroundBody: '{}',
     playgroundResponse: null,
     playgroundResponseStatus: null,
@@ -179,7 +182,10 @@ export const useDeveloperApiStore = create<DeveloperApiState>((set, get) => {
         // Standard test scopes
         const scopes = ['projects:read', 'renders:write', 'assets:read'];
 
-        const res = await globalApiGatewayPlatformEngine.gatewayService.handleRequest(apiReq, scopes);
+        const res = await globalApiGatewayPlatformEngine.gatewayService.handleRequest(
+          apiReq,
+          scopes,
+        );
 
         set({
           playgroundResponse: res.body,
@@ -187,7 +193,11 @@ export const useDeveloperApiStore = create<DeveloperApiState>((set, get) => {
         });
 
         // Trigger webhook delivery event simulation if post succeeds
-        if (get().playgroundPath === '/v1/renders' && get().playgroundMethod === 'POST' && res.statusCode === 201) {
+        if (
+          get().playgroundPath === '/v1/renders' &&
+          get().playgroundMethod === 'POST' &&
+          res.statusCode === 201
+        ) {
           await globalApiGatewayPlatformEngine.webhookService.dispatchEvent('render.completed', {
             jobId: res.body.job?.id || 'job_placeholder',
             status: 'completed',

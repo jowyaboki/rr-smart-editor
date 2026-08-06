@@ -50,71 +50,121 @@ const Editor: React.FC = () => {
     return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
-  // Compute pane sizes according to active layout presets
-  const sidebarDefaultSize = layoutPreset === 'audio' ? 15 : layoutPreset === 'color' ? 25 : 20;
-  const previewDefaultSize = layoutPreset === 'audio' ? 40 : layoutPreset === 'color' ? 50 : 60;
-  const timelineDefaultSize = layoutPreset === 'audio' ? 60 : layoutPreset === 'color' ? 50 : 40;
+  // Compute pane sizes according to active layout/productivity presets
+  const sidebarDefaultSize =
+    layoutPreset === 'audio' ? 15 :
+    layoutPreset === 'color' ? 25 :
+    layoutPreset === 'focus' ? 0 :
+    layoutPreset === 'editing' ? 15 :
+    layoutPreset === 'review' ? 20 :
+    layoutPreset === 'presentation' ? 0 :
+    layoutPreset === 'ai' ? 30 :
+    layoutPreset === 'minimal' ? 5 : 20;
+
+  const previewDefaultSize =
+    layoutPreset === 'audio' ? 40 :
+    layoutPreset === 'color' ? 55 :
+    layoutPreset === 'focus' ? 90 :
+    layoutPreset === 'editing' ? 45 :
+    layoutPreset === 'review' ? 70 :
+    layoutPreset === 'presentation' ? 100 :
+    layoutPreset === 'ai' ? 50 :
+    layoutPreset === 'minimal' ? 80 : 60;
+
+  const timelineDefaultSize =
+    layoutPreset === 'audio' ? 60 :
+    layoutPreset === 'color' ? 45 :
+    layoutPreset === 'focus' ? 10 :
+    layoutPreset === 'editing' ? 55 :
+    layoutPreset === 'review' ? 30 :
+    layoutPreset === 'presentation' ? 0 :
+    layoutPreset === 'ai' ? 50 :
+    layoutPreset === 'minimal' ? 20 : 40;
+
+  const inspectorDefaultSize =
+    layoutPreset === 'audio' ? 20 :
+    layoutPreset === 'color' ? 20 :
+    layoutPreset === 'focus' ? 0 :
+    layoutPreset === 'editing' ? 20 :
+    layoutPreset === 'review' ? 10 :
+    layoutPreset === 'presentation' ? 0 :
+    layoutPreset === 'ai' ? 20 :
+    layoutPreset === 'minimal' ? 0 : 20;
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden', bgcolor: '#0a1929' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden', bgcolor: '#050b14' }}>
         <CssBaseline />
-        <Toolbar projectId={id} />
+        {layoutPreset !== 'presentation' && <Toolbar projectId={id} />}
 
         <Box sx={{ flexGrow: 1, display: 'flex', overflow: 'hidden', p: 1, gap: 1 }}>
           <PanelGroup direction="horizontal">
-            {/* Left Sidebar inside Panel wrapper */}
-            <SplitPanel defaultSize={sidebarDefaultSize} minSize={15}>
-              <CustomPanel title="Workspace Explorer">
-                <Sidebar projectId={id || ''} />
-              </CustomPanel>
-            </SplitPanel>
+            {/* Left Sidebar inside Panel wrapper if layout preset allows */}
+            {sidebarDefaultSize > 0 && (
+              <SplitPanel defaultSize={sidebarDefaultSize} minSize={10}>
+                <CustomPanel title={`${layoutPreset.toUpperCase()} Explorer`}>
+                  <Sidebar projectId={id || ''} />
+                </CustomPanel>
+              </SplitPanel>
+            )}
 
-            <PanelResizeHandle
-              style={{ width: '6px', backgroundColor: 'transparent', cursor: 'col-resize', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-            >
-              <Box sx={{ width: '2px', height: '30px', bgcolor: '#1e293b', borderRadius: '1px' }} />
-            </PanelResizeHandle>
+            {sidebarDefaultSize > 0 && (
+              <PanelResizeHandle
+                style={{ width: '6px', backgroundColor: 'transparent', cursor: 'col-resize', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              >
+                <Box sx={{ width: '2px', height: '30px', bgcolor: '#1b2f54', borderRadius: '1px' }} />
+              </PanelResizeHandle>
+            )}
 
             {/* Center Area (Preview + Timeline) */}
-            <SplitPanel defaultSize={60}>
+            <SplitPanel defaultSize={100 - sidebarDefaultSize - inspectorDefaultSize}>
               <PanelGroup direction="vertical">
-                <SplitPanel defaultSize={previewDefaultSize}>
-                  <CustomPanel title="Composition Viewport">
-                    <Preview />
-                  </CustomPanel>
-                </SplitPanel>
+                {previewDefaultSize > 0 && (
+                  <SplitPanel defaultSize={previewDefaultSize}>
+                    <CustomPanel title="Composition Viewport">
+                      <Preview />
+                    </CustomPanel>
+                  </SplitPanel>
+                )}
 
-                <PanelResizeHandle
-                  style={{ height: '6px', backgroundColor: 'transparent', cursor: 'row-resize', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                >
-                  <Box sx={{ height: '2px', width: '30px', bgcolor: '#1e293b', borderRadius: '1px' }} />
-                </PanelResizeHandle>
+                {previewDefaultSize > 0 && timelineDefaultSize > 0 && (
+                  <PanelResizeHandle
+                    style={{ height: '6px', backgroundColor: 'transparent', cursor: 'row-resize', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                  >
+                    <Box sx={{ height: '2px', width: '30px', bgcolor: '#1b2f54', borderRadius: '1px' }} />
+                  </PanelResizeHandle>
+                )}
 
-                <SplitPanel defaultSize={timelineDefaultSize}>
-                  <CustomPanel title="Multi-track Timeline Controls">
-                    <Timeline />
-                  </CustomPanel>
-                </SplitPanel>
+                {timelineDefaultSize > 0 && (
+                  <SplitPanel defaultSize={timelineDefaultSize}>
+                    <CustomPanel title="Multi-track Timeline Controls">
+                      <Timeline />
+                    </CustomPanel>
+                  </SplitPanel>
+                )}
               </PanelGroup>
             </SplitPanel>
 
-            <PanelResizeHandle
-              style={{ width: '6px', backgroundColor: 'transparent', cursor: 'col-resize', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-            >
-              <Box sx={{ width: '2px', height: '30px', bgcolor: '#1e293b', borderRadius: '1px' }} />
-            </PanelResizeHandle>
+            {inspectorDefaultSize > 0 && (
+              <PanelResizeHandle
+                style={{ width: '6px', backgroundColor: 'transparent', cursor: 'col-resize', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              >
+                <Box sx={{ width: '2px', height: '30px', bgcolor: '#1b2f54', borderRadius: '1px' }} />
+              </PanelResizeHandle>
+            )}
 
             {/* Right Properties Panel wrapped in Inspector */}
-            <SplitPanel defaultSize={20} minSize={15}>
-              <Inspector title="Track Inspector & ABAC">
-                <PropertiesPanel />
-              </Inspector>
-            </SplitPanel>
+            {inspectorDefaultSize > 0 && (
+              <SplitPanel defaultSize={inspectorDefaultSize} minSize={10}>
+                <Inspector title="Track Inspector & ABAC">
+                  <PropertiesPanel />
+                </Inspector>
+              </SplitPanel>
+            )}
           </PanelGroup>
         </Box>
 
-        <StatusBar />
+        {layoutPreset !== 'presentation' && <StatusBar />}
 
         {/* Unscheduled shutdown recovery dialog */}
         <RecoveryDialog projectId={id || ''} />

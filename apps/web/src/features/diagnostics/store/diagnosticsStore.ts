@@ -35,9 +35,11 @@ export const useDiagnosticsStore = create<DiagnosticsState>((set) => ({
 
   setActiveTraceSpans: (activeTraceSpans) => set({ activeTraceSpans }),
 
-  resolveAlert: (id) => set((state) => ({
-    alerts: state.alerts.map((a) => (a.id === id ? { ...a, resolved: true } : a)),
-  })),
+  resolveAlert: (id) =>
+    set((state) => ({
+      alerts: state.alerts.map((a) => (a.id === id ? { ...a, resolved: true } : a)),
+    })),
 
-  clearAll: () => set({ logs: [], alerts: [], engineHealths: [], snapshots: [], activeTraceSpans: [] }),
+  clearAll: () =>
+    set({ logs: [], alerts: [], engineHealths: [], snapshots: [], activeTraceSpans: [] }),
 }));

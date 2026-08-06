@@ -12,7 +12,7 @@ export const useSecurity = () => {
         (p) =>
           p.id.toLowerCase().includes(q) ||
           p.name.toLowerCase().includes(q) ||
-          p.description.toLowerCase().includes(q)
+          p.description.toLowerCase().includes(q),
       );
     }
     return list;

@@ -15,7 +15,14 @@ export interface PooledClip {
 export class ClipPool {
   private static pool: PooledClip[] = [];
 
-  public static acquire(id: string, trackId: string, name: string, start: number, duration: number, type: any): PooledClip {
+  public static acquire(
+    id: string,
+    trackId: string,
+    name: string,
+    start: number,
+    duration: number,
+    type: any,
+  ): PooledClip {
     const item = this.pool.pop();
     if (item) {
       item.id = id;
@@ -30,7 +37,8 @@ export class ClipPool {
   }
 
   public static release(clip: PooledClip): void {
-    if (this.pool.length < 2000) { // Keep pool bounded to prevent memory bloating
+    if (this.pool.length < 2000) {
+      // Keep pool bounded to prevent memory bloating
       this.pool.push(clip);
     }
   }
@@ -131,7 +139,8 @@ export class FrameBufferPool {
   }
 
   public static release(buffer: Uint8ClampedArray): void {
-    if (this.pool.length < 100) { // Limit size-heavy arrays
+    if (this.pool.length < 100) {
+      // Limit size-heavy arrays
       this.pool.push(buffer);
     }
   }
@@ -187,7 +196,11 @@ export interface PooledRenderInstruction {
 export class RenderInstructionPool {
   private static pool: PooledRenderInstruction[] = [];
 
-  public static acquire(id: string, sourceAssetId: string, blendMode: string = 'normal'): PooledRenderInstruction {
+  public static acquire(
+    id: string,
+    sourceAssetId: string,
+    blendMode: string = 'normal',
+  ): PooledRenderInstruction {
     const inst = this.pool.pop();
     if (inst) {
       inst.id = id;

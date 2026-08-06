@@ -13,14 +13,17 @@ export function Viewport3DOverlay() {
           REAL-TIME GRAPH RENDERING SIMULATOR
         </div>
         <div className="text-xs text-gray-500">
-          Projection Backend: <span className="text-indigo-400 font-medium capitalize">{viewportState.viewMode}</span>
+          Projection Backend:{' '}
+          <span className="text-indigo-400 font-medium capitalize">{viewportState.viewMode}</span>
         </div>
         <div className="flex justify-center space-x-6 text-[11px] text-gray-400">
           <div>
-            🎥 Cameras Count: <span className="text-white font-semibold">{Object.keys(studio.cameras).length}</span>
+            🎥 Cameras Count:{' '}
+            <span className="text-white font-semibold">{Object.keys(studio.cameras).length}</span>
           </div>
           <div>
-            💡 Light Sources: <span className="text-white font-semibold">{Object.keys(studio.lightRigs).length}</span>
+            💡 Light Sources:{' '}
+            <span className="text-white font-semibold">{Object.keys(studio.lightRigs).length}</span>
           </div>
           {selectedCameraId && (
             <div className="text-indigo-300 font-medium">

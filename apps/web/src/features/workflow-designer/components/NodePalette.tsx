@@ -5,8 +5,24 @@ export const NodePalette: React.FC = () => {
   const nodeTypes = listPaletteNodeTypes();
 
   return (
-    <div style={{ padding: '8px', background: '#111', color: '#fff', border: '1px solid #333', borderRadius: '4px' }}>
-      <span style={{ fontSize: '11px', fontWeight: 'bold', display: 'block', marginBottom: '8px', color: '#888' }}>
+    <div
+      style={{
+        padding: '8px',
+        background: '#111',
+        color: '#fff',
+        border: '1px solid #333',
+        borderRadius: '4px',
+      }}
+    >
+      <span
+        style={{
+          fontSize: '11px',
+          fontWeight: 'bold',
+          display: 'block',
+          marginBottom: '8px',
+          color: '#888',
+        }}
+      >
         Draggable Nodes Palette
       </span>
 
@@ -27,7 +43,16 @@ export const NodePalette: React.FC = () => {
             }}
           >
             <span>{node.label}</span>
-            <span style={{ fontSize: '8px', padding: '1px 4px', background: '#333', borderRadius: '2px', textTransform: 'uppercase', color: '#aaa' }}>
+            <span
+              style={{
+                fontSize: '8px',
+                padding: '1px 4px',
+                background: '#333',
+                borderRadius: '2px',
+                textTransform: 'uppercase',
+                color: '#aaa',
+              }}
+            >
               {node.category}
             </span>
           </div>

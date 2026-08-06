@@ -12,8 +12,25 @@ export const ScalingConfig: React.FC = () => {
   };
 
   return (
-    <div style={{ background: '#1e1e1e', padding: '20px', borderRadius: '8px', border: '1px solid #333', color: '#fff' }}>
-      <h3 style={{ marginTop: 0, marginBottom: '16px', fontSize: '16px', color: '#ff9800', borderBottom: '1px solid #333', paddingBottom: '10px' }}>
+    <div
+      style={{
+        background: '#1e1e1e',
+        padding: '20px',
+        borderRadius: '8px',
+        border: '1px solid #333',
+        color: '#fff',
+      }}
+    >
+      <h3
+        style={{
+          marginTop: 0,
+          marginBottom: '16px',
+          fontSize: '16px',
+          color: '#ff9800',
+          borderBottom: '1px solid #333',
+          paddingBottom: '10px',
+        }}
+      >
         ⚙️ Auto-Scaling Engine Configuration
       </h3>
 
@@ -25,14 +42,43 @@ export const ScalingConfig: React.FC = () => {
           </strong>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginTop: '10px' }}>
-          <div style={{ background: '#252526', padding: '10px', borderRadius: '4px', border: '1px solid #333' }}>
-            <div style={{ color: '#aaa', fontSize: '11px', marginBottom: '2px' }}>Scale Up Threshold</div>
-            <strong style={{ fontSize: '14px', color: '#f44336' }}>&gt; {policy.upperThreshold} jobs</strong>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: '12px',
+            marginTop: '10px',
+          }}
+        >
+          <div
+            style={{
+              background: '#252526',
+              padding: '10px',
+              borderRadius: '4px',
+              border: '1px solid #333',
+            }}
+          >
+            <div style={{ color: '#aaa', fontSize: '11px', marginBottom: '2px' }}>
+              Scale Up Threshold
+            </div>
+            <strong style={{ fontSize: '14px', color: '#f44336' }}>
+              &gt; {policy.upperThreshold} jobs
+            </strong>
           </div>
-          <div style={{ background: '#252526', padding: '10px', borderRadius: '4px', border: '1px solid #333' }}>
-            <div style={{ color: '#aaa', fontSize: '11px', marginBottom: '2px' }}>Scale Down Threshold</div>
-            <strong style={{ fontSize: '14px', color: '#4caf50' }}>&lt; {policy.lowerThreshold} jobs</strong>
+          <div
+            style={{
+              background: '#252526',
+              padding: '10px',
+              borderRadius: '4px',
+              border: '1px solid #333',
+            }}
+          >
+            <div style={{ color: '#aaa', fontSize: '11px', marginBottom: '2px' }}>
+              Scale Down Threshold
+            </div>
+            <strong style={{ fontSize: '14px', color: '#4caf50' }}>
+              &lt; {policy.lowerThreshold} jobs
+            </strong>
           </div>
         </div>
 

@@ -8,8 +8,18 @@ export class WebStudioClientService {
     // Mimic executing via Agent Runtime & Transaction Engine
     return [
       { id: 'move_1', name: 'Cinematic Crane Sweep', type: 'crane', config: { armLength: 4.5 } },
-      { id: 'move_2', name: 'Dolly Push-In focus tracking', type: 'dolly', config: { trackLength: 6.0 } },
-      { id: 'move_3', name: 'Handheld over-the-shoulder tremor', type: 'handheld', config: { handheldJitter: 0.15 } },
+      {
+        id: 'move_2',
+        name: 'Dolly Push-In focus tracking',
+        type: 'dolly',
+        config: { trackLength: 6.0 },
+      },
+      {
+        id: 'move_3',
+        name: 'Handheld over-the-shoulder tremor',
+        type: 'handheld',
+        config: { handheldJitter: 0.15 },
+      },
     ];
   }
 

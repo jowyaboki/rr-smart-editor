@@ -6,15 +6,41 @@ export const PlannerVisualizer: React.FC = () => {
 
   if (!currentPlan) {
     return (
-      <div style={{ padding: '16px', background: '#111', color: '#666', border: '1px solid #333', borderRadius: '4px', textAlign: 'center', fontSize: '11px' }}>
+      <div
+        style={{
+          padding: '16px',
+          background: '#111',
+          color: '#666',
+          border: '1px solid #333',
+          borderRadius: '4px',
+          textAlign: 'center',
+          fontSize: '11px',
+        }}
+      >
         No active execution plans.
       </div>
     );
   }
 
   return (
-    <div style={{ padding: '12px', background: '#111', color: '#fff', border: '1px solid #333', borderRadius: '4px' }}>
-      <div style={{ fontSize: '12px', fontWeight: 'bold', marginBottom: '8px', borderBottom: '1px solid #333', paddingBottom: '4px' }}>
+    <div
+      style={{
+        padding: '12px',
+        background: '#111',
+        color: '#fff',
+        border: '1px solid #333',
+        borderRadius: '4px',
+      }}
+    >
+      <div
+        style={{
+          fontSize: '12px',
+          fontWeight: 'bold',
+          marginBottom: '8px',
+          borderBottom: '1px solid #333',
+          paddingBottom: '4px',
+        }}
+      >
         Active Planner Topology ({currentPlan.strategy.toUpperCase()})
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
@@ -23,10 +49,10 @@ export const PlannerVisualizer: React.FC = () => {
             task.status === 'completed'
               ? '#2e7d32'
               : task.status === 'failed'
-              ? '#c62828'
-              : task.status === 'running'
-              ? '#f57c00'
-              : '#333';
+                ? '#c62828'
+                : task.status === 'running'
+                  ? '#f57c00'
+                  : '#333';
 
           return (
             <div
@@ -39,7 +65,14 @@ export const PlannerVisualizer: React.FC = () => {
                 fontSize: '11px',
               }}
             >
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginBottom: '4px',
+                }}
+              >
                 <span style={{ fontWeight: 'bold' }}>{task.id.toUpperCase()}</span>
                 <span
                   style={{

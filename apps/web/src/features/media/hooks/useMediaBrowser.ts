@@ -11,18 +11,18 @@ export function useMediaBrowser() {
 
     // 1. Filter by collection folder
     if (store.selectedCollectionId && store.selectedCollectionId !== 'all') {
-      result = result.filter(asset => asset.collectionId === store.selectedCollectionId);
+      result = result.filter((asset) => asset.collectionId === store.selectedCollectionId);
     }
 
     // 2. Filter by type (video / audio / image)
     if (store.selectedType) {
-      result = result.filter(asset => asset.type === store.selectedType);
+      result = result.filter((asset) => asset.type === store.selectedType);
     }
 
     // 3. Search query indexing: query filenames, tags, codecs, metadata resolutions
     if (store.searchQuery) {
       const q = store.searchQuery.toLowerCase();
-      result = result.filter(asset => {
+      result = result.filter((asset) => {
         const matchName = asset.filename.toLowerCase().includes(q);
         const matchCodec = asset.metadata.codec?.toLowerCase().includes(q);
         const matchTags = asset.metadata.embeddedMetadata?.encoder?.toLowerCase().includes(q);
@@ -34,7 +34,9 @@ export function useMediaBrowser() {
   }, [store.assets, store.searchQuery, store.selectedCollectionId, store.selectedType]);
 
   const activeJobs = useMemo(() => {
-    return Object.values(store.jobs).filter(j => j.status === 'processing' || j.status === 'queued');
+    return Object.values(store.jobs).filter(
+      (j) => j.status === 'processing' || j.status === 'queued',
+    );
   }, [store.jobs]);
 
   return {

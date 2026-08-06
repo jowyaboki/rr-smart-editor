@@ -39,7 +39,9 @@ interface SecurityState {
   selectPolicy: (id: string | null) => void;
   selectAlert: (id: string | null) => void;
   selectSecret: (id: string | null) => void;
-  setActivePanel: (panel: 'policies' | 'sessions' | 'secrets' | 'compliance' | 'monitoring') => void;
+  setActivePanel: (
+    panel: 'policies' | 'sessions' | 'secrets' | 'compliance' | 'monitoring',
+  ) => void;
   setSearchQuery: (query: string) => void;
 
   // Delegation Actions
@@ -49,7 +51,12 @@ interface SecurityState {
   rotateSecretKey: (secretId: string, newValue: string) => Promise<void>;
   runComplianceAudit: (framework: 'GDPR' | 'SOC2' | 'ISO27001' | 'HIPAA') => Promise<void>;
   resolveSecurityAlert: (alertId: string) => Promise<void>;
-  addAuditLog: (action: string, identityId: string, status: 'success' | 'failure', details: any) => void;
+  addAuditLog: (
+    action: string,
+    identityId: string,
+    status: 'success' | 'failure',
+    details: any,
+  ) => void;
 }
 
 export const useSecurityStore = create<SecurityState>((set, get) => {
@@ -139,12 +146,15 @@ export const useSecurityStore = create<SecurityState>((set, get) => {
 
     // Delegation actions (no business logic in Zustand)
     authenticateIdentity: async (username, credentials) => {
-      const authRes = await globalSecurityPlatformEngine.identityService.authenticate(username, credentials);
+      const authRes = await globalSecurityPlatformEngine.identityService.authenticate(
+        username,
+        credentials,
+      );
       get().addAuditLog(
         authRes.success ? 'authentication.success' : 'authentication.failure',
         authRes.identity?.id || 'anonymous',
         authRes.success ? 'success' : 'failure',
-        { error: authRes.error }
+        { error: authRes.error },
       );
       return authRes.success;
     },
@@ -170,7 +180,10 @@ export const useSecurityStore = create<SecurityState>((set, get) => {
     runComplianceAudit: async (framework) => {
       set({ isLoading: true });
       try {
-        const profile = await globalSecurityPlatformEngine.complianceService.validateCompliance(framework, get().auditLogs);
+        const profile = await globalSecurityPlatformEngine.complianceService.validateCompliance(
+          framework,
+          get().auditLogs,
+        );
         const list = [...get().complianceProfiles];
         const idx = list.findIndex((p) => p.framework === framework);
         if (idx >= 0) {
@@ -179,7 +192,10 @@ export const useSecurityStore = create<SecurityState>((set, get) => {
           list.push(profile);
         }
         set({ complianceProfiles: list });
-        get().addAuditLog('compliance.audit_run', 'system', 'success', { framework, score: profile.complianceScore });
+        get().addAuditLog('compliance.audit_run', 'system', 'success', {
+          framework,
+          score: profile.complianceScore,
+        });
       } finally {
         set({ isLoading: false });
       }
@@ -207,7 +223,8 @@ export const useSecurityStore = create<SecurityState>((set, get) => {
       set({ auditLogs: updatedLogs });
 
       // Run real-time monitoring on new logs to trigger potential security anomalies
-      const freshAlerts = globalSecurityPlatformEngine.monitoringService.analyzeAuditLogsForAnomalies(updatedLogs);
+      const freshAlerts =
+        globalSecurityPlatformEngine.monitoringService.analyzeAuditLogsForAnomalies(updatedLogs);
       if (freshAlerts.length > 0) {
         get().loadAlerts();
       }

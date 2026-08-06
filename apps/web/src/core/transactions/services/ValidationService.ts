@@ -5,7 +5,7 @@ import { PluginTransactionService } from './PluginTransactionService';
 export class ValidationService {
   public static async validateAndTransform(
     transaction: EditorTransaction,
-    context: TransactionContext
+    context: TransactionContext,
   ): Promise<EditorTransaction> {
     if (!transaction.name || transaction.name.trim() === '') {
       throw new TransactionValidationError('Transaction name is required', transaction.id);
@@ -17,7 +17,7 @@ export class ValidationService {
       if (!pluginVal.valid) {
         throw new TransactionValidationError(
           pluginVal.error || `Plugin validation failed for operation ${op.type}`,
-          transaction.id
+          transaction.id,
         );
       }
 
@@ -32,7 +32,7 @@ export class ValidationService {
           if (params.duration !== undefined && params.duration <= 0) {
             throw new TransactionValidationError(
               `Clip duration must be greater than 0, got ${params.duration}`,
-              transaction.id
+              transaction.id,
             );
           }
           if (params.start !== undefined) {
@@ -49,7 +49,7 @@ export class ValidationService {
         if (!params || !params.id) {
           throw new TransactionValidationError(
             `Operation ${op.type} requires an ID parameter`,
-            transaction.id
+            transaction.id,
           );
         }
       }

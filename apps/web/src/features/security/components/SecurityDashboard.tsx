@@ -34,7 +34,15 @@ export const PolicyCard: React.FC<{
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <strong style={{ fontSize: '12px' }}>{policy.name}</strong>
-        <span style={{ fontSize: '9px', background: 'rgba(33, 150, 243, 0.2)', color: '#2196f3', padding: '1px 4px', borderRadius: '3px' }}>
+        <span
+          style={{
+            fontSize: '9px',
+            background: 'rgba(33, 150, 243, 0.2)',
+            color: '#2196f3',
+            padding: '1px 4px',
+            borderRadius: '3px',
+          }}
+        >
           Active
         </span>
       </div>
@@ -77,7 +85,15 @@ export const AlertCard: React.FC<{
       <div>
         <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
           <span style={{ fontSize: '13px', fontWeight: 'bold' }}>⚠️ {alert.title}</span>
-          <span style={{ fontSize: '9px', textTransform: 'uppercase', background: 'rgba(255,255,255,0.1)', padding: '2px 6px', borderRadius: '3px' }}>
+          <span
+            style={{
+              fontSize: '9px',
+              textTransform: 'uppercase',
+              background: 'rgba(255,255,255,0.1)',
+              padding: '2px 6px',
+              borderRadius: '3px',
+            }}
+          >
             {alert.severity}
           </span>
         </div>
@@ -159,7 +175,7 @@ export const SecurityDashboard: React.FC = () => {
           version: 'v1',
           createdAt: new Date().toISOString(),
         },
-        'AKIAIOSFODNN7EXAMPLE'
+        'AKIAIOSFODNN7EXAMPLE',
       );
     }
   }, [secrets]);
@@ -190,7 +206,9 @@ export const SecurityDashboard: React.FC = () => {
   };
 
   // Derive risk status levels
-  const criticalAlertsCount = alerts.filter((a) => a.status === 'active' && a.severity === 'critical').length;
+  const criticalAlertsCount = alerts.filter(
+    (a) => a.status === 'active' && a.severity === 'critical',
+  ).length;
   const overallSecurityScore = 100 - criticalAlertsCount * 25;
 
   return (
@@ -222,22 +240,59 @@ export const SecurityDashboard: React.FC = () => {
               ENTERPRISE SECURITY, GOVERNANCE & COMPLIANCE PLATFORM
             </h1>
             <p style={{ margin: 0, fontSize: '11px', color: '#888' }}>
-              Identity directory, attribute-based policy engine, credentials vaults and SOC2 monitoring
+              Identity directory, attribute-based policy engine, credentials vaults and SOC2
+              monitoring
             </p>
           </div>
         </div>
 
         {/* SECURITY RISK TELEMETRY */}
         <div style={{ display: 'flex', gap: '16px' }}>
-          <div style={{ background: '#252526', padding: '6px 12px', borderRadius: '4px', border: '1px solid #333' }}>
-            <span style={{ fontSize: '10px', color: '#888', display: 'block', textTransform: 'uppercase' }}>Active Threats</span>
-            <strong style={{ color: criticalAlertsCount > 0 ? '#f44336' : '#4caf50', fontSize: '14px' }}>
+          <div
+            style={{
+              background: '#252526',
+              padding: '6px 12px',
+              borderRadius: '4px',
+              border: '1px solid #333',
+            }}
+          >
+            <span
+              style={{
+                fontSize: '10px',
+                color: '#888',
+                display: 'block',
+                textTransform: 'uppercase',
+              }}
+            >
+              Active Threats
+            </span>
+            <strong
+              style={{ color: criticalAlertsCount > 0 ? '#f44336' : '#4caf50', fontSize: '14px' }}
+            >
               {criticalAlertsCount} Critical Alerts
             </strong>
           </div>
-          <div style={{ background: '#252526', padding: '6px 12px', borderRadius: '4px', border: '1px solid #333' }}>
-            <span style={{ fontSize: '10px', color: '#888', display: 'block', textTransform: 'uppercase' }}>Security Score</span>
-            <strong style={{ color: '#4caf50', fontSize: '14px' }}>{overallSecurityScore}% Secure</strong>
+          <div
+            style={{
+              background: '#252526',
+              padding: '6px 12px',
+              borderRadius: '4px',
+              border: '1px solid #333',
+            }}
+          >
+            <span
+              style={{
+                fontSize: '10px',
+                color: '#888',
+                display: 'block',
+                textTransform: 'uppercase',
+              }}
+            >
+              Security Score
+            </span>
+            <strong style={{ color: '#4caf50', fontSize: '14px' }}>
+              {overallSecurityScore}% Secure
+            </strong>
           </div>
         </div>
       </div>
@@ -258,7 +313,15 @@ export const SecurityDashboard: React.FC = () => {
         >
           {/* POLICIES SUBSECTION */}
           <div>
-            <h3 style={{ margin: '0 0 10px 0', fontSize: '12px', color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            <h3
+              style={{
+                margin: '0 0 10px 0',
+                fontSize: '12px',
+                color: '#aaa',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+              }}
+            >
               🎛️ PBAC / ABAC Policies
             </h3>
             {filteredPolicies.map((p) => (
@@ -273,49 +336,67 @@ export const SecurityDashboard: React.FC = () => {
 
           {/* ACTIVE SESSIONS */}
           <div style={{ borderTop: '1px solid #2d2d2d', paddingTop: '16px' }}>
-            <h3 style={{ margin: '0 0 10px 0', fontSize: '12px', color: '#aaa', textTransform: 'uppercase' }}>
+            <h3
+              style={{
+                margin: '0 0 10px 0',
+                fontSize: '12px',
+                color: '#aaa',
+                textTransform: 'uppercase',
+              }}
+            >
               👤 Active Sessions ({sessions.filter((s) => s.status === 'active').length})
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-              {sessions.filter((s) => s.status === 'active').map((sess) => (
-                <div
-                  key={sess.id}
-                  style={{
-                    background: '#252526',
-                    padding: '8px',
-                    borderRadius: '4px',
-                    fontSize: '11px',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                  }}
-                >
-                  <div>
-                    <strong>{sess.identityId}</strong>
-                    <div style={{ color: '#888', fontSize: '9px' }}>IP: {sess.deviceInfo.ipAddress}</div>
-                  </div>
-                  <button
-                    onClick={() => terminateSession(sess.id)}
+              {sessions
+                .filter((s) => s.status === 'active')
+                .map((sess) => (
+                  <div
+                    key={sess.id}
                     style={{
-                      background: '#f44336',
-                      border: 'none',
-                      color: '#fff',
-                      fontSize: '9px',
-                      padding: '2px 6px',
-                      borderRadius: '3px',
-                      cursor: 'pointer',
+                      background: '#252526',
+                      padding: '8px',
+                      borderRadius: '4px',
+                      fontSize: '11px',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
                     }}
                   >
-                    Revoke
-                  </button>
-                </div>
-              ))}
+                    <div>
+                      <strong>{sess.identityId}</strong>
+                      <div style={{ color: '#888', fontSize: '9px' }}>
+                        IP: {sess.deviceInfo.ipAddress}
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => terminateSession(sess.id)}
+                      style={{
+                        background: '#f44336',
+                        border: 'none',
+                        color: '#fff',
+                        fontSize: '9px',
+                        padding: '2px 6px',
+                        borderRadius: '3px',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      Revoke
+                    </button>
+                  </div>
+                ))}
             </div>
           </div>
 
           {/* CREDENTIALS SECRETS REFERENCES */}
           <div style={{ borderTop: '1px solid #2d2d2d', paddingTop: '16px' }}>
-            <h3 style={{ margin: '0 0 10px 0', fontSize: '12px', color: '#aaa', textTransform: 'uppercase' }}>
+            <h3
+              style={{
+                margin: '0 0 10px 0',
+                fontSize: '12px',
+                color: '#aaa',
+                textTransform: 'uppercase',
+              }}
+            >
               🔑 Credentials Keyring Vault
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
@@ -340,19 +421,44 @@ export const SecurityDashboard: React.FC = () => {
 
           {/* SIMULATE BAD LOGIN TO PROMPT THREAT PANEL */}
           <div style={{ borderTop: '1px solid #2d2d2d', paddingTop: '16px', marginTop: 'auto' }}>
-            <h3 style={{ margin: '0 0 8px 0', fontSize: '11px', color: '#888', textTransform: 'uppercase' }}>
+            <h3
+              style={{
+                margin: '0 0 8px 0',
+                fontSize: '11px',
+                color: '#888',
+                textTransform: 'uppercase',
+              }}
+            >
               Simulate Auth Attempter
             </h3>
-            <form onSubmit={handleSimulatedAuth} style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            <form
+              onSubmit={handleSimulatedAuth}
+              style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}
+            >
               <input
                 type="text"
                 value={authUsername}
                 onChange={(e) => setAuthUsername(e.target.value)}
-                style={{ background: '#222', border: '1px solid #444', color: '#fff', padding: '4px', fontSize: '11px', borderRadius: '3px' }}
+                style={{
+                  background: '#222',
+                  border: '1px solid #444',
+                  color: '#fff',
+                  padding: '4px',
+                  fontSize: '11px',
+                  borderRadius: '3px',
+                }}
               />
               <button
                 type="submit"
-                style={{ background: '#333', border: '1px solid #444', color: '#fff', padding: '6px', fontSize: '11px', cursor: 'pointer', borderRadius: '3px' }}
+                style={{
+                  background: '#333',
+                  border: '1px solid #444',
+                  color: '#fff',
+                  padding: '6px',
+                  fontSize: '11px',
+                  cursor: 'pointer',
+                  borderRadius: '3px',
+                }}
               >
                 Failed Login Attack Trigger
               </button>
@@ -422,25 +528,49 @@ export const SecurityDashboard: React.FC = () => {
           {/* ACTIVE ALERTS THREAT MONITOR */}
           {alerts.filter((a) => a.status === 'active').length > 0 && (
             <div>
-              <h2 style={{ margin: '0 0 10px 0', fontSize: '13px', color: '#ff5252', textTransform: 'uppercase' }}>
-                🚨 ACTIVE INTRUSIONS / SECURITY ALERTS ({alerts.filter((a) => a.status === 'active').length})
+              <h2
+                style={{
+                  margin: '0 0 10px 0',
+                  fontSize: '13px',
+                  color: '#ff5252',
+                  textTransform: 'uppercase',
+                }}
+              >
+                🚨 ACTIVE INTRUSIONS / SECURITY ALERTS (
+                {alerts.filter((a) => a.status === 'active').length})
               </h2>
-              {alerts.filter((a) => a.status === 'active').map((a) => (
-                <AlertCard key={a.id} alert={a} onResolve={() => handleResolveAlert(a.id)} />
-              ))}
+              {alerts
+                .filter((a) => a.status === 'active')
+                .map((a) => (
+                  <AlertCard key={a.id} alert={a} onResolve={() => handleResolveAlert(a.id)} />
+                ))}
             </div>
           )}
 
           {/* ACTIVE PANEL CONDITIONAL RENDERS */}
           {activePanel === 'policies' && (
             <div>
-              <h2 style={{ margin: '0 0 12px 0', fontSize: '15px', color: '#fff' }}>Access Control Engine</h2>
+              <h2 style={{ margin: '0 0 12px 0', fontSize: '15px', color: '#fff' }}>
+                Access Control Engine
+              </h2>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                 {filteredPolicies.map((p) => (
-                  <div key={p.id} style={{ background: '#1c1c1c', border: '1px solid #333', padding: '16px', borderRadius: '8px' }}>
+                  <div
+                    key={p.id}
+                    style={{
+                      background: '#1c1c1c',
+                      border: '1px solid #333',
+                      padding: '16px',
+                      borderRadius: '8px',
+                    }}
+                  >
                     <div style={{ fontWeight: 'bold', color: '#fff' }}>{p.name}</div>
-                    <p style={{ fontSize: '12px', color: '#aaa', margin: '8px 0 12px 0' }}>{p.description}</p>
-                    <div style={{ fontSize: '11px', color: '#2196f3' }}>Rules Count: {p.rules.length}</div>
+                    <p style={{ fontSize: '12px', color: '#aaa', margin: '8px 0 12px 0' }}>
+                      {p.description}
+                    </p>
+                    <div style={{ fontSize: '11px', color: '#2196f3' }}>
+                      Rules Count: {p.rules.length}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -449,7 +579,9 @@ export const SecurityDashboard: React.FC = () => {
 
           {activePanel === 'sessions' && (
             <div>
-              <h2 style={{ margin: '0 0 12px 0', fontSize: '15px', color: '#fff' }}>Trust Device & Sessions</h2>
+              <h2 style={{ margin: '0 0 12px 0', fontSize: '15px', color: '#fff' }}>
+                Trust Device & Sessions
+              </h2>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {sessions.map((s) => (
                   <div
@@ -467,10 +599,17 @@ export const SecurityDashboard: React.FC = () => {
                     <div>
                       <strong>Identity: {s.identityId}</strong>
                       <div style={{ fontSize: '11px', color: '#aaa', marginTop: '4px' }}>
-                        Device: {s.deviceInfo.userAgent} | Trusted: {s.deviceInfo.isTrusted ? 'YES' : 'NO'}
+                        Device: {s.deviceInfo.userAgent} | Trusted:{' '}
+                        {s.deviceInfo.isTrusted ? 'YES' : 'NO'}
                       </div>
                     </div>
-                    <span style={{ fontSize: '11px', fontWeight: 'bold', color: s.status === 'active' ? '#4caf50' : '#888' }}>
+                    <span
+                      style={{
+                        fontSize: '11px',
+                        fontWeight: 'bold',
+                        color: s.status === 'active' ? '#4caf50' : '#888',
+                      }}
+                    >
                       {s.status.toUpperCase()}
                     </span>
                   </div>
@@ -481,13 +620,28 @@ export const SecurityDashboard: React.FC = () => {
 
           {activePanel === 'secrets' && (
             <div>
-              <h2 style={{ margin: '0 0 12px 0', fontSize: '15px', color: '#fff' }}>Application Secrets Rotation</h2>
+              <h2 style={{ margin: '0 0 12px 0', fontSize: '15px', color: '#fff' }}>
+                Application Secrets Rotation
+              </h2>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                 {secrets.map((sec) => (
-                  <div key={sec.id} style={{ background: '#1c1c1c', border: '1px solid #333', padding: '12px', borderRadius: '6px' }}>
+                  <div
+                    key={sec.id}
+                    style={{
+                      background: '#1c1c1c',
+                      border: '1px solid #333',
+                      padding: '12px',
+                      borderRadius: '6px',
+                    }}
+                  >
                     <div style={{ fontWeight: 'bold', color: '#fff' }}>{sec.name}</div>
-                    <div style={{ fontSize: '11px', color: '#aaa', marginTop: '4px' }}>Path: {sec.vaultPath}</div>
-                    <div style={{ fontSize: '11px', color: '#888' }}>Rotated: {sec.rotatedAt ? new Date(sec.rotatedAt).toLocaleDateString() : 'Never'}</div>
+                    <div style={{ fontSize: '11px', color: '#aaa', marginTop: '4px' }}>
+                      Path: {sec.vaultPath}
+                    </div>
+                    <div style={{ fontSize: '11px', color: '#888' }}>
+                      Rotated:{' '}
+                      {sec.rotatedAt ? new Date(sec.rotatedAt).toLocaleDateString() : 'Never'}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -496,18 +650,41 @@ export const SecurityDashboard: React.FC = () => {
 
           {activePanel === 'compliance' && (
             <div>
-              <h2 style={{ margin: '0 0 12px 0', fontSize: '15px', color: '#fff' }}>SOC2 / GDPR Governance Checklists</h2>
+              <h2 style={{ margin: '0 0 12px 0', fontSize: '15px', color: '#fff' }}>
+                SOC2 / GDPR Governance Checklists
+              </h2>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                 {(['GDPR', 'SOC2', 'ISO27001', 'HIPAA'] as const).map((framework) => {
                   const profile = complianceProfiles.find((p) => p.framework === framework);
                   return (
-                    <div key={framework} style={{ background: '#1c1c1c', border: '1px solid #333', padding: '16px', borderRadius: '8px' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 'bold', color: '#fff' }}>
+                    <div
+                      key={framework}
+                      style={{
+                        background: '#1c1c1c',
+                        border: '1px solid #333',
+                        padding: '16px',
+                        borderRadius: '8px',
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          fontWeight: 'bold',
+                          color: '#fff',
+                        }}
+                      >
                         <span>{framework} Standard</span>
-                        {profile && <span style={{ color: '#4caf50' }}>{profile.complianceScore}% Passed</span>}
+                        {profile && (
+                          <span style={{ color: '#4caf50' }}>
+                            {profile.complianceScore}% Passed
+                          </span>
+                        )}
                       </div>
                       <p style={{ fontSize: '11px', color: '#888', margin: '8px 0 12px 0' }}>
-                        {profile ? `Checked ${profile.rulesCheckedCount} criteria rules, found ${profile.violationsCount} violations.` : 'Checklist not verified yet.'}
+                        {profile
+                          ? `Checked ${profile.rulesCheckedCount} criteria rules, found ${profile.violationsCount} violations.`
+                          : 'Checklist not verified yet.'}
                       </p>
                       <button
                         onClick={() => handleRunAudit(framework)}
@@ -544,29 +721,79 @@ export const SecurityDashboard: React.FC = () => {
             gap: '16px',
           }}
         >
-          <h3 style={{ margin: '0 0 4px 0', fontSize: '12px', color: '#aaa', textTransform: 'uppercase' }}>Governance Inspector</h3>
+          <h3
+            style={{
+              margin: '0 0 4px 0',
+              fontSize: '12px',
+              color: '#aaa',
+              textTransform: 'uppercase',
+            }}
+          >
+            Governance Inspector
+          </h3>
 
           {activePolicy && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <div style={{ background: '#252526', padding: '12px', borderRadius: '6px', border: '1px solid #333' }}>
+              <div
+                style={{
+                  background: '#252526',
+                  padding: '12px',
+                  borderRadius: '6px',
+                  border: '1px solid #333',
+                }}
+              >
                 <div style={{ fontSize: '10px', color: '#aaa' }}>Policy ID</div>
                 <code>{activePolicy.id}</code>
-                <h4 style={{ margin: '8px 0 0 0', fontSize: '13px', color: '#fff' }}>{activePolicy.name}</h4>
+                <h4 style={{ margin: '8px 0 0 0', fontSize: '13px', color: '#fff' }}>
+                  {activePolicy.name}
+                </h4>
               </div>
 
               {/* RULES ABAC EXPLAINER */}
-              <div style={{ background: '#252526', padding: '12px', borderRadius: '6px', border: '1px solid #333' }}>
-                <h4 style={{ margin: '0 0 8px 0', fontSize: '11px', color: '#2196f3', textTransform: 'uppercase' }}>
+              <div
+                style={{
+                  background: '#252526',
+                  padding: '12px',
+                  borderRadius: '6px',
+                  border: '1px solid #333',
+                }}
+              >
+                <h4
+                  style={{
+                    margin: '0 0 8px 0',
+                    fontSize: '11px',
+                    color: '#2196f3',
+                    textTransform: 'uppercase',
+                  }}
+                >
                   🔑 ABAC Policy Rules ({activePolicy.rules.length})
                 </h4>
                 {activePolicy.rules.map((rule) => (
-                  <div key={rule.id} style={{ fontSize: '11px', borderBottom: '1px solid #333', paddingBottom: '8px', marginBottom: '8px' }}>
-                    <div>Effect: <strong style={{ color: rule.effect === 'allow' ? '#4caf50' : '#f44336' }}>{rule.effect.toUpperCase()}</strong></div>
-                    <div>Resources: <code style={{ color: '#fff' }}>{rule.resources.join(', ')}</code></div>
-                    <div>Actions: <code style={{ color: '#fff' }}>{rule.actions.join(', ')}</code></div>
+                  <div
+                    key={rule.id}
+                    style={{
+                      fontSize: '11px',
+                      borderBottom: '1px solid #333',
+                      paddingBottom: '8px',
+                      marginBottom: '8px',
+                    }}
+                  >
+                    <div>
+                      Effect:{' '}
+                      <strong style={{ color: rule.effect === 'allow' ? '#4caf50' : '#f44336' }}>
+                        {rule.effect.toUpperCase()}
+                      </strong>
+                    </div>
+                    <div>
+                      Resources: <code style={{ color: '#fff' }}>{rule.resources.join(', ')}</code>
+                    </div>
+                    <div>
+                      Actions: <code style={{ color: '#fff' }}>{rule.actions.join(', ')}</code>
+                    </div>
                     {rule.conditions && (
                       <div style={{ color: '#ffb74d', marginTop: '4px' }}>
-                        Conditions: If {rule.conditions[0].attribute} {rule.conditions[0].operator} {rule.conditions[0].value}
+                        Conditions: If {rule.conditions[0].attribute} {rule.conditions[0].operator}{' '}
+                        {rule.conditions[0].value}
                       </div>
                     )}
                   </div>
@@ -577,15 +804,38 @@ export const SecurityDashboard: React.FC = () => {
 
           {activeSecret && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <div style={{ background: '#252526', padding: '12px', borderRadius: '6px', border: '1px solid #333' }}>
+              <div
+                style={{
+                  background: '#252526',
+                  padding: '12px',
+                  borderRadius: '6px',
+                  border: '1px solid #333',
+                }}
+              >
                 <div style={{ fontSize: '10px', color: '#aaa' }}>Vault Secret Key</div>
                 <strong style={{ color: '#fff' }}>{activeSecret.name}</strong>
-                <div style={{ color: '#888', fontSize: '11px', marginTop: '4px' }}>Version: {activeSecret.version}</div>
+                <div style={{ color: '#888', fontSize: '11px', marginTop: '4px' }}>
+                  Version: {activeSecret.version}
+                </div>
               </div>
 
               {/* SECURE ROTATION PANEL */}
-              <div style={{ background: '#252526', padding: '12px', borderRadius: '6px', border: '1px solid #333' }}>
-                <h4 style={{ margin: '0 0 8px 0', fontSize: '11px', color: '#ff9800', textTransform: 'uppercase' }}>
+              <div
+                style={{
+                  background: '#252526',
+                  padding: '12px',
+                  borderRadius: '6px',
+                  border: '1px solid #333',
+                }}
+              >
+                <h4
+                  style={{
+                    margin: '0 0 8px 0',
+                    fontSize: '11px',
+                    color: '#ff9800',
+                    textTransform: 'uppercase',
+                  }}
+                >
                   🔄 Rotate Secret Key
                 </h4>
                 <input
@@ -626,8 +876,17 @@ export const SecurityDashboard: React.FC = () => {
           )}
 
           {!activePolicy && !activeSecret && (
-            <div style={{ padding: '40px 10px', textAlign: 'center', color: '#666', border: '1px dashed #333', borderRadius: '6px' }}>
-              Select an access policy or a credentials secret to audit ABAC parameters or rotate keystores.
+            <div
+              style={{
+                padding: '40px 10px',
+                textAlign: 'center',
+                color: '#666',
+                border: '1px dashed #333',
+                borderRadius: '6px',
+              }}
+            >
+              Select an access policy or a credentials secret to audit ABAC parameters or rotate
+              keystores.
             </div>
           )}
         </div>
@@ -647,7 +906,14 @@ export const SecurityDashboard: React.FC = () => {
       >
         {/* EVENT REALTIME LOGS */}
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <h4 style={{ margin: '0 0 6px 0', fontSize: '11px', color: '#aaa', textTransform: 'uppercase' }}>
+          <h4
+            style={{
+              margin: '0 0 6px 0',
+              fontSize: '11px',
+              color: '#aaa',
+              textTransform: 'uppercase',
+            }}
+          >
             🛰️ Real-time Security Event Auditing
           </h4>
           <div
@@ -669,7 +935,9 @@ export const SecurityDashboard: React.FC = () => {
             {auditLogs.map((log) => (
               <div key={log.id}>
                 [{log.timestamp}] {log.action.toUpperCase()} by {log.actorId} -{' '}
-                <strong style={{ color: log.status === 'success' ? '#4caf50' : '#f44336' }}>{log.status.toUpperCase()}</strong>
+                <strong style={{ color: log.status === 'success' ? '#4caf50' : '#f44336' }}>
+                  {log.status.toUpperCase()}
+                </strong>
               </div>
             ))}
           </div>
@@ -677,7 +945,14 @@ export const SecurityDashboard: React.FC = () => {
 
         {/* FAILED AUTH ATTACK GRAPH */}
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-          <h4 style={{ margin: '0 0 6px 0', fontSize: '11px', color: '#aaa', textTransform: 'uppercase' }}>
+          <h4
+            style={{
+              margin: '0 0 6px 0',
+              fontSize: '11px',
+              color: '#aaa',
+              textTransform: 'uppercase',
+            }}
+          >
             Active Threat Detection Gauges
           </h4>
           <div
@@ -689,7 +964,13 @@ export const SecurityDashboard: React.FC = () => {
               textAlign: 'center',
             }}
           >
-            <div style={{ fontSize: '20px', fontWeight: 'bold', color: criticalAlertsCount > 0 ? '#ff5252' : '#4caf50' }}>
+            <div
+              style={{
+                fontSize: '20px',
+                fontWeight: 'bold',
+                color: criticalAlertsCount > 0 ? '#ff5252' : '#4caf50',
+              }}
+            >
               {criticalAlertsCount > 0 ? 'Threat Detected' : 'Threat Level Low'}
             </div>
             <div style={{ fontSize: '10px', color: '#888', marginTop: '2px' }}>

@@ -18,7 +18,9 @@ export function FalseColorOverlay() {
       </div>
 
       <div className="flex-1 flex items-center justify-center relative">
-        <div className={`w-32 h-20 rounded border border-gray-700 bg-gradient-to-r from-purple-500 via-blue-500 to-red-500 transition duration-300 ${scopesState.falseColorOverlay ? 'opacity-90' : 'opacity-10 grayscale'}`} />
+        <div
+          className={`w-32 h-20 rounded border border-gray-700 bg-gradient-to-r from-purple-500 via-blue-500 to-red-500 transition duration-300 ${scopesState.falseColorOverlay ? 'opacity-90' : 'opacity-10 grayscale'}`}
+        />
       </div>
 
       {scopesState.falseColorOverlay && (

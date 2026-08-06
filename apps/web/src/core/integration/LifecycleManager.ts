@@ -31,7 +31,7 @@ export class LifecycleManager {
    * Suspends all active engines.
    */
   public async suspendAll(): Promise<void> {
-    const active = this.registry.listEngines().filter(e => e.status === 'initialized');
+    const active = this.registry.listEngines().filter((e) => e.status === 'initialized');
     for (const engine of active) {
       if (engine.suspend) {
         await engine.suspend();
@@ -44,7 +44,7 @@ export class LifecycleManager {
    * Resumes all suspended engines.
    */
   public async resumeAll(): Promise<void> {
-    const suspended = this.registry.listEngines().filter(e => e.status === 'suspended');
+    const suspended = this.registry.listEngines().filter((e) => e.status === 'suspended');
     for (const engine of suspended) {
       if (engine.resume) {
         await engine.resume();
@@ -85,7 +85,7 @@ export class LifecycleManager {
   public async restart(): Promise<void> {
     await this.disposeAll();
     const engines = this.registry.listEngines();
-    engines.forEach(e => {
+    engines.forEach((e) => {
       e.status = 'idle';
       e.health = 'healthy';
       e.error = undefined;

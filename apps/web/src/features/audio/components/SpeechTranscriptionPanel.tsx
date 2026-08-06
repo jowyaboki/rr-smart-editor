@@ -9,10 +9,12 @@ export function SpeechTranscriptionPanel() {
       </div>
       <div className="space-y-1 text-xs text-gray-400 leading-relaxed bg-[#1d1d22] p-3 rounded">
         <div>
-          <span className="text-indigo-400 font-bold">[00:01.5] Speaker 1:</span> Good morning, welcome to the studio.
+          <span className="text-indigo-400 font-bold">[00:01.5] Speaker 1:</span> Good morning,
+          welcome to the studio.
         </div>
         <div>
-          <span className="text-emerald-400 font-bold">[00:03.2] Speaker 2:</span> Thank you, let's start the recording.
+          <span className="text-emerald-400 font-bold">[00:03.2] Speaker 2:</span> Thank you, let's
+          start the recording.
         </div>
       </div>
     </div>
