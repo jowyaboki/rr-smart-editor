@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import { Clip, useTimelineStore } from '../../../store/useTimelineStore';
+import { useWorkflowStore } from '../../../store/useWorkflowStore';
 
 interface ClipItemProps {
   clip: Clip;
@@ -9,6 +10,7 @@ interface ClipItemProps {
 
 const ClipItem: React.FC<ClipItemProps> = React.memo(({ clip, zoom }) => {
   const updateClip = useTimelineStore((state) => state.updateClip);
+  const setSelectedContext = useWorkflowStore((state) => state.setSelectedContext);
   const left = clip.start * zoom;
   const width = clip.duration * zoom;
   const isDragging = useRef(false);
@@ -35,6 +37,14 @@ const ClipItem: React.FC<ClipItemProps> = React.memo(({ clip, zoom }) => {
     originalStart.current = clip.start;
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mouseup', handleMouseUp);
+
+    // Contextual selection integration - Update active selection store on click
+    setSelectedContext({
+      type: clip.type === 'audio' ? 'Audio Clip' : 'Video Clip',
+      id: clip.id,
+      name: clip.name,
+    });
+
     e.stopPropagation();
   };
 

@@ -40,6 +40,7 @@ import {
 } from '@mui/icons-material';
 import { darkTheme, DESIGN_TOKENS } from '../theme';
 import { CommandPalette } from './Shared';
+import { WorkflowNavigator } from './WorkflowNavigator';
 
 const drawerWidth = 220;
 
@@ -239,10 +240,17 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
               </IconButton>
               <Typography
                 variant="subtitle1"
-                sx={{ fontWeight: DESIGN_TOKENS.typography.weight.bold, letterSpacing: '0.5px' }}
+                sx={{
+                  fontWeight: DESIGN_TOKENS.typography.weight.bold,
+                  letterSpacing: '0.5px',
+                  mr: 3,
+                }}
               >
                 RR Smart Editor
               </Typography>
+
+              {/* Integrated Persistent Workflow Navigator stage bar */}
+              <WorkflowNavigator />
             </Box>
 
             {/* Global Search trigger for command palette */}
