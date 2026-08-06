@@ -10,7 +10,8 @@ import {
   Extension as ExtensionIcon,
   Gesture as MotionIcon,
   AutoFixHigh as VFXIcon,
-  Leaderboard as StatsIcon
+  Leaderboard as StatsIcon,
+  HelpOutline as HelpIcon
 } from '@mui/icons-material';
 import MediaManager from './MediaManager';
 import AIAssistant from './AIAssistant';
@@ -19,6 +20,7 @@ import { PluginManagerPanel } from '../../plugins/components/PluginManagerPanel'
 import { MotionWorkspace } from './MotionWorkspace';
 import { VFXWorkspace } from './VFXWorkspace';
 import { ProductionDashboard } from './ProductionDashboard';
+import { KnowledgeHub } from './KnowledgeHub';
 
 // Lazy load heavy diagnostics panel
 const PerformanceDashboard = React.lazy(() =>
@@ -51,6 +53,11 @@ const Sidebar: React.FC<SidebarProps> = ({ projectId }) => {
         <Tab
           icon={<StatsIcon />}
           label="Ops Dash"
+          sx={{ minWidth: 'auto', textTransform: 'none', fontSize: '0.75rem' }}
+        />
+        <Tab
+          icon={<HelpIcon />}
+          label="Guides"
           sx={{ minWidth: 'auto', textTransform: 'none', fontSize: '0.75rem' }}
         />
         <Tab
@@ -97,22 +104,23 @@ const Sidebar: React.FC<SidebarProps> = ({ projectId }) => {
       <Box sx={{ p: 1, flexGrow: 1, overflowY: 'auto' }}>
         {value === 0 && <MediaManager projectId={projectId} />}
         {value === 1 && <ProductionDashboard />}
-        {value === 2 && <MotionWorkspace />}
-        {value === 3 && <VFXWorkspace />}
-        {value === 4 && <AIAssistant />}
-        {value === 5 && (
+        {value === 2 && <KnowledgeHub />}
+        {value === 3 && <MotionWorkspace />}
+        {value === 4 && <VFXWorkspace />}
+        {value === 5 && <AIAssistant />}
+        {value === 6 && (
           <Typography variant="body2" sx={{ p: 2 }}>
             Text Overlays
           </Typography>
         )}
-        {value === 6 && (
+        {value === 7 && (
           <Typography variant="body2" sx={{ p: 2 }}>
             Audio Tracks
           </Typography>
         )}
-        {value === 7 && <ReviewSidebar projectId={projectId} />}
-        {value === 8 && <PluginManagerPanel />}
-        {value === 9 && (
+        {value === 8 && <ReviewSidebar projectId={projectId} />}
+        {value === 9 && <PluginManagerPanel />}
+        {value === 10 && (
           <Suspense
             fallback={
               <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>

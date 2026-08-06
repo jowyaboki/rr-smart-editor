@@ -11,7 +11,7 @@ import { ErrorBoundary } from './features/release/components/ErrorBoundary';
 import { useWorkflowStore } from './store/useWorkflowStore';
 
 const App: React.FC = () => {
-  const { workspaceLocked, toggleWorkspaceLock } = useWorkflowStore();
+  const { workspaceLocked, toggleWorkspaceLock, workspaceMode, setWorkspaceMode } = useWorkflowStore();
 
   return (
     <ErrorBoundary>
@@ -19,7 +19,12 @@ const App: React.FC = () => {
         <Route
           path="/"
           element={
-            <Layout workspaceLocked={workspaceLocked} onToggleWorkspaceLock={toggleWorkspaceLock}>
+            <Layout
+              workspaceLocked={workspaceLocked}
+              onToggleWorkspaceLock={toggleWorkspaceLock}
+              workspaceMode={workspaceMode}
+              onSetWorkspaceMode={setWorkspaceMode}
+            >
               <Dashboard />
             </Layout>
           }
@@ -27,7 +32,12 @@ const App: React.FC = () => {
         <Route
           path="/preview"
           element={
-            <Layout workspaceLocked={workspaceLocked} onToggleWorkspaceLock={toggleWorkspaceLock}>
+            <Layout
+              workspaceLocked={workspaceLocked}
+              onToggleWorkspaceLock={toggleWorkspaceLock}
+              workspaceMode={workspaceMode}
+              onSetWorkspaceMode={setWorkspaceMode}
+            >
               <Preview />
             </Layout>
           }
@@ -35,7 +45,12 @@ const App: React.FC = () => {
         <Route
           path="/templates"
           element={
-            <Layout workspaceLocked={workspaceLocked} onToggleWorkspaceLock={toggleWorkspaceLock}>
+            <Layout
+              workspaceLocked={workspaceLocked}
+              onToggleWorkspaceLock={toggleWorkspaceLock}
+              workspaceMode={workspaceMode}
+              onSetWorkspaceMode={setWorkspaceMode}
+            >
               <Templates />
             </Layout>
           }
@@ -43,7 +58,12 @@ const App: React.FC = () => {
         <Route
           path="/workflows"
           element={
-            <Layout workspaceLocked={workspaceLocked} onToggleWorkspaceLock={toggleWorkspaceLock}>
+            <Layout
+              workspaceLocked={workspaceLocked}
+              onToggleWorkspaceLock={toggleWorkspaceLock}
+              workspaceMode={workspaceMode}
+              onSetWorkspaceMode={setWorkspaceMode}
+            >
               <Workflows />
             </Layout>
           }
@@ -51,7 +71,12 @@ const App: React.FC = () => {
         <Route
           path="/renders"
           element={
-            <Layout workspaceLocked={workspaceLocked} onToggleWorkspaceLock={toggleWorkspaceLock}>
+            <Layout
+              workspaceLocked={workspaceLocked}
+              onToggleWorkspaceLock={toggleWorkspaceLock}
+              workspaceMode={workspaceMode}
+              onSetWorkspaceMode={setWorkspaceMode}
+            >
               <Renders />
             </Layout>
           }
