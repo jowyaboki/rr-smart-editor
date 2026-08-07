@@ -4,3 +4,6 @@ export * from './services/WorkflowTemplatesService';
 export * from './services/KnowledgeEngineRAGService';
 export * from './services/AutomationAndLearningService';
 export * from './services/EvaluationService';
+export * from './services/AIGeneratorService';
+export * from './services/AssetResolver';
+export * from './services/TimelineBuilderService';
