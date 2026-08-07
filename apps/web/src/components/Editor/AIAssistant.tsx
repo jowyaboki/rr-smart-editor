@@ -117,7 +117,7 @@ const AIAssistant: React.FC = () => {
         if (currentJob) {
           setJobProgress(currentJob.progress);
           setJobStage(currentJob.stage);
-          if (currentJob.progress >= 100 || currentJob.cancelled) {
+          if (currentJob.progress >= 100 || currentJob.cancelled || currentJob.error) {
             clearInterval(interval);
             if (currentJob.progress >= 100) {
               setResult(`Successfully generated fully editable Video Project Outline! Aspect Ratio: ${aspectRatio}. Subtitle and audio tracks have been injected.`);
