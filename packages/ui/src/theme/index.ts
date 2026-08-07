@@ -1,23 +1,25 @@
 import { createTheme } from '@mui/material/styles';
 
 /**
- * Design System 4.0 Standardized Design Tokens
+ * Design System 5.0 Standardized Design Tokens - Single Source of Truth
  */
 export const DESIGN_TOKENS = {
   colors: {
     dark: {
-      bgMain: '#050b14', // Ultra-dark first background
+      bgMain: '#050b14', // Ultra-dark base background
       bgPaper: '#0d1527', // Surface panel depth background
-      bgSecondary: '#12203d', // Interactive cards and hover frames
+      bgSecondary: '#12203d', // Interactive cards & hover frames
       border: '#1b2f54', // Pixel-perfect premium divider borders
       borderHover: '#33528a',
       textPrimary: '#ffffff',
       textSecondary: '#94a3b8',
-      accentPrimary: '#00f0ff', // Cyberpunk / futuristic blue neon accents
-      accentSecondary: '#ec4899', // Professional hot pink highlight
+      accentPrimary: '#00f0ff', // Cyberpunk futuristic blue neon accents
+      accentSecondary: '#ec4899', // Professional magenta highlights
       success: '#10b981',
       warning: '#f59e0b',
       error: '#ef4444',
+      focus: 'rgba(0, 240, 255, 0.4)',
+      selection: 'rgba(0, 240, 255, 0.15)'
     },
   },
   spacing: {
@@ -56,6 +58,10 @@ export const DESIGN_TOKENS = {
       bold: 700,
     },
   },
+  transitions: {
+    default: 'all 0.15s cubic-bezier(0.4, 0, 0.2, 1)',
+    spring: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+  }
 };
 
 export const darkTheme = createTheme({
@@ -94,7 +100,7 @@ export const darkTheme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: DESIGN_TOKENS.borderRadius.sm,
-          transition: 'all 0.15s cubic-bezier(0.4, 0, 0.2, 1)',
+          transition: DESIGN_TOKENS.transitions.default,
         },
       },
     },
