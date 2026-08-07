@@ -1,39 +1,44 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useWorkflowStore } from '../../store/useWorkflowStore';
-import { Box, Typography, Button, Divider, Chip, List, ListItem, ListItemText, Tooltip } from '@mui/material';
+import { Box, Typography, Button, Divider, Chip, List, ListItem, ListItemText, Tooltip, LinearProgress, Grid } from '@mui/material';
 import {
-  Share as ConnectionIcon,
-  Timeline as SequenceIcon,
-  Memory as RenderIcon,
+  Speed as SpeedIcon,
   CloudQueue as CloudIcon,
-  BugReport as DebugIcon
+  BugReport as DebugIcon,
+  Psychology as AIIcon,
+  Verified as HealthIcon,
+  Timeline as TimelineIcon,
+  CheckCircle as SuccessIcon,
+  Leaderboard as StatsIcon
 } from '@mui/icons-material';
-
-interface GraphViewNode {
-  id: string;
-  name: string;
-  type: string;
-  status: 'active' | 'synced' | 'warning' | 'idle';
-  dependsOn?: string[];
-}
 
 export const ProductionGraph: React.FC = () => {
   const { selectedContext, setSelectedContext } = useWorkflowStore();
-  const [activeTab, setActiveTab] = useState<'scene' | 'assets' | 'impact'>('scene');
+  const [activeTab, setActiveTab] = useState<'cockpit' | 'scene' | 'assets' | 'impact'>('cockpit');
 
-  const sceneNodes: GraphViewNode[] = [
+  const sceneNodes = [
     { id: 'sc-1', name: 'Intro Shot Layer', type: 'Scene Layer', status: 'active' },
     { id: 'sc-2', name: 'Gaussian Blur Mask', type: 'Effect Layer', status: 'active', dependsOn: ['sc-1'] },
     { id: 'sc-3', name: 'Voiceover Overdub', type: 'Audio track', status: 'idle' },
   ];
 
-  const assetNodes: GraphViewNode[] = [
+  const assetNodes = [
     { id: 'as-1', name: 'FuturisticCoffeePromo.mp4', type: 'Video asset', status: 'synced' },
     { id: 'as-2', name: 'BrandWatermarkLogo.png', type: 'Image asset', status: 'synced' },
     { id: 'as-3', name: 'BackgroundVibeMusic.wav', type: 'Audio asset', status: 'warning' },
   ];
 
-  const handleSelectNode = (node: GraphViewNode) => {
+  const subsystems = [
+    { name: 'Timeline', status: 'Optimal', load: 12 },
+    { name: 'Playback', status: 'Optimal (60 FPS)', load: 8 },
+    { name: 'Rendering', status: 'Active (12 shards)', load: 78 },
+    { name: 'AI Suite', status: 'Optimal (0.4s response)', load: 24 },
+    { name: 'Color grading', status: 'Optimal (Scopes OK)', load: 5 },
+    { name: 'Audio Mix', status: 'Optimal', load: 15 },
+    { name: 'Cloud Sync', status: 'Optimal (Synced)', load: 45 },
+  ];
+
+  const handleSelectNode = (node: any) => {
     setSelectedContext({
       type: node.type.includes('Video') || node.type.includes('Scene') ? 'Video Clip' : 'Audio Clip',
       id: node.id,
@@ -45,6 +50,17 @@ export const ProductionGraph: React.FC = () => {
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', gap: 2 }}>
       {/* Tab Switchers */}
       <Box sx={{ display: 'flex', borderBottom: '1px solid #1b2f54', pb: 0.5 }}>
+        <Button
+          size="small"
+          onClick={() => setActiveTab('cockpit')}
+          sx={{
+            fontSize: '0.68rem',
+            color: activeTab === 'cockpit' ? '#00f0ff' : '#94a3b8',
+            borderBottom: activeTab === 'cockpit' ? '1.5px solid #00f0ff' : 'none'
+          }}
+        >
+          Mission Cockpit
+        </Button>
         <Button
           size="small"
           onClick={() => setActiveTab('scene')}
@@ -81,6 +97,43 @@ export const ProductionGraph: React.FC = () => {
       </Box>
 
       {/* Dynamic Graph Views rendering */}
+      {activeTab === 'cockpit' && (
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+          {/* 1. Digital Twin Cockpit Header */}
+          <Box sx={{ p: 1.5, border: '2px solid #00f0ff', borderRadius: '8px', bgcolor: 'rgba(0, 240, 255, 0.05)', boxShadow: '0 0 10px rgba(0, 240, 255, 0.15)' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <HealthIcon sx={{ color: '#00f0ff', fontSize: 16 }} />
+                <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#ffffff', textTransform: 'uppercase', fontSize: '0.65rem', letterSpacing: '0.5px' }}>
+                  Mission Control Center
+                </Typography>
+              </Box>
+              <Chip label="ONLINE" size="small" sx={{ height: 16, fontSize: '0.55rem', bgcolor: '#10b981', color: '#050b14', fontWeight: 'bold' }} />
+            </Box>
+            <Typography variant="caption" sx={{ color: '#94a3b8', display: 'block', lineHeight: 1.3 }}>
+              Timeline Engine: <Typography component="span" variant="caption" sx={{ color: '#10b981', fontWeight: 'bold' }}>Optimal</Typography> | Playback: <Typography component="span" variant="caption" sx={{ color: '#10b981', fontWeight: 'bold' }}>60 FPS (WebGL OK)</Typography><br />
+              Render Workers: <Typography component="span" variant="caption" sx={{ color: '#00f0ff', fontWeight: 'bold' }}>12 active shards</Typography> | Compute: <Typography component="span" variant="caption" sx={{ color: '#ffffff', fontWeight: 'bold' }}>$14.20 / Hr</Typography>
+            </Typography>
+          </Box>
+
+          {/* 2. Subsystem health maps */}
+          <Box sx={{ p: 1.5, border: '1px solid #1b2f54', borderRadius: '6px', bgcolor: '#0d1527' }}>
+            <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#94a3b8', textTransform: 'uppercase', fontSize: '0.65rem', mb: 1.5, display: 'block' }}>
+              Subsystem Telemetry Loads
+            </Typography>
+            {subsystems.map((sub, idx) => (
+              <Box key={idx} sx={{ mb: 1 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 0.25 }}>
+                  <Typography variant="caption" sx={{ color: '#ffffff', fontSize: '0.68rem', fontWeight: 'bold' }}>{sub.name}</Typography>
+                  <Typography variant="caption" sx={{ color: '#94a3b8', fontSize: '0.58rem' }}>{sub.status}</Typography>
+                </Box>
+                <LinearProgress variant="determinate" value={sub.load} sx={{ height: 3, borderRadius: 1, bgcolor: '#050b14', color: '#00f0ff' }} />
+              </Box>
+            ))}
+          </Box>
+        </Box>
+      )}
+
       {activeTab === 'scene' && (
         <Box sx={{ p: 1.5, border: '1px solid #1b2f54', borderRadius: '6px', bgcolor: '#0d1527' }}>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1.5 }}>
