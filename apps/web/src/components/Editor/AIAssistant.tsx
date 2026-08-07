@@ -15,7 +15,8 @@ import {
   Select,
   FormControl,
   InputLabel,
-  LinearProgress
+  LinearProgress,
+  Tooltip
 } from '@mui/material';
 import {
   AutoAwesome as AIIcon,
@@ -26,13 +27,17 @@ import {
   Brush as ColorIcon,
   MusicNote as CleanIcon,
   PlayArrow as PlayIcon,
-  Cancel as CancelIcon
+  Cancel as CancelIcon,
+  CheckCircle as ApproveIcon,
+  Block as RejectIcon,
+  Refresh as RegenerateIcon
 } from '@mui/icons-material';
 import { useGenerateScript, useGenerateImage, useGenerateVoice } from '@/hooks/useAI';
 import { useWorkflowStore } from '../../store/useWorkflowStore';
 import { useTimelineStore } from '../../store/useTimelineStore';
 import { globalAIGeneratorService } from '../../../../../packages/ai-copilot/src/services/AIGeneratorService';
 import { globalTimelineBuilderService, JobStage, GenerationJob } from '../../../../../packages/ai-copilot/src/services/TimelineBuilderService';
+import { globalAIAgentOrchestrationService, ProductionArtifact } from '../../../../../packages/ai-copilot/src/services/AIAgentOrchestrationService';
 
 const AIAssistant: React.FC = () => {
   const [prompt, setPrompt] = useState('');
@@ -44,22 +49,61 @@ const AIAssistant: React.FC = () => {
   const imageMutation = useGenerateImage();
   const voiceMutation = useGenerateVoice();
 
-  // AI Project Creator configurations (v18 Sprint)
+  // Multi-Agent Production Brief parameters (v18 Sprint)
   const [duration, setDuration] = useState(10); // Default 10s
   const [aspectRatio, setAspectRatio] = useState<'16:9' | '9:16' | '1:1'>('16:9');
   const [style, setStyle] = useState('Cinematic Corporate');
   const [platform, setPlatform] = useState<'youtube' | 'shorts' | 'tiktok' | 'instagram'>('youtube');
   const [provider, setProvider] = useState('openai');
+  const [brand, setBrand] = useState('Acme Corporation');
+  const [tone, setTone] = useState('Inspiring');
+  const [audience, setAudience] = useState('Creators & Developers');
 
   // Background queue job tracking states
   const [activeJob, setActiveJob] = useState<GenerationJob | null>(null);
   const [jobProgress, setJobProgress] = useState(0);
   const [jobStage, setJobStage] = useState<JobStage>('idle');
 
-  const handleCreateProject = async () => {
-    if (!prompt.trim()) return;
+  // Multi-Agent Artifact Pipeline states
+  const [artifacts, setArtifacts] = useState<ProductionArtifact[]>([]);
+  const [isOrchestrating, setIsOrchestrating] = useState(false);
 
-    // Create and track job queue
+  const agents = globalAIAgentOrchestrationService.getAgents();
+
+  const handleRunMultiAgentPipeline = async () => {
+    if (!prompt.trim()) return;
+    setIsOrchestrating(true);
+    setResult(null);
+
+    // Simulate multi-agent chronological task execution progress
+    setTimeout(async () => {
+      const compiledArtifacts = await globalAIAgentOrchestrationService.runOrchestrationPipeline({
+        creativeObjective: prompt,
+        platform,
+        duration,
+        brand,
+        audience,
+        tone,
+        language: 'en',
+        visualStyle: style
+      });
+      setArtifacts(compiledArtifacts);
+      setIsOrchestrating(false);
+    }, 1500);
+  };
+
+  const handleApproveArtifact = (id: string) => {
+    globalAIAgentOrchestrationService.approveArtifact(id);
+    setArtifacts([...globalAIAgentOrchestrationService.getArtifacts()]);
+  };
+
+  const handleRejectArtifact = (id: string) => {
+    globalAIAgentOrchestrationService.rejectArtifact(id);
+    setArtifacts([...globalAIAgentOrchestrationService.getArtifacts()]);
+  };
+
+  const handleImportToEditor = async () => {
+    // Collect and compile approved artifacts into the timeline builder
     const job = globalTimelineBuilderService.createJob(prompt);
     setActiveJob(job);
     setJobStage('planning');
@@ -68,7 +112,6 @@ const AIAssistant: React.FC = () => {
     try {
       globalAIGeneratorService.setActiveProvider(provider);
 
-      // Async timeline assembly tracker
       const interval = setInterval(() => {
         const currentJob = globalTimelineBuilderService.getJob(job.id);
         if (currentJob) {
@@ -77,7 +120,8 @@ const AIAssistant: React.FC = () => {
           if (currentJob.progress >= 100 || currentJob.cancelled) {
             clearInterval(interval);
             if (currentJob.progress >= 100) {
-              setResult(`Successfully generated fully editable Video Project Outline! Aspect Ratio: ${aspectRatio}. Dynamic subtitle and audio tracks have been injected.`);
+              setResult(`Successfully generated fully editable Video Project Outline! Aspect Ratio: ${aspectRatio}. Subtitle and audio tracks have been injected.`);
+              setActiveJob(null);
             }
           }
         }
@@ -112,7 +156,7 @@ const AIAssistant: React.FC = () => {
     }
   };
 
-  const isLoading = scriptMutation.isLoading || imageMutation.isLoading || voiceMutation.isLoading || (activeJob && jobProgress < 100 && jobStage !== 'idle');
+  const isLoading = scriptMutation.isLoading || imageMutation.isLoading || voiceMutation.isLoading || isOrchestrating || (activeJob && jobProgress < 100 && jobStage !== 'idle');
   const rawError = scriptMutation.error || imageMutation.error || voiceMutation.error;
   const error = rawError as Error | null;
 
@@ -152,7 +196,7 @@ const AIAssistant: React.FC = () => {
         gutterBottom
         sx={{ display: 'flex', alignItems: 'center', gap: 1, textTransform: 'uppercase', fontSize: '0.72rem', letterSpacing: '0.5px' }}
       >
-        <AIIcon fontSize="small" color="primary" /> AI Project Creator Cockpit
+        <AIIcon fontSize="small" color="primary" /> AI Multi-Agent Production Workspace
       </Typography>
       <Divider sx={{ mb: 2, borderColor: '#1b2f54' }} />
 
@@ -175,11 +219,32 @@ const AIAssistant: React.FC = () => {
           </Box>
         )}
 
-        {/* 1. Prompt and Duration Options */}
+        {/* Phase 6 Active Agents grid */}
+        <Paper variant="outlined" sx={{ p: 1.5, bgcolor: '#0d1527', borderColor: '#1b2f54' }}>
+          <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#ffffff', textTransform: 'uppercase', fontSize: '0.65rem', mb: 1.5, display: 'block' }}>
+            Production Crew (Specialized Agents)
+          </Typography>
+          <Grid container spacing={1}>
+            {agents.map((agent) => (
+              <Grid item xs={4} key={agent.id}>
+                <Tooltip title={agent.role}>
+                  <Box sx={{ p: 1, bgcolor: '#050b14', border: '1px solid #1b2f54', borderRadius: '4px', textAlign: 'center', cursor: 'pointer', '&:hover': { borderColor: '#00f0ff' } }}>
+                    <Typography variant="subtitle1" sx={{ mb: 0.25 }}>{agent.avatar}</Typography>
+                    <Typography variant="caption" sx={{ color: '#ffffff', fontSize: '0.58rem', fontWeight: 'bold', display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      {agent.name.split(' ')[0]}
+                    </Typography>
+                  </Box>
+                </Tooltip>
+              </Grid>
+            ))}
+          </Grid>
+        </Paper>
+
+        {/* Phase 7 Production Brief */}
         <TextField
-          label="What video project would you like to generate?"
+          label="Creative Objective Prompt"
           multiline
-          rows={3}
+          rows={2}
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
           placeholder="e.g., A 10-second high-energy marketing promo with corporate soundtrack"
@@ -190,23 +255,26 @@ const AIAssistant: React.FC = () => {
           }}
         />
 
-        {/* 2. Structured Parameters Grid */}
         <Grid container spacing={1.5}>
           <Grid item xs={6}>
-            <FormControl fullWidth size="small">
-              <InputLabel id="ai-provider-label">AI Engine Provider</InputLabel>
-              <Select
-                labelId="ai-provider-label"
-                value={provider}
-                label="AI Engine Provider"
-                onChange={(e) => setProvider(e.target.value)}
-                sx={{ fontSize: '0.75rem' }}
-              >
-                <MenuItem value="openai">OpenAI GPT-4o</MenuItem>
-                <MenuItem value="gemini">Google Gemini Pro</MenuItem>
-                <MenuItem value="anthropic">Claude 3.5 Sonnet</MenuItem>
-              </Select>
-            </FormControl>
+            <TextField
+              label="Brand / Style"
+              value={brand}
+              onChange={(e) => setBrand(e.target.value)}
+              size="small"
+              fullWidth
+              inputProps={{ style: { fontSize: '0.75rem' } }}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              label="Target Audience"
+              value={audience}
+              onChange={(e) => setAudience(e.target.value)}
+              size="small"
+              fullWidth
+              inputProps={{ style: { fontSize: '0.75rem' } }}
+            />
           </Grid>
           <Grid item xs={6}>
             <FormControl fullWidth size="small">
@@ -241,20 +309,95 @@ const AIAssistant: React.FC = () => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={6}>
-            <TextField
-              label="Style/Mood"
-              value={style}
-              onChange={(e) => setStyle(e.target.value)}
-              size="small"
-              fullWidth
-              inputProps={{ style: { fontSize: '0.75rem' } }}
-            />
-          </Grid>
         </Grid>
 
-        {/* 3. Generating Trigger and Cancel Options */}
-        {activeJob && jobProgress < 100 && !activeJob.cancelled ? (
+        {isOrchestrating ? (
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', py: 2, gap: 1 }}>
+            <CircularProgress size={24} color="primary" />
+            <Typography variant="caption" sx={{ color: '#94a3b8' }}>Sarah and Michael are compiling scripts...</Typography>
+          </Box>
+        ) : (
+          <Button
+            variant="contained"
+            color="secondary"
+            startIcon={<PlayIcon />}
+            onClick={handleRunMultiAgentPipeline}
+            disabled={isLoading || !prompt.trim()}
+            sx={{ fontWeight: 'bold', fontSize: '0.75rem', py: 1 }}
+          >
+            Orchestrate Production Crew
+          </Button>
+        )}
+
+        {/* Phase 4 & 5 Artifacts Pipeline & Human-in-the-Loop Buttons */}
+        {artifacts.length > 0 && (
+          <Stack spacing={1.5} sx={{ mt: 1 }}>
+            <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#94a3b8', textTransform: 'uppercase', fontSize: '0.65rem' }}>
+              Production Artifacts & Approvals
+            </Typography>
+            {artifacts.map((art) => (
+              <Box key={art.id} sx={{ p: 1.5, border: '1px solid #1b2f54', borderRadius: '6px', bgcolor: '#050b14' }}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+                  <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#00f0ff', textTransform: 'uppercase', fontSize: '0.6rem' }}>
+                    {art.type.replace('_', ' ')} (v{art.version})
+                  </Typography>
+                  <Chip
+                    label={art.status.toUpperCase()}
+                    size="small"
+                    sx={{
+                      height: 14,
+                      fontSize: '0.55rem',
+                      bgcolor: art.status === 'approved' ? 'rgba(16,185,129,0.1)' : art.status === 'rejected' ? 'rgba(239,68,68,0.1)' : 'rgba(245,158,11,0.1)',
+                      color: art.status === 'approved' ? '#10b981' : art.status === 'rejected' ? '#ef4444' : '#f59e0b',
+                      fontWeight: 'bold'
+                    }}
+                  />
+                </Box>
+                <Typography variant="caption" sx={{ color: '#ffffff', display: 'block', mb: 1.5, lineHeight: 1.3 }}>
+                  {art.content}
+                </Typography>
+
+                {art.status === 'pending' && (
+                  <Box sx={{ display: 'flex', gap: 1 }}>
+                    <Button
+                      size="small"
+                      variant="contained"
+                      color="success"
+                      startIcon={<ApproveIcon style={{ fontSize: 10 }} />}
+                      onClick={() => handleApproveArtifact(art.id)}
+                      sx={{ fontSize: '0.58rem', py: 0.1, px: 1, minWidth: 'unset' }}
+                    >
+                      Approve
+                    </Button>
+                    <Button
+                      size="small"
+                      variant="contained"
+                      color="error"
+                      startIcon={<RejectIcon style={{ fontSize: 10 }} />}
+                      onClick={() => handleRejectArtifact(art.id)}
+                      sx={{ fontSize: '0.58rem', py: 0.1, px: 1, minWidth: 'unset' }}
+                    >
+                      Reject
+                    </Button>
+                  </Box>
+                )}
+              </Box>
+            ))}
+
+            {/* Assemble and build final timeline if all artifacts are resolved */}
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleImportToEditor}
+              disabled={isLoading || artifacts.some(a => a.status === 'rejected')}
+              sx={{ fontWeight: 'bold', fontSize: '0.75rem', py: 1 }}
+            >
+              Assemble Approved Outline Into Timeline
+            </Button>
+          </Stack>
+        )}
+
+        {activeJob && jobProgress < 100 && !activeJob.cancelled && (
           <Box sx={{ p: 1.5, border: '1px solid #1b2f54', borderRadius: '6px', bgcolor: '#050b14' }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
               <Typography variant="caption" sx={{ color: '#00f0ff', fontWeight: 'bold' }}>
@@ -276,67 +419,7 @@ const AIAssistant: React.FC = () => {
               Cancel Generation
             </Button>
           </Box>
-        ) : (
-          <Button
-            variant="contained"
-            color="primary"
-            startIcon={<PlayIcon />}
-            onClick={handleCreateProject}
-            disabled={isLoading || !prompt.trim()}
-            sx={{ fontWeight: 'bold', fontSize: '0.75rem', py: 1 }}
-          >
-            Prompt to Video Project Outline
-          </Button>
         )}
-
-        <Divider sx={{ borderColor: '#1b2f54', my: 1 }} />
-
-        {/* Backward-compatible atomic options */}
-        <Grid container spacing={1}>
-          <Grid item xs={4}>
-            <Button
-              fullWidth
-              variant="outlined"
-              startIcon={<TextIcon />}
-              size="small"
-              onClick={handleGenerateScript}
-              disabled={isLoading || !prompt}
-            >
-              Script
-            </Button>
-          </Grid>
-          <Grid item xs={4}>
-            <Button
-              fullWidth
-              variant="outlined"
-              startIcon={<ImageIcon />}
-              size="small"
-              disabled={isLoading || !prompt}
-              onClick={() => imageMutation.mutate({ prompt })}
-            >
-              Images
-            </Button>
-          </Grid>
-          <Grid item xs={4}>
-            <Button
-              fullWidth
-              variant="outlined"
-              startIcon={<VoiceIcon />}
-              size="small"
-              disabled={isLoading || !prompt}
-              onClick={() => voiceMutation.mutate({ text: prompt })}
-            >
-              Voice
-            </Button>
-          </Grid>
-        </Grid>
-
-        {isLoading && !activeJob && (
-          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-            <CircularProgress size={24} color="primary" />
-          </Box>
-        )}
-        {error && <Alert severity="error">{error.message || 'AI Error'}</Alert>}
 
         {result && (
           <Paper variant="outlined" sx={{ p: 1.5, bgcolor: '#0d1527', borderColor: '#1b2f54' }}>
