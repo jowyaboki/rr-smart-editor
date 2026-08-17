@@ -17,6 +17,7 @@ export const ExecutionWorkspace: React.FC = () => {
     resolveApproval
   } = useAIExecution();
 
+  const [viewMode, setViewMode] = useState<'creator' | 'advanced'>('creator');
   const [activeTab, setActiveTab] = useState<'graph' | 'artifacts' | 'checkpoints' | 'logs' | 'analytics'>('graph');
   const [approverName, setApproverName] = useState('Creative Director');
   const [feedbackText, setFeedbackText] = useState('');
@@ -33,94 +34,134 @@ export const ExecutionWorkspace: React.FC = () => {
     }
   };
 
+  const completedCount = activeGraph ? Object.values(activeGraph.nodes).filter(n => n.status === 'completed').length : 0;
+  const totalNodes = activeGraph ? Object.keys(activeGraph.nodes).length : 1;
+  const progressPercent = Math.round((completedCount / totalNodes) * 100);
+
   return (
     <div className="flex flex-col h-full bg-[#050b14] text-slate-100 font-sans border border-slate-800 rounded-lg overflow-hidden shadow-2xl">
       {/* Header Bar */}
       <div className="flex items-center justify-between px-6 py-4 bg-[#0d1527] border-b border-slate-800">
         <div className="flex items-center space-x-4">
           <div className="p-2 bg-gradient-to-br from-cyan-500/20 to-fuchsia-500/20 rounded-lg border border-cyan-500/30">
-            <span className="text-xl">🤖</span>
+            <span className="text-xl">🎬</span>
           </div>
           <div>
             <h2 className="text-lg font-semibold tracking-wide text-white flex items-center gap-2">
-              Autonomous Creative Execution Runtime
+              AI Creative Execution Studio
               <span className={`text-xs px-2.5 py-0.5 rounded-full border uppercase tracking-wider font-mono ${getStatusColor(activeContext?.status || 'pending')}`}>
                 {activeContext?.status || 'IDLE'}
               </span>
             </h2>
             <p className="text-xs text-slate-400">
-              Execution ID: <span className="font-mono text-cyan-400">{activeContext?.executionId || 'N/A'}</span> | Workflow: <span className="text-slate-300">{activeContext?.workflowId || 'N/A'}</span>
+              Execution ID: <span className="font-mono text-cyan-400">{activeContext?.executionId || 'N/A'}</span>
             </p>
           </div>
         </div>
 
-        {/* Runtime Control Buttons */}
+        {/* View Switcher & Runtime Controls */}
         <div className="flex items-center space-x-3">
+          <div className="bg-[#050b14] p-1 border border-slate-800 rounded-lg flex space-x-1 text-xs">
+            <button
+              onClick={() => setViewMode('creator')}
+              className={`px-3 py-1 rounded font-medium transition-all ${
+                viewMode === 'creator' ? 'bg-cyan-600 text-white shadow' : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              🎨 Creator View
+            </button>
+            <button
+              onClick={() => setViewMode('advanced')}
+              className={`px-3 py-1 rounded font-medium transition-all ${
+                viewMode === 'advanced' ? 'bg-cyan-600 text-white shadow' : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              ⚙️ Technical View
+            </button>
+          </div>
+
           {activeContext?.status === 'running' && (
             <button
               onClick={pauseExecution}
-              className="px-4 py-2 text-xs font-medium bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 rounded-md transition-all flex items-center gap-1.5"
+              className="px-3.5 py-1.5 text-xs font-medium bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 rounded-md transition-all flex items-center gap-1.5"
             >
-              ⏸ Pause Runtime
+              ⏸ Pause
             </button>
           )}
 
           {activeContext?.status === 'paused' && (
             <button
               onClick={() => resumeExecution()}
-              className="px-4 py-2 text-xs font-medium bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 rounded-md transition-all flex items-center gap-1.5"
+              className="px-3.5 py-1.5 text-xs font-medium bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 rounded-md transition-all flex items-center gap-1.5"
             >
-              ▶ Resume Runtime
+              ▶ Resume
             </button>
           )}
 
           {(isExecuting || activeContext?.status === 'running' || activeContext?.status === 'paused') && (
             <button
               onClick={() => cancelExecution('User requested cancellation')}
-              className="px-4 py-2 text-xs font-medium bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 rounded-md transition-all flex items-center gap-1.5"
+              className="px-3.5 py-1.5 text-xs font-medium bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 rounded-md transition-all flex items-center gap-1.5"
             >
-              ⏹ Cancel Execution
+              ⏹ Cancel
             </button>
           )}
         </div>
       </div>
 
-      {/* Main Workspace Navigation Tabs */}
-      <div className="flex items-center px-6 bg-[#09101f] border-b border-slate-800 space-x-1">
-        {[
-          { id: 'graph', label: '⚡ Node Dependency Graph' },
-          { id: 'artifacts', label: '📁 Active Artifacts' },
-          { id: 'checkpoints', label: '💾 Checkpoint Recovery' },
-          { id: 'logs', label: '📜 Live Events Log' },
-          { id: 'analytics', label: '📊 Runtime Analytics' }
-        ].map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id as any)}
-            className={`px-4 py-3 text-xs font-medium transition-all border-b-2 ${
-              activeTab === tab.id
-                ? 'border-cyan-400 text-cyan-400 bg-cyan-950/20'
-                : 'border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/30'
-            }`}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
+      {/* Creator Progress Bar Summary */}
+      {viewMode === 'creator' && (
+        <div className="px-6 py-3 bg-[#09101f] border-b border-slate-800 flex items-center space-x-4">
+          <span className="text-xs font-medium text-slate-300">Production Completion</span>
+          <div className="flex-1 bg-slate-800 h-2 rounded-full overflow-hidden">
+            <div
+              className="bg-gradient-to-r from-cyan-500 to-fuchsia-500 h-full transition-all duration-300"
+              style={{ width: `${progressPercent}%` }}
+            />
+          </div>
+          <span className="text-xs font-mono font-semibold text-cyan-400">{progressPercent}%</span>
+        </div>
+      )}
+
+      {/* Technical Navigation Tabs (in advanced mode) */}
+      {viewMode === 'advanced' && (
+        <div className="flex items-center px-6 bg-[#09101f] border-b border-slate-800 space-x-1">
+          {[
+            { id: 'graph', label: '⚡ Node Dependency Graph' },
+            { id: 'artifacts', label: '📁 Active Artifacts' },
+            { id: 'checkpoints', label: '💾 Checkpoint Recovery' },
+            { id: 'logs', label: '📜 Live Events Log' },
+            { id: 'analytics', label: '📊 Runtime Analytics' }
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id as any)}
+              className={`px-4 py-3 text-xs font-medium transition-all border-b-2 ${
+                activeTab === tab.id
+                  ? 'border-cyan-400 text-cyan-400 bg-cyan-950/20'
+                  : 'border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/30'
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* Workspace Panel Content */}
       <div className="flex-1 p-6 overflow-y-auto bg-[#050b14]">
-        {activeTab === 'graph' && (
+        {/* Creator View Mode */}
+        {viewMode === 'creator' && (
           <div className="space-y-6">
-            {/* Approval Gate Alert Box if waiting */}
+            {/* Approval Gate Alert Box */}
             {activeContext?.status === 'waiting_for_approval' && (
               <div className="p-4 bg-amber-950/40 border border-amber-500/50 rounded-lg flex flex-col space-y-3">
                 <div className="flex items-center space-x-2 text-amber-300 font-semibold text-sm">
                   <span>⚠️</span>
-                  <span>Human Approval Required</span>
+                  <span>Creative Sign-off Needed</span>
                 </div>
                 <p className="text-xs text-amber-200/80">
-                  An active execution stage requires explicit sign-off from an authorized creative director before proceeding.
+                  Please review the generated script, storyboard, and timeline spec before launching final packaging.
                 </p>
                 <div className="flex items-center space-x-3 pt-2">
                   <input
@@ -134,7 +175,7 @@ export const ExecutionWorkspace: React.FC = () => {
                     type="text"
                     value={feedbackText}
                     onChange={(e) => setFeedbackText(e.target.value)}
-                    placeholder="Decision Feedback / Notes"
+                    placeholder="Approval Feedback / Notes"
                     className="flex-1 px-3 py-1.5 bg-[#0d1527] border border-slate-700 rounded text-xs text-white focus:outline-none focus:border-cyan-400"
                   />
                   <button
@@ -144,7 +185,7 @@ export const ExecutionWorkspace: React.FC = () => {
                     }}
                     className="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded text-xs font-medium"
                   >
-                    ✓ Approve Stage
+                    ✓ Approve Production
                   </button>
                   <button
                     onClick={() => {
@@ -153,154 +194,114 @@ export const ExecutionWorkspace: React.FC = () => {
                     }}
                     className="px-4 py-1.5 bg-rose-600 hover:bg-rose-500 text-white rounded text-xs font-medium"
                   >
-                    ✕ Reject Stage
+                    ✕ Request Revision
                   </button>
                 </div>
               </div>
             )}
 
-            {/* Execution Nodes Grid */}
+            {/* Stage Progress Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {activeGraph && Object.values(activeGraph.nodes).map((node) => (
                 <div
                   key={node.id}
-                  className={`p-4 rounded-lg border bg-[#0d1527] transition-all flex flex-col justify-between space-y-3 ${
-                    node.status === 'running' ? 'border-cyan-500 shadow-lg shadow-cyan-500/10' : 'border-slate-800'
-                  }`}
+                  className="p-4 bg-[#0d1527] border border-slate-800 rounded-lg space-y-2"
                 >
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <span className="text-xs font-mono text-cyan-400 uppercase tracking-wider">{node.agentRole}</span>
-                      <h4 className="text-sm font-semibold text-white mt-0.5">{node.name}</h4>
-                    </div>
-                    <span className={`text-[10px] px-2 py-0.5 rounded border font-mono uppercase ${getStatusColor(node.status)}`}>
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-xs font-semibold text-white">{node.name}</h4>
+                    <span className={`text-[10px] px-2 py-0.5 rounded border uppercase font-mono ${getStatusColor(node.status)}`}>
                       {node.status}
                     </span>
                   </div>
-
-                  <div className="text-xs text-slate-400 space-y-1">
-                    <p>Dependencies: {node.dependencies.length > 0 ? node.dependencies.join(', ') : 'None (Root)'}</p>
-                    <p>Attempts: <span className="text-slate-200 font-mono">{node.attempts || 0}</span></p>
-                    {node.error && <p className="text-rose-400 truncate">Error: {node.error}</p>}
-                  </div>
-
-                  <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-500">
-                    <span>Node ID: {node.id}</span>
-                    <span>{activeContext?.metrics.nodeDurationsMs[node.id] ? `${activeContext.metrics.nodeDurationsMs[node.id]}ms` : '-'}</span>
-                  </div>
+                  <p className="text-[11px] text-slate-400">Assigned Agent: <span className="text-cyan-300 font-mono">{node.agentRole}</span></p>
                 </div>
               ))}
-
-              {!activeGraph && (
-                <div className="col-span-full py-12 text-center text-slate-500 border border-dashed border-slate-800 rounded-lg">
-                  No active execution graph loaded. Start a production workflow to visualize nodes.
-                </div>
-              )}
             </div>
-          </div>
-        )}
 
-        {activeTab === 'artifacts' && (
-          <div className="space-y-4">
-            <h3 className="text-sm font-semibold text-cyan-400 uppercase tracking-wider">Generated Production Artifacts</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {activeContext?.artifacts.map((art) => (
-                <div key={art.id} className="p-4 bg-[#0d1527] border border-slate-800 rounded-lg flex items-center justify-between">
-                  <div>
-                    <span className="text-[10px] px-2 py-0.5 bg-cyan-950 text-cyan-300 border border-cyan-800 rounded uppercase font-mono">{art.type}</span>
-                    <h4 className="text-sm font-semibold text-white mt-1">{art.name}</h4>
-                    <p className="text-xs text-slate-400 font-mono mt-0.5">{art.uri}</p>
-                  </div>
-                  <span className="text-xs text-slate-500">{new Date(art.createdAt).toLocaleTimeString()}</span>
-                </div>
-              ))}
-              {(!activeContext?.artifacts || activeContext.artifacts.length === 0) && (
-                <div className="col-span-full py-12 text-center text-slate-500 border border-dashed border-slate-800 rounded-lg">
-                  No artifacts generated for the current production execution.
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
-        {activeTab === 'checkpoints' && (
-          <div className="space-y-4">
-            <h3 className="text-sm font-semibold text-cyan-400 uppercase tracking-wider">Persistent Execution Checkpoints</h3>
-            <div className="space-y-3">
-              {checkpoints.map((cp) => (
-                <div key={cp.checkpointId} className="p-4 bg-[#0d1527] border border-slate-800 rounded-lg flex items-center justify-between">
-                  <div>
-                    <div className="flex items-center space-x-2">
-                      <span className="font-mono text-xs text-cyan-300">{cp.checkpointId}</span>
-                      <span className="text-xs text-slate-400">• Stage: <strong className="text-slate-200">{cp.stageName}</strong></span>
+            {/* Generated Artifacts Summary */}
+            <div className="pt-4 border-t border-slate-800 space-y-3">
+              <h3 className="text-xs font-semibold text-cyan-400 uppercase tracking-wider">Generated Production Assets</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {activeContext?.artifacts.map((art) => (
+                  <div key={art.id} className="p-3 bg-[#0d1527] border border-slate-800 rounded-lg flex items-center justify-between text-xs">
+                    <div>
+                      <span className="text-[10px] text-cyan-300 uppercase font-mono">{art.type}</span>
+                      <h5 className="font-semibold text-white">{art.name}</h5>
                     </div>
-                    <p className="text-xs text-slate-500 mt-1">
-                      Timestamp: {new Date(cp.timestamp).toLocaleString()} | Artifacts: {cp.artifacts.length}
-                    </p>
+                    <span className="text-slate-500">{new Date(art.createdAt).toLocaleTimeString()}</span>
                   </div>
-                  <button
-                    onClick={() => restoreCheckpoint(cp.checkpointId)}
-                    className="px-3 py-1.5 text-xs bg-cyan-600/20 hover:bg-cyan-600/30 text-cyan-300 border border-cyan-500/40 rounded transition-all"
-                  >
-                    ↺ Rollback to Checkpoint
-                  </button>
-                </div>
-              ))}
-              {checkpoints.length === 0 && (
-                <div className="py-12 text-center text-slate-500 border border-dashed border-slate-800 rounded-lg">
-                  No checkpoints recorded yet.
-                </div>
-              )}
+                ))}
+              </div>
             </div>
           </div>
         )}
 
-        {activeTab === 'logs' && (
-          <div className="space-y-3 font-mono text-xs">
-            <h3 className="text-sm font-semibold text-cyan-400 uppercase tracking-wider font-sans">Live Event Bus Telemetry</h3>
-            <div className="p-4 bg-[#030712] border border-slate-800 rounded-lg max-h-[400px] overflow-y-auto space-y-2">
-              {events.map((evt) => (
-                <div key={evt.id} className="flex items-start space-x-3 text-slate-300 border-b border-slate-900 pb-1.5">
-                  <span className="text-slate-500 text-[10px] whitespace-nowrap">{new Date(evt.timestamp).toLocaleTimeString()}</span>
-                  <span className="text-cyan-400 font-semibold">{evt.type}</span>
-                  {evt.nodeId && <span className="text-amber-300">[Node: {evt.nodeId}]</span>}
-                  <span className="text-slate-400 flex-1 truncate">{JSON.stringify(evt.details || {})}</span>
+        {/* Technical View Mode (All Advanced Panels) */}
+        {viewMode === 'advanced' && activeTab === 'graph' && (
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {activeGraph && Object.values(activeGraph.nodes).map((node) => (
+                <div key={node.id} className="p-4 bg-[#0d1527] border border-slate-800 rounded-lg space-y-2">
+                  <span className="text-[10px] font-mono text-cyan-400 uppercase">{node.agentRole}</span>
+                  <h4 className="text-sm font-semibold text-white">{node.name}</h4>
+                  <p className="text-xs text-slate-400">Status: <span className="font-mono text-slate-200">{node.status}</span></p>
                 </div>
               ))}
-              {events.length === 0 && (
-                <p className="text-slate-600 text-center py-6">Listening for execution runtime events...</p>
-              )}
             </div>
           </div>
         )}
 
-        {activeTab === 'analytics' && (
-          <div className="space-y-6">
-            <h3 className="text-sm font-semibold text-cyan-400 uppercase tracking-wider">Execution Analytics & Efficiency</h3>
-            {analytics ? (
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="p-4 bg-[#0d1527] border border-slate-800 rounded-lg">
-                  <span className="text-xs text-slate-400">Total Duration</span>
-                  <p className="text-xl font-mono font-semibold text-cyan-400 mt-1">{analytics.totalDurationMs} ms</p>
-                </div>
-                <div className="p-4 bg-[#0d1527] border border-slate-800 rounded-lg">
-                  <span className="text-xs text-slate-400">Scheduler Latency</span>
-                  <p className="text-xl font-mono font-semibold text-cyan-400 mt-1">{analytics.schedulerLatencyMs.toFixed(2)} ms</p>
-                </div>
-                <div className="p-4 bg-[#0d1527] border border-slate-800 rounded-lg">
-                  <span className="text-xs text-slate-400">AI Productivity</span>
-                  <p className="text-xl font-mono font-semibold text-emerald-400 mt-1">{analytics.aiProductivityScore} %</p>
-                </div>
-                <div className="p-4 bg-[#0d1527] border border-slate-800 rounded-lg">
-                  <span className="text-xs text-slate-400">Checkpoint Score</span>
-                  <p className="text-xl font-mono font-semibold text-amber-400 mt-1">{analytics.checkpointEfficiencyScore} / 100</p>
-                </div>
+        {viewMode === 'advanced' && activeTab === 'artifacts' && (
+          <div className="space-y-3 text-xs">
+            {activeContext?.artifacts.map(a => (
+              <div key={a.id} className="p-3 bg-[#0d1527] border border-slate-800 rounded-lg flex justify-between">
+                <span>{a.name} ({a.type})</span>
+                <span className="font-mono text-cyan-300">{a.uri}</span>
               </div>
-            ) : (
-              <div className="py-12 text-center text-slate-500 border border-dashed border-slate-800 rounded-lg">
-                No analytics available for current run.
+            ))}
+          </div>
+        )}
+
+        {viewMode === 'advanced' && activeTab === 'checkpoints' && (
+          <div className="space-y-3 text-xs">
+            {checkpoints.map(cp => (
+              <div key={cp.checkpointId} className="p-3 bg-[#0d1527] border border-slate-800 rounded-lg flex justify-between items-center">
+                <div>
+                  <p className="font-mono text-cyan-300">{cp.checkpointId}</p>
+                  <p className="text-slate-400">Stage: {cp.stageName}</p>
+                </div>
+                <button
+                  onClick={() => restoreCheckpoint(cp.checkpointId)}
+                  className="px-3 py-1 bg-cyan-600/20 text-cyan-300 border border-cyan-500/40 rounded"
+                >
+                  ↺ Rollback
+                </button>
               </div>
-            )}
+            ))}
+          </div>
+        )}
+
+        {viewMode === 'advanced' && activeTab === 'logs' && (
+          <div className="p-4 bg-[#030712] border border-slate-800 rounded-lg font-mono text-xs space-y-1 max-h-[350px] overflow-y-auto">
+            {events.map(e => (
+              <div key={e.id} className="flex justify-between border-b border-slate-900 pb-1">
+                <span className="text-cyan-400">{e.type}</span>
+                <span className="text-slate-500">{new Date(e.timestamp).toLocaleTimeString()}</span>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {viewMode === 'advanced' && activeTab === 'analytics' && (
+          <div className="grid grid-cols-2 gap-4 text-xs font-mono">
+            <div className="p-4 bg-[#0d1527] border border-slate-800 rounded-lg">
+              <span className="text-slate-400">Total Duration</span>
+              <p className="text-lg font-bold text-cyan-400">{analytics?.totalDurationMs || 0} ms</p>
+            </div>
+            <div className="p-4 bg-[#0d1527] border border-slate-800 rounded-lg">
+              <span className="text-slate-400">AI Productivity</span>
+              <p className="text-lg font-bold text-emerald-400">{analytics?.aiProductivityScore || 100} %</p>
+            </div>
           </div>
         )}
       </div>
