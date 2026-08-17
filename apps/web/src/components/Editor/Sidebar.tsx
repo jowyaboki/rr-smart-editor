@@ -17,12 +17,12 @@ import {
 import MediaManager from './MediaManager';
 import AIAssistant from './AIAssistant';
 import { ReviewSidebar } from '../../features/collaboration/components/ReviewSidebar';
-import { PluginManagerPanel } from '../../plugins/components/PluginManagerPanel';
 import { MotionWorkspace } from './MotionWorkspace';
 import { VFXWorkspace } from './VFXWorkspace';
 import { ProductionDashboard } from './ProductionDashboard';
 import { KnowledgeHub } from './KnowledgeHub';
 import { ProductionGraph } from './ProductionGraph';
+import { PluginsWorkspace } from './PluginsWorkspace';
 
 // Lazy load heavy diagnostics panel
 const PerformanceDashboard = React.lazy(() =>
@@ -127,7 +127,7 @@ const Sidebar: React.FC<SidebarProps> = ({ projectId }) => {
           </Typography>
         )}
         {value === 9 && <ReviewSidebar projectId={projectId} />}
-        {value === 10 && <PluginManagerPanel />}
+        {value === 10 && <PluginsWorkspace />}
         {value === 11 && (
           <Suspense
             fallback={

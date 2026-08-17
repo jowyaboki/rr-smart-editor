@@ -1,6 +1,8 @@
-# Layout System Guide - Phase 10
+# Layout System Guide
 
-Guide to the resizable grid splits, collapsible navigation sidebars, and application shell structures.
+Flexible page construction using primitive regions.
 
-## 1. Grid Properties
-* Spacing gaps and borders conform to the strict 8pt grid metrics.
+## Primitives
+* **AppShell**: Binds global app wrappers.
+* **WorkspaceLayout**: Adapts resizer splits under a flex box.
+* **ScrollableRegion**: Locks heights to prevent cumulative layout shift.

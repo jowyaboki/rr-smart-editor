@@ -47,6 +47,15 @@ export interface KnowledgeArticle {
   content: string;
 }
 
+export interface StudioModuleDescriptor {
+  id: string;
+  title: string;
+  icon: string;
+  category: string;
+  workspaceContribution?: string[];
+  toolbarContribution?: string[];
+}
+
 interface WorkflowState {
   workspaceMode: string;
   setWorkspaceMode: (mode: string) => void;
@@ -93,6 +102,10 @@ interface WorkflowState {
   // Adaptive Inspector predictive history count
   recentPropertiesEdited: string[];
   recordPropertyEdit: (propName: string) => void;
+
+  // Phase 2 Studio Module Registrations
+  registeredStudioModules: StudioModuleDescriptor[];
+  registerStudioModule: (mod: StudioModuleDescriptor) => void;
 }
 
 export const useWorkflowStore = create<WorkflowState>((set, get) => ({
@@ -173,5 +186,16 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
   recordPropertyEdit: (propName) => set((state) => {
     const list = state.recentPropertiesEdited.filter(p => p !== propName);
     return { recentPropertiesEdited: [propName, ...list].slice(0, 3) };
+  }),
+
+  registeredStudioModules: [
+    { id: 'mod-timeline', title: 'Timeline Controller', icon: 'Timeline', category: 'Core' },
+    { id: 'mod-vfx', title: 'VFX Shader presets', icon: 'AutoFixHigh', category: 'Creative' },
+    { id: 'mod-ai', title: 'AI Assistant', icon: 'Psychology', category: 'Automation' },
+    { id: 'mod-ops', title: 'Operations Dashboard', icon: 'Leaderboard', category: 'Enterprise' }
+  ],
+  registerStudioModule: (mod) => set((state) => {
+    if (state.registeredStudioModules.some(m => m.id === mod.id)) return state;
+    return { registeredStudioModules: [...state.registeredStudioModules, mod] };
   }),
 }));

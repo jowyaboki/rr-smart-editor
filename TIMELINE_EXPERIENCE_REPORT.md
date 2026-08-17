@@ -1,9 +1,8 @@
 # Timeline Experience Report
 
-The Cinematic Timeline refactoring modernizes presentation ergonomics while keeping the original Timeline Engine untouched.
+The Cinematic Timeline interaction layer modernizes track visual tracking.
 
-## Visual Upgrades
-* **Clip Thumbnails & Labeled Tags**: Fast identification of video vs audio blocks.
-* **Animated Waveform Overlays**: Dynamic sine wave lines mapped across active clip widths.
-* **Double-sided Trim Handles**: Drag left or right to stretch and adjust durations non-destructively.
-* **Snap Guides**: High-contrast outline glows when snapping transitions are reached.
+## Features
+* **Waveforms Overlay**: Visualized sine lines mapping active track volumes.
+* **Double-sided Trim Handles**: Drag left or right to trim and stretch non-destructively.
+* **Selection Highlighting**: Colorful glows highlighting the active editing targets.

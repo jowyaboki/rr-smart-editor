@@ -1,7 +1,7 @@
-# Graph Performance Report
+# Performance Report
 
-Evaluating virtualized rendering cycles and latency.
+Resizing transition smoothness under active canvas elements.
 
-## Metrics
-* **State updates on selection**: completed in `< 2.5ms` through selective Zustand selectors.
-* **Resizing CLS**: 0% layout shift under active presets.
+## Measurements
+* **Overhead**: Selective Zustand subscriptions restrict rendering strictly to moving nodes.
+* **FPS**: 60 FPS transitions.

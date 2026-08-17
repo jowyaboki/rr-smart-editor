@@ -1,6 +1,8 @@
-# Micro Interaction Guide - Phase 10
+# Micro Interaction Guide
 
-A guide to hover, active, and button feedback micro-interactions.
+Designing elegant physics-informed visual transitions.
 
-## 1. Micro-animations
-* Smooth transitions (`transition: all 0.15s ease`) prevent erratic layout shifts.
+## Key parameters
+* **Standard transition**: `cubic-bezier(0.4, 0, 0.2, 1)`.
+* **Hover scales**: Applying a gentle 1.02x scale zoom on asset cards and workflow items.
+* **Outline glow**: Smooth 0.15s ease glows matching active selection targets.
