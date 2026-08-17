@@ -6,3 +6,4 @@ export * from './CreatorBriefBuilder';
 export * from './ProductionPlanReview';
 export * from './AIRefinementLoop';
 export * from './CreativeVariantsPanel';
+export * from './ProductionCompletionDashboard';
