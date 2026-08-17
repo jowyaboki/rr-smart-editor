@@ -12,6 +12,7 @@ export * from './runtime/ProgressTracker';
 export * from './runtime/QualityGateValidator';
 export * from './runtime/EnterpriseOrchestrator';
 export * from './runtime/ExecutionAnalytics';
+export * from './runtime/ProductionPipelineBuilder';
 export * from './services';
 export * from './services/WorkflowTemplatesService';
 export * from './services/KnowledgeEngineRAGService';
